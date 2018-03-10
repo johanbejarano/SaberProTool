@@ -1,0 +1,203 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableUsuario" header="UsuarioData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{usuarioView.data}" var="usuario"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{usuario.idUsuario}" sortBy="#{usuario.idUsuario}" >
+										 <f:facet name="header">
+										<h:outputText value="idUsuario"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.idUsuario}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{usuario.activo}" sortBy="#{usuario.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.apellido}" sortBy="#{usuario.apellido}" >
+										 <f:facet name="header">
+										<h:outputText value="Apellido"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.apellido}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.celular}" sortBy="#{usuario.celular}" >
+										 <f:facet name="header">
+										<h:outputText value="Celular"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.celular}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.codigo}" sortBy="#{usuario.codigo}" >
+										 <f:facet name="header">
+										<h:outputText value="Codigo"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.codigo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.correo}" sortBy="#{usuario.correo}" >
+										 <f:facet name="header">
+										<h:outputText value="Correo"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.correo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.fechaCreacion}" sortBy="#{usuario.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.fechaModificacion}" sortBy="#{usuario.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.genero}" sortBy="#{usuario.genero}" >
+										 <f:facet name="header">
+										<h:outputText value="Genero"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.genero}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.identificacion}" sortBy="#{usuario.identificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="Identificacion"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.identificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.nombre}" sortBy="#{usuario.nombre}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.nombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.password}" sortBy="#{usuario.password}" >
+										 <f:facet name="header">
+										<h:outputText value="Password"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.password}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.usuCreador}" sortBy="#{usuario.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.usuModificador}" sortBy="#{usuario.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuario.idTipoUsuario_TipoUsuario}" sortBy="#{usuario.idTipoUsuario_TipoUsuario}" >
+										 <f:facet name="header">
+										<h:outputText value="IdTipoUsuario_TipoUsuario"/>
+										</f:facet>
+										 <h:outputText value="#{usuario.idTipoUsuario_TipoUsuario}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogUsuario"
+										actionListener="#{usuarioView.action_edit}">
+										<f:attribute name="selectedUsuario" value="#{usuario}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{usuarioView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedUsuario" value="#{usuario}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{usuarioView.action_new()}" update=":dialogUsuario" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogUsuario" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{usuarioView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelUsuario" header="Usuario">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdUsuario" value="IdUsuario"/>
+									 <p:inputText id="txtIdUsuario" binding="#{usuarioView.txtIdUsuario}">
+									 <p:ajax update=":dialogUsuario" listener="#{usuarioView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{usuarioView.txtActivo}"/>
+																		<h:outputText id="msgApellido" value=" Apellido"/>
+									<p:inputText id="txtApellido" disabled="true" binding="#{usuarioView.txtApellido}"/>
+																		<h:outputText id="msgCelular" value=" Celular"/>
+									<p:inputText id="txtCelular" disabled="true" binding="#{usuarioView.txtCelular}"/>
+																		<h:outputText id="msgCodigo" value=" Codigo"/>
+									<p:inputText id="txtCodigo" disabled="true" binding="#{usuarioView.txtCodigo}"/>
+																		<h:outputText id="msgCorreo" value=" Correo"/>
+									<p:inputText id="txtCorreo" disabled="true" binding="#{usuarioView.txtCorreo}"/>
+																		<h:outputText id="msgGenero" value=" Genero"/>
+									<p:inputText id="txtGenero" disabled="true" binding="#{usuarioView.txtGenero}"/>
+																		<h:outputText id="msgIdentificacion" value=" Identificacion"/>
+									<p:inputText id="txtIdentificacion" disabled="true" binding="#{usuarioView.txtIdentificacion}"/>
+																		<h:outputText id="msgNombre" value=" Nombre"/>
+									<p:inputText id="txtNombre" disabled="true" binding="#{usuarioView.txtNombre}"/>
+																		<h:outputText id="msgPassword" value=" Password"/>
+									<p:inputText id="txtPassword" disabled="true" binding="#{usuarioView.txtPassword}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{usuarioView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{usuarioView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdTipoUsuario_TipoUsuario" value=" IdTipoUsuario_TipoUsuario"/>
+									<p:inputText id="txtIdTipoUsuario_TipoUsuario" disabled="true" binding="#{usuarioView.txtIdTipoUsuario_TipoUsuario}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{usuarioView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{usuarioView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{usuarioView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{usuarioView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{usuarioView.btnSave}" value="Save" action="#{usuarioView.action_save()}" update=":dialogUsuario :frm:panelDataTableUsuario" />
+									<p:commandButton id="btnClear" value="Clear" action="#{usuarioView.action_clear()}" update=":dialogUsuario" />
+									<p:commandButton id="btnExit" value="Exit" action="#{usuarioView.action_closeDialog()}" update=":dialogUsuario" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

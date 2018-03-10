@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelPregunta" header="Pregunta">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdPregunta" value="IdPregunta"/>
+						 	<p:inputText id="txtIdPregunta" binding="#{preguntaView.txtIdPregunta}">
+						 		<p:ajax update="panelPregunta,msg,panelBotones" listener="#{preguntaView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{preguntaView.txtActivo}"/>
+													<h:outputText id="msgDescripcionPregunta" value=" DescripcionPregunta"/>
+							<p:inputText id="txtDescripcionPregunta" disabled="true" binding="#{preguntaView.txtDescripcionPregunta}"/>
+													<h:outputText id="msgRetroalimentacion" value=" Retroalimentacion"/>
+							<p:inputText id="txtRetroalimentacion" disabled="true" binding="#{preguntaView.txtRetroalimentacion}"/>
+													<h:outputText id="msgRutaImagen" value=" RutaImagen"/>
+							<p:inputText id="txtRutaImagen" disabled="true" binding="#{preguntaView.txtRutaImagen}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{preguntaView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{preguntaView.txtUsuModificador}"/>
+													<h:outputText id="msgIdModulo_Modulo" value=" IdModulo_Modulo"/>
+							<p:inputText id="txtIdModulo_Modulo" disabled="true" binding="#{preguntaView.txtIdModulo_Modulo}"/>
+													<h:outputText id="msgIdTipoPregunta_TipoPregunta" value=" IdTipoPregunta_TipoPregunta"/>
+							<p:inputText id="txtIdTipoPregunta_TipoPregunta" disabled="true" binding="#{preguntaView.txtIdTipoPregunta_TipoPregunta}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{preguntaView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{preguntaView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{preguntaView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{preguntaView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{preguntaView.btnSave}" disabled="true" value="Save" action="#{preguntaView.action_save()}" update="panelPregunta,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{preguntaView.btnDelete}" disabled="true" value="Delete" action="#{preguntaView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelPregunta,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{preguntaView.action_clear()}" update="panelPregunta,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

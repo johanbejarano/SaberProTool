@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableTipoPrueba" header="TipoPruebaData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{tipoPruebaView.data}" var="tipoPrueba"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{tipoPrueba.idTipoPrueba}" sortBy="#{tipoPrueba.idTipoPrueba}" >
+										 <f:facet name="header">
+										<h:outputText value="idTipoPrueba"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.idTipoPrueba}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{tipoPrueba.activo}" sortBy="#{tipoPrueba.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{tipoPrueba.descripcion}" sortBy="#{tipoPrueba.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{tipoPrueba.fechaCreacion}" sortBy="#{tipoPrueba.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{tipoPrueba.fechaModificacion}" sortBy="#{tipoPrueba.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{tipoPrueba.nombre}" sortBy="#{tipoPrueba.nombre}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.nombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{tipoPrueba.usuCreador}" sortBy="#{tipoPrueba.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{tipoPrueba.usuModificador}" sortBy="#{tipoPrueba.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{tipoPrueba.usuModificador}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogTipoPrueba"
+										actionListener="#{tipoPruebaView.action_edit}">
+										<f:attribute name="selectedTipoPrueba" value="#{tipoPrueba}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{tipoPruebaView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedTipoPrueba" value="#{tipoPrueba}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{tipoPruebaView.action_new()}" update=":dialogTipoPrueba" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogTipoPrueba" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{tipoPruebaView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelTipoPrueba" header="TipoPrueba">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdTipoPrueba" value="IdTipoPrueba"/>
+									 <p:inputText id="txtIdTipoPrueba" binding="#{tipoPruebaView.txtIdTipoPrueba}">
+									 <p:ajax update=":dialogTipoPrueba" listener="#{tipoPruebaView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{tipoPruebaView.txtActivo}"/>
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{tipoPruebaView.txtDescripcion}"/>
+																		<h:outputText id="msgNombre" value=" Nombre"/>
+									<p:inputText id="txtNombre" disabled="true" binding="#{tipoPruebaView.txtNombre}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{tipoPruebaView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{tipoPruebaView.txtUsuModificador}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{tipoPruebaView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{tipoPruebaView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{tipoPruebaView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{tipoPruebaView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{tipoPruebaView.btnSave}" value="Save" action="#{tipoPruebaView.action_save()}" update=":dialogTipoPrueba :frm:panelDataTableTipoPrueba" />
+									<p:commandButton id="btnClear" value="Clear" action="#{tipoPruebaView.action_clear()}" update=":dialogTipoPrueba" />
+									<p:commandButton id="btnExit" value="Exit" action="#{tipoPruebaView.action_closeDialog()}" update=":dialogTipoPrueba" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

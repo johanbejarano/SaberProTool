@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTablePermiso" header="PermisoData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{permisoView.data}" var="permiso"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{permiso.idPermiso}" sortBy="#{permiso.idPermiso}" >
+										 <f:facet name="header">
+										<h:outputText value="idPermiso"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.idPermiso}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{permiso.activo}" sortBy="#{permiso.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permiso.fechaCreacion}" sortBy="#{permiso.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permiso.fechaModificacion}" sortBy="#{permiso.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permiso.usuCreador}" sortBy="#{permiso.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permiso.usuModificador}" sortBy="#{permiso.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permiso.idGrupoOpcion_GrupoOpcion}" sortBy="#{permiso.idGrupoOpcion_GrupoOpcion}" >
+										 <f:facet name="header">
+										<h:outputText value="IdGrupoOpcion_GrupoOpcion"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.idGrupoOpcion_GrupoOpcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permiso.idTipoUsuario_TipoUsuario}" sortBy="#{permiso.idTipoUsuario_TipoUsuario}" >
+										 <f:facet name="header">
+										<h:outputText value="IdTipoUsuario_TipoUsuario"/>
+										</f:facet>
+										 <h:outputText value="#{permiso.idTipoUsuario_TipoUsuario}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogPermiso"
+										actionListener="#{permisoView.action_edit}">
+										<f:attribute name="selectedPermiso" value="#{permiso}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{permisoView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedPermiso" value="#{permiso}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{permisoView.action_new()}" update=":dialogPermiso" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogPermiso" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{permisoView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelPermiso" header="Permiso">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdPermiso" value="IdPermiso"/>
+									 <p:inputText id="txtIdPermiso" binding="#{permisoView.txtIdPermiso}">
+									 <p:ajax update=":dialogPermiso" listener="#{permisoView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{permisoView.txtActivo}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{permisoView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{permisoView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdGrupoOpcion_GrupoOpcion" value=" IdGrupoOpcion_GrupoOpcion"/>
+									<p:inputText id="txtIdGrupoOpcion_GrupoOpcion" disabled="true" binding="#{permisoView.txtIdGrupoOpcion_GrupoOpcion}"/>
+																		<h:outputText id="msgIdTipoUsuario_TipoUsuario" value=" IdTipoUsuario_TipoUsuario"/>
+									<p:inputText id="txtIdTipoUsuario_TipoUsuario" disabled="true" binding="#{permisoView.txtIdTipoUsuario_TipoUsuario}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{permisoView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{permisoView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{permisoView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{permisoView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{permisoView.btnSave}" value="Save" action="#{permisoView.action_save()}" update=":dialogPermiso :frm:panelDataTablePermiso" />
+									<p:commandButton id="btnClear" value="Clear" action="#{permisoView.action_clear()}" update=":dialogPermiso" />
+									<p:commandButton id="btnExit" value="Exit" action="#{permisoView.action_closeDialog()}" update=":dialogPermiso" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTablePruebaProgramaUsuario" header="PruebaProgramaUsuarioData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{pruebaProgramaUsuarioView.data}" var="pruebaProgramaUsuario"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{pruebaProgramaUsuario.idPruebaProgramaUsuario}" sortBy="#{pruebaProgramaUsuario.idPruebaProgramaUsuario}" >
+										 <f:facet name="header">
+										<h:outputText value="idPruebaProgramaUsuario"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.idPruebaProgramaUsuario}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{pruebaProgramaUsuario.activo}" sortBy="#{pruebaProgramaUsuario.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.fechaCreacion}" sortBy="#{pruebaProgramaUsuario.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.fechaModificacion}" sortBy="#{pruebaProgramaUsuario.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.usuCreador}" sortBy="#{pruebaProgramaUsuario.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.usuModificador}" sortBy="#{pruebaProgramaUsuario.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.idEstadoPrueba_EstadoPrueba}" sortBy="#{pruebaProgramaUsuario.idEstadoPrueba_EstadoPrueba}" >
+										 <f:facet name="header">
+										<h:outputText value="IdEstadoPrueba_EstadoPrueba"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.idEstadoPrueba_EstadoPrueba}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.idProgramaUsuario_ProgramaUsuario}" sortBy="#{pruebaProgramaUsuario.idProgramaUsuario_ProgramaUsuario}" >
+										 <f:facet name="header">
+										<h:outputText value="IdProgramaUsuario_ProgramaUsuario"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.idProgramaUsuario_ProgramaUsuario}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaProgramaUsuario.idPrueba_Prueba}" sortBy="#{pruebaProgramaUsuario.idPrueba_Prueba}" >
+										 <f:facet name="header">
+										<h:outputText value="IdPrueba_Prueba"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaProgramaUsuario.idPrueba_Prueba}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogPruebaProgramaUsuario"
+										actionListener="#{pruebaProgramaUsuarioView.action_edit}">
+										<f:attribute name="selectedPruebaProgramaUsuario" value="#{pruebaProgramaUsuario}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{pruebaProgramaUsuarioView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedPruebaProgramaUsuario" value="#{pruebaProgramaUsuario}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{pruebaProgramaUsuarioView.action_new()}" update=":dialogPruebaProgramaUsuario" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogPruebaProgramaUsuario" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{pruebaProgramaUsuarioView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelPruebaProgramaUsuario" header="PruebaProgramaUsuario">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdPruebaProgramaUsuario" value="IdPruebaProgramaUsuario"/>
+									 <p:inputText id="txtIdPruebaProgramaUsuario" binding="#{pruebaProgramaUsuarioView.txtIdPruebaProgramaUsuario}">
+									 <p:ajax update=":dialogPruebaProgramaUsuario" listener="#{pruebaProgramaUsuarioView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{pruebaProgramaUsuarioView.txtActivo}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{pruebaProgramaUsuarioView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{pruebaProgramaUsuarioView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdEstadoPrueba_EstadoPrueba" value=" IdEstadoPrueba_EstadoPrueba"/>
+									<p:inputText id="txtIdEstadoPrueba_EstadoPrueba" disabled="true" binding="#{pruebaProgramaUsuarioView.txtIdEstadoPrueba_EstadoPrueba}"/>
+																		<h:outputText id="msgIdProgramaUsuario_ProgramaUsuario" value=" IdProgramaUsuario_ProgramaUsuario"/>
+									<p:inputText id="txtIdProgramaUsuario_ProgramaUsuario" disabled="true" binding="#{pruebaProgramaUsuarioView.txtIdProgramaUsuario_ProgramaUsuario}"/>
+																		<h:outputText id="msgIdPrueba_Prueba" value=" IdPrueba_Prueba"/>
+									<p:inputText id="txtIdPrueba_Prueba" disabled="true" binding="#{pruebaProgramaUsuarioView.txtIdPrueba_Prueba}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{pruebaProgramaUsuarioView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{pruebaProgramaUsuarioView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{pruebaProgramaUsuarioView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{pruebaProgramaUsuarioView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{pruebaProgramaUsuarioView.btnSave}" value="Save" action="#{pruebaProgramaUsuarioView.action_save()}" update=":dialogPruebaProgramaUsuario :frm:panelDataTablePruebaProgramaUsuario" />
+									<p:commandButton id="btnClear" value="Clear" action="#{pruebaProgramaUsuarioView.action_clear()}" update=":dialogPruebaProgramaUsuario" />
+									<p:commandButton id="btnExit" value="Exit" action="#{pruebaProgramaUsuarioView.action_closeDialog()}" update=":dialogPruebaProgramaUsuario" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

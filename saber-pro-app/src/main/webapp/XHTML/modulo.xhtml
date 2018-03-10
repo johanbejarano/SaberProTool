@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelModulo" header="Modulo">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdModulo" value="IdModulo"/>
+						 	<p:inputText id="txtIdModulo" binding="#{moduloView.txtIdModulo}">
+						 		<p:ajax update="panelModulo,msg,panelBotones" listener="#{moduloView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{moduloView.txtActivo}"/>
+													<h:outputText id="msgCantidadPreguntas" value=" CantidadPreguntas"/>
+							<p:inputText id="txtCantidadPreguntas" disabled="true" binding="#{moduloView.txtCantidadPreguntas}"/>
+													<h:outputText id="msgDescripcion" value=" Descripcion"/>
+							<p:inputText id="txtDescripcion" disabled="true" binding="#{moduloView.txtDescripcion}"/>
+													<h:outputText id="msgNombre" value=" Nombre"/>
+							<p:inputText id="txtNombre" disabled="true" binding="#{moduloView.txtNombre}"/>
+													<h:outputText id="msgPrioridad" value=" Prioridad"/>
+							<p:inputText id="txtPrioridad" disabled="true" binding="#{moduloView.txtPrioridad}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{moduloView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{moduloView.txtUsuModificador}"/>
+													<h:outputText id="msgIdTipoModulo_TipoModulo" value=" IdTipoModulo_TipoModulo"/>
+							<p:inputText id="txtIdTipoModulo_TipoModulo" disabled="true" binding="#{moduloView.txtIdTipoModulo_TipoModulo}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{moduloView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{moduloView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{moduloView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{moduloView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{moduloView.btnSave}" disabled="true" value="Save" action="#{moduloView.action_save()}" update="panelModulo,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{moduloView.btnDelete}" disabled="true" value="Delete" action="#{moduloView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelModulo,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{moduloView.action_clear()}" update="panelModulo,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelRespuestaPruebaProgramaUsuarioPregunta" header="RespuestaPruebaProgramaUsuarioPregunta">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdRespuestaPruebaProgramaUsuarioPregunta" value="IdRespuestaPruebaProgramaUsuarioPregunta"/>
+						 	<p:inputText id="txtIdRespuestaPruebaProgramaUsuarioPregunta" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtIdRespuestaPruebaProgramaUsuarioPregunta}">
+						 		<p:ajax update="panelRespuestaPruebaProgramaUsuarioPregunta,msg,panelBotones" listener="#{respuestaPruebaProgramaUsuarioPreguntaView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtActivo}"/>
+													<h:outputText id="msgPorcentajeAsignado" value=" PorcentajeAsignado"/>
+							<p:inputText id="txtPorcentajeAsignado" disabled="true" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtPorcentajeAsignado}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtUsuModificador}"/>
+													<h:outputText id="msgIdPruebaProgramaUsuarioPregunta_PruebaProgramaUsuarioPregunta" value=" IdPruebaProgramaUsuarioPregunta_PruebaProgramaUsuarioPregunta"/>
+							<p:inputText id="txtIdPruebaProgramaUsuarioPregunta_PruebaProgramaUsuarioPregunta" disabled="true" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtIdPruebaProgramaUsuarioPregunta_PruebaProgramaUsuarioPregunta}"/>
+													<h:outputText id="msgIdRespuesta_Respuesta" value=" IdRespuesta_Respuesta"/>
+							<p:inputText id="txtIdRespuesta_Respuesta" disabled="true" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtIdRespuesta_Respuesta}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{respuestaPruebaProgramaUsuarioPreguntaView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{respuestaPruebaProgramaUsuarioPreguntaView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{respuestaPruebaProgramaUsuarioPreguntaView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.btnSave}" disabled="true" value="Save" action="#{respuestaPruebaProgramaUsuarioPreguntaView.action_save()}" update="panelRespuestaPruebaProgramaUsuarioPregunta,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{respuestaPruebaProgramaUsuarioPreguntaView.btnDelete}" disabled="true" value="Delete" action="#{respuestaPruebaProgramaUsuarioPreguntaView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelRespuestaPruebaProgramaUsuarioPregunta,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{respuestaPruebaProgramaUsuarioPreguntaView.action_clear()}" update="panelRespuestaPruebaProgramaUsuarioPregunta,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTablePrograma" header="ProgramaData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{programaView.data}" var="programa"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{programa.idPrograma}" sortBy="#{programa.idPrograma}" >
+										 <f:facet name="header">
+										<h:outputText value="idPrograma"/>
+										</f:facet>
+										 <h:outputText value="#{programa.idPrograma}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{programa.activo}" sortBy="#{programa.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{programa.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.descripcion}" sortBy="#{programa.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{programa.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.fechaCreacion}" sortBy="#{programa.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{programa.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.fechaModificacion}" sortBy="#{programa.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{programa.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.nombre}" sortBy="#{programa.nombre}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
+										</f:facet>
+										 <h:outputText value="#{programa.nombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.usuCreador}" sortBy="#{programa.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{programa.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.usuModificador}" sortBy="#{programa.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{programa.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{programa.idFacultad_Facultad}" sortBy="#{programa.idFacultad_Facultad}" >
+										 <f:facet name="header">
+										<h:outputText value="IdFacultad_Facultad"/>
+										</f:facet>
+										 <h:outputText value="#{programa.idFacultad_Facultad}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogPrograma"
+										actionListener="#{programaView.action_edit}">
+										<f:attribute name="selectedPrograma" value="#{programa}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{programaView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedPrograma" value="#{programa}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{programaView.action_new()}" update=":dialogPrograma" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogPrograma" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{programaView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelPrograma" header="Programa">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdPrograma" value="IdPrograma"/>
+									 <p:inputText id="txtIdPrograma" binding="#{programaView.txtIdPrograma}">
+									 <p:ajax update=":dialogPrograma" listener="#{programaView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{programaView.txtActivo}"/>
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{programaView.txtDescripcion}"/>
+																		<h:outputText id="msgNombre" value=" Nombre"/>
+									<p:inputText id="txtNombre" disabled="true" binding="#{programaView.txtNombre}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{programaView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{programaView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdFacultad_Facultad" value=" IdFacultad_Facultad"/>
+									<p:inputText id="txtIdFacultad_Facultad" disabled="true" binding="#{programaView.txtIdFacultad_Facultad}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{programaView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{programaView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{programaView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{programaView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{programaView.btnSave}" value="Save" action="#{programaView.action_save()}" update=":dialogPrograma :frm:panelDataTablePrograma" />
+									<p:commandButton id="btnClear" value="Clear" action="#{programaView.action_clear()}" update=":dialogPrograma" />
+									<p:commandButton id="btnExit" value="Exit" action="#{programaView.action_closeDialog()}" update=":dialogPrograma" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

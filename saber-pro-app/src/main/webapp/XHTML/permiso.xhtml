@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelPermiso" header="Permiso">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdPermiso" value="IdPermiso"/>
+						 	<p:inputText id="txtIdPermiso" binding="#{permisoView.txtIdPermiso}">
+						 		<p:ajax update="panelPermiso,msg,panelBotones" listener="#{permisoView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{permisoView.txtActivo}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{permisoView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{permisoView.txtUsuModificador}"/>
+													<h:outputText id="msgIdGrupoOpcion_GrupoOpcion" value=" IdGrupoOpcion_GrupoOpcion"/>
+							<p:inputText id="txtIdGrupoOpcion_GrupoOpcion" disabled="true" binding="#{permisoView.txtIdGrupoOpcion_GrupoOpcion}"/>
+													<h:outputText id="msgIdTipoUsuario_TipoUsuario" value=" IdTipoUsuario_TipoUsuario"/>
+							<p:inputText id="txtIdTipoUsuario_TipoUsuario" disabled="true" binding="#{permisoView.txtIdTipoUsuario_TipoUsuario}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{permisoView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{permisoView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{permisoView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{permisoView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{permisoView.btnSave}" disabled="true" value="Save" action="#{permisoView.action_save()}" update="panelPermiso,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{permisoView.btnDelete}" disabled="true" value="Delete" action="#{permisoView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelPermiso,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{permisoView.action_clear()}" update="panelPermiso,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableModulo" header="ModuloData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{moduloView.data}" var="modulo"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{modulo.idModulo}" sortBy="#{modulo.idModulo}" >
+										 <f:facet name="header">
+										<h:outputText value="idModulo"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.idModulo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{modulo.activo}" sortBy="#{modulo.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.cantidadPreguntas}" sortBy="#{modulo.cantidadPreguntas}" >
+										 <f:facet name="header">
+										<h:outputText value="CantidadPreguntas"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.cantidadPreguntas}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.descripcion}" sortBy="#{modulo.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.fechaCreacion}" sortBy="#{modulo.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.fechaModificacion}" sortBy="#{modulo.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.nombre}" sortBy="#{modulo.nombre}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.nombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.prioridad}" sortBy="#{modulo.prioridad}" >
+										 <f:facet name="header">
+										<h:outputText value="Prioridad"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.prioridad}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.usuCreador}" sortBy="#{modulo.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.usuModificador}" sortBy="#{modulo.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{modulo.idTipoModulo_TipoModulo}" sortBy="#{modulo.idTipoModulo_TipoModulo}" >
+										 <f:facet name="header">
+										<h:outputText value="IdTipoModulo_TipoModulo"/>
+										</f:facet>
+										 <h:outputText value="#{modulo.idTipoModulo_TipoModulo}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogModulo"
+										actionListener="#{moduloView.action_edit}">
+										<f:attribute name="selectedModulo" value="#{modulo}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{moduloView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedModulo" value="#{modulo}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{moduloView.action_new()}" update=":dialogModulo" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogModulo" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{moduloView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelModulo" header="Modulo">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdModulo" value="IdModulo"/>
+									 <p:inputText id="txtIdModulo" binding="#{moduloView.txtIdModulo}">
+									 <p:ajax update=":dialogModulo" listener="#{moduloView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{moduloView.txtActivo}"/>
+																		<h:outputText id="msgCantidadPreguntas" value=" CantidadPreguntas"/>
+									<p:inputText id="txtCantidadPreguntas" disabled="true" binding="#{moduloView.txtCantidadPreguntas}"/>
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{moduloView.txtDescripcion}"/>
+																		<h:outputText id="msgNombre" value=" Nombre"/>
+									<p:inputText id="txtNombre" disabled="true" binding="#{moduloView.txtNombre}"/>
+																		<h:outputText id="msgPrioridad" value=" Prioridad"/>
+									<p:inputText id="txtPrioridad" disabled="true" binding="#{moduloView.txtPrioridad}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{moduloView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{moduloView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdTipoModulo_TipoModulo" value=" IdTipoModulo_TipoModulo"/>
+									<p:inputText id="txtIdTipoModulo_TipoModulo" disabled="true" binding="#{moduloView.txtIdTipoModulo_TipoModulo}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{moduloView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{moduloView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{moduloView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{moduloView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{moduloView.btnSave}" value="Save" action="#{moduloView.action_save()}" update=":dialogModulo :frm:panelDataTableModulo" />
+									<p:commandButton id="btnClear" value="Clear" action="#{moduloView.action_clear()}" update=":dialogModulo" />
+									<p:commandButton id="btnExit" value="Exit" action="#{moduloView.action_closeDialog()}" update=":dialogModulo" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

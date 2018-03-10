@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTablePruebaModulo" header="PruebaModuloData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{pruebaModuloView.data}" var="pruebaModulo"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{pruebaModulo.idPruebaModulo}" sortBy="#{pruebaModulo.idPruebaModulo}" >
+										 <f:facet name="header">
+										<h:outputText value="idPruebaModulo"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.idPruebaModulo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{pruebaModulo.activo}" sortBy="#{pruebaModulo.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.fechaCreacion}" sortBy="#{pruebaModulo.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.fechaModificacion}" sortBy="#{pruebaModulo.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.numeroPreguntas}" sortBy="#{pruebaModulo.numeroPreguntas}" >
+										 <f:facet name="header">
+										<h:outputText value="NumeroPreguntas"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.numeroPreguntas}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.usuCreador}" sortBy="#{pruebaModulo.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.usuModificador}" sortBy="#{pruebaModulo.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.idModulo_Modulo}" sortBy="#{pruebaModulo.idModulo_Modulo}" >
+										 <f:facet name="header">
+										<h:outputText value="IdModulo_Modulo"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.idModulo_Modulo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pruebaModulo.idPrueba_Prueba}" sortBy="#{pruebaModulo.idPrueba_Prueba}" >
+										 <f:facet name="header">
+										<h:outputText value="IdPrueba_Prueba"/>
+										</f:facet>
+										 <h:outputText value="#{pruebaModulo.idPrueba_Prueba}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogPruebaModulo"
+										actionListener="#{pruebaModuloView.action_edit}">
+										<f:attribute name="selectedPruebaModulo" value="#{pruebaModulo}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{pruebaModuloView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedPruebaModulo" value="#{pruebaModulo}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{pruebaModuloView.action_new()}" update=":dialogPruebaModulo" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogPruebaModulo" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{pruebaModuloView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelPruebaModulo" header="PruebaModulo">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdPruebaModulo" value="IdPruebaModulo"/>
+									 <p:inputText id="txtIdPruebaModulo" binding="#{pruebaModuloView.txtIdPruebaModulo}">
+									 <p:ajax update=":dialogPruebaModulo" listener="#{pruebaModuloView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{pruebaModuloView.txtActivo}"/>
+																		<h:outputText id="msgNumeroPreguntas" value=" NumeroPreguntas"/>
+									<p:inputText id="txtNumeroPreguntas" disabled="true" binding="#{pruebaModuloView.txtNumeroPreguntas}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{pruebaModuloView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{pruebaModuloView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdModulo_Modulo" value=" IdModulo_Modulo"/>
+									<p:inputText id="txtIdModulo_Modulo" disabled="true" binding="#{pruebaModuloView.txtIdModulo_Modulo}"/>
+																		<h:outputText id="msgIdPrueba_Prueba" value=" IdPrueba_Prueba"/>
+									<p:inputText id="txtIdPrueba_Prueba" disabled="true" binding="#{pruebaModuloView.txtIdPrueba_Prueba}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{pruebaModuloView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{pruebaModuloView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{pruebaModuloView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{pruebaModuloView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{pruebaModuloView.btnSave}" value="Save" action="#{pruebaModuloView.action_save()}" update=":dialogPruebaModulo :frm:panelDataTablePruebaModulo" />
+									<p:commandButton id="btnClear" value="Clear" action="#{pruebaModuloView.action_clear()}" update=":dialogPruebaModulo" />
+									<p:commandButton id="btnExit" value="Exit" action="#{pruebaModuloView.action_closeDialog()}" update=":dialogPruebaModulo" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

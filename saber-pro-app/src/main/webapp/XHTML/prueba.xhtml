@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelPrueba" header="Prueba">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdPrueba" value="IdPrueba"/>
+						 	<p:inputText id="txtIdPrueba" binding="#{pruebaView.txtIdPrueba}">
+						 		<p:ajax update="panelPrueba,msg,panelBotones" listener="#{pruebaView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{pruebaView.txtActivo}"/>
+													<h:outputText id="msgTiempo" value=" Tiempo"/>
+							<p:inputText id="txtTiempo" disabled="true" binding="#{pruebaView.txtTiempo}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{pruebaView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{pruebaView.txtUsuModificador}"/>
+													<h:outputText id="msgIdTipoPrueba_TipoPrueba" value=" IdTipoPrueba_TipoPrueba"/>
+							<p:inputText id="txtIdTipoPrueba_TipoPrueba" disabled="true" binding="#{pruebaView.txtIdTipoPrueba_TipoPrueba}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{pruebaView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{pruebaView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaFinal" value=" FechaFinal"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{pruebaView.txtFechaFinal}" >
+								<p:ajax event="dateSelect" listener="#{pruebaView.listener_txtFechaFinal}" />
+							</p:calendar>
+														<h:outputText id="msgFechaInicial" value=" FechaInicial"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{pruebaView.txtFechaInicial}" >
+								<p:ajax event="dateSelect" listener="#{pruebaView.listener_txtFechaInicial}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{pruebaView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{pruebaView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{pruebaView.btnSave}" disabled="true" value="Save" action="#{pruebaView.action_save()}" update="panelPrueba,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{pruebaView.btnDelete}" disabled="true" value="Delete" action="#{pruebaView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelPrueba,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{pruebaView.action_clear()}" update="panelPrueba,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

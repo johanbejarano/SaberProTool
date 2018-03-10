@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelResultadoReal" header="ResultadoReal">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdResultadoReal" value="IdResultadoReal"/>
+						 	<p:inputText id="txtIdResultadoReal" binding="#{resultadoRealView.txtIdResultadoReal}">
+						 		<p:ajax update="panelResultadoReal,msg,panelBotones" listener="#{resultadoRealView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{resultadoRealView.txtActivo}"/>
+													<h:outputText id="msgPercentilGrupo" value=" PercentilGrupo"/>
+							<p:inputText id="txtPercentilGrupo" disabled="true" binding="#{resultadoRealView.txtPercentilGrupo}"/>
+													<h:outputText id="msgPercentilNacional" value=" PercentilNacional"/>
+							<p:inputText id="txtPercentilNacional" disabled="true" binding="#{resultadoRealView.txtPercentilNacional}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{resultadoRealView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{resultadoRealView.txtUsuModificador}"/>
+													<h:outputText id="msgIdMatricula_Matricula" value=" IdMatricula_Matricula"/>
+							<p:inputText id="txtIdMatricula_Matricula" disabled="true" binding="#{resultadoRealView.txtIdMatricula_Matricula}"/>
+													<h:outputText id="msgIdModulo_Modulo" value=" IdModulo_Modulo"/>
+							<p:inputText id="txtIdModulo_Modulo" disabled="true" binding="#{resultadoRealView.txtIdModulo_Modulo}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{resultadoRealView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{resultadoRealView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{resultadoRealView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{resultadoRealView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{resultadoRealView.btnSave}" disabled="true" value="Save" action="#{resultadoRealView.action_save()}" update="panelResultadoReal,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{resultadoRealView.btnDelete}" disabled="true" value="Delete" action="#{resultadoRealView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelResultadoReal,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{resultadoRealView.action_clear()}" update="panelResultadoReal,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

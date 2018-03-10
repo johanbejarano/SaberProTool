@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableFacultad" header="FacultadData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{facultadView.data}" var="facultad"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{facultad.idFacultad}" sortBy="#{facultad.idFacultad}" >
+										 <f:facet name="header">
+										<h:outputText value="idFacultad"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.idFacultad}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{facultad.activo}" sortBy="#{facultad.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{facultad.descripcion}" sortBy="#{facultad.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{facultad.fechaCreacion}" sortBy="#{facultad.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{facultad.fechaModificacion}" sortBy="#{facultad.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{facultad.nombre}" sortBy="#{facultad.nombre}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.nombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{facultad.usuCreador}" sortBy="#{facultad.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{facultad.usuModificador}" sortBy="#{facultad.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{facultad.usuModificador}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogFacultad"
+										actionListener="#{facultadView.action_edit}">
+										<f:attribute name="selectedFacultad" value="#{facultad}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{facultadView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedFacultad" value="#{facultad}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{facultadView.action_new()}" update=":dialogFacultad" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogFacultad" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{facultadView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelFacultad" header="Facultad">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdFacultad" value="IdFacultad"/>
+									 <p:inputText id="txtIdFacultad" binding="#{facultadView.txtIdFacultad}">
+									 <p:ajax update=":dialogFacultad" listener="#{facultadView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{facultadView.txtActivo}"/>
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{facultadView.txtDescripcion}"/>
+																		<h:outputText id="msgNombre" value=" Nombre"/>
+									<p:inputText id="txtNombre" disabled="true" binding="#{facultadView.txtNombre}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{facultadView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{facultadView.txtUsuModificador}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{facultadView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{facultadView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{facultadView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{facultadView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{facultadView.btnSave}" value="Save" action="#{facultadView.action_save()}" update=":dialogFacultad :frm:panelDataTableFacultad" />
+									<p:commandButton id="btnClear" value="Clear" action="#{facultadView.action_clear()}" update=":dialogFacultad" />
+									<p:commandButton id="btnExit" value="Exit" action="#{facultadView.action_closeDialog()}" update=":dialogFacultad" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

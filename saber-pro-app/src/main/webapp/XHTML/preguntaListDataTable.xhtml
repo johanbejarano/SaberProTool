@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTablePregunta" header="PreguntaData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{preguntaView.data}" var="pregunta"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{pregunta.idPregunta}" sortBy="#{pregunta.idPregunta}" >
+										 <f:facet name="header">
+										<h:outputText value="idPregunta"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.idPregunta}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{pregunta.activo}" sortBy="#{pregunta.activo}" >
+										 <f:facet name="header">
+										<h:outputText value="Activo"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.activo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.descripcionPregunta}" sortBy="#{pregunta.descripcionPregunta}" >
+										 <f:facet name="header">
+										<h:outputText value="DescripcionPregunta"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.descripcionPregunta}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.fechaCreacion}" sortBy="#{pregunta.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.fechaModificacion}" sortBy="#{pregunta.fechaModificacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaModificacion"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.fechaModificacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.retroalimentacion}" sortBy="#{pregunta.retroalimentacion}" >
+										 <f:facet name="header">
+										<h:outputText value="Retroalimentacion"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.retroalimentacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.rutaImagen}" sortBy="#{pregunta.rutaImagen}" >
+										 <f:facet name="header">
+										<h:outputText value="RutaImagen"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.rutaImagen}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.usuCreador}" sortBy="#{pregunta.usuCreador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCreador"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.usuCreador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.usuModificador}" sortBy="#{pregunta.usuModificador}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModificador"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.usuModificador}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.idModulo_Modulo}" sortBy="#{pregunta.idModulo_Modulo}" >
+										 <f:facet name="header">
+										<h:outputText value="IdModulo_Modulo"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.idModulo_Modulo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{pregunta.idTipoPregunta_TipoPregunta}" sortBy="#{pregunta.idTipoPregunta_TipoPregunta}" >
+										 <f:facet name="header">
+										<h:outputText value="IdTipoPregunta_TipoPregunta"/>
+										</f:facet>
+										 <h:outputText value="#{pregunta.idTipoPregunta_TipoPregunta}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogPregunta"
+										actionListener="#{preguntaView.action_edit}">
+										<f:attribute name="selectedPregunta" value="#{pregunta}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{preguntaView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedPregunta" value="#{pregunta}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{preguntaView.action_new()}" update=":dialogPregunta" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogPregunta" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{preguntaView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelPregunta" header="Pregunta">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdPregunta" value="IdPregunta"/>
+									 <p:inputText id="txtIdPregunta" binding="#{preguntaView.txtIdPregunta}">
+									 <p:ajax update=":dialogPregunta" listener="#{preguntaView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgActivo" value=" Activo"/>
+									<p:inputText id="txtActivo" disabled="true" binding="#{preguntaView.txtActivo}"/>
+																		<h:outputText id="msgDescripcionPregunta" value=" DescripcionPregunta"/>
+									<p:inputText id="txtDescripcionPregunta" disabled="true" binding="#{preguntaView.txtDescripcionPregunta}"/>
+																		<h:outputText id="msgRetroalimentacion" value=" Retroalimentacion"/>
+									<p:inputText id="txtRetroalimentacion" disabled="true" binding="#{preguntaView.txtRetroalimentacion}"/>
+																		<h:outputText id="msgRutaImagen" value=" RutaImagen"/>
+									<p:inputText id="txtRutaImagen" disabled="true" binding="#{preguntaView.txtRutaImagen}"/>
+																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+									<p:inputText id="txtUsuCreador" disabled="true" binding="#{preguntaView.txtUsuCreador}"/>
+																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+									<p:inputText id="txtUsuModificador" disabled="true" binding="#{preguntaView.txtUsuModificador}"/>
+																		<h:outputText id="msgIdModulo_Modulo" value=" IdModulo_Modulo"/>
+									<p:inputText id="txtIdModulo_Modulo" disabled="true" binding="#{preguntaView.txtIdModulo_Modulo}"/>
+																		<h:outputText id="msgIdTipoPregunta_TipoPregunta" value=" IdTipoPregunta_TipoPregunta"/>
+									<p:inputText id="txtIdTipoPregunta_TipoPregunta" disabled="true" binding="#{preguntaView.txtIdTipoPregunta_TipoPregunta}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{preguntaView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{preguntaView.listener_txtFechaCreacion}"  />
+										</p:calendar>
+																				<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{preguntaView.txtFechaModificacion}" >
+										<p:ajax event="dateSelect" listener="#{preguntaView.listener_txtFechaModificacion}"  />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{preguntaView.btnSave}" value="Save" action="#{preguntaView.action_save()}" update=":dialogPregunta :frm:panelDataTablePregunta" />
+									<p:commandButton id="btnClear" value="Clear" action="#{preguntaView.action_clear()}" update=":dialogPregunta" />
+									<p:commandButton id="btnExit" value="Exit" action="#{preguntaView.action_closeDialog()}" update=":dialogPregunta" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

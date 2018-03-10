@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelOpcion" header="Opcion">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdOpcion" value="IdOpcion"/>
+						 	<p:inputText id="txtIdOpcion" binding="#{opcionView.txtIdOpcion}">
+						 		<p:ajax update="panelOpcion,msg,panelBotones" listener="#{opcionView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{opcionView.txtActivo}"/>
+													<h:outputText id="msgDescripcion" value=" Descripcion"/>
+							<p:inputText id="txtDescripcion" disabled="true" binding="#{opcionView.txtDescripcion}"/>
+													<h:outputText id="msgNombre" value=" Nombre"/>
+							<p:inputText id="txtNombre" disabled="true" binding="#{opcionView.txtNombre}"/>
+													<h:outputText id="msgRuta" value=" Ruta"/>
+							<p:inputText id="txtRuta" disabled="true" binding="#{opcionView.txtRuta}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{opcionView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{opcionView.txtUsuModificador}"/>
+													<h:outputText id="msgIdGrupoOpcion_GrupoOpcion" value=" IdGrupoOpcion_GrupoOpcion"/>
+							<p:inputText id="txtIdGrupoOpcion_GrupoOpcion" disabled="true" binding="#{opcionView.txtIdGrupoOpcion_GrupoOpcion}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{opcionView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{opcionView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{opcionView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{opcionView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{opcionView.btnSave}" disabled="true" value="Save" action="#{opcionView.action_save()}" update="panelOpcion,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{opcionView.btnDelete}" disabled="true" value="Delete" action="#{opcionView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelOpcion,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{opcionView.action_clear()}" update="panelOpcion,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>

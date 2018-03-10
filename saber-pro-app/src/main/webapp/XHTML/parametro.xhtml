@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelParametro" header="Parametro">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdParametro" value="IdParametro"/>
+						 	<p:inputText id="txtIdParametro" binding="#{parametroView.txtIdParametro}">
+						 		<p:ajax update="panelParametro,msg,panelBotones" listener="#{parametroView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgActivo" value=" Activo"/>
+							<p:inputText id="txtActivo" disabled="true" binding="#{parametroView.txtActivo}"/>
+													<h:outputText id="msgDescripcion" value=" Descripcion"/>
+							<p:inputText id="txtDescripcion" disabled="true" binding="#{parametroView.txtDescripcion}"/>
+													<h:outputText id="msgNombre" value=" Nombre"/>
+							<p:inputText id="txtNombre" disabled="true" binding="#{parametroView.txtNombre}"/>
+													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
+							<p:inputText id="txtUsuCreador" disabled="true" binding="#{parametroView.txtUsuCreador}"/>
+													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
+							<p:inputText id="txtUsuModificador" disabled="true" binding="#{parametroView.txtUsuModificador}"/>
+													<h:outputText id="msgValor" value=" Valor"/>
+							<p:inputText id="txtValor" disabled="true" binding="#{parametroView.txtValor}"/>
+												
+																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{parametroView.txtFechaCreacion}" >
+								<p:ajax event="dateSelect" listener="#{parametroView.listener_txtFechaCreacion}" />
+							</p:calendar>
+														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{parametroView.txtFechaModificacion}" >
+								<p:ajax event="dateSelect" listener="#{parametroView.listener_txtFechaModificacion}" />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{parametroView.btnSave}" disabled="true" value="Save" action="#{parametroView.action_save()}" update="panelParametro,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{parametroView.btnDelete}" disabled="true" value="Delete" action="#{parametroView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelParametro,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{parametroView.action_clear()}" update="panelParametro,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+  </ui:define>
+</ui:composition>
