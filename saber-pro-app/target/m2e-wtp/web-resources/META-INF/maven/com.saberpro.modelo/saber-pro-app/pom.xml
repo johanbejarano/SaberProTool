@@ -260,6 +260,15 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4.1212.jre7</version>
 		</dependency>	
+		
+		<!-- jUnit para las pruebas de unidad -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- jUnit para las pruebas de unidad -->
 	</dependencies>
 	
 	<build>

@@ -31,7 +31,7 @@ public class Pregunta implements java.io.Serializable {
     private String activo;
     @NotNull
     @NotEmpty
-    @Size(max = 1000)
+    @Size(max = 3000)
     private String descripcionPregunta;
     @NotNull
     private Date fechaCreacion;

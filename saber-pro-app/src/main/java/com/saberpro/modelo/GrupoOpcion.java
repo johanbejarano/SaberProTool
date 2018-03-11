@@ -32,7 +32,7 @@ public class GrupoOpcion implements java.io.Serializable {
     private String icon;
     @NotNull
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 300)
     private String nombre;
     @NotNull
     private Long usuCreador;

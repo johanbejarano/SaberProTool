@@ -29,7 +29,7 @@ public class Usuario implements java.io.Serializable {
     private String activo;
     @NotNull
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 300)
     private String apellido;
     @NotNull
     private Long celular;
@@ -37,7 +37,7 @@ public class Usuario implements java.io.Serializable {
     private Long codigo;
     @NotNull
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 1200)
     private String correo;
     @NotNull
     private Date fechaCreacion;
@@ -50,11 +50,11 @@ public class Usuario implements java.io.Serializable {
     private Long identificacion;
     @NotNull
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 300)
     private String nombre;
     @NotNull
     @NotEmpty
-    @Size(max = 300)
+    @Size(max = 1200)
     private String password;
     @NotNull
     private Long usuCreador;

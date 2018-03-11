@@ -31,7 +31,7 @@ public class Opcion implements java.io.Serializable {
     private Date fechaModificacion;
     @NotNull
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 300)
     private String nombre;
     private String ruta;
     @NotNull
