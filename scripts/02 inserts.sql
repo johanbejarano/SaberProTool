@@ -1,10 +1,23 @@
 ﻿/* Limpiar tablas */
+DELETE FROM respuesta_prueba_programa_usuario_pregunta;
+DELETE FROM prueba_programa_usuario_pregunta;
+DELETE FROM prueba_programa_usuario;
+DELETE FROM programa_modulo;
+DELETE FROM programa_usuario;
 DELETE FROM programa;
 DELETE FROM facultad;
+DELETE FROM prueba_modulo;
+DELETE FROM prueba;
 DELETE FROM tipo_prueba;
 DELETE FROM estado_prueba;
+DELETE FROM respuesta;
+DELETE FROM pregunta;
+DELETE FROM usuario;
 DELETE FROM tipo_usuario;
+DELETE FROM modulo;
 DELETE FROM tipo_modulo;
+DELETE FROM tipo_pregunta;
+
 
 /*Facultad*/
 
@@ -50,24 +63,183 @@ insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) va
 
 ALTER SEQUENCE estado_prueba_id_estado_prueba_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('INICIADO','Estado de la prueba cuando la esta realizando',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('PAUSADA','Estado de la pruea cuando decide parar o dejarla pendiente solo aplica para entrenamientos',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('FINALIZADA','Estado de la prueba cuando la termina y ve sus resultados',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('REINICIADA','Estado cuando decide repetir una prueba para mejorar resultado',now(),0,'S');
+insert into estado_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('INICIADO','Estado de la prueba cuando la esta realizando',now(),0,'S');
+insert into estado_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('PAUSADA','Estado de la pruea cuando decide parar o dejarla pendiente solo aplica para entrenamientos',now(),0,'S');
+insert into estado_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('FINALIZADA','Estado de la prueba cuando la termina y ve sus resultados',now(),0,'S');
+insert into estado_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('REINICIADA','Estado cuando decide repetir una prueba para mejorar resultado',now(),0,'S');
+insert into estado_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('PENDIENTE','Estado cuando solicita la prueba',now(),0,'S');
 
 /* Tipo usuario*/
 
 ALTER SEQUENCE tipo_usuario_id_tipo_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ESTUDIANTE','Rol que realiza pruebas de modulos acuerdo a su programa',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DOCENTE','Rol que alimenta el banco de preguntas del programa que este asignado',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DIRECTOR','Rol que administra todo refente a un programa que este asignado,puede consultar y ver informes especificos',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DECANO','Rol que administra todo referente a una facultad,puede consultar y ver informes generales',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ADMIN','Rol que administra todo el sistema',now(),0,'S');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ESTUDIANTE','Rol que realiza pruebas de modulos acuerdo a su programa',now(),0,'S');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DOCENTE','Rol que alimenta el banco de preguntas del programa que este asignado',now(),0,'S');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DIRECTOR','Rol que administra todo refente a un programa que este asignado,puede consultar y ver informes especificos',now(),0,'S');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DECANO','Rol que administra todo referente a una facultad,puede consultar y ver informes generales',now(),0,'S');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ADMIN','Rol que administra todo el sistema',now(),0,'S');
 
 /* Tipo modulo*/
 
 ALTER SEQUENCE tipo_modulo_id_tipo_modulo_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('COMPETENCIA GENERICA','Categoria de modulos aplicada todas por igual a todos los programas',now(),0,'S');
-insert into tipo_prueba(nombre,descripcion,fecha_creacion,usu_creador,activo) values('COMPETENCIA ESPECIFICA','Categoria de modulos aplicada de acuerdo al programa',now(),0,'S');
+insert into tipo_modulo(nombre,descripcion,fecha_creacion,usu_creador,activo) values('COMPETENCIA GENERICA','Categoria de modulos aplicada todas por igual a todos los programas',now(),0,'S');
+insert into tipo_modulo(nombre,descripcion,fecha_creacion,usu_creador,activo) values('COMPETENCIA ESPECIFICA','Categoria de modulos aplicada de acuerdo al programa',now(),0,'S');
+
+/* Tipo pregunta */
+
+ALTER SEQUENCE tipo_pregunta_id_tipo_pregunta_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into tipo_pregunta(nombre,descripcion,fecha_creacion,usu_creador,activo) values('PREGUNTA ABIERTA','Tipo de pregunta con una respuesta en texto escrita por el estudiante',now(),0,'S');
+insert into tipo_pregunta(nombre,descripcion,fecha_creacion,usu_creador,activo) values('PREGUNTA DE SELECCIÓN MULTIPLE','Tipo de pregunta que tiene las respuestas ya definidas se seleciona una unica',now(),0,'S');
+
+/* Modulo*/
+
+ALTER SEQUENCE modulo_id_modulo_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO COMPETENCIAS CIUDADANAS','Las competencias ciudadanas son un conjunto de habilidades cognitivas, emocionales y comunicativas, que debemos desarrollar desde pequeños para saber vivir con los otros y sobre todo, para actuar de manera constructiva en la sociedad',1,20,now(),0,'S',1);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE COMUNICACION ESCRITA','La comunicación escrita es el proceso escrito mediante el cual un emisor (periodista, escritor, poeta etc.) dirige un mensaje a un receptor',1,20,now(),0,'S',1);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE INGLÉS','El modulo de inglé es para evaluar las capacidades frente al conocimiento que posean frente a la lenguaje o idioma',1,20,now(),0,'S',1);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE LECTURA CRÍTICA','La lectura crítica es la lectura realizada de un modo analítico. Esto significa que además de comprender los que se dice en un texto determinado, se intentará analizar lo expresado para verificar sus aciertos, sus errores y los modos en que se presenta la información',1,20,now(),0,'S',1);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE DISEÑO DE SOFTWARE','El diseño de sistemas es el arte de definir la arquitectura de hardware y software, componentes, módulos y datos de un sistema de cómputo, a efectos de satisfacer ciertos requerimientos. ... La importancia del software multiplataforma ha incrementado la ingeniería de software a costa de los diseños de sistemas',1,20,now(),0,'S',2);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE FORMULACION DE PROJECTOS','CONCEPTO DE FORMULACIÓN Y EVALUACIÓN DE PROYECTOS. “Es el conjunto organizado de acciones, realizadas ordenadamente durante un período de tiempo determinado, que responden a una demanda o problema, con el propósito de ofrecer una solución.',1,20,now(),0,'S',2);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE PENSAMIENTO CIENTÍFICO,MATEMÁTICO Y ESTADÍSTICO','La ciencia es un conjunto de técnicas y métodos que permiten organizar el conocimiento sobre la estructura de hechos objetivos y accesibles a distintos observadores. El pensamiento, por su parte, es el producto de la mente, aquello traído a la existencia por medio de la actividad intelectual,onocimiento matemático; teorema matemático; cálculo matemático y conocimientos de estadistica',1,20,now(),0,'S',2);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE RAZONAMIENTO CUANTITATIVO','El razonamiento cuantitativo. 2. En esta área se analizan las capacidades de utilización de números y términos matemáticos para resolver problemas cuantitativos, y la capacidad de analizar datos presentados bajo diversas formas tales como tablas y gráficos',1,20,now(),0,'S',2);
+
+/* Programa modulo */
+
+ALTER SEQUENCE programa_modulo_id_programa_modulo_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into programa_modulo(fecha_creacion,usu_creador,activo,id_programa,id_modulo) values(now(),0,'S',5,5);
+insert into programa_modulo(fecha_creacion,usu_creador,activo,id_programa,id_modulo) values(now(),0,'S',5,6);
+insert into programa_modulo(fecha_creacion,usu_creador,activo,id_programa,id_modulo) values(now(),0,'S',5,7);
+insert into programa_modulo(fecha_creacion,usu_creador,activo,id_programa,id_modulo) values(now(),0,'S',5,8);
+
+/* Pregunta */
+
+ALTER SEQUENCE pregunta_id_pregunta_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into pregunta(descripcion_pregunta,fecha_creacion,usu_creador,activo,id_modulo,id_tipo_pregunta) values('En una ciudad los habitantes enfrentan un grave problema de tráfico. Las vías no
+son suficientes para la cantidad de carros que tienen los habitantes de la ciudad
+y la oferta de transporte público es limitada y de mala calidad. El gobierno de la
+ciudad decide que para solucionar el problema de tráfico va a limitar la cantidad
+de carros particulares que pueden circular diariamente, de acuerdo con el último
+número de la placa.
+En lo que concierne al transporte de los ciudadanos, ¿qué efectos no deseados
+podría traer la medida?',now(),0,'S',1,2);
+insert into pregunta(descripcion_pregunta,fecha_creacion,usu_creador,activo,id_modulo,id_tipo_pregunta) values('Cuando Rosa estaba terminando su formación profesional sufrió un accidente
+que le produjo una parálisis que la obliga a desplazarse en silla de ruedas. Ahora
+tiene 28 años, se graduó como ingeniera de sistemas, y está buscando trabajo.
+Envió su hoja de vida a una empresa, la cual le manifestó que cumplía con el perfil
+requerido y la citó a una entrevista. Durante la entrevista, le dijeron a Rosa que
+desafortunadamente no la podrán emplear pues la empresa se vería obligada a
+adaptar su infraestructura física para que ella pudiera trabajar allí.
+En lo que concierne a la Constitución, ¿cuál de las siguientes afirmaciones aplica
+a la situación presentada?',now(),0,'S',1,2);
+insert into pregunta(descripcion_pregunta,fecha_creacion,usu_creador,activo,id_modulo,id_tipo_pregunta) values('La entrada a un museo de la ciudad no tiene el mismo valor para todos los
+ciudadanos, pues para los menores de edad hay una reducción de la tarifa a la
+mitad.
+La diferencia en la tarifa es',now(),0,'S',1,2);
+insert into pregunta(descripcion_pregunta,fecha_creacion,usu_creador,activo,id_modulo,id_tipo_pregunta) values('Para atender a todos los niños en edad escolar que no están recibiendo educación,
+la Secretaría de Educación de un municipio decide ordenarles a los colegios públicos
+que aumenten a 50 la cantidad de estudiantes en cada salón.
+¿Cuál de las siguientes es una probable consecuencia no deseada de esta medida?',now(),0,'S',1,2);
+
+
+/* Respuesta */
+
+ALTER SEQUENCE respuesta_id_respuesta_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que disminuya el número de carros particulares en circulación y aumente el
+número de usuarios de transporte público',0,now(),0,'S',1);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que aumente el número total de carros particulares y el servicio de transporte
+público se vuelva aún más deficiente.',100,now(),0,'S',1);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que disminuya la contaminación del aire y se debiliten los controles al nivel
+de contaminación máximo permitido por tipo de vehículo.',0,now(),0,'S',1);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que aumente el precio de los vehículos particulares y los vehículos de
+transporte público no circulen con pocos pasajeros.',0,now(),0,'S',1);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('La empresa carece de recursos para adaptar su infraestructura de manera
+que Rosa pueda trabajar allí. ',0,now(),0,'S',2);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('La empresa podría recibir deducciones de impuestos por emplear a personas
+en situación de discapacidad',0,now(),0,'S',2);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('La empresa puede justificar sobre la base de sus estatutos el no emplear
+a Rosa',0,now(),0,'S',2);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('La empresa está vulnerando el derecho a tener igualdad de oportunidades
+para trabajar',100,now(),0,'S',2);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('injusta, porque el museo invierte la misma cantidad de recursos en prestarles
+un buen servicio a todos.',0,now(),0,'S',3);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('justa, porque los menores de edad generalmente no cuentan con recursos
+económicos propios y su acceso a la cultura debe promoverse.',100,now(),0,'S',3);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('justa, porque únicamente debe promoverse el acceso a la cultura de las
+personas que se encuentren en edad de aprender',0,now(),0,'S',3);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('injusta, porque al haber tarifas reducidas el museo recibe menos ingresos
+de los que recibiría si todos pagaran la tarifa completa',0,now(),0,'S',3);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que la Secretaría de Educación se quede sin presupuesto para continuar
+pagándoles el salario a los profesores.',0,now(),0,'S',4);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que desde el preescolar la educación se reduzca a un mero entrenamiento
+para el trabajo.',0,now(),0,'S',4);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que con el aumento demográfico haya cada vez más niños que requieran
+educación y que no puedan ser atendidos.',0,now(),0,'S',4);
+insert into respuesta(descripcion_respuesta,porcentaje_acierto,fecha_creacion,usu_creador,activo,id_pregunta) values('Que disminuya la atención que el profesor puede prestar a cada niño y con
+ello la calidad de la educación prestada.',100,now(),0,'S',4);
+
+/* Usuario */
+
+ALTER SEQUENCE usuario_id_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148248,1133567234,3125466543,'jhonypk24@gmail.com','12345',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','LOPEZ SERNA','M',1156248,1154567234,3105466543,'camilopk24@gmail.com','12345',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ANDRES','SALAZAR ZAPATA','M',1160248,1160567234,3185466543,'andrespk24@gmail.com','12345',now(),0,'S',2);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('BEATRIZ','GOMEZ SALAZAR','M',1178248,1183567234,3025466543,'beatrizpk24@gmail.com','12345',now(),0,'S',3);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO JULIAN','GOMEZ CARVAGAL','M',1198248,1193567234,3125766543,'mariok24@gmail.com','12345',now(),0,'S',4);
+
+/* Programa usuario */
+
+ALTER SEQUENCE programa_usuario_id_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,1);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,2);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,3);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,4);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',1,5);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',2,5);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',3,5);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',4,5);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,5);
+
+/* Prueba */
+
+ALTER SEQUENCE prueba_id_prueba_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into prueba(fecha_creacion,usu_creador,activo,id_tipo_prueba) values(now(),0,'S',2);
+
+/* Prueba modulo */
+
+ALTER SEQUENCE prueba_modulo_id_prueba_modulo_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into prueba_modulo(numero_preguntas,fecha_creacion,usu_creador,activo,id_prueba,id_modulo) values(4,now(),0,'S',1,1);
+
+/* Prueba programa usuario */
+
+ALTER SEQUENCE prueba_programa_usuario_id_prueba_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into prueba_programa_usuario(fecha_creacion,usu_creador,activo,id_prueba,id_programa_usuario,id_estado_prueba) values(now(),0,'S',1,1,3);
+
+/* Prueba programa usuario pregunta */
+
+ALTER SEQUENCE prueba_programa_usuario_pregu_id_prueba_programa_usuario_pr_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into prueba_programa_usuario_pregunta(fecha_creacion,usu_creador,activo,id_prueba_programa_usuario,id_pregunta) values(now(),0,'S',1,1);
+insert into prueba_programa_usuario_pregunta(fecha_creacion,usu_creador,activo,id_prueba_programa_usuario,id_pregunta) values(now(),0,'S',1,2);
+insert into prueba_programa_usuario_pregunta(fecha_creacion,usu_creador,activo,id_prueba_programa_usuario,id_pregunta) values(now(),0,'S',1,3);
+insert into prueba_programa_usuario_pregunta(fecha_creacion,usu_creador,activo,id_prueba_programa_usuario,id_pregunta) values(now(),0,'S',1,4);
+
+/* Respuesta prueba programa usuario pregunta */
+
+ALTER SEQUENCE respuesta_prueba_programa_usu_id_respuesta_prueba_programa__seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',2,1);
+insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',8,2);
+insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',10,3);
+insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',16,4);
+
