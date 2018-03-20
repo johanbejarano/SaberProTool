@@ -19,23 +19,23 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "programa", schema = "public")
 public class Programa implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPrograma;
-    @NotNull
+    @NotNull(message="facultad no valido")
     private Facultad facultad;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fecha creacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
-    @Size(max = 300)
+    @Size(min=3,max = 300)
     private String nombre;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<ProgramaModulo> programaModulos = new HashSet<ProgramaModulo>(0);
@@ -63,6 +63,7 @@ public class Programa implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_programa", unique = true, nullable = false)
     public Long getIdPrograma() {
         return this.idPrograma;
@@ -118,7 +119,7 @@ public class Programa implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre",unique = true,nullable = false)
     public String getNombre() {
         return this.nombre;
     }
@@ -162,4 +163,13 @@ public class Programa implements java.io.Serializable {
     public void setProgramaUsuarios(Set<ProgramaUsuario> programaUsuarios) {
         this.programaUsuarios = programaUsuarios;
     }
+
+	@Override
+	public String toString() {
+		return "Programa [idPrograma=" + idPrograma + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

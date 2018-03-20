@@ -19,27 +19,27 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "modulo", schema = "public")
 public class Modulo implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idModulo;
-    @NotNull
+    @NotNull(message="Tipo Modulo no valido")
     private TipoModulo tipoModulo;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="cantidad preguntas no valido")
     private Long cantidadPreguntas;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fecha creacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
-    @Size(max = 300)
+    @Size(min=3,max = 300)
     private String nombre;
-    @NotNull
+    @NotNull(message="prioridad no valido")
     private Long prioridad;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<Pregunta> preguntas = new HashSet<Pregunta>(0);
@@ -74,6 +74,7 @@ public class Modulo implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_modulo", unique = true, nullable = false)
     public Long getIdModulo() {
         return this.idModulo;
@@ -138,7 +139,7 @@ public class Modulo implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre",unique = true,nullable = false)
     public String getNombre() {
         return this.nombre;
     }
@@ -209,4 +210,14 @@ public class Modulo implements java.io.Serializable {
     public void setResultadoReals(Set<ResultadoReal> resultadoReals) {
         this.resultadoReals = resultadoReals;
     }
+
+	@Override
+	public String toString() {
+		return "Modulo [idModulo=" + idModulo + ", activo=" + activo + ", cantidadPreguntas=" + cantidadPreguntas
+				+ ", descripcion=" + descripcion + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion="
+				+ fechaModificacion + ", nombre=" + nombre + ", prioridad=" + prioridad + ", usuCreador=" + usuCreador
+				+ ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

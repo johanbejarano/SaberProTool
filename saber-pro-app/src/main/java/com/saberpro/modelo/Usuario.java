@@ -19,44 +19,48 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "usuario", schema = "public")
 public class Usuario implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idUsuario;
-    @NotNull
+    @NotNull(message="tipousuario no valido")
     private TipoUsuario tipoUsuario;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="apellidp no valido")
     @NotEmpty
-    @Size(max = 300)
+    @Size(min=3,max = 300)
     private String apellido;
-    @NotNull
+    @NotNull(message="celular no valido")
+    @Range(min=10)
     private Long celular;
-    @NotNull
+    @NotNull(message="codigo no valido")
+    @Range(min=7)
     private Long codigo;
-    @NotNull
+    @NotNull(message="correo no valido")
     @NotEmpty
-    @Size(max = 1200)
+    @Email
+    @Size(min=7,max = 1200)
     private String correo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="genero no valido")
     @NotEmpty
     @Size(max = 1)
     private String genero;
-    @NotNull
+    @NotNull(message="identificacion no valido")
+    @Range(min=7)
     private Long identificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
-    @Size(max = 300)
+    @Size(min=3,max=300)
     private String nombre;
-    @NotNull
+    @NotNull(message="password no valido")
     @NotEmpty
-    @Size(max = 1200)
+    @Size(min=8,max = 1200)
     private String password;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<Matricula> matriculas = new HashSet<Matricula>(0);
@@ -91,6 +95,7 @@ public class Usuario implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_usuario", unique = true, nullable = false)
     public Long getIdUsuario() {
         return this.idUsuario;
@@ -128,7 +133,7 @@ public class Usuario implements java.io.Serializable {
         this.apellido = apellido;
     }
 
-    @Column(name = "celular", nullable = false)
+    @Column(name = "celular",unique = true, nullable = false)
     public Long getCelular() {
         return this.celular;
     }
@@ -137,7 +142,7 @@ public class Usuario implements java.io.Serializable {
         this.celular = celular;
     }
 
-    @Column(name = "codigo", nullable = false)
+    @Column(name = "codigo",unique = true, nullable = false)
     public Long getCodigo() {
         return this.codigo;
     }
@@ -146,7 +151,7 @@ public class Usuario implements java.io.Serializable {
         this.codigo = codigo;
     }
 
-    @Column(name = "correo", nullable = false)
+    @Column(name = "correo",unique = true, nullable = false)
     public String getCorreo() {
         return this.correo;
     }
@@ -182,7 +187,7 @@ public class Usuario implements java.io.Serializable {
         this.genero = genero;
     }
 
-    @Column(name = "identificacion", nullable = false)
+    @Column(name = "identificacion",unique = true, nullable = false)
     public Long getIdentificacion() {
         return this.identificacion;
     }
@@ -244,4 +249,15 @@ public class Usuario implements java.io.Serializable {
     public void setProgramaUsuarios(Set<ProgramaUsuario> programaUsuarios) {
         this.programaUsuarios = programaUsuarios;
     }
+
+	@Override
+	public String toString() {
+		return "Usuario [idUsuario=" + idUsuario + ", activo=" + activo + ", apellido=" + apellido + ", celular="
+				+ celular + ", codigo=" + codigo + ", correo=" + correo + ", fechaCreacion=" + fechaCreacion
+				+ ", fechaModificacion=" + fechaModificacion + ", genero=" + genero + ", identificacion="
+				+ identificacion + ", nombre=" + nombre + ", password=" + password + ", usuCreador=" + usuCreador
+				+ ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

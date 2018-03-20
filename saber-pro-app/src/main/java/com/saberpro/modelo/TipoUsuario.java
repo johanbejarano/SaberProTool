@@ -19,21 +19,21 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "tipo_usuario", schema = "public")
 public class TipoUsuario implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idTipoUsuario;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fecha creacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
-    @Size(max = 300)
+    @Size(min=3,max = 300)
     private String nombre;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<Permiso> permisos = new HashSet<Permiso>(0);
@@ -59,6 +59,7 @@ public class TipoUsuario implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_tipo_usuario", unique = true, nullable = false)
     public Long getIdTipoUsuario() {
         return this.idTipoUsuario;
@@ -104,7 +105,7 @@ public class TipoUsuario implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre",unique = true, nullable = false)
     public String getNombre() {
         return this.nombre;
     }
@@ -148,4 +149,13 @@ public class TipoUsuario implements java.io.Serializable {
     public void setUsuarios(Set<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
+
+	@Override
+	public String toString() {
+		return "TipoUsuario [idTipoUsuario=" + idTipoUsuario + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

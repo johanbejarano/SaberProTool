@@ -19,21 +19,22 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "prueba", schema = "public")
 public class Prueba implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPrueba;
-    @NotNull
+    @NotNull(message="tipoPrueba no valido")
     private TipoPrueba tipoPrueba;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
+    @Future
     private Date fechaFinal;
     private Date fechaInicial;
     private Date fechaModificacion;
     private Long tiempo;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<PruebaModulo> pruebaModulos = new HashSet<PruebaModulo>(0);
@@ -62,6 +63,7 @@ public class Prueba implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_prueba", unique = true, nullable = false)
     public Long getIdPrueba() {
         return this.idPrueba;
@@ -171,4 +173,14 @@ public class Prueba implements java.io.Serializable {
         Set<PruebaProgramaUsuario> pruebaProgramaUsuarios) {
         this.pruebaProgramaUsuarios = pruebaProgramaUsuarios;
     }
+
+	@Override
+	public String toString() {
+		return "Prueba [idPrueba=" + idPrueba + ", activo=" + activo + ", fechaCreacion=" + fechaCreacion
+				+ ", fechaFinal=" + fechaFinal + ", fechaInicial=" + fechaInicial + ", fechaModificacion="
+				+ fechaModificacion + ", tiempo=" + tiempo + ", usuCreador=" + usuCreador + ", usuModificador="
+				+ usuModificador + "]";
+	}
+    
+    
 }

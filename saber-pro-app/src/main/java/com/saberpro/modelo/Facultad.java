@@ -19,21 +19,21 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "facultad", schema = "public")
 public class Facultad implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idFacultad;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fecha creación no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
-    @Size(max = 300)
+    @Size(min=3,max = 300)
     private String nombre;
-    @NotNull
+    @NotNull(message="usuCreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<Programa> programas = new HashSet<Programa>(0);
@@ -56,6 +56,7 @@ public class Facultad implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_facultad", unique = true, nullable = false)
     public Long getIdFacultad() {
         return this.idFacultad;
@@ -101,7 +102,7 @@ public class Facultad implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre",unique = true, nullable = false)
     public String getNombre() {
         return this.nombre;
     }
@@ -136,4 +137,13 @@ public class Facultad implements java.io.Serializable {
     public void setProgramas(Set<Programa> programas) {
         this.programas = programas;
     }
+
+	@Override
+	public String toString() {
+		return "Facultad [idFacultad=" + idFacultad + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

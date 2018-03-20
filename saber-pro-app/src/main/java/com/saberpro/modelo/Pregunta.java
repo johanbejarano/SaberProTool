@@ -19,26 +19,26 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "pregunta", schema = "public")
 public class Pregunta implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPregunta;
-    @NotNull
+    @NotNull(message="modulo no valido")
     private Modulo modulo;
-    @NotNull
+    @NotNull(message="tipopregunta no valido")
     private TipoPregunta tipoPregunta;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="descripcionpregunta no valido")
     @NotEmpty
     @Size(max = 3000)
     private String descripcionPregunta;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
     private String retroalimentacion;
     private String rutaImagen;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPreguntas = new HashSet<PruebaProgramaUsuarioPregunta>(0);
@@ -68,6 +68,7 @@ public class Pregunta implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_pregunta", unique = true, nullable = false)
     public Long getIdPregunta() {
         return this.idPregunta;
@@ -187,4 +188,14 @@ public class Pregunta implements java.io.Serializable {
     public void setRespuestas(Set<Respuesta> respuestas) {
         this.respuestas = respuestas;
     }
+
+	@Override
+	public String toString() {
+		return "Pregunta [idPregunta=" + idPregunta + ", activo=" + activo + ", descripcionPregunta="
+				+ descripcionPregunta + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion
+				+ ", retroalimentacion=" + retroalimentacion + ", rutaImagen=" + rutaImagen + ", usuCreador="
+				+ usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }
