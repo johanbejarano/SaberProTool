@@ -17,22 +17,22 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "prueba_modulo", schema = "public")
 public class PruebaModulo implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPruebaModulo;
-    @NotNull
+    @NotNull(message="modulo no valido")
     private Modulo modulo;
-    @NotNull
+    @NotNull(message="prueba no valido")
     private Prueba prueba;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="numeropreguntas no valido")
     private Long numeroPreguntas;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -54,6 +54,7 @@ public class PruebaModulo implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_prueba_modulo", unique = true, nullable = false)
     public Long getIdPruebaModulo() {
         return this.idPruebaModulo;
@@ -136,4 +137,13 @@ public class PruebaModulo implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "PruebaModulo [idPruebaModulo=" + idPruebaModulo + ", activo=" + activo + ", fechaCreacion="
+				+ fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", numeroPreguntas=" + numeroPreguntas
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

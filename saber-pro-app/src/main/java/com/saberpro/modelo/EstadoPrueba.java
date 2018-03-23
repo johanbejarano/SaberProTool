@@ -19,21 +19,21 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "estado_prueba", schema = "public")
 public class EstadoPrueba implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idEstadoPrueba;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
     @Size(max = 300)
     private String nombre;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<PruebaProgramaUsuario> pruebaProgramaUsuarios = new HashSet<PruebaProgramaUsuario>(0);
@@ -57,6 +57,7 @@ public class EstadoPrueba implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_estado_prueba", unique = true, nullable = false)
     public Long getIdEstadoPrueba() {
         return this.idEstadoPrueba;
@@ -102,7 +103,7 @@ public class EstadoPrueba implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre",unique = true, nullable = false)
     public String getNombre() {
         return this.nombre;
     }
@@ -138,4 +139,13 @@ public class EstadoPrueba implements java.io.Serializable {
         Set<PruebaProgramaUsuario> pruebaProgramaUsuarios) {
         this.pruebaProgramaUsuarios = pruebaProgramaUsuarios;
     }
+
+	@Override
+	public String toString() {
+		return "EstadoPrueba [idEstadoPrueba=" + idEstadoPrueba + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

@@ -19,22 +19,22 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "prueba_programa_usuario", schema = "public")
 public class PruebaProgramaUsuario implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPruebaProgramaUsuario;
-    @NotNull
+    @NotNull(message="estadoprueba no valido")
     private EstadoPrueba estadoPrueba;
-    @NotNull
+    @NotNull(message="programausuario no valido")
     private ProgramaUsuario programaUsuario;
-    @NotNull
+    @NotNull(message="prueba no valido")
     private Prueba prueba;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPreguntas = new HashSet<PruebaProgramaUsuarioPregunta>(0);
@@ -60,6 +60,7 @@ public class PruebaProgramaUsuario implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_prueba_programa_usuario", unique = true, nullable = false)
     public Long getIdPruebaProgramaUsuario() {
         return this.idPruebaProgramaUsuario;
@@ -153,4 +154,14 @@ public class PruebaProgramaUsuario implements java.io.Serializable {
         Set<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPreguntas) {
         this.pruebaProgramaUsuarioPreguntas = pruebaProgramaUsuarioPreguntas;
     }
+
+	@Override
+	public String toString() {
+		return "PruebaProgramaUsuario [idPruebaProgramaUsuario=" + idPruebaProgramaUsuario + ", activo=" + activo
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", usuCreador="
+				+ usuCreador + ", usuModificador=" + usuModificador + ", pruebaProgramaUsuarioPreguntas="
+				+ pruebaProgramaUsuarioPreguntas + "]";
+	}
+    
+    
 }

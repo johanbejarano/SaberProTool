@@ -37,7 +37,7 @@ CREATE TABLE Matricula (
   usu_modificador    int8, 
   activo             char(1) NOT NULL, 
   id_usuario         int8 NOT NULL, 
-  lid_prueba_real    int8 NOT NULL, 
+  id_prueba_real    int8 NOT NULL, 
   PRIMARY KEY (id_matricula));
 CREATE TABLE Modulo (
   id_modulo          BIGSERIAL NOT NULL, 

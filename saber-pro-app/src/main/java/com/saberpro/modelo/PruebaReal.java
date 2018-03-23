@@ -19,18 +19,18 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "prueba_real", schema = "public")
 public class PruebaReal implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPruebaReal;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fecha no valido")
     private Date fecha;
-    @NotNull
+    @NotNull(message="fecha creacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<Matricula> matriculas = new HashSet<Matricula>(0);
@@ -52,6 +52,7 @@ public class PruebaReal implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_prueba_real", unique = true, nullable = false)
     public Long getIdPruebaReal() {
         return this.idPruebaReal;
@@ -123,4 +124,13 @@ public class PruebaReal implements java.io.Serializable {
     public void setMatriculas(Set<Matricula> matriculas) {
         this.matriculas = matriculas;
     }
+
+	@Override
+	public String toString() {
+		return "PruebaReal [idPruebaReal=" + idPruebaReal + ", activo=" + activo + ", fecha=" + fecha
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", usuCreador="
+				+ usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

@@ -1,4 +1,7 @@
 ﻿/* Limpiar tablas */
+DELETE FROM resultado_real;
+DELETE FROM matricula;
+DELETE FROM prueba_real;
 DELETE FROM respuesta_prueba_programa_usuario_pregunta;
 DELETE FROM prueba_programa_usuario_pregunta;
 DELETE FROM prueba_programa_usuario;
@@ -224,6 +227,7 @@ insert into prueba_modulo(numero_preguntas,fecha_creacion,usu_creador,activo,id_
 ALTER SEQUENCE prueba_programa_usuario_id_prueba_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
 insert into prueba_programa_usuario(fecha_creacion,usu_creador,activo,id_prueba,id_programa_usuario,id_estado_prueba) values(now(),0,'S',1,1,3);
+insert into prueba_programa_usuario(fecha_creacion,usu_creador,activo,id_prueba,id_programa_usuario,id_estado_prueba) values(now(),0,'S',1,2,3);
 
 /* Prueba programa usuario pregunta */
 
@@ -242,4 +246,24 @@ insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha
 insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',8,2);
 insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',10,3);
 insert into respuesta_prueba_programa_usuario_pregunta(porcentaje_asignado,fecha_creacion,usu_creador,activo,id_respuesta,id_prueba_programa_usuario_pregunta) values(100,now(),0,'S',16,4);
+
+/* Prueba_real */
+
+ALTER SEQUENCE prueba_real_id_prueba_real_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into prueba_real(fecha,fecha_creacion,usu_creador,activo) values('2018-04-01',now(),0,'S');
+
+/* Matricula */
+
+ALTER SEQUENCE matricula_id_matricula_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into matricula(fecha_creacion,usu_creador,activo,id_usuario,id_prueba_real) values(now(),0,'S',1,1);
+insert into matricula(fecha_creacion,usu_creador,activo,id_usuario,id_prueba_real) values(now(),0,'S',2,1);
+
+/* Resultado real */
+
+ALTER SEQUENCE resultado_real_id_resultado_real_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into resultado_real(percentil_grupo,percentil_nacional,fecha_creacion,usu_creador,activo,id_matricula,id_modulo) values(80,70,now(),0,'S',1,1);
+
 

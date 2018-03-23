@@ -17,22 +17,22 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "respuesta_prueba_programa_usuario_pregunta", schema = "public")
 public class RespuestaPruebaProgramaUsuarioPregunta implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idRespuestaPruebaProgramaUsuarioPregunta;
-    @NotNull
+    @NotNull(message="pruebaprogramausuariopregunta no valido")
     private PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta;
-    @NotNull
+    @NotNull(message="respuesta no valido")
     private Respuesta respuesta;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="porcentajeasignado no valido")
     private Long porcentajeAsignado;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -56,6 +56,7 @@ public class RespuestaPruebaProgramaUsuarioPregunta implements java.io.Serializa
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_respuesta_prueba_programa_usuario_pregunta", unique = true, nullable = false)
     public Long getIdRespuestaPruebaProgramaUsuarioPregunta() {
         return this.idRespuestaPruebaProgramaUsuarioPregunta;
@@ -140,4 +141,14 @@ public class RespuestaPruebaProgramaUsuarioPregunta implements java.io.Serializa
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "RespuestaPruebaProgramaUsuarioPregunta [idRespuestaPruebaProgramaUsuarioPregunta="
+				+ idRespuestaPruebaProgramaUsuarioPregunta + ", activo=" + activo + ", fechaCreacion=" + fechaCreacion
+				+ ", fechaModificacion=" + fechaModificacion + ", porcentajeAsignado=" + porcentajeAsignado
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

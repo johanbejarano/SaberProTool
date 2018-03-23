@@ -17,22 +17,22 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "resultado_real", schema = "public")
 public class ResultadoReal implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idResultadoReal;
-    @NotNull
+    @NotNull(message="matricula no valido")
     private Matricula matricula;
-    @NotNull
+    @NotNull(message="modulo no valido")
     private Modulo modulo;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
     private Long percentilGrupo;
     private Long percentilNacional;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -56,6 +56,7 @@ public class ResultadoReal implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_resultado_real", unique = true, nullable = false)
     public Long getIdResultadoReal() {
         return this.idResultadoReal;
@@ -147,4 +148,14 @@ public class ResultadoReal implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "ResultadoReal [idResultadoReal=" + idResultadoReal + ", activo=" + activo + ", fechaCreacion="
+				+ fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", percentilGrupo=" + percentilGrupo
+				+ ", percentilNacional=" + percentilNacional + ", usuCreador=" + usuCreador + ", usuModificador="
+				+ usuModificador + "]";
+	}
+    
+    
 }

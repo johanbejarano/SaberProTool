@@ -19,20 +19,20 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "prueba_programa_usuario_pregunta", schema = "public")
 public class PruebaProgramaUsuarioPregunta implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idPruebaProgramaUsuarioPregunta;
-    @NotNull
+    @NotNull(message="pregunta no valido")
     private Pregunta pregunta;
-    @NotNull
+    @NotNull(message="pruebaprogramausuario no valido")
     private PruebaProgramaUsuario pruebaProgramaUsuario;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<RespuestaPruebaProgramaUsuarioPregunta> respuestaPruebaProgramaUsuarioPreguntas =
@@ -58,6 +58,7 @@ public class PruebaProgramaUsuarioPregunta implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_prueba_programa_usuario_pregunta", unique = true, nullable = false)
     public Long getIdPruebaProgramaUsuarioPregunta() {
         return this.idPruebaProgramaUsuarioPregunta;
@@ -143,4 +144,14 @@ public class PruebaProgramaUsuarioPregunta implements java.io.Serializable {
         Set<RespuestaPruebaProgramaUsuarioPregunta> respuestaPruebaProgramaUsuarioPreguntas) {
         this.respuestaPruebaProgramaUsuarioPreguntas = respuestaPruebaProgramaUsuarioPreguntas;
     }
+
+	@Override
+	public String toString() {
+		return "PruebaProgramaUsuarioPregunta [idPruebaProgramaUsuarioPregunta=" + idPruebaProgramaUsuarioPregunta
+				+ ", activo=" + activo + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador
+				+ ", respuestaPruebaProgramaUsuarioPreguntas=" + respuestaPruebaProgramaUsuarioPreguntas + "]";
+	}
+    
+    
 }

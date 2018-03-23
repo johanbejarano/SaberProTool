@@ -17,20 +17,20 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "programa_modulo", schema = "public")
 public class ProgramaModulo implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idProgramaModulo;
-    @NotNull
+    @NotNull(message="modulo no valido")
     private Modulo modulo;
-    @NotNull
+    @NotNull(message="programa no valido")
     private Programa programa;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -51,6 +51,7 @@ public class ProgramaModulo implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_programa_modulo", unique = true, nullable = false)
     public Long getIdProgramaModulo() {
         return this.idProgramaModulo;
@@ -124,4 +125,13 @@ public class ProgramaModulo implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "ProgramaModulo [idProgramaModulo=" + idProgramaModulo + ", activo=" + activo + ", fechaCreacion="
+				+ fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", usuCreador=" + usuCreador
+				+ ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

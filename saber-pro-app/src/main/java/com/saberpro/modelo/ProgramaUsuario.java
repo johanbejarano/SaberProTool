@@ -19,20 +19,20 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "programa_usuario", schema = "public")
 public class ProgramaUsuario implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idProgramaUsuario;
-    @NotNull
+    @NotNull(message="programa no valido")
     private Programa programa;
-    @NotNull
+    @NotNull(message="usuario no valido")
     private Usuario usuario;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
     private Set<PruebaProgramaUsuario> pruebaProgramaUsuarios = new HashSet<PruebaProgramaUsuario>(0);
@@ -56,6 +56,7 @@ public class ProgramaUsuario implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_programa_usuario", unique = true, nullable = false)
     public Long getIdProgramaUsuario() {
         return this.idProgramaUsuario;
@@ -139,4 +140,13 @@ public class ProgramaUsuario implements java.io.Serializable {
         Set<PruebaProgramaUsuario> pruebaProgramaUsuarios) {
         this.pruebaProgramaUsuarios = pruebaProgramaUsuarios;
     }
+
+	@Override
+	public String toString() {
+		return "ProgramaUsuario [idProgramaUsuario=" + idProgramaUsuario + ", activo=" + activo + ", fechaCreacion="
+				+ fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", usuCreador=" + usuCreador
+				+ ", usuModificador=" + usuModificador + ", pruebaProgramaUsuarios=" + pruebaProgramaUsuarios + "]";
+	}
+    
+    
 }
