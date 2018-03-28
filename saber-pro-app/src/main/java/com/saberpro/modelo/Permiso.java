@@ -21,16 +21,16 @@ public class Permiso implements java.io.Serializable {
     private Long idPermiso;
     @NotNull(message="grupoOpciones no valido")
     private GrupoOpcion grupoOpcion;
-    @NotNull
+    @NotNull(message="tipousuario no valido")
     private TipoUsuario tipoUsuario;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -51,6 +51,7 @@ public class Permiso implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_permiso", unique = true, nullable = false)
     public Long getIdPermiso() {
         return this.idPermiso;
@@ -124,4 +125,13 @@ public class Permiso implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "Permiso [idPermiso=" + idPermiso + ", activo=" + activo + ", fechaCreacion=" + fechaCreacion
+				+ ", fechaModificacion=" + fechaModificacion + ", usuCreador=" + usuCreador + ", usuModificador="
+				+ usuModificador + "]";
+	}
+    
+    
 }

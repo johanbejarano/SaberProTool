@@ -17,24 +17,24 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "parametro", schema = "public")
 public class Parametro implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idParametro;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
     @Size(max = 300)
     private String nombre;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
-    @NotNull
+    @NotNull(message="valor no valido")
     @NotEmpty
     @Size(max = 3000)
     private String valor;
@@ -57,6 +57,7 @@ public class Parametro implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_parametro", unique = true, nullable = false)
     public Long getIdParametro() {
         return this.idParametro;
@@ -137,4 +138,13 @@ public class Parametro implements java.io.Serializable {
     public void setValor(String valor) {
         this.valor = valor;
     }
+
+	@Override
+	public String toString() {
+		return "Parametro [idParametro=" + idParametro + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + ", valor=" + valor + "]";
+	}
+    
+    
 }

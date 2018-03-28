@@ -17,24 +17,24 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "imagen", schema = "public")
 public class Imagen implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idImagen;
-    @NotNull
+    @NotNull(message="pregunta no valido")
     private Pregunta pregunta;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
     @Size(max = 300)
     private String nombre;
     private String ruta;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -57,6 +57,7 @@ public class Imagen implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_imagen", unique = true, nullable = false)
     public Long getIdImagen() {
         return this.idImagen;
@@ -147,4 +148,13 @@ public class Imagen implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "Imagen [idImagen=" + idImagen + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", ruta=" + ruta + ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }

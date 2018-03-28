@@ -189,4 +189,14 @@ public class Pregunta implements java.io.Serializable {
     public void setRespuestas(Set<Respuesta> respuestas) {
         this.respuestas = respuestas;
     }
+
+	@Override
+	public String toString() {
+		return "Pregunta [idPregunta=" + idPregunta + ", activo=" + activo + ", descripcionPregunta="
+				+ descripcionPregunta + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion
+				+ ", retroalimentacion=" + retroalimentacion + ", usuCreador=" + usuCreador + ", usuModificador="
+				+ usuModificador + "]";
+	}
+    
+    
 }

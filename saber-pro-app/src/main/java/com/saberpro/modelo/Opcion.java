@@ -17,24 +17,24 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "opcion", schema = "public")
 public class Opcion implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Long idOpcion;
-    @NotNull
+    @NotNull(message="grupoopcion no valido")
     private GrupoOpcion grupoOpcion;
-    @NotNull
+    @NotNull(message="activo no valido")
     @NotEmpty
     @Size(max = 1)
     private String activo;
     private String descripcion;
-    @NotNull
+    @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;
     private Date fechaModificacion;
-    @NotNull
+    @NotNull(message="nombre no valido")
     @NotEmpty
     @Size(max = 300)
     private String nombre;
     private String ruta;
-    @NotNull
+    @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
 
@@ -57,6 +57,7 @@ public class Opcion implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_opcion", unique = true, nullable = false)
     public Long getIdOpcion() {
         return this.idOpcion;
@@ -112,7 +113,7 @@ public class Opcion implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre",unique = true, nullable = false)
     public String getNombre() {
         return this.nombre;
     }
@@ -147,4 +148,13 @@ public class Opcion implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	@Override
+	public String toString() {
+		return "Opcion [idOpcion=" + idOpcion + ", activo=" + activo + ", descripcion=" + descripcion
+				+ ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", nombre=" + nombre
+				+ ", ruta=" + ruta + ", usuCreador=" + usuCreador + ", usuModificador=" + usuModificador + "]";
+	}
+    
+    
 }
