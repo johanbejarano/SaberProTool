@@ -38,7 +38,7 @@ public class TestPruebaRealDao {
 
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testCreate() throws DaoException, ParseException {
+	public void testaCreate() throws DaoException, ParseException {
 
 		assertNotNull("El pruebaRealDao es null", pruebaRealDao);
 
@@ -67,7 +67,7 @@ public class TestPruebaRealDao {
 
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testUpdate() throws DaoException, ParseException {
+	public void testbUpdate() throws DaoException, ParseException {
 
 		assertNotNull("El pruebaRealDao es null", pruebaRealDao);
 
@@ -89,7 +89,7 @@ public class TestPruebaRealDao {
 
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testDelete() throws DaoException {
+	public void testcDelete() throws DaoException {
 
 		assertNotNull("El pruebaRealDao es null", pruebaRealDao);
 
@@ -106,7 +106,7 @@ public class TestPruebaRealDao {
 
 	@Test
 	@Transactional(readOnly = true)
-	public void testConsulta() {
+	public void testdConsulta() {
 
 		assertNotNull("El pruebaRealDao es null", pruebaRealDao);
 

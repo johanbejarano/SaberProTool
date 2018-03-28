@@ -15,19 +15,19 @@ import java.util.Date;
 * www.zathuracode.org
 *
 */
-public class PreguntaDTO implements Serializable {
+public class ImagenDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(PreguntaDTO.class);
+    private static final Logger log = LoggerFactory.getLogger(ImagenDTO.class);
     private String activo;
-    private String descripcionPregunta;
+    private String descripcion;
     private Date fechaCreacion;
     private Date fechaModificacion;
-    private Long idPregunta;
-    private String retroalimentacion;
+    private Long idImagen;
+    private String nombre;
+    private String ruta;
     private Long usuCreador;
     private Long usuModificador;
-    private Long idModulo_Modulo;
-    private Long idTipoPregunta_TipoPregunta;
+    private Long idPregunta_Pregunta;
 
     public String getActivo() {
         return activo;
@@ -37,12 +37,12 @@ public class PreguntaDTO implements Serializable {
         this.activo = activo;
     }
 
-    public String getDescripcionPregunta() {
-        return descripcionPregunta;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripcionPregunta(String descripcionPregunta) {
-        this.descripcionPregunta = descripcionPregunta;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Date getFechaCreacion() {
@@ -61,20 +61,28 @@ public class PreguntaDTO implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Long getIdPregunta() {
-        return idPregunta;
+    public Long getIdImagen() {
+        return idImagen;
     }
 
-    public void setIdPregunta(Long idPregunta) {
-        this.idPregunta = idPregunta;
+    public void setIdImagen(Long idImagen) {
+        this.idImagen = idImagen;
     }
 
-    public String getRetroalimentacion() {
-        return retroalimentacion;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setRetroalimentacion(String retroalimentacion) {
-        this.retroalimentacion = retroalimentacion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
 
     public Long getUsuCreador() {
@@ -93,19 +101,11 @@ public class PreguntaDTO implements Serializable {
         this.usuModificador = usuModificador;
     }
 
-    public Long getIdModulo_Modulo() {
-        return idModulo_Modulo;
+    public Long getIdPregunta_Pregunta() {
+        return idPregunta_Pregunta;
     }
 
-    public void setIdModulo_Modulo(Long idModulo_Modulo) {
-        this.idModulo_Modulo = idModulo_Modulo;
-    }
-
-    public Long getIdTipoPregunta_TipoPregunta() {
-        return idTipoPregunta_TipoPregunta;
-    }
-
-    public void setIdTipoPregunta_TipoPregunta(Long idTipoPregunta_TipoPregunta) {
-        this.idTipoPregunta_TipoPregunta = idTipoPregunta_TipoPregunta;
+    public void setIdPregunta_Pregunta(Long idPregunta_Pregunta) {
+        this.idPregunta_Pregunta = idPregunta_Pregunta;
     }
 }

@@ -3,7 +3,7 @@ package com.saberpro.presentation.backingBeans;
 import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
-import com.saberpro.modelo.dto.PreguntaDTO;
+import com.saberpro.modelo.dto.ImagenDTO;
 
 import com.saberpro.presentation.businessDelegate.*;
 
@@ -46,37 +46,37 @@ import javax.faces.event.ActionEvent;
  */
 @ManagedBean
 @ViewScoped
-public class PreguntaView implements Serializable {
+public class ImagenView implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(PreguntaView.class);
+    private static final Logger log = LoggerFactory.getLogger(ImagenView.class);
     private InputText txtActivo;
-    private InputText txtDescripcionPregunta;
-    private InputText txtRetroalimentacion;
+    private InputText txtDescripcion;
+    private InputText txtNombre;
+    private InputText txtRuta;
     private InputText txtUsuCreador;
     private InputText txtUsuModificador;
-    private InputText txtIdModulo_Modulo;
-    private InputText txtIdTipoPregunta_TipoPregunta;
-    private InputText txtIdPregunta;
+    private InputText txtIdPregunta_Pregunta;
+    private InputText txtIdImagen;
     private Calendar txtFechaCreacion;
     private Calendar txtFechaModificacion;
     private CommandButton btnSave;
     private CommandButton btnModify;
     private CommandButton btnDelete;
     private CommandButton btnClear;
-    private List<PreguntaDTO> data;
-    private PreguntaDTO selectedPregunta;
-    private Pregunta entity;
+    private List<ImagenDTO> data;
+    private ImagenDTO selectedImagen;
+    private Imagen entity;
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
 
-    public PreguntaView() {
+    public ImagenView() {
         super();
     }
 
     public String action_new() {
         action_clear();
-        selectedPregunta = null;
+        selectedImagen = null;
         setShowDialog(true);
 
         return "";
@@ -84,21 +84,26 @@ public class PreguntaView implements Serializable {
 
     public String action_clear() {
         entity = null;
-        selectedPregunta = null;
+        selectedImagen = null;
 
         if (txtActivo != null) {
             txtActivo.setValue(null);
             txtActivo.setDisabled(true);
         }
 
-        if (txtDescripcionPregunta != null) {
-            txtDescripcionPregunta.setValue(null);
-            txtDescripcionPregunta.setDisabled(true);
+        if (txtDescripcion != null) {
+            txtDescripcion.setValue(null);
+            txtDescripcion.setDisabled(true);
         }
 
-        if (txtRetroalimentacion != null) {
-            txtRetroalimentacion.setValue(null);
-            txtRetroalimentacion.setDisabled(true);
+        if (txtNombre != null) {
+            txtNombre.setValue(null);
+            txtNombre.setDisabled(true);
+        }
+
+        if (txtRuta != null) {
+            txtRuta.setValue(null);
+            txtRuta.setDisabled(true);
         }
 
         if (txtUsuCreador != null) {
@@ -111,14 +116,9 @@ public class PreguntaView implements Serializable {
             txtUsuModificador.setDisabled(true);
         }
 
-        if (txtIdModulo_Modulo != null) {
-            txtIdModulo_Modulo.setValue(null);
-            txtIdModulo_Modulo.setDisabled(true);
-        }
-
-        if (txtIdTipoPregunta_TipoPregunta != null) {
-            txtIdTipoPregunta_TipoPregunta.setValue(null);
-            txtIdTipoPregunta_TipoPregunta.setDisabled(true);
+        if (txtIdPregunta_Pregunta != null) {
+            txtIdPregunta_Pregunta.setValue(null);
+            txtIdPregunta_Pregunta.setDisabled(true);
         }
 
         if (txtFechaCreacion != null) {
@@ -131,9 +131,9 @@ public class PreguntaView implements Serializable {
             txtFechaModificacion.setDisabled(true);
         }
 
-        if (txtIdPregunta != null) {
-            txtIdPregunta.setValue(null);
-            txtIdPregunta.setDisabled(false);
+        if (txtIdImagen != null) {
+            txtIdImagen.setValue(null);
+            txtIdImagen.setDisabled(false);
         }
 
         if (btnSave != null) {
@@ -165,47 +165,46 @@ public class PreguntaView implements Serializable {
 
     public void listener_txtId() {
         try {
-            Long idPregunta = FacesUtils.checkLong(txtIdPregunta);
-            entity = (idPregunta != null)
-                ? businessDelegatorView.getPregunta(idPregunta) : null;
+            Long idImagen = FacesUtils.checkLong(txtIdImagen);
+            entity = (idImagen != null)
+                ? businessDelegatorView.getImagen(idImagen) : null;
         } catch (Exception e) {
             entity = null;
         }
 
         if (entity == null) {
             txtActivo.setDisabled(false);
-            txtDescripcionPregunta.setDisabled(false);
-            txtRetroalimentacion.setDisabled(false);
+            txtDescripcion.setDisabled(false);
+            txtNombre.setDisabled(false);
+            txtRuta.setDisabled(false);
             txtUsuCreador.setDisabled(false);
             txtUsuModificador.setDisabled(false);
-            txtIdModulo_Modulo.setDisabled(false);
-            txtIdTipoPregunta_TipoPregunta.setDisabled(false);
+            txtIdPregunta_Pregunta.setDisabled(false);
             txtFechaCreacion.setDisabled(false);
             txtFechaModificacion.setDisabled(false);
-            txtIdPregunta.setDisabled(false);
+            txtIdImagen.setDisabled(false);
             btnSave.setDisabled(false);
         } else {
             txtActivo.setValue(entity.getActivo());
             txtActivo.setDisabled(false);
-            txtDescripcionPregunta.setValue(entity.getDescripcionPregunta());
-            txtDescripcionPregunta.setDisabled(false);
+            txtDescripcion.setValue(entity.getDescripcion());
+            txtDescripcion.setDisabled(false);
             txtFechaCreacion.setValue(entity.getFechaCreacion());
             txtFechaCreacion.setDisabled(false);
             txtFechaModificacion.setValue(entity.getFechaModificacion());
             txtFechaModificacion.setDisabled(false);
-            txtRetroalimentacion.setValue(entity.getRetroalimentacion());
-            txtRetroalimentacion.setDisabled(false);
+            txtNombre.setValue(entity.getNombre());
+            txtNombre.setDisabled(false);
+            txtRuta.setValue(entity.getRuta());
+            txtRuta.setDisabled(false);
             txtUsuCreador.setValue(entity.getUsuCreador());
             txtUsuCreador.setDisabled(false);
             txtUsuModificador.setValue(entity.getUsuModificador());
             txtUsuModificador.setDisabled(false);
-            txtIdModulo_Modulo.setValue(entity.getModulo().getIdModulo());
-            txtIdModulo_Modulo.setDisabled(false);
-            txtIdTipoPregunta_TipoPregunta.setValue(entity.getTipoPregunta()
-                                                          .getIdTipoPregunta());
-            txtIdTipoPregunta_TipoPregunta.setDisabled(false);
-            txtIdPregunta.setValue(entity.getIdPregunta());
-            txtIdPregunta.setDisabled(true);
+            txtIdPregunta_Pregunta.setValue(entity.getPregunta().getIdPregunta());
+            txtIdPregunta_Pregunta.setDisabled(false);
+            txtIdImagen.setValue(entity.getIdImagen());
+            txtIdImagen.setDisabled(true);
             btnSave.setDisabled(false);
 
             if (btnDelete != null) {
@@ -215,28 +214,28 @@ public class PreguntaView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
-        selectedPregunta = (PreguntaDTO) (evt.getComponent().getAttributes()
-                                             .get("selectedPregunta"));
-        txtActivo.setValue(selectedPregunta.getActivo());
+        selectedImagen = (ImagenDTO) (evt.getComponent().getAttributes()
+                                         .get("selectedImagen"));
+        txtActivo.setValue(selectedImagen.getActivo());
         txtActivo.setDisabled(false);
-        txtDescripcionPregunta.setValue(selectedPregunta.getDescripcionPregunta());
-        txtDescripcionPregunta.setDisabled(false);
-        txtFechaCreacion.setValue(selectedPregunta.getFechaCreacion());
+        txtDescripcion.setValue(selectedImagen.getDescripcion());
+        txtDescripcion.setDisabled(false);
+        txtFechaCreacion.setValue(selectedImagen.getFechaCreacion());
         txtFechaCreacion.setDisabled(false);
-        txtFechaModificacion.setValue(selectedPregunta.getFechaModificacion());
+        txtFechaModificacion.setValue(selectedImagen.getFechaModificacion());
         txtFechaModificacion.setDisabled(false);
-        txtRetroalimentacion.setValue(selectedPregunta.getRetroalimentacion());
-        txtRetroalimentacion.setDisabled(false);
-        txtUsuCreador.setValue(selectedPregunta.getUsuCreador());
+        txtNombre.setValue(selectedImagen.getNombre());
+        txtNombre.setDisabled(false);
+        txtRuta.setValue(selectedImagen.getRuta());
+        txtRuta.setDisabled(false);
+        txtUsuCreador.setValue(selectedImagen.getUsuCreador());
         txtUsuCreador.setDisabled(false);
-        txtUsuModificador.setValue(selectedPregunta.getUsuModificador());
+        txtUsuModificador.setValue(selectedImagen.getUsuModificador());
         txtUsuModificador.setDisabled(false);
-        txtIdModulo_Modulo.setValue(selectedPregunta.getIdModulo_Modulo());
-        txtIdModulo_Modulo.setDisabled(false);
-        txtIdTipoPregunta_TipoPregunta.setValue(selectedPregunta.getIdTipoPregunta_TipoPregunta());
-        txtIdTipoPregunta_TipoPregunta.setDisabled(false);
-        txtIdPregunta.setValue(selectedPregunta.getIdPregunta());
-        txtIdPregunta.setDisabled(true);
+        txtIdPregunta_Pregunta.setValue(selectedImagen.getIdPregunta_Pregunta());
+        txtIdPregunta_Pregunta.setDisabled(false);
+        txtIdImagen.setValue(selectedImagen.getIdImagen());
+        txtIdImagen.setDisabled(true);
         btnSave.setDisabled(false);
         setShowDialog(true);
 
@@ -245,7 +244,7 @@ public class PreguntaView implements Serializable {
 
     public String action_save() {
         try {
-            if ((selectedPregunta == null) && (entity == null)) {
+            if ((selectedImagen == null) && (entity == null)) {
                 action_create();
             } else {
                 action_modify();
@@ -261,29 +260,24 @@ public class PreguntaView implements Serializable {
 
     public String action_create() {
         try {
-            entity = new Pregunta();
+            entity = new Imagen();
 
-            Long idPregunta = FacesUtils.checkLong(txtIdPregunta);
+            Long idImagen = FacesUtils.checkLong(txtIdImagen);
 
             entity.setActivo(FacesUtils.checkString(txtActivo));
-            entity.setDescripcionPregunta(FacesUtils.checkString(
-                    txtDescripcionPregunta));
+            entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
             entity.setFechaCreacion(FacesUtils.checkDate(txtFechaCreacion));
             entity.setFechaModificacion(FacesUtils.checkDate(
                     txtFechaModificacion));
-            entity.setIdPregunta(idPregunta);
-            entity.setRetroalimentacion(FacesUtils.checkString(
-                    txtRetroalimentacion));
+            entity.setIdImagen(idImagen);
+            entity.setNombre(FacesUtils.checkString(txtNombre));
+            entity.setRuta(FacesUtils.checkString(txtRuta));
             entity.setUsuCreador(FacesUtils.checkLong(txtUsuCreador));
             entity.setUsuModificador(FacesUtils.checkLong(txtUsuModificador));
-            entity.setModulo((FacesUtils.checkLong(txtIdModulo_Modulo) != null)
-                ? businessDelegatorView.getModulo(FacesUtils.checkLong(
-                        txtIdModulo_Modulo)) : null);
-            entity.setTipoPregunta((FacesUtils.checkLong(
-                    txtIdTipoPregunta_TipoPregunta) != null)
-                ? businessDelegatorView.getTipoPregunta(FacesUtils.checkLong(
-                        txtIdTipoPregunta_TipoPregunta)) : null);
-            businessDelegatorView.savePregunta(entity);
+            entity.setPregunta((FacesUtils.checkLong(txtIdPregunta_Pregunta) != null)
+                ? businessDelegatorView.getPregunta(FacesUtils.checkLong(
+                        txtIdPregunta_Pregunta)) : null);
+            businessDelegatorView.saveImagen(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
             action_clear();
         } catch (Exception e) {
@@ -297,28 +291,23 @@ public class PreguntaView implements Serializable {
     public String action_modify() {
         try {
             if (entity == null) {
-                Long idPregunta = new Long(selectedPregunta.getIdPregunta());
-                entity = businessDelegatorView.getPregunta(idPregunta);
+                Long idImagen = new Long(selectedImagen.getIdImagen());
+                entity = businessDelegatorView.getImagen(idImagen);
             }
 
             entity.setActivo(FacesUtils.checkString(txtActivo));
-            entity.setDescripcionPregunta(FacesUtils.checkString(
-                    txtDescripcionPregunta));
+            entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
             entity.setFechaCreacion(FacesUtils.checkDate(txtFechaCreacion));
             entity.setFechaModificacion(FacesUtils.checkDate(
                     txtFechaModificacion));
-            entity.setRetroalimentacion(FacesUtils.checkString(
-                    txtRetroalimentacion));
+            entity.setNombre(FacesUtils.checkString(txtNombre));
+            entity.setRuta(FacesUtils.checkString(txtRuta));
             entity.setUsuCreador(FacesUtils.checkLong(txtUsuCreador));
             entity.setUsuModificador(FacesUtils.checkLong(txtUsuModificador));
-            entity.setModulo((FacesUtils.checkLong(txtIdModulo_Modulo) != null)
-                ? businessDelegatorView.getModulo(FacesUtils.checkLong(
-                        txtIdModulo_Modulo)) : null);
-            entity.setTipoPregunta((FacesUtils.checkLong(
-                    txtIdTipoPregunta_TipoPregunta) != null)
-                ? businessDelegatorView.getTipoPregunta(FacesUtils.checkLong(
-                        txtIdTipoPregunta_TipoPregunta)) : null);
-            businessDelegatorView.updatePregunta(entity);
+            entity.setPregunta((FacesUtils.checkLong(txtIdPregunta_Pregunta) != null)
+                ? businessDelegatorView.getPregunta(FacesUtils.checkLong(
+                        txtIdPregunta_Pregunta)) : null);
+            businessDelegatorView.updateImagen(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
         } catch (Exception e) {
             data = null;
@@ -330,11 +319,11 @@ public class PreguntaView implements Serializable {
 
     public String action_delete_datatable(ActionEvent evt) {
         try {
-            selectedPregunta = (PreguntaDTO) (evt.getComponent().getAttributes()
-                                                 .get("selectedPregunta"));
+            selectedImagen = (ImagenDTO) (evt.getComponent().getAttributes()
+                                             .get("selectedImagen"));
 
-            Long idPregunta = new Long(selectedPregunta.getIdPregunta());
-            entity = businessDelegatorView.getPregunta(idPregunta);
+            Long idImagen = new Long(selectedImagen.getIdImagen());
+            entity = businessDelegatorView.getImagen(idImagen);
             action_delete();
         } catch (Exception e) {
             FacesUtils.addErrorMessage(e.getMessage());
@@ -345,8 +334,8 @@ public class PreguntaView implements Serializable {
 
     public String action_delete_master() {
         try {
-            Long idPregunta = FacesUtils.checkLong(txtIdPregunta);
-            entity = businessDelegatorView.getPregunta(idPregunta);
+            Long idImagen = FacesUtils.checkLong(txtIdImagen);
+            entity = businessDelegatorView.getImagen(idImagen);
             action_delete();
         } catch (Exception e) {
             FacesUtils.addErrorMessage(e.getMessage());
@@ -357,7 +346,7 @@ public class PreguntaView implements Serializable {
 
     public void action_delete() throws Exception {
         try {
-            businessDelegatorView.deletePregunta(entity);
+            businessDelegatorView.deleteImagen(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
             action_clear();
             data = null;
@@ -373,25 +362,23 @@ public class PreguntaView implements Serializable {
         return "";
     }
 
-    public String action_modifyWitDTO(String activo,
-        String descripcionPregunta, Date fechaCreacion, Date fechaModificacion,
-        Long idPregunta, String retroalimentacion, Long usuCreador,
-        Long usuModificador, Long idModulo_Modulo,
-        Long idTipoPregunta_TipoPregunta) throws Exception {
+    public String action_modifyWitDTO(String activo, String descripcion,
+        Date fechaCreacion, Date fechaModificacion, Long idImagen,
+        String nombre, String ruta, Long usuCreador, Long usuModificador,
+        Long idPregunta_Pregunta) throws Exception {
         try {
             entity.setActivo(FacesUtils.checkString(activo));
-            entity.setDescripcionPregunta(FacesUtils.checkString(
-                    descripcionPregunta));
+            entity.setDescripcion(FacesUtils.checkString(descripcion));
             entity.setFechaCreacion(FacesUtils.checkDate(fechaCreacion));
             entity.setFechaModificacion(FacesUtils.checkDate(fechaModificacion));
-            entity.setRetroalimentacion(FacesUtils.checkString(
-                    retroalimentacion));
+            entity.setNombre(FacesUtils.checkString(nombre));
+            entity.setRuta(FacesUtils.checkString(ruta));
             entity.setUsuCreador(FacesUtils.checkLong(usuCreador));
             entity.setUsuModificador(FacesUtils.checkLong(usuModificador));
-            businessDelegatorView.updatePregunta(entity);
+            businessDelegatorView.updateImagen(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
         } catch (Exception e) {
-            //renderManager.getOnDemandRenderer("PreguntaView").requestRender();
+            //renderManager.getOnDemandRenderer("ImagenView").requestRender();
             FacesUtils.addErrorMessage(e.getMessage());
             throw e;
         }
@@ -407,20 +394,28 @@ public class PreguntaView implements Serializable {
         this.txtActivo = txtActivo;
     }
 
-    public InputText getTxtDescripcionPregunta() {
-        return txtDescripcionPregunta;
+    public InputText getTxtDescripcion() {
+        return txtDescripcion;
     }
 
-    public void setTxtDescripcionPregunta(InputText txtDescripcionPregunta) {
-        this.txtDescripcionPregunta = txtDescripcionPregunta;
+    public void setTxtDescripcion(InputText txtDescripcion) {
+        this.txtDescripcion = txtDescripcion;
     }
 
-    public InputText getTxtRetroalimentacion() {
-        return txtRetroalimentacion;
+    public InputText getTxtNombre() {
+        return txtNombre;
     }
 
-    public void setTxtRetroalimentacion(InputText txtRetroalimentacion) {
-        this.txtRetroalimentacion = txtRetroalimentacion;
+    public void setTxtNombre(InputText txtNombre) {
+        this.txtNombre = txtNombre;
+    }
+
+    public InputText getTxtRuta() {
+        return txtRuta;
+    }
+
+    public void setTxtRuta(InputText txtRuta) {
+        this.txtRuta = txtRuta;
     }
 
     public InputText getTxtUsuCreador() {
@@ -439,21 +434,12 @@ public class PreguntaView implements Serializable {
         this.txtUsuModificador = txtUsuModificador;
     }
 
-    public InputText getTxtIdModulo_Modulo() {
-        return txtIdModulo_Modulo;
+    public InputText getTxtIdPregunta_Pregunta() {
+        return txtIdPregunta_Pregunta;
     }
 
-    public void setTxtIdModulo_Modulo(InputText txtIdModulo_Modulo) {
-        this.txtIdModulo_Modulo = txtIdModulo_Modulo;
-    }
-
-    public InputText getTxtIdTipoPregunta_TipoPregunta() {
-        return txtIdTipoPregunta_TipoPregunta;
-    }
-
-    public void setTxtIdTipoPregunta_TipoPregunta(
-        InputText txtIdTipoPregunta_TipoPregunta) {
-        this.txtIdTipoPregunta_TipoPregunta = txtIdTipoPregunta_TipoPregunta;
+    public void setTxtIdPregunta_Pregunta(InputText txtIdPregunta_Pregunta) {
+        this.txtIdPregunta_Pregunta = txtIdPregunta_Pregunta;
     }
 
     public Calendar getTxtFechaCreacion() {
@@ -472,18 +458,18 @@ public class PreguntaView implements Serializable {
         this.txtFechaModificacion = txtFechaModificacion;
     }
 
-    public InputText getTxtIdPregunta() {
-        return txtIdPregunta;
+    public InputText getTxtIdImagen() {
+        return txtIdImagen;
     }
 
-    public void setTxtIdPregunta(InputText txtIdPregunta) {
-        this.txtIdPregunta = txtIdPregunta;
+    public void setTxtIdImagen(InputText txtIdImagen) {
+        this.txtIdImagen = txtIdImagen;
     }
 
-    public List<PreguntaDTO> getData() {
+    public List<ImagenDTO> getData() {
         try {
             if (data == null) {
-                data = businessDelegatorView.getDataPregunta();
+                data = businessDelegatorView.getDataImagen();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -492,16 +478,16 @@ public class PreguntaView implements Serializable {
         return data;
     }
 
-    public void setData(List<PreguntaDTO> preguntaDTO) {
-        this.data = preguntaDTO;
+    public void setData(List<ImagenDTO> imagenDTO) {
+        this.data = imagenDTO;
     }
 
-    public PreguntaDTO getSelectedPregunta() {
-        return selectedPregunta;
+    public ImagenDTO getSelectedImagen() {
+        return selectedImagen;
     }
 
-    public void setSelectedPregunta(PreguntaDTO pregunta) {
-        this.selectedPregunta = pregunta;
+    public void setSelectedImagen(ImagenDTO imagen) {
+        this.selectedImagen = imagen;
     }
 
     public CommandButton getBtnSave() {

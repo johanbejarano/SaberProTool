@@ -59,8 +59,6 @@ public class PreguntaMapper implements IPreguntaMapper {
             preguntaDTO.setFechaModificacion(pregunta.getFechaModificacion());
             preguntaDTO.setRetroalimentacion((pregunta.getRetroalimentacion() != null)
                 ? pregunta.getRetroalimentacion() : null);
-            preguntaDTO.setRutaImagen((pregunta.getRutaImagen() != null)
-                ? pregunta.getRutaImagen() : null);
             preguntaDTO.setUsuCreador((pregunta.getUsuCreador() != null)
                 ? pregunta.getUsuCreador() : null);
             preguntaDTO.setUsuModificador((pregunta.getUsuModificador() != null)
@@ -92,8 +90,6 @@ public class PreguntaMapper implements IPreguntaMapper {
             pregunta.setFechaModificacion(preguntaDTO.getFechaModificacion());
             pregunta.setRetroalimentacion((preguntaDTO.getRetroalimentacion() != null)
                 ? preguntaDTO.getRetroalimentacion() : null);
-            pregunta.setRutaImagen((preguntaDTO.getRutaImagen() != null)
-                ? preguntaDTO.getRutaImagen() : null);
             pregunta.setUsuCreador((preguntaDTO.getUsuCreador() != null)
                 ? preguntaDTO.getUsuCreador() : null);
             pregunta.setUsuModificador((preguntaDTO.getUsuModificador() != null)

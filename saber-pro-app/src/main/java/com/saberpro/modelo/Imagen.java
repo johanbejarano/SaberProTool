@@ -15,69 +15,65 @@ import javax.validation.constraints.*;
 *
 */
 @Entity
-@Table(name = "permiso", schema = "public")
-public class Permiso implements java.io.Serializable {
-    //@NotNull
-    private Long idPermiso;
-    @NotNull(message="grupoOpciones no valido")
-    private GrupoOpcion grupoOpcion;
+@Table(name = "imagen", schema = "public")
+public class Imagen implements java.io.Serializable {
     @NotNull
-    private TipoUsuario tipoUsuario;
+    private Long idImagen;
+    @NotNull
+    private Pregunta pregunta;
     @NotNull
     @NotEmpty
     @Size(max = 1)
     private String activo;
+    private String descripcion;
     @NotNull
     private Date fechaCreacion;
     private Date fechaModificacion;
     @NotNull
+    @NotEmpty
+    @Size(max = 300)
+    private String nombre;
+    private String ruta;
+    @NotNull
     private Long usuCreador;
     private Long usuModificador;
 
-    public Permiso() {
+    public Imagen() {
     }
 
-    public Permiso(Long idPermiso, String activo, Date fechaCreacion,
-        Date fechaModificacion, GrupoOpcion grupoOpcion,
-        TipoUsuario tipoUsuario, Long usuCreador, Long usuModificador) {
-        this.idPermiso = idPermiso;
-        this.grupoOpcion = grupoOpcion;
-        this.tipoUsuario = tipoUsuario;
+    public Imagen(Long idImagen, String activo, String descripcion,
+        Date fechaCreacion, Date fechaModificacion, String nombre,
+        Pregunta pregunta, String ruta, Long usuCreador, Long usuModificador) {
+        this.idImagen = idImagen;
+        this.pregunta = pregunta;
         this.activo = activo;
+        this.descripcion = descripcion;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
+        this.nombre = nombre;
+        this.ruta = ruta;
         this.usuCreador = usuCreador;
         this.usuModificador = usuModificador;
     }
 
     @Id
-    @Column(name = "id_permiso", unique = true, nullable = false)
-    public Long getIdPermiso() {
-        return this.idPermiso;
+    @Column(name = "id_imagen", unique = true, nullable = false)
+    public Long getIdImagen() {
+        return this.idImagen;
     }
 
-    public void setIdPermiso(Long idPermiso) {
-        this.idPermiso = idPermiso;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_grupo_opcion")
-    public GrupoOpcion getGrupoOpcion() {
-        return this.grupoOpcion;
-    }
-
-    public void setGrupoOpcion(GrupoOpcion grupoOpcion) {
-        this.grupoOpcion = grupoOpcion;
+    public void setIdImagen(Long idImagen) {
+        this.idImagen = idImagen;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_usuario")
-    public TipoUsuario getTipoUsuario() {
-        return this.tipoUsuario;
+    @JoinColumn(name = "id_pregunta")
+    public Pregunta getPregunta() {
+        return this.pregunta;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
     }
 
     @Column(name = "activo", nullable = false)
@@ -87,6 +83,15 @@ public class Permiso implements java.io.Serializable {
 
     public void setActivo(String activo) {
         this.activo = activo;
+    }
+
+    @Column(name = "descripcion")
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Column(name = "fecha_creacion", nullable = false)
@@ -105,6 +110,24 @@ public class Permiso implements java.io.Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    @Column(name = "nombre", nullable = false)
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Column(name = "ruta")
+    public String getRuta() {
+        return this.ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
 
     @Column(name = "usu_creador", nullable = false)

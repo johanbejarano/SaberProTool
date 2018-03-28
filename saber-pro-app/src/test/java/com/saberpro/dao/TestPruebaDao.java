@@ -39,7 +39,7 @@ public class TestPruebaDao {
 	
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testCreate() throws DaoException {
+	public void testaCreate() throws DaoException {
 		
 		assertNotNull("El tipoPruebaDao es null",tipoPruebaDao);	
 		assertNotNull("El pruebaDao es null",pruebaDao);
@@ -64,7 +64,7 @@ public class TestPruebaDao {
 	
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testUpdate() throws DaoException {
+	public void testbUpdate() throws DaoException {
 		
 		assertNotNull("El tipoPruebaDao es null",tipoPruebaDao);	
 		assertNotNull("El pruebaDao es null",pruebaDao);
@@ -85,7 +85,7 @@ public class TestPruebaDao {
 	
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testDelete() throws DaoException {
+	public void testcDelete() throws DaoException {
 		
 		assertNotNull("El tipoPruebaDao es null",tipoPruebaDao);	
 		assertNotNull("El pruebaDao es null",pruebaDao);		
@@ -104,7 +104,7 @@ public class TestPruebaDao {
 	
 	@Test	
 	@Transactional(readOnly = true)
-	public void testConsulta() {
+	public void testdConsulta() {
 
 		assertNotNull("El tipoPruebaDao es null",tipoPruebaDao);	
 		assertNotNull("El pruebaDao es null",pruebaDao);		

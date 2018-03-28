@@ -1,105 +1,8 @@
 package com.saberpro.presentation.businessDelegate;
 
-import com.saberpro.modelo.EstadoPrueba;
-import com.saberpro.modelo.Facultad;
-import com.saberpro.modelo.GrupoOpcion;
-import com.saberpro.modelo.Matricula;
-import com.saberpro.modelo.Modulo;
-import com.saberpro.modelo.Opcion;
-import com.saberpro.modelo.Parametro;
-import com.saberpro.modelo.Permiso;
-import com.saberpro.modelo.Pregunta;
-import com.saberpro.modelo.Programa;
-import com.saberpro.modelo.ProgramaModulo;
-import com.saberpro.modelo.ProgramaUsuario;
-import com.saberpro.modelo.Prueba;
-import com.saberpro.modelo.PruebaModulo;
-import com.saberpro.modelo.PruebaProgramaUsuario;
-import com.saberpro.modelo.PruebaProgramaUsuarioPregunta;
-import com.saberpro.modelo.PruebaReal;
-import com.saberpro.modelo.Respuesta;
-import com.saberpro.modelo.RespuestaPruebaProgramaUsuarioPregunta;
-import com.saberpro.modelo.ResultadoReal;
-import com.saberpro.modelo.TipoModulo;
-import com.saberpro.modelo.TipoPregunta;
-import com.saberpro.modelo.TipoPrueba;
-import com.saberpro.modelo.TipoUsuario;
-import com.saberpro.modelo.Usuario;
-import com.saberpro.modelo.control.EstadoPruebaLogic;
-import com.saberpro.modelo.control.FacultadLogic;
-import com.saberpro.modelo.control.GrupoOpcionLogic;
-import com.saberpro.modelo.control.IEstadoPruebaLogic;
-import com.saberpro.modelo.control.IFacultadLogic;
-import com.saberpro.modelo.control.IGrupoOpcionLogic;
-import com.saberpro.modelo.control.IMatriculaLogic;
-import com.saberpro.modelo.control.IModuloLogic;
-import com.saberpro.modelo.control.IOpcionLogic;
-import com.saberpro.modelo.control.IParametroLogic;
-import com.saberpro.modelo.control.IPermisoLogic;
-import com.saberpro.modelo.control.IPreguntaLogic;
-import com.saberpro.modelo.control.IProgramaLogic;
-import com.saberpro.modelo.control.IProgramaModuloLogic;
-import com.saberpro.modelo.control.IProgramaUsuarioLogic;
-import com.saberpro.modelo.control.IPruebaLogic;
-import com.saberpro.modelo.control.IPruebaModuloLogic;
-import com.saberpro.modelo.control.IPruebaProgramaUsuarioLogic;
-import com.saberpro.modelo.control.IPruebaProgramaUsuarioPreguntaLogic;
-import com.saberpro.modelo.control.IPruebaRealLogic;
-import com.saberpro.modelo.control.IRespuestaLogic;
-import com.saberpro.modelo.control.IRespuestaPruebaProgramaUsuarioPreguntaLogic;
-import com.saberpro.modelo.control.IResultadoRealLogic;
-import com.saberpro.modelo.control.ITipoModuloLogic;
-import com.saberpro.modelo.control.ITipoPreguntaLogic;
-import com.saberpro.modelo.control.ITipoPruebaLogic;
-import com.saberpro.modelo.control.ITipoUsuarioLogic;
-import com.saberpro.modelo.control.IUsuarioLogic;
-import com.saberpro.modelo.control.MatriculaLogic;
-import com.saberpro.modelo.control.ModuloLogic;
-import com.saberpro.modelo.control.OpcionLogic;
-import com.saberpro.modelo.control.ParametroLogic;
-import com.saberpro.modelo.control.PermisoLogic;
-import com.saberpro.modelo.control.PreguntaLogic;
-import com.saberpro.modelo.control.ProgramaLogic;
-import com.saberpro.modelo.control.ProgramaModuloLogic;
-import com.saberpro.modelo.control.ProgramaUsuarioLogic;
-import com.saberpro.modelo.control.PruebaLogic;
-import com.saberpro.modelo.control.PruebaModuloLogic;
-import com.saberpro.modelo.control.PruebaProgramaUsuarioLogic;
-import com.saberpro.modelo.control.PruebaProgramaUsuarioPreguntaLogic;
-import com.saberpro.modelo.control.PruebaRealLogic;
-import com.saberpro.modelo.control.RespuestaLogic;
-import com.saberpro.modelo.control.RespuestaPruebaProgramaUsuarioPreguntaLogic;
-import com.saberpro.modelo.control.ResultadoRealLogic;
-import com.saberpro.modelo.control.TipoModuloLogic;
-import com.saberpro.modelo.control.TipoPreguntaLogic;
-import com.saberpro.modelo.control.TipoPruebaLogic;
-import com.saberpro.modelo.control.TipoUsuarioLogic;
-import com.saberpro.modelo.control.UsuarioLogic;
-import com.saberpro.modelo.dto.EstadoPruebaDTO;
-import com.saberpro.modelo.dto.FacultadDTO;
-import com.saberpro.modelo.dto.GrupoOpcionDTO;
-import com.saberpro.modelo.dto.MatriculaDTO;
-import com.saberpro.modelo.dto.ModuloDTO;
-import com.saberpro.modelo.dto.OpcionDTO;
-import com.saberpro.modelo.dto.ParametroDTO;
-import com.saberpro.modelo.dto.PermisoDTO;
-import com.saberpro.modelo.dto.PreguntaDTO;
-import com.saberpro.modelo.dto.ProgramaDTO;
-import com.saberpro.modelo.dto.ProgramaModuloDTO;
-import com.saberpro.modelo.dto.ProgramaUsuarioDTO;
-import com.saberpro.modelo.dto.PruebaDTO;
-import com.saberpro.modelo.dto.PruebaModuloDTO;
-import com.saberpro.modelo.dto.PruebaProgramaUsuarioDTO;
-import com.saberpro.modelo.dto.PruebaProgramaUsuarioPreguntaDTO;
-import com.saberpro.modelo.dto.PruebaRealDTO;
-import com.saberpro.modelo.dto.RespuestaDTO;
-import com.saberpro.modelo.dto.RespuestaPruebaProgramaUsuarioPreguntaDTO;
-import com.saberpro.modelo.dto.ResultadoRealDTO;
-import com.saberpro.modelo.dto.TipoModuloDTO;
-import com.saberpro.modelo.dto.TipoPreguntaDTO;
-import com.saberpro.modelo.dto.TipoPruebaDTO;
-import com.saberpro.modelo.dto.TipoUsuarioDTO;
-import com.saberpro.modelo.dto.UsuarioDTO;
+import com.saberpro.modelo.*;
+import com.saberpro.modelo.control.*;
+import com.saberpro.modelo.dto.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -691,6 +594,30 @@ public interface IBusinessDelegatorView {
     public List<PruebaDTO> getDataPrueba() throws Exception;
 
     public void validatePrueba(Prueba prueba) throws Exception;
+
+    public List<Imagen> getImagen() throws Exception;
+
+    public void saveImagen(Imagen entity) throws Exception;
+
+    public void deleteImagen(Imagen entity) throws Exception;
+
+    public void updateImagen(Imagen entity) throws Exception;
+
+    public Imagen getImagen(Long idImagen) throws Exception;
+
+    public List<Imagen> findByCriteriaInImagen(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Imagen> findPageImagen(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberImagen() throws Exception;
+
+    public List<ImagenDTO> getDataImagen() throws Exception;
+
+    public void validateImagen(Imagen imagen) throws Exception;
 
     public List<Opcion> getOpcion() throws Exception;
 

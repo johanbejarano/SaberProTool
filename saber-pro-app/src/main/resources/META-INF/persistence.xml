@@ -24,6 +24,7 @@
                                 <class>com.saberpro.modelo.Permiso</class>
                                 <class>com.saberpro.modelo.GrupoOpcion</class>
                                 <class>com.saberpro.modelo.Prueba</class>
+                                <class>com.demo.modelo.Imagen</class>
                                 <class>com.saberpro.modelo.Opcion</class>
                                 <class>com.saberpro.modelo.TipoModulo</class>
                                 <class>com.saberpro.modelo.Programa</class>

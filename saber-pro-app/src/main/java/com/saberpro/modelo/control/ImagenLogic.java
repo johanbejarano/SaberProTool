@@ -2,12 +2,12 @@ package com.saberpro.modelo.control;
 
 import com.saberpro.dataaccess.dao.*;
 
-import com.saberpro.dto.mapper.IPreguntaMapper;
+import com.saberpro.dto.mapper.IImagenMapper;
 
 import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
-import com.saberpro.modelo.dto.PreguntaDTO;
+import com.saberpro.modelo.dto.ImagenDTO;
 
 import com.saberpro.utilities.Utilities;
 
@@ -40,64 +40,36 @@ import javax.validation.Validator;
 *
 */
 @Scope("singleton")
-@Service("PreguntaLogic")
-public class PreguntaLogic implements IPreguntaLogic {
-    private static final Logger log = LoggerFactory.getLogger(PreguntaLogic.class);
+@Service("ImagenLogic")
+public class ImagenLogic implements IImagenLogic {
+    private static final Logger log = LoggerFactory.getLogger(ImagenLogic.class);
 
     /**
-     * DAO injected by Spring that manages Pregunta entities
+     * DAO injected by Spring that manages Imagen entities
      *
      */
     @Autowired
-    private IPreguntaDAO preguntaDAO;
+    private IImagenDAO imagenDAO;
     @Autowired
-    private IPreguntaMapper preguntaMapper;
+    private IImagenMapper imagenMapper;
     @Autowired
     private Validator validator;
 
     /**
-    * DAO injected by Spring that manages Imagen entities
+    * Logic injected by Spring that manages Pregunta entities
     *
     */
     @Autowired
-    private IImagenDAO imagenDAO;
+    IPreguntaLogic logicPregunta1;
 
-    /**
-    * DAO injected by Spring that manages PruebaProgramaUsuarioPregunta entities
-    *
-    */
-    @Autowired
-    private IPruebaProgramaUsuarioPreguntaDAO pruebaProgramaUsuarioPreguntaDAO;
-
-    /**
-    * DAO injected by Spring that manages Respuesta entities
-    *
-    */
-    @Autowired
-    private IRespuestaDAO respuestaDAO;
-
-    /**
-    * Logic injected by Spring that manages Modulo entities
-    *
-    */
-    @Autowired
-    IModuloLogic logicModulo1;
-
-    /**
-    * Logic injected by Spring that manages TipoPregunta entities
-    *
-    */
-    @Autowired
-    ITipoPreguntaLogic logicTipoPregunta2;
-
-    public void validatePregunta(Pregunta pregunta) throws Exception {
+    public void validateImagen(Imagen imagen) throws Exception {
         try {
-            Set<ConstraintViolation<Pregunta>> constraintViolations = validator.validate(pregunta);
+            Set<ConstraintViolation<Imagen>> constraintViolations = validator.validate(imagen);
 
             if (constraintViolations.size() > 0) {
                 StringBuilder strMessage = new StringBuilder();
 
-                for (ConstraintViolation<Pregunta> constraintViolation : constraintViolations) {
+                for (ConstraintViolation<Imagen> constraintViolation : constraintViolations) {
                     strMessage.append(constraintViolation.getPropertyPath()
                                                          .toString());
                     strMessage.append(" - ");
@@ -113,17 +85,17 @@ public class PreguntaLogic implements IPreguntaLogic {
     }
 
     @Transactional(readOnly = true)
-    public List<Pregunta> getPregunta() throws Exception {
-        log.debug("finding all Pregunta instances");
+    public List<Imagen> getImagen() throws Exception {
+        log.debug("finding all Imagen instances");
 
-        List<Pregunta> list = new ArrayList<Pregunta>();
+        List<Imagen> list = new ArrayList<Imagen>();
 
         try {
-            list = preguntaDAO.findAll();
+            list = imagenDAO.findAll();
         } catch (Exception e) {
-            log.error("finding all Pregunta failed", e);
+            log.error("finding all Imagen failed", e);
             throw new ZMessManager().new GettingException(ZMessManager.ALL +
-                "Pregunta");
+                "Imagen");
         } finally {
         }
 
@@ -131,127 +103,101 @@ public class PreguntaLogic implements IPreguntaLogic {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void savePregunta(Pregunta entity) throws Exception {
-        log.debug("saving Pregunta instance");
+    public void saveImagen(Imagen entity) throws Exception {
+        log.debug("saving Imagen instance");
 
         try {
             if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("Pregunta");
+                throw new ZMessManager().new NullEntityExcepcion("Imagen");
             }
 
-            validatePregunta(entity);
+            validateImagen(entity);
 
-            if (getPregunta(entity.getIdPregunta()) != null) {
+            if (getImagen(entity.getIdImagen()) != null) {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
-            preguntaDAO.save(entity);
-            log.debug("save Pregunta successful");
+            imagenDAO.save(entity);
+            log.debug("save Imagen successful");
         } catch (Exception e) {
-            log.error("save Pregunta failed", e);
+            log.error("save Imagen failed", e);
             throw e;
         } finally {
         }
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deletePregunta(Pregunta entity) throws Exception {
-        log.debug("deleting Pregunta instance");
+    public void deleteImagen(Imagen entity) throws Exception {
+        log.debug("deleting Imagen instance");
 
         if (entity == null) {
-            throw new ZMessManager().new NullEntityExcepcion("Pregunta");
+            throw new ZMessManager().new NullEntityExcepcion("Imagen");
         }
 
-        if (entity.getIdPregunta() == null) {
-            throw new ZMessManager().new EmptyFieldException("idPregunta");
+        if (entity.getIdImagen() == null) {
+            throw new ZMessManager().new EmptyFieldException("idImagen");
         }
-
-        List<Imagen> imagens = null;
-        List<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPreguntas = null;
-        List<Respuesta> respuestas = null;
 
         try {
-            imagens = imagenDAO.findByProperty("pregunta.idPregunta",
-                    entity.getIdPregunta());
-
-            if (Utilities.validationsList(imagens) == true) {
-                throw new ZMessManager().new DeletingException("imagens");
-            }
-
-            pruebaProgramaUsuarioPreguntas = pruebaProgramaUsuarioPreguntaDAO.findByProperty("pregunta.idPregunta",
-                    entity.getIdPregunta());
-
-            if (Utilities.validationsList(pruebaProgramaUsuarioPreguntas) == true) {
-                throw new ZMessManager().new DeletingException(
-                    "pruebaProgramaUsuarioPreguntas");
-            }
-
-            respuestas = respuestaDAO.findByProperty("pregunta.idPregunta",
-                    entity.getIdPregunta());
-
-            if (Utilities.validationsList(respuestas) == true) {
-                throw new ZMessManager().new DeletingException("respuestas");
-            }
-
-            preguntaDAO.deleteById(entity.getIdPregunta());
-            log.debug("delete Pregunta successful");
+            imagenDAO.deleteById(entity.getIdImagen());
+            log.debug("delete Imagen successful");
         } catch (Exception e) {
-            log.error("delete Pregunta failed", e);
+            log.error("delete Imagen failed", e);
             throw e;
         } finally {
         }
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void updatePregunta(Pregunta entity) throws Exception {
-        log.debug("updating Pregunta instance");
+    public void updateImagen(Imagen entity) throws Exception {
+        log.debug("updating Imagen instance");
 
         try {
             if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("Pregunta");
+                throw new ZMessManager().new NullEntityExcepcion("Imagen");
             }
 
-            validatePregunta(entity);
+            validateImagen(entity);
 
-            preguntaDAO.update(entity);
+            imagenDAO.update(entity);
 
-            log.debug("update Pregunta successful");
+            log.debug("update Imagen successful");
         } catch (Exception e) {
-            log.error("update Pregunta failed", e);
+            log.error("update Imagen failed", e);
             throw e;
         } finally {
         }
     }
 
     @Transactional(readOnly = true)
-    public List<PreguntaDTO> getDataPregunta() throws Exception {
+    public List<ImagenDTO> getDataImagen() throws Exception {
         try {
-            List<Pregunta> pregunta = preguntaDAO.findAll();
+            List<Imagen> imagen = imagenDAO.findAll();
 
-            List<PreguntaDTO> preguntaDTO = new ArrayList<PreguntaDTO>();
+            List<ImagenDTO> imagenDTO = new ArrayList<ImagenDTO>();
 
-            for (Pregunta preguntaTmp : pregunta) {
-                PreguntaDTO preguntaDTO2 = preguntaMapper.preguntaToPreguntaDTO(preguntaTmp);
-                preguntaDTO.add(preguntaDTO2);
+            for (Imagen imagenTmp : imagen) {
+                ImagenDTO imagenDTO2 = imagenMapper.imagenToImagenDTO(imagenTmp);
+                imagenDTO.add(imagenDTO2);
             }
 
-            return preguntaDTO;
+            return imagenDTO;
         } catch (Exception e) {
             throw e;
         }
     }
 
     @Transactional(readOnly = true)
-    public Pregunta getPregunta(Long idPregunta) throws Exception {
-        log.debug("getting Pregunta instance");
+    public Imagen getImagen(Long idImagen) throws Exception {
+        log.debug("getting Imagen instance");
 
-        Pregunta entity = null;
+        Imagen entity = null;
 
         try {
-            entity = preguntaDAO.findById(idPregunta);
+            entity = imagenDAO.findById(idImagen);
         } catch (Exception e) {
-            log.error("get Pregunta failed", e);
-            throw new ZMessManager().new FindingException("Pregunta");
+            log.error("get Imagen failed", e);
+            throw new ZMessManager().new FindingException("Imagen");
         } finally {
         }
 
@@ -259,16 +205,16 @@ public class PreguntaLogic implements IPreguntaLogic {
     }
 
     @Transactional(readOnly = true)
-    public List<Pregunta> findPagePregunta(String sortColumnName,
+    public List<Imagen> findPageImagen(String sortColumnName,
         boolean sortAscending, int startRow, int maxResults)
         throws Exception {
-        List<Pregunta> entity = null;
+        List<Imagen> entity = null;
 
         try {
-            entity = preguntaDAO.findPage(sortColumnName, sortAscending,
+            entity = imagenDAO.findPage(sortColumnName, sortAscending,
                     startRow, maxResults);
         } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Pregunta Count");
+            throw new ZMessManager().new FindingException("Imagen Count");
         } finally {
         }
 
@@ -276,13 +222,13 @@ public class PreguntaLogic implements IPreguntaLogic {
     }
 
     @Transactional(readOnly = true)
-    public Long findTotalNumberPregunta() throws Exception {
+    public Long findTotalNumberImagen() throws Exception {
         Long entity = null;
 
         try {
-            entity = preguntaDAO.count();
+            entity = imagenDAO.count();
         } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Pregunta Count");
+            throw new ZMessManager().new FindingException("Imagen Count");
         } finally {
         }
 
@@ -347,10 +293,10 @@ public class PreguntaLogic implements IPreguntaLogic {
                             * @throws Exception
                             */
     @Transactional(readOnly = true)
-    public List<Pregunta> findByCriteria(Object[] variables,
+    public List<Imagen> findByCriteria(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)
         throws Exception {
-        List<Pregunta> list = new ArrayList<Pregunta>();
+        List<Imagen> list = new ArrayList<Imagen>();
         String where = new String();
         String tempWhere = new String();
 
@@ -447,7 +393,7 @@ public class PreguntaLogic implements IPreguntaLogic {
         }
 
         try {
-            list = preguntaDAO.findByCriteria(where);
+            list = imagenDAO.findByCriteria(where);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         } finally {

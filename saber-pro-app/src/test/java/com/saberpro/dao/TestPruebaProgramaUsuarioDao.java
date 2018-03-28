@@ -46,7 +46,7 @@ public class TestPruebaProgramaUsuarioDao {
 
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testCreate() throws DaoException {
+	public void testaCreate() throws DaoException {
 
 		assertNotNull("El pruebaDao es null",pruebaDao);
 		assertNotNull("El estadoPruebaDao; es null",estadoPruebaDao);
@@ -74,7 +74,7 @@ public class TestPruebaProgramaUsuarioDao {
 
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testUpdate() throws DaoException {
+	public void testbUpdate() throws DaoException {
 
 		assertNotNull("El pruebaDao es null",pruebaDao);
 		assertNotNull("El estadoPruebaDao; es null",estadoPruebaDao);
@@ -95,7 +95,7 @@ public class TestPruebaProgramaUsuarioDao {
 
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void testDelete() throws DaoException {
+	public void testcDelete() throws DaoException {
 
 		assertNotNull("El pruebaDao es null",pruebaDao);
 		assertNotNull("El estadoPruebaDao; es null",estadoPruebaDao);
@@ -115,7 +115,7 @@ public class TestPruebaProgramaUsuarioDao {
 
 	@Test
 	@Transactional(readOnly = true)
-	public void testConsulta() {
+	public void testdConsulta() {
 
 		assertNotNull("El pruebaDao es null",pruebaDao);
 		assertNotNull("El estadoPruebaDao; es null",estadoPruebaDao);

@@ -37,10 +37,10 @@ public class Pregunta implements java.io.Serializable {
     private Date fechaCreacion;
     private Date fechaModificacion;
     private String retroalimentacion;
-    private String rutaImagen;
     @NotNull(message="usucreador no valido")
     private Long usuCreador;
     private Long usuModificador;
+    private Set<Imagen> imagens = new HashSet<Imagen>(0);
     private Set<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPreguntas = new HashSet<PruebaProgramaUsuarioPregunta>(0);
     private Set<Respuesta> respuestas = new HashSet<Respuesta>(0);
 
@@ -48,9 +48,10 @@ public class Pregunta implements java.io.Serializable {
     }
 
     public Pregunta(Long idPregunta, String activo, String descripcionPregunta,
-        Date fechaCreacion, Date fechaModificacion, Modulo modulo,
+        Date fechaCreacion, Date fechaModificacion, Set<Imagen> imagens,
+        Modulo modulo,
         Set<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPreguntas,
-        Set<Respuesta> respuestas, String retroalimentacion, String rutaImagen,
+        Set<Respuesta> respuestas, String retroalimentacion,
         TipoPregunta tipoPregunta, Long usuCreador, Long usuModificador) {
         this.idPregunta = idPregunta;
         this.modulo = modulo;
@@ -60,9 +61,9 @@ public class Pregunta implements java.io.Serializable {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.retroalimentacion = retroalimentacion;
-        this.rutaImagen = rutaImagen;
         this.usuCreador = usuCreador;
         this.usuModificador = usuModificador;
+        this.imagens = imagens;
         this.pruebaProgramaUsuarioPreguntas = pruebaProgramaUsuarioPreguntas;
         this.respuestas = respuestas;
     }
@@ -143,15 +144,6 @@ public class Pregunta implements java.io.Serializable {
         this.retroalimentacion = retroalimentacion;
     }
 
-    @Column(name = "ruta_imagen")
-    public String getRutaImagen() {
-        return this.rutaImagen;
-    }
-
-    public void setRutaImagen(String rutaImagen) {
-        this.rutaImagen = rutaImagen;
-    }
-
     @Column(name = "usu_creador", nullable = false)
     public Long getUsuCreador() {
         return this.usuCreador;
@@ -168,6 +160,15 @@ public class Pregunta implements java.io.Serializable {
 
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pregunta")
+    public Set<Imagen> getImagens() {
+        return this.imagens;
+    }
+
+    public void setImagens(Set<Imagen> imagens) {
+        this.imagens = imagens;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pregunta")
@@ -188,14 +189,4 @@ public class Pregunta implements java.io.Serializable {
     public void setRespuestas(Set<Respuesta> respuestas) {
         this.respuestas = respuestas;
     }
-
-	@Override
-	public String toString() {
-		return "Pregunta [idPregunta=" + idPregunta + ", activo=" + activo + ", descripcionPregunta="
-				+ descripcionPregunta + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion
-				+ ", retroalimentacion=" + retroalimentacion + ", rutaImagen=" + rutaImagen + ", usuCreador="
-				+ usuCreador + ", usuModificador=" + usuModificador + "]";
-	}
-    
-    
 }

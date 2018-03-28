@@ -1,4 +1,4 @@
-CREATE TABLE Estado_Prueba (
+﻿CREATE TABLE Estado_Prueba (
   id_estado_prueba   BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
   descripcion        varchar(1200), 
@@ -29,6 +29,18 @@ CREATE TABLE Grupo_Opcion (
   usu_modificador    int8, 
   activo             char(1) NOT NULL CHECK(activo in ('S','N')), 
   PRIMARY KEY (id_grupo_opcion));
+CREATE TABLE Imagen (
+  id_imagen          BIGSERIAL NOT NULL, 
+  nombre             varchar(300) NOT NULL, 
+  descripcion        varchar(1200), 
+  ruta               varchar(3000), 
+  fecha_creacion     timestamp NOT NULL, 
+  fecha_modificacion timestamp, 
+  usu_creador        int8 NOT NULL, 
+  usu_modificador    int8, 
+  activo             char(1) NOT NULL CHECK(activo in ('S','N')), 
+  id_pregunta        int8 NOT NULL, 
+  PRIMARY KEY (id_imagen));
 CREATE TABLE Matricula (
   id_matricula       BIGSERIAL NOT NULL, 
   fecha_creacion     timestamp NOT NULL, 
@@ -37,7 +49,7 @@ CREATE TABLE Matricula (
   usu_modificador    int8, 
   activo             char(1) NOT NULL, 
   id_usuario         int8 NOT NULL, 
-  id_prueba_real    int8 NOT NULL, 
+  id_prueba_real     int8 NOT NULL, 
   PRIMARY KEY (id_matricula));
 CREATE TABLE Modulo (
   id_modulo          BIGSERIAL NOT NULL, 
@@ -88,7 +100,6 @@ CREATE TABLE Permiso (
 CREATE TABLE Pregunta (
   id_pregunta          BIGSERIAL NOT NULL, 
   descripcion_pregunta varchar(3000) NOT NULL, 
-  ruta_imagen          varchar(3000), 
   retroalimentacion    varchar(3000), 
   fecha_creacion       timestamp NOT NULL, 
   fecha_modificacion   timestamp, 
@@ -276,10 +287,12 @@ CREATE TABLE Usuario (
   PRIMARY KEY (id_usuario));
 CREATE INDEX Facultad_id_facultad 
   ON Facultad (id_facultad);
+CREATE INDEX Imagen_id_pregunta 
+  ON Imagen (id_pregunta);
 CREATE INDEX Matricula_id_usuario 
   ON Matricula (id_usuario);
-CREATE INDEX Matricula_lid_prueba_real 
-  ON Matricula (lid_prueba_real);
+CREATE INDEX Matricula_id_prueba_real 
+  ON Matricula (id_prueba_real);
 CREATE INDEX Modulo_id_tipo_modulo 
   ON Modulo (id_tipo_modulo);
 CREATE INDEX Opcion_id_grupo_opcion 
@@ -330,6 +343,7 @@ CREATE INDEX Resultado_Real_id_modulo
   ON Resultado_Real (id_modulo);
 CREATE INDEX Usuario_id_tipo_usuario 
   ON Usuario (id_tipo_usuario);
+ALTER TABLE Imagen ADD CONSTRAINT FKImagen211656 FOREIGN KEY (id_pregunta) REFERENCES Pregunta (id_pregunta);
 ALTER TABLE Prueba_Programa_Usuario ADD CONSTRAINT FKPrueba_Pro963603 FOREIGN KEY (id_estado_prueba) REFERENCES Estado_Prueba (id_estado_prueba);
 ALTER TABLE Respuesta_Prueba_Programa_Usuario_Pregunta ADD CONSTRAINT FKRespuesta_860917 FOREIGN KEY (id_prueba_programa_usuario_pregunta) REFERENCES Prueba_Programa_Usuario_Pregunta (id_prueba_programa_usuario_pregunta);
 ALTER TABLE Respuesta_Prueba_Programa_Usuario_Pregunta ADD CONSTRAINT FKRespuesta_550839 FOREIGN KEY (id_respuesta) REFERENCES Respuesta (id_respuesta);
@@ -345,7 +359,7 @@ ALTER TABLE Pregunta ADD CONSTRAINT FKPregunta566309 FOREIGN KEY (id_tipo_pregun
 ALTER TABLE Pregunta ADD CONSTRAINT FKPregunta770318 FOREIGN KEY (id_modulo) REFERENCES Modulo (id_modulo);
 ALTER TABLE Resultado_Real ADD CONSTRAINT FKResultado_660041 FOREIGN KEY (id_modulo) REFERENCES Modulo (id_modulo);
 ALTER TABLE Resultado_Real ADD CONSTRAINT FKResultado_42940 FOREIGN KEY (id_matricula) REFERENCES Matricula (id_matricula);
-ALTER TABLE Matricula ADD CONSTRAINT FKMatricula57382 FOREIGN KEY (lid_prueba_real) REFERENCES Prueba_Real (id_prueba_real);
+ALTER TABLE Matricula ADD CONSTRAINT FKMatricula219651 FOREIGN KEY (id_prueba_real) REFERENCES Prueba_Real (id_prueba_real);
 ALTER TABLE Matricula ADD CONSTRAINT FKMatricula639937 FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario);
 ALTER TABLE Opcion ADD CONSTRAINT FKOpcion285869 FOREIGN KEY (id_grupo_opcion) REFERENCES Grupo_Opcion (id_grupo_opcion);
 ALTER TABLE Permiso ADD CONSTRAINT FKPermiso521186 FOREIGN KEY (id_grupo_opcion) REFERENCES Grupo_Opcion (id_grupo_opcion);

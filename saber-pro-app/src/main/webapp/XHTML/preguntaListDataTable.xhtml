@@ -55,13 +55,6 @@
 										 <h:outputText value="#{pregunta.retroalimentacion}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{pregunta.rutaImagen}" sortBy="#{pregunta.rutaImagen}" >
-										 <f:facet name="header">
-										<h:outputText value="RutaImagen"/>
-										</f:facet>
-										 <h:outputText value="#{pregunta.rutaImagen}"/>
-										</p:column>   
-			                    									
 										<p:column filterBy="#{pregunta.usuCreador}" sortBy="#{pregunta.usuCreador}" >
 										 <f:facet name="header">
 										<h:outputText value="UsuCreador"/>
@@ -130,8 +123,6 @@
 									<p:inputText id="txtDescripcionPregunta" disabled="true" binding="#{preguntaView.txtDescripcionPregunta}"/>
 																		<h:outputText id="msgRetroalimentacion" value=" Retroalimentacion"/>
 									<p:inputText id="txtRetroalimentacion" disabled="true" binding="#{preguntaView.txtRetroalimentacion}"/>
-																		<h:outputText id="msgRutaImagen" value=" RutaImagen"/>
-									<p:inputText id="txtRutaImagen" disabled="true" binding="#{preguntaView.txtRutaImagen}"/>
 																		<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
 									<p:inputText id="txtUsuCreador" disabled="true" binding="#{preguntaView.txtUsuCreador}"/>
 																		<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
