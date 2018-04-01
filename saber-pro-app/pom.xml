@@ -137,7 +137,11 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-mail</artifactId>
+    		<version>1.4.3.RELEASE</version>
+		</dependency>
 		<!-- Spring Framework -->
 
 		<!-- Hibernate Framework -->
