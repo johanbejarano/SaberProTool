@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Scope;
-
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -1602,4 +1602,14 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         throws Exception {
         programaUsuarioLogic.validateProgramaUsuario(programaUsuario);
     }
+
+	@Override
+	public Usuario findByCodigoUsuario(long codigo) throws Exception {		
+		return usuarioLogic.findByCodigo(codigo);
+	}
+
+	@Override
+	public User loadByCodigoUsuario(long codigo) throws Exception {
+		return usuarioLogic.loadByCodigo(codigo);
+	}
 }

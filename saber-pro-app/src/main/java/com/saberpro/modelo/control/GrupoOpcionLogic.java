@@ -1,5 +1,6 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.dataaccess.api.DaoException;
 import com.saberpro.dataaccess.dao.*;
 
 import com.saberpro.dto.mapper.IGrupoOpcionMapper;
@@ -427,4 +428,9 @@ public class GrupoOpcionLogic implements IGrupoOpcionLogic {
 
         return list;
     }
+
+	@Override
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario) throws DaoException {
+		return grupoOpcionDAO.findByTipoUsuario(tipoUsuario);
+	}
 }

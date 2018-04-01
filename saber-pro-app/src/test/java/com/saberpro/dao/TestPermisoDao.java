@@ -57,8 +57,8 @@ public class TestPermisoDao {
 		permiso = new Permiso();
 		permiso.setActivo("S");
 		permiso.setFechaCreacion(new Date());
-		permiso.setGrupoOpcion(grupoOpcionDao.findById(1L));
-		permiso.setTipoUsuario(tipoUsuarioDao.findById(3L));
+		permiso.setGrupoOpcion(grupoOpcionDao.findById(2L));
+		permiso.setTipoUsuario(tipoUsuarioDao.findById(5L));
 		permiso.setUsuCreador(0L);
 		
 		permisoDao.save(permiso);

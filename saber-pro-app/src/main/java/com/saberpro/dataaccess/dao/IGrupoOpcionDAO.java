@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.Dao;
-
+import com.saberpro.dataaccess.api.DaoException;
 import com.saberpro.modelo.GrupoOpcion;
 
 import java.math.BigDecimal;
@@ -16,4 +16,6 @@ import java.util.Set;
 *
 */
 public interface IGrupoOpcionDAO extends Dao<GrupoOpcion, Long> {
+	
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario)throws DaoException;
 }

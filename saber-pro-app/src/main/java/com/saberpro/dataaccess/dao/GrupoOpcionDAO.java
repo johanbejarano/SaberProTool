@@ -1,5 +1,6 @@
 package com.saberpro.dataaccess.dao;
 
+import com.saberpro.dataaccess.api.DaoException;
 import com.saberpro.dataaccess.api.JpaDaoImpl;
 
 import com.saberpro.modelo.GrupoOpcion;
@@ -11,6 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,4 +41,9 @@ public class GrupoOpcionDAO extends JpaDaoImpl<GrupoOpcion, Long>
         ApplicationContext ctx) {
         return (IGrupoOpcionDAO) ctx.getBean("GrupoOpcionDAO");
     }
+
+	@Override
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario) throws DaoException {
+		return entityManager.createQuery("select gru from GrupoOpcion gru,Permiso per where per.grupoOpcion.idGrupoOpcion=gru.idGrupoOpcion and per.tipoUsuario.idTipoUsuario=:tipoUsuario").setParameter("tipoUsuario",tipoUsuario).getResultList();
+	}
 }

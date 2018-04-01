@@ -7,7 +7,7 @@ import com.saberpro.modelo.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Scope;
-
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -722,4 +722,8 @@ public interface IBusinessDelegatorView {
 
     public void validateProgramaUsuario(ProgramaUsuario programaUsuario)
         throws Exception;
+    
+    public Usuario findByCodigoUsuario(long codigo) throws Exception;
+    
+    public User loadByCodigoUsuario(long codigo) throws Exception;
 }

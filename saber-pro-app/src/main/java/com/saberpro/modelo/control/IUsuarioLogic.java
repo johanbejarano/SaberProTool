@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.security.core.userdetails.User;
+
 
 /**
 * @author Zathura Code Generator http://zathuracode.org/
@@ -55,4 +57,10 @@ public interface IUsuarioLogic {
     public List<UsuarioDTO> getDataUsuario() throws Exception;
 
     public void validateUsuario(Usuario usuario) throws Exception;
+    
+    public Usuario findByCodigo(long codigo) throws Exception;
+    
+    public User loadByCodigo(long codigo) throws Exception;
+    
+    
 }

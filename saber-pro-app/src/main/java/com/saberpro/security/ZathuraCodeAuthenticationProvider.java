@@ -1,55 +1,65 @@
 package com.saberpro.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 /**
-* @author Zathura Code Generator http://code.google.com/p/zathura/
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://code.google.com/p/zathura/
+ *         www.zathuracode.org
+ *
+ */
 @Scope("singleton")
 @Component("zathuraCodeAuthenticationProvider")
 public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider {
-    /**
-     * Security Implementation
-     */
-    @Override
-    public Authentication authenticate(Authentication authentication)
-        throws AuthenticationException {
-        String name = authentication.getName();
-        String password = authentication.getCredentials().toString();
+	/**
+	 * Security Implementation
+	 */
+	@Autowired
+	IBusinessDelegatorView businessDelegatorView;
 
-        if (name.equals("admin") && password.equals("admin")) {
-            final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-            final UserDetails principal = new User(name, password, grantedAuths);
-            final Authentication auth = new UsernamePasswordAuthenticationToken(principal,
-                    password, grantedAuths);
+	@Override
+	public Authentication authenticate(Authentication authentication) {
 
-            return auth;
-        } else {
-            return null;
-        }
-    }
+		long codigo = Long.parseLong(authentication.getName());
+		String password = authentication.getCredentials().toString();
 
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
+		try {
+			User user = businessDelegatorView.loadByCodigoUsuario(codigo);
+			if (user != null) {
+
+				if (passwordEncoder.matches(password, user.getPassword())) {
+					return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
+							user.getAuthorities());
+
+				} else {
+					throw new BadCredentialsException("Error en login");
+				}
+			} else {
+				throw new BadCredentialsException("Error en login");
+			}
+		} catch (Exception e) {			
+			throw new BadCredentialsException("Error en login " + e.getMessage());
+		}
+
+	}
+
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
+	}
 }

@@ -60,7 +60,7 @@ public class TestUsuarioDao {
 		usuario.setNombre("Jhony");
 		usuario.setUsuCreador(0L);
 		usuario.setTipoUsuario(tipoUsuarioDao.findById(1L));
-		usuario.setPassword("jhony12345");
+		usuario.setPassword("12345");
 		usuario.setIdentificacion(16597187L);
 		
 		usuarioDao.save(usuario);
@@ -123,6 +123,21 @@ public class TestUsuarioDao {
 		for (Usuario usuario : list) {
 			log.info(usuario.toString());
 		}
+		
+
+	}
+	
+	@Test	
+	@Transactional(readOnly = true)
+	public void testeConsultaCodigo() {
+
+		assertNotNull("El tipousuarioDao es null",tipoUsuarioDao);
+		assertNotNull("El usuarioDao es null",usuarioDao);
+		
+		Usuario usuario = usuarioDao.findByCodigo(9999999L);
+		
+		log.info(usuario.toString());
+		
 		
 
 	}

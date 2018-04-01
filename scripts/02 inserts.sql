@@ -190,12 +190,12 @@ ello la calidad de la educación prestada.',100,now(),0,'S',4);
 /* Usuario */
 
 ALTER SEQUENCE usuario_id_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
-insert into usuario(id_usuario,nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values(0,'ADMIN','','M',9999999,9999999999,9999999999,'admin@gmail.com','12345',now(),0,'S',5);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148248,1133567234,3125466543,'jhonypk24@gmail.com','12345',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','LOPEZ SERNA','M',1156248,1154567234,3105466543,'camilopk24@gmail.com','12345',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ANDRES','SALAZAR ZAPATA','M',1160248,1160567234,3185466543,'andrespk24@gmail.com','12345',now(),0,'S',2);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('BEATRIZ','GOMEZ SALAZAR','M',1178248,1183567234,3025466543,'beatrizpk24@gmail.com','12345',now(),0,'S',3);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO JULIAN','GOMEZ CARVAGAL','M',1198248,1193567234,3125766543,'mariok24@gmail.com','12345',now(),0,'S',4);
+insert into usuario(id_usuario,nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values(0,'ADMIN','','M',9999999,9999999999,9999999999,'admin@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',5);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148248,1133567234,3125466543,'jhonypk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','LOPEZ SERNA','M',1156248,1154567234,3105466543,'camilopk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ANDRES','SALAZAR ZAPATA','M',1160248,1160567234,3185466543,'andrespk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('BEATRIZ','GOMEZ SALAZAR','M',1178248,1183567234,3025466543,'beatrizpk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',3);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO JULIAN','GOMEZ CARVAGAL','M',1198248,1193567234,3125766543,'mariok24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',4);
 
 /* Programa usuario */
 

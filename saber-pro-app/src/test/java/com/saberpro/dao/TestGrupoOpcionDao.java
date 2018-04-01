@@ -110,5 +110,22 @@ public class TestGrupoOpcionDao {
 		
 
 	}
+	
+	@Test	
+	@Transactional(readOnly = true)
+	public void testEConsultaTipoUsuario() throws DaoException {
+
+		assertNotNull("El grupoOpcionDao es null",grupoOpcionDao);	
+		
+		
+		List<GrupoOpcion> list = grupoOpcionDao.findByTipoUsuario(5L);
+		
+		log.info("tamaño "+list.size());
+		for (GrupoOpcion grupoOpcion : list) {
+			log.info(grupoOpcion.toString());
+		}
+		
+
+	}
 
 }

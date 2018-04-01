@@ -1,5 +1,6 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.dataaccess.api.DaoException;
 import com.saberpro.modelo.GrupoOpcion;
 import com.saberpro.modelo.dto.GrupoOpcionDTO;
 
@@ -57,4 +58,6 @@ public interface IGrupoOpcionLogic {
 
     public void validateGrupoOpcion(GrupoOpcion grupoOpcion)
         throws Exception;
+    
+    public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario)throws DaoException;
 }

@@ -17,7 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Scope;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -52,6 +55,8 @@ public class UsuarioLogic implements IUsuarioLogic {
     private IUsuarioDAO usuarioDAO;
     @Autowired
     private IUsuarioMapper usuarioMapper;
+    @Autowired
+    private IGrupoOpcionDAO grupoOpcionDao;
     @Autowired
     private Validator validator;
 
@@ -433,4 +438,43 @@ public class UsuarioLogic implements IUsuarioLogic {
 
         return list;
     }
+
+	@Override
+	public Usuario findByCodigo(long codigo) throws Exception {
+		 log.debug("getting Usuario instance");
+
+	        Usuario entity = null;
+
+	        try {
+	            entity = usuarioDAO.findByCodigo(codigo);
+	        } catch (Exception e) {
+	            log.error("get Usuario failed", e);
+	            throw new ZMessManager().new FindingException("Usuario");
+	        } finally {
+	        }
+
+	        return entity;
+	}
+
+	@Override
+	public User loadByCodigo(long codigo) throws Exception {
+		
+		Usuario usuario = usuarioDAO.findByCodigo(codigo);
+		
+		if(usuario!=null) {
+			List<GrupoOpcion> grupos = grupoOpcionDao.findByTipoUsuario(usuario.getTipoUsuario().getIdTipoUsuario());
+			List<GrantedAuthority> permisos = new ArrayList<>();
+			
+			for (GrupoOpcion grupoOpcion : grupos) {
+				permisos.add(new SimpleGrantedAuthority("ROLE_"+grupoOpcion.getNombre()));
+			}
+			
+			User user = new User(Long.toString(usuario.getCodigo()),usuario.getPassword(),permisos);
+			
+			return user;
+		}
+		else {
+			throw new UsernameNotFoundException("Usuario no encontrado");
+		}
+	}
 }
