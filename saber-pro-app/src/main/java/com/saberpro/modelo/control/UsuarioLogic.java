@@ -8,7 +8,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.UsuarioDTO;
-
+import com.saberpro.utilities.Email;
 import com.saberpro.utilities.Utilities;
 
 import org.slf4j.Logger;
@@ -59,6 +59,8 @@ public class UsuarioLogic implements IUsuarioLogic {
     private IGrupoOpcionDAO grupoOpcionDao;
     @Autowired
     private Validator validator;
+    @Autowired
+    private Email email;
 
     /**
     * DAO injected by Spring that manages Matricula entities
@@ -138,6 +140,9 @@ public class UsuarioLogic implements IUsuarioLogic {
 
             usuarioDAO.save(entity);
             log.debug("save Usuario successful");
+            
+            String message = "Se creo la cuenta correctamente\n\nSu codigo de acesso es: "+entity.getCodigo()+"\nSu contraseña es: "+entity.getPassword()+"\n\nGracias";
+            email.sendSimpleHtml(entity.getCorreo(),"SaberProTool: Creacion de cuenta",message);
         } catch (Exception e) {
             log.error("save Usuario failed", e);
             throw e;

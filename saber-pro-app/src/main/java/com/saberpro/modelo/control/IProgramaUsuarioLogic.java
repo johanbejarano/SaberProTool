@@ -61,4 +61,6 @@ public interface IProgramaUsuarioLogic {
 
     public void validateProgramaUsuario(ProgramaUsuario programaUsuario)
         throws Exception;
+    
+    
 }

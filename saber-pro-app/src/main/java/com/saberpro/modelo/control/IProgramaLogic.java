@@ -55,4 +55,6 @@ public interface IProgramaLogic {
     public List<ProgramaDTO> getDataPrograma() throws Exception;
 
     public void validatePrograma(Programa programa) throws Exception;
+    
+    
 }

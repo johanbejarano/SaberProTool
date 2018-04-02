@@ -61,4 +61,5 @@ public interface IResultadoRealLogic {
 
     public void validateResultadoReal(ResultadoReal resultadoReal)
         throws Exception;
+ 
 }

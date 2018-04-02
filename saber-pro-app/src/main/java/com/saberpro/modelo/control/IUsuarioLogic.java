@@ -63,4 +63,6 @@ public interface IUsuarioLogic {
     public User loadByCodigo(long codigo) throws Exception;
     
     
+    
+    
 }

@@ -57,4 +57,6 @@ public interface ITipoUsuarioLogic {
 
     public void validateTipoUsuario(TipoUsuario tipoUsuario)
         throws Exception;
+    
+    
 }

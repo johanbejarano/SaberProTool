@@ -55,4 +55,6 @@ public interface IPruebaLogic {
     public List<PruebaDTO> getDataPrueba() throws Exception;
 
     public void validatePrueba(Prueba prueba) throws Exception;
+    
+   
 }

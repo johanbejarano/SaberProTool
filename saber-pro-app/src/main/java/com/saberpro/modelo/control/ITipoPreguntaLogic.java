@@ -60,4 +60,6 @@ public interface ITipoPreguntaLogic {
 
     public void validateTipoPregunta(TipoPregunta tipoPregunta)
         throws Exception;
+    
+    
 }

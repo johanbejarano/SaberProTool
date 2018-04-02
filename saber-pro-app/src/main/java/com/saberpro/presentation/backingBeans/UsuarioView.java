@@ -12,12 +12,13 @@ import com.saberpro.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import java.sql.*;
@@ -37,6 +38,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -49,34 +51,29 @@ import javax.faces.event.ActionEvent;
 public class UsuarioView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UsuarioView.class);
-    private InputText txtActivo;
     private InputText txtApellido;
     private InputText txtCelular;
     private InputText txtCodigo;
     private InputText txtCorreo;
     private InputText txtGenero;
     private InputText txtIdentificacion;
-    private InputText txtNombre;
-    private InputText txtPassword;
-    private InputText txtUsuCreador;
-    private InputText txtUsuModificador;
-    private InputText txtIdTipoUsuario_TipoUsuario;
-    private InputText txtIdUsuario;
-    private Calendar txtFechaCreacion;
-    private Calendar txtFechaModificacion;
+    private InputText txtNombre;     
+    private InputText txtIdUsuario;  
+    private SelectOneMenu somTipoUsuario;
     private CommandButton btnSave;
     private CommandButton btnModify;
     private CommandButton btnDelete;
     private CommandButton btnClear;
     private List<UsuarioDTO> data;
+    private List<SelectItem> losTipoUsuarioSelectItem;
     private UsuarioDTO selectedUsuario;
     private Usuario entity;
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
 
-    public UsuarioView() {
-        super();
+    public UsuarioView(){
+        super();        
     }
 
     public String action_new() {
@@ -89,12 +86,7 @@ public class UsuarioView implements Serializable {
 
     public String action_clear() {
         entity = null;
-        selectedUsuario = null;
-
-        if (txtActivo != null) {
-            txtActivo.setValue(null);
-            txtActivo.setDisabled(true);
-        }
+        selectedUsuario = null;       
 
         if (txtApellido != null) {
             txtApellido.setValue(null);
@@ -129,37 +121,7 @@ public class UsuarioView implements Serializable {
         if (txtNombre != null) {
             txtNombre.setValue(null);
             txtNombre.setDisabled(true);
-        }
-
-        if (txtPassword != null) {
-            txtPassword.setValue(null);
-            txtPassword.setDisabled(true);
-        }
-
-        if (txtUsuCreador != null) {
-            txtUsuCreador.setValue(null);
-            txtUsuCreador.setDisabled(true);
-        }
-
-        if (txtUsuModificador != null) {
-            txtUsuModificador.setValue(null);
-            txtUsuModificador.setDisabled(true);
-        }
-
-        if (txtIdTipoUsuario_TipoUsuario != null) {
-            txtIdTipoUsuario_TipoUsuario.setValue(null);
-            txtIdTipoUsuario_TipoUsuario.setDisabled(true);
-        }
-
-        if (txtFechaCreacion != null) {
-            txtFechaCreacion.setValue(null);
-            txtFechaCreacion.setDisabled(true);
-        }
-
-        if (txtFechaModificacion != null) {
-            txtFechaModificacion.setValue(null);
-            txtFechaModificacion.setDisabled(true);
-        }
+        }   
 
         if (txtIdUsuario != null) {
             txtIdUsuario.setValue(null);
@@ -175,23 +137,7 @@ public class UsuarioView implements Serializable {
         }
 
         return "";
-    }
-
-    public void listener_txtFechaCreacion() {
-        Date inputDate = (Date) txtFechaCreacion.getValue();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        FacesContext.getCurrentInstance()
-                    .addMessage("",
-            new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
-    }
-
-    public void listener_txtFechaModificacion() {
-        Date inputDate = (Date) txtFechaModificacion.getValue();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        FacesContext.getCurrentInstance()
-                    .addMessage("",
-            new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
-    }
+    }    
 
     public void listener_txtId() {
         try {
@@ -203,25 +149,16 @@ public class UsuarioView implements Serializable {
         }
 
         if (entity == null) {
-            txtActivo.setDisabled(false);
             txtApellido.setDisabled(false);
             txtCelular.setDisabled(false);
             txtCodigo.setDisabled(false);
             txtCorreo.setDisabled(false);
             txtGenero.setDisabled(false);
             txtIdentificacion.setDisabled(false);
-            txtNombre.setDisabled(false);
-            txtPassword.setDisabled(false);
-            txtUsuCreador.setDisabled(false);
-            txtUsuModificador.setDisabled(false);
-            txtIdTipoUsuario_TipoUsuario.setDisabled(false);
-            txtFechaCreacion.setDisabled(false);
-            txtFechaModificacion.setDisabled(false);
+            txtNombre.setDisabled(false);                      
             txtIdUsuario.setDisabled(false);
             btnSave.setDisabled(false);
         } else {
-            txtActivo.setValue(entity.getActivo());
-            txtActivo.setDisabled(false);
             txtApellido.setValue(entity.getApellido());
             txtApellido.setDisabled(false);
             txtCelular.setValue(entity.getCelular());
@@ -229,26 +166,13 @@ public class UsuarioView implements Serializable {
             txtCodigo.setValue(entity.getCodigo());
             txtCodigo.setDisabled(false);
             txtCorreo.setValue(entity.getCorreo());
-            txtCorreo.setDisabled(false);
-            txtFechaCreacion.setValue(entity.getFechaCreacion());
-            txtFechaCreacion.setDisabled(false);
-            txtFechaModificacion.setValue(entity.getFechaModificacion());
-            txtFechaModificacion.setDisabled(false);
+            txtCorreo.setDisabled(false);            
             txtGenero.setValue(entity.getGenero());
             txtGenero.setDisabled(false);
             txtIdentificacion.setValue(entity.getIdentificacion());
             txtIdentificacion.setDisabled(false);
             txtNombre.setValue(entity.getNombre());
-            txtNombre.setDisabled(false);
-            txtPassword.setValue(entity.getPassword());
-            txtPassword.setDisabled(false);
-            txtUsuCreador.setValue(entity.getUsuCreador());
-            txtUsuCreador.setDisabled(false);
-            txtUsuModificador.setValue(entity.getUsuModificador());
-            txtUsuModificador.setDisabled(false);
-            txtIdTipoUsuario_TipoUsuario.setValue(entity.getTipoUsuario()
-                                                        .getIdTipoUsuario());
-            txtIdTipoUsuario_TipoUsuario.setDisabled(false);
+            txtNombre.setDisabled(false);                    
             txtIdUsuario.setValue(entity.getIdUsuario());
             txtIdUsuario.setDisabled(true);
             btnSave.setDisabled(false);
@@ -262,8 +186,6 @@ public class UsuarioView implements Serializable {
     public String action_edit(ActionEvent evt) {
         selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes()
                                            .get("selectedUsuario"));
-        txtActivo.setValue(selectedUsuario.getActivo());
-        txtActivo.setDisabled(false);
         txtApellido.setValue(selectedUsuario.getApellido());
         txtApellido.setDisabled(false);
         txtCelular.setValue(selectedUsuario.getCelular());
@@ -271,25 +193,13 @@ public class UsuarioView implements Serializable {
         txtCodigo.setValue(selectedUsuario.getCodigo());
         txtCodigo.setDisabled(false);
         txtCorreo.setValue(selectedUsuario.getCorreo());
-        txtCorreo.setDisabled(false);
-        txtFechaCreacion.setValue(selectedUsuario.getFechaCreacion());
-        txtFechaCreacion.setDisabled(false);
-        txtFechaModificacion.setValue(selectedUsuario.getFechaModificacion());
-        txtFechaModificacion.setDisabled(false);
+        txtCorreo.setDisabled(false);       
         txtGenero.setValue(selectedUsuario.getGenero());
         txtGenero.setDisabled(false);
         txtIdentificacion.setValue(selectedUsuario.getIdentificacion());
         txtIdentificacion.setDisabled(false);
         txtNombre.setValue(selectedUsuario.getNombre());
-        txtNombre.setDisabled(false);
-        txtPassword.setValue(selectedUsuario.getPassword());
-        txtPassword.setDisabled(false);
-        txtUsuCreador.setValue(selectedUsuario.getUsuCreador());
-        txtUsuCreador.setDisabled(false);
-        txtUsuModificador.setValue(selectedUsuario.getUsuModificador());
-        txtUsuModificador.setDisabled(false);
-        txtIdTipoUsuario_TipoUsuario.setValue(selectedUsuario.getIdTipoUsuario_TipoUsuario());
-        txtIdTipoUsuario_TipoUsuario.setDisabled(false);
+        txtNombre.setDisabled(false);              
         txtIdUsuario.setValue(selectedUsuario.getIdUsuario());
         txtIdUsuario.setDisabled(true);
         btnSave.setDisabled(false);
@@ -319,26 +229,15 @@ public class UsuarioView implements Serializable {
             entity = new Usuario();
 
             Long idUsuario = FacesUtils.checkLong(txtIdUsuario);
-
-            entity.setActivo(FacesUtils.checkString(txtActivo));
+            
             entity.setApellido(FacesUtils.checkString(txtApellido));
             entity.setCelular(FacesUtils.checkLong(txtCelular));
             entity.setCodigo(FacesUtils.checkLong(txtCodigo));
-            entity.setCorreo(FacesUtils.checkString(txtCorreo));
-            entity.setFechaCreacion(FacesUtils.checkDate(txtFechaCreacion));
-            entity.setFechaModificacion(FacesUtils.checkDate(
-                    txtFechaModificacion));
+            entity.setCorreo(FacesUtils.checkString(txtCorreo));            
             entity.setGenero(FacesUtils.checkString(txtGenero));
             entity.setIdUsuario(idUsuario);
             entity.setIdentificacion(FacesUtils.checkLong(txtIdentificacion));
-            entity.setNombre(FacesUtils.checkString(txtNombre));
-            entity.setPassword(FacesUtils.checkString(txtPassword));
-            entity.setUsuCreador(FacesUtils.checkLong(txtUsuCreador));
-            entity.setUsuModificador(FacesUtils.checkLong(txtUsuModificador));
-            entity.setTipoUsuario((FacesUtils.checkLong(
-                    txtIdTipoUsuario_TipoUsuario) != null)
-                ? businessDelegatorView.getTipoUsuario(FacesUtils.checkLong(
-                        txtIdTipoUsuario_TipoUsuario)) : null);
+            entity.setNombre(FacesUtils.checkString(txtNombre));                      
             businessDelegatorView.saveUsuario(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
             action_clear();
@@ -356,25 +255,14 @@ public class UsuarioView implements Serializable {
                 Long idUsuario = new Long(selectedUsuario.getIdUsuario());
                 entity = businessDelegatorView.getUsuario(idUsuario);
             }
-
-            entity.setActivo(FacesUtils.checkString(txtActivo));
+            
             entity.setApellido(FacesUtils.checkString(txtApellido));
             entity.setCelular(FacesUtils.checkLong(txtCelular));
             entity.setCodigo(FacesUtils.checkLong(txtCodigo));
-            entity.setCorreo(FacesUtils.checkString(txtCorreo));
-            entity.setFechaCreacion(FacesUtils.checkDate(txtFechaCreacion));
-            entity.setFechaModificacion(FacesUtils.checkDate(
-                    txtFechaModificacion));
+            entity.setCorreo(FacesUtils.checkString(txtCorreo));            
             entity.setGenero(FacesUtils.checkString(txtGenero));
             entity.setIdentificacion(FacesUtils.checkLong(txtIdentificacion));
-            entity.setNombre(FacesUtils.checkString(txtNombre));
-            entity.setPassword(FacesUtils.checkString(txtPassword));
-            entity.setUsuCreador(FacesUtils.checkLong(txtUsuCreador));
-            entity.setUsuModificador(FacesUtils.checkLong(txtUsuModificador));
-            entity.setTipoUsuario((FacesUtils.checkLong(
-                    txtIdTipoUsuario_TipoUsuario) != null)
-                ? businessDelegatorView.getTipoUsuario(FacesUtils.checkLong(
-                        txtIdTipoUsuario_TipoUsuario)) : null);
+            entity.setNombre(FacesUtils.checkString(txtNombre));            
             businessDelegatorView.updateUsuario(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
         } catch (Exception e) {
@@ -459,15 +347,7 @@ public class UsuarioView implements Serializable {
         }
 
         return "";
-    }
-
-    public InputText getTxtActivo() {
-        return txtActivo;
-    }
-
-    public void setTxtActivo(InputText txtActivo) {
-        this.txtActivo = txtActivo;
-    }
+    }    
 
     public InputText getTxtApellido() {
         return txtApellido;
@@ -523,56 +403,7 @@ public class UsuarioView implements Serializable {
 
     public void setTxtNombre(InputText txtNombre) {
         this.txtNombre = txtNombre;
-    }
-
-    public InputText getTxtPassword() {
-        return txtPassword;
-    }
-
-    public void setTxtPassword(InputText txtPassword) {
-        this.txtPassword = txtPassword;
-    }
-
-    public InputText getTxtUsuCreador() {
-        return txtUsuCreador;
-    }
-
-    public void setTxtUsuCreador(InputText txtUsuCreador) {
-        this.txtUsuCreador = txtUsuCreador;
-    }
-
-    public InputText getTxtUsuModificador() {
-        return txtUsuModificador;
-    }
-
-    public void setTxtUsuModificador(InputText txtUsuModificador) {
-        this.txtUsuModificador = txtUsuModificador;
-    }
-
-    public InputText getTxtIdTipoUsuario_TipoUsuario() {
-        return txtIdTipoUsuario_TipoUsuario;
-    }
-
-    public void setTxtIdTipoUsuario_TipoUsuario(
-        InputText txtIdTipoUsuario_TipoUsuario) {
-        this.txtIdTipoUsuario_TipoUsuario = txtIdTipoUsuario_TipoUsuario;
-    }
-
-    public Calendar getTxtFechaCreacion() {
-        return txtFechaCreacion;
-    }
-
-    public void setTxtFechaCreacion(Calendar txtFechaCreacion) {
-        this.txtFechaCreacion = txtFechaCreacion;
-    }
-
-    public Calendar getTxtFechaModificacion() {
-        return txtFechaModificacion;
-    }
-
-    public void setTxtFechaModificacion(Calendar txtFechaModificacion) {
-        this.txtFechaModificacion = txtFechaModificacion;
-    }
+    }    
 
     public InputText getTxtIdUsuario() {
         return txtIdUsuario;
@@ -658,4 +489,20 @@ public class UsuarioView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public SelectOneMenu getSomTipoUsuario() {
+		return somTipoUsuario;
+	}
+
+	public void setSomTipoUsuario(SelectOneMenu somTipoUsuario) {
+		this.somTipoUsuario = somTipoUsuario;
+	}
+
+	public List<SelectItem> getLosTipoUsuarioSelectItem() {
+		return losTipoUsuarioSelectItem;
+	}
+
+	public void setLosTipoUsuarioSelectItem(List<SelectItem> losTipoUsuarioSelectItem) {
+		this.losTipoUsuarioSelectItem = losTipoUsuarioSelectItem;
+	}
 }

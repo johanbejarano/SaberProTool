@@ -57,4 +57,6 @@ public interface ITipoPruebaLogic {
 
     public void validateTipoPrueba(TipoPrueba tipoPrueba)
         throws Exception;
+    
+    
 }

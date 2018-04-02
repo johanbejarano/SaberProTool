@@ -39,4 +39,8 @@ public interface Dao<T, PK extends Serializable> {
     List<T> findByCriteria(String whereCondition);
 
     List<T> findByProperty(String propertyName, Object value);
+    
+    List<T> findAllS();
+    
+    List<T> findAllN();
 }

@@ -57,4 +57,6 @@ public interface IPruebaRealLogic {
 
     public void validatePruebaReal(PruebaReal pruebaReal)
         throws Exception;
+    
+    
 }

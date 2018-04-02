@@ -60,4 +60,6 @@ public interface IPruebaModuloLogic {
 
     public void validatePruebaModulo(PruebaModulo pruebaModulo)
         throws Exception;
+    
+    
 }

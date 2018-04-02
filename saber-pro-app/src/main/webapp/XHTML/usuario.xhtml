@@ -1,65 +1,66 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">	
-			<h:form id="formDialog">
-				<p:messages id="msg" />
-				<p:growl id="men"/>
-					<p:panel id="panelUsuario" header="Usuario">							
-						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgIdUsuario" value="IdUsuario"/>
-						 	<p:inputText id="txtIdUsuario" binding="#{usuarioView.txtIdUsuario}">
-						 		<p:ajax update="panelUsuario,msg,panelBotones" listener="#{usuarioView.listener_txtId}"/>
-						 	</p:inputText>	
-																		
-													<h:outputText id="msgActivo" value=" Activo"/>
-							<p:inputText id="txtActivo" disabled="true" binding="#{usuarioView.txtActivo}"/>
-													<h:outputText id="msgApellido" value=" Apellido"/>
-							<p:inputText id="txtApellido" disabled="true" binding="#{usuarioView.txtApellido}"/>
-													<h:outputText id="msgCelular" value=" Celular"/>
-							<p:inputText id="txtCelular" disabled="true" binding="#{usuarioView.txtCelular}"/>
-													<h:outputText id="msgCodigo" value=" Codigo"/>
-							<p:inputText id="txtCodigo" disabled="true" binding="#{usuarioView.txtCodigo}"/>
-													<h:outputText id="msgCorreo" value=" Correo"/>
-							<p:inputText id="txtCorreo" disabled="true" binding="#{usuarioView.txtCorreo}"/>
-													<h:outputText id="msgGenero" value=" Genero"/>
-							<p:inputText id="txtGenero" disabled="true" binding="#{usuarioView.txtGenero}"/>
-													<h:outputText id="msgIdentificacion" value=" Identificacion"/>
-							<p:inputText id="txtIdentificacion" disabled="true" binding="#{usuarioView.txtIdentificacion}"/>
-													<h:outputText id="msgNombre" value=" Nombre"/>
-							<p:inputText id="txtNombre" disabled="true" binding="#{usuarioView.txtNombre}"/>
-													<h:outputText id="msgPassword" value=" Password"/>
-							<p:inputText id="txtPassword" disabled="true" binding="#{usuarioView.txtPassword}"/>
-													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
-							<p:inputText id="txtUsuCreador" disabled="true" binding="#{usuarioView.txtUsuCreador}"/>
-													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
-							<p:inputText id="txtUsuModificador" disabled="true" binding="#{usuarioView.txtUsuModificador}"/>
-													<h:outputText id="msgIdTipoUsuario_TipoUsuario" value=" IdTipoUsuario_TipoUsuario"/>
-							<p:inputText id="txtIdTipoUsuario_TipoUsuario" disabled="true" binding="#{usuarioView.txtIdTipoUsuario_TipoUsuario}"/>
-												
-																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
-														<p:calendar showOn="button" navigator="true" locale="en" 
-							binding="#{usuarioView.txtFechaCreacion}" >
-								<p:ajax event="dateSelect" listener="#{usuarioView.listener_txtFechaCreacion}" />
-							</p:calendar>
-														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
-														<p:calendar showOn="button" navigator="true" locale="en" 
-							binding="#{usuarioView.txtFechaModificacion}" >
-								<p:ajax event="dateSelect" listener="#{usuarioView.listener_txtFechaModificacion}" />
-							</p:calendar>
-																	   </h:panelGrid>
-				</p:panel>
-	   			<p:panel id="panelBotones">
-					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{usuarioView.btnSave}" disabled="true" value="Save" action="#{usuarioView.action_save()}" update="panelUsuario,msg,panelBotones" />
-						<p:commandButton id="btnDelete" binding="#{usuarioView.btnDelete}" disabled="true" value="Delete" action="#{usuarioView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelUsuario,msg,panelBotones" />
-						<p:commandButton id="btnClear" value="Clear" action="#{usuarioView.action_clear()}" update="panelUsuario,msg,panelBotones" />
-					</div>
-				</p:panel>			
-			</h:form>
-  </ui:define>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="formDialog">
+			<p:messages id="msg" />
+			<p:growl id="men" />
+			<p:panel id="panelUsuario" header="Usuario">
+				<h:panelGrid columns="2" id="panelGrid">
+					<h:outputText id="msgIdUsuario" value="IdUsuario" />
+					<p:inputText id="txtIdUsuario"
+						binding="#{usuarioView.txtIdUsuario}">
+						<p:ajax update="panelUsuario,msg,panelBotones"
+							listener="#{usuarioView.listener_txtId}" />
+					</p:inputText>					
+					<h:outputText id="msgApellido" value=" Apellido" />
+					<p:inputText id="txtApellido" disabled="true"
+						binding="#{usuarioView.txtApellido}" />
+					<h:outputText id="msgCelular" value=" Celular" />
+					<p:inputText id="txtCelular" disabled="true"
+						binding="#{usuarioView.txtCelular}" />
+					<h:outputText id="msgCodigo" value=" Codigo" />
+					<p:inputText id="txtCodigo" disabled="true"
+						binding="#{usuarioView.txtCodigo}" />
+					<h:outputText id="msgCorreo" value=" Correo" />
+					<p:inputText id="txtCorreo" disabled="true"
+						binding="#{usuarioView.txtCorreo}" />
+					<h:outputText id="msgGenero" value=" Genero" />
+					<p:inputText id="txtGenero" disabled="true"
+						binding="#{usuarioView.txtGenero}" />
+					<h:outputText id="msgIdentificacion" value=" Identificacion" />
+					<p:inputText id="txtIdentificacion" disabled="true"
+						binding="#{usuarioView.txtIdentificacion}" />
+					<h:outputText id="msgNombre" value=" Nombre" />
+					<p:inputText id="txtNombre" disabled="true"
+						binding="#{usuarioView.txtNombre}" />				
+					<h:outputText id="msgIdTipoUsuario_TipoUsuario"
+						value="Tipo de usuario" />
+					<p:selectOneMenu id="somTipoUsuario"
+								>
+								<f:selectItem itemValue="-1" itemLabel="-------------------" />								
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="panelBotones">
+				<div align="center">
+					<p:commandButton id="btnSave" binding="#{usuarioView.btnSave}"
+						disabled="true" value="Save" action="#{usuarioView.action_save()}"
+						update="panelUsuario,msg,panelBotones" />
+					<p:commandButton id="btnDelete" binding="#{usuarioView.btnDelete}"
+						disabled="true" value="Delete"
+						action="#{usuarioView.action_delete_master()}"
+						onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+						update="panelUsuario,msg,panelBotones" />
+					<p:commandButton id="btnClear" value="Clear"
+						action="#{usuarioView.action_clear()}"
+						update="panelUsuario,msg,panelBotones" />
+				</div>
+			</p:panel>
+		</h:form>
+	</ui:define>
 </ui:composition>

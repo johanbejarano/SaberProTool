@@ -56,4 +56,5 @@ public interface IRespuestaLogic {
 
     public void validateRespuesta(Respuesta respuesta)
         throws Exception;
+   
 }

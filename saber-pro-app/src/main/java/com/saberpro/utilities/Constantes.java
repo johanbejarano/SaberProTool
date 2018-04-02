@@ -1,5 +1,8 @@
 package com.saberpro.utilities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class Constantes {
 
 	//Generales
@@ -31,4 +34,7 @@ public class Constantes {
 	public static final long PRUEBA_ESTADO_FINALIZADA = 3L;
 	public static final long PRUEBA_ESTADO_REINICIADA = 4L;
 	public static final long PRUEBA_ESTADO_PENDIENTE = 5L;
+	
+	//Formatos
+	 public static final DateFormat FORMATO_FECHA_SIMPLE = new SimpleDateFormat("dd/MM/yyyy");
 }

@@ -57,4 +57,6 @@ public interface ITipoModuloLogic {
 
     public void validateTipoModulo(TipoModulo tipoModulo)
         throws Exception;
+    
+    
 }

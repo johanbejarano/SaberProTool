@@ -68,4 +68,6 @@ public interface IRespuestaPruebaProgramaUsuarioPreguntaLogic {
     public void validateRespuestaPruebaProgramaUsuarioPregunta(
         RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta)
         throws Exception;
+    
+    
 }
