@@ -110,6 +110,24 @@ public class GrupoOpcionLogic implements IGrupoOpcionLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<GrupoOpcion> getGrupoOpcion(String tipo) throws Exception {
+        log.debug("finding all GrupoOpcion instances");
+
+        List<GrupoOpcion> list = new ArrayList<GrupoOpcion>();
+
+        try {
+            list = grupoOpcionDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all GrupoOpcion failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "GrupoOpcion");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveGrupoOpcion(GrupoOpcion entity) throws Exception {
@@ -199,6 +217,24 @@ public class GrupoOpcionLogic implements IGrupoOpcionLogic {
     public List<GrupoOpcionDTO> getDataGrupoOpcion() throws Exception {
         try {
             List<GrupoOpcion> grupoOpcion = grupoOpcionDAO.findAll();
+
+            List<GrupoOpcionDTO> grupoOpcionDTO = new ArrayList<GrupoOpcionDTO>();
+
+            for (GrupoOpcion grupoOpcionTmp : grupoOpcion) {
+                GrupoOpcionDTO grupoOpcionDTO2 = grupoOpcionMapper.grupoOpcionToGrupoOpcionDTO(grupoOpcionTmp);
+                grupoOpcionDTO.add(grupoOpcionDTO2);
+            }
+
+            return grupoOpcionDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<GrupoOpcionDTO> getDataGrupoOpcion(String tipo) throws Exception {
+        try {
+            List<GrupoOpcion> grupoOpcion = grupoOpcionDAO.findAll(tipo);
 
             List<GrupoOpcionDTO> grupoOpcionDTO = new ArrayList<GrupoOpcionDTO>();
 

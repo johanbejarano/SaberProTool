@@ -101,6 +101,24 @@ public class FacultadLogic implements IFacultadLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Facultad> getFacultad(String tipo) throws Exception {
+        log.debug("finding all Facultad instances");
+
+        List<Facultad> list = new ArrayList<Facultad>();
+
+        try {
+            list = facultadDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Facultad failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Facultad");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveFacultad(Facultad entity) throws Exception {
@@ -182,6 +200,24 @@ public class FacultadLogic implements IFacultadLogic {
     public List<FacultadDTO> getDataFacultad() throws Exception {
         try {
             List<Facultad> facultad = facultadDAO.findAll();
+
+            List<FacultadDTO> facultadDTO = new ArrayList<FacultadDTO>();
+
+            for (Facultad facultadTmp : facultad) {
+                FacultadDTO facultadDTO2 = facultadMapper.facultadToFacultadDTO(facultadTmp);
+                facultadDTO.add(facultadDTO2);
+            }
+
+            return facultadDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<FacultadDTO> getDataFacultad(String tipo) throws Exception {
+        try {
+            List<Facultad> facultad = facultadDAO.findAll(tipo);
 
             List<FacultadDTO> facultadDTO = new ArrayList<FacultadDTO>();
 

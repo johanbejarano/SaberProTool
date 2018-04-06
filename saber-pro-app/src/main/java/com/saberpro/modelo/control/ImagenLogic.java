@@ -101,6 +101,24 @@ public class ImagenLogic implements IImagenLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Imagen> getImagen(String tipo) throws Exception {
+        log.debug("finding all Imagen instances");
+
+        List<Imagen> list = new ArrayList<Imagen>();
+
+        try {
+            list = imagenDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Imagen failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Imagen");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveImagen(Imagen entity) throws Exception {
@@ -173,6 +191,24 @@ public class ImagenLogic implements IImagenLogic {
     public List<ImagenDTO> getDataImagen() throws Exception {
         try {
             List<Imagen> imagen = imagenDAO.findAll();
+
+            List<ImagenDTO> imagenDTO = new ArrayList<ImagenDTO>();
+
+            for (Imagen imagenTmp : imagen) {
+                ImagenDTO imagenDTO2 = imagenMapper.imagenToImagenDTO(imagenTmp);
+                imagenDTO.add(imagenDTO2);
+            }
+
+            return imagenDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ImagenDTO> getDataImagen(String tipo) throws Exception {
+        try {
+            List<Imagen> imagen = imagenDAO.findAll(tipo);
 
             List<ImagenDTO> imagenDTO = new ArrayList<ImagenDTO>();
 

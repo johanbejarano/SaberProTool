@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IRespuestaLogic {
     public List<Respuesta> getRespuesta() throws Exception;
+    
+    public List<Respuesta> getRespuesta(String tipo) throws Exception;
 
     /**
          * Save an new Respuesta entity
@@ -53,6 +55,8 @@ public interface IRespuestaLogic {
     public Long findTotalNumberRespuesta() throws Exception;
 
     public List<RespuestaDTO> getDataRespuesta() throws Exception;
+    
+    public List<RespuestaDTO> getDataRespuesta(String tipo) throws Exception;
 
     public void validateRespuesta(Respuesta respuesta)
         throws Exception;

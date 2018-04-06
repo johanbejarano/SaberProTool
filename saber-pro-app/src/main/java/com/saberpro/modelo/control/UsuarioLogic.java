@@ -121,7 +121,26 @@ public class UsuarioLogic implements IUsuarioLogic {
         }
 
         return list;
-    }
+    }   
+    
+    @Transactional(readOnly = true)
+    public List<Usuario> getUsuario(String tipo) throws Exception {
+        log.debug("finding all Usuario instances");
+
+        List<Usuario> list = new ArrayList<Usuario>();
+
+        try {
+            list = usuarioDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Usuario failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Usuario");
+        } finally {
+        }
+
+        return list;
+    } 
+    
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveUsuario(Usuario entity) throws Exception {
@@ -228,6 +247,26 @@ public class UsuarioLogic implements IUsuarioLogic {
             throw e;
         }
     }
+    
+    @Transactional(readOnly = true)
+    public List<UsuarioDTO> getDataUsuario(String tipo) throws Exception {
+        try {
+            List<Usuario> usuario = usuarioDAO.findAll(tipo);
+
+            List<UsuarioDTO> usuarioDTO = new ArrayList<UsuarioDTO>();
+
+            for (Usuario usuarioTmp : usuario) {
+                UsuarioDTO usuarioDTO2 = usuarioMapper.usuarioToUsuarioDTO(usuarioTmp);
+                usuarioDTO.add(usuarioDTO2);
+            }
+
+            return usuarioDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    
 
     @Transactional(readOnly = true)
     public Usuario getUsuario(Long idUsuario) throws Exception {
@@ -482,4 +521,5 @@ public class UsuarioLogic implements IUsuarioLogic {
 			throw new UsernameNotFoundException("Usuario no encontrado");
 		}
 	}
+
 }

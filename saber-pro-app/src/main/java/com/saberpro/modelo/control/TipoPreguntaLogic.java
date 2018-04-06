@@ -102,6 +102,24 @@ public class TipoPreguntaLogic implements ITipoPreguntaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<TipoPregunta> getTipoPregunta(String tipo) throws Exception {
+        log.debug("finding all TipoPregunta instances");
+
+        List<TipoPregunta> list = new ArrayList<TipoPregunta>();
+
+        try {
+            list = tipoPreguntaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all TipoPregunta failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "TipoPregunta");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveTipoPregunta(TipoPregunta entity) throws Exception {
@@ -186,6 +204,25 @@ public class TipoPreguntaLogic implements ITipoPreguntaLogic {
         throws Exception {
         try {
             List<TipoPregunta> tipoPregunta = tipoPreguntaDAO.findAll();
+
+            List<TipoPreguntaDTO> tipoPreguntaDTO = new ArrayList<TipoPreguntaDTO>();
+
+            for (TipoPregunta tipoPreguntaTmp : tipoPregunta) {
+                TipoPreguntaDTO tipoPreguntaDTO2 = tipoPreguntaMapper.tipoPreguntaToTipoPreguntaDTO(tipoPreguntaTmp);
+                tipoPreguntaDTO.add(tipoPreguntaDTO2);
+            }
+
+            return tipoPreguntaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<TipoPreguntaDTO> getDataTipoPregunta(String tipo)
+        throws Exception {
+        try {
+            List<TipoPregunta> tipoPregunta = tipoPreguntaDAO.findAll(tipo);
 
             List<TipoPreguntaDTO> tipoPreguntaDTO = new ArrayList<TipoPreguntaDTO>();
 

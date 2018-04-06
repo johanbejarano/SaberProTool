@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IOpcionLogic {
     public List<Opcion> getOpcion() throws Exception;
+    
+    public List<Opcion> getOpcion(String tipo) throws Exception;
 
     /**
          * Save an new Opcion entity
@@ -53,6 +55,8 @@ public interface IOpcionLogic {
     public Long findTotalNumberOpcion() throws Exception;
 
     public List<OpcionDTO> getDataOpcion() throws Exception;
+    
+    public List<OpcionDTO> getDataOpcion(String tipo) throws Exception;
 
     public void validateOpcion(Opcion opcion) throws Exception;
 }

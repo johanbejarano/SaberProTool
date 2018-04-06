@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface ITipoModuloLogic {
     public List<TipoModulo> getTipoModulo() throws Exception;
+    
+    public List<TipoModulo> getTipoModulo(String tipo) throws Exception;
 
     /**
          * Save an new TipoModulo entity
@@ -54,6 +56,8 @@ public interface ITipoModuloLogic {
     public Long findTotalNumberTipoModulo() throws Exception;
 
     public List<TipoModuloDTO> getDataTipoModulo() throws Exception;
+    
+    public List<TipoModuloDTO> getDataTipoModulo(String tipo) throws Exception;
 
     public void validateTipoModulo(TipoModulo tipoModulo)
         throws Exception;

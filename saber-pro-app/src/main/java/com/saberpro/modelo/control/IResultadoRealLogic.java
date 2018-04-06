@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IResultadoRealLogic {
     public List<ResultadoReal> getResultadoReal() throws Exception;
+    
+    public List<ResultadoReal> getResultadoReal(String tipo) throws Exception;
 
     /**
          * Save an new ResultadoReal entity
@@ -58,6 +60,9 @@ public interface IResultadoRealLogic {
 
     public List<ResultadoRealDTO> getDataResultadoReal()
         throws Exception;
+    
+    public List<ResultadoRealDTO> getDataResultadoReal(String tipo)
+            throws Exception;
 
     public void validateResultadoReal(ResultadoReal resultadoReal)
         throws Exception;

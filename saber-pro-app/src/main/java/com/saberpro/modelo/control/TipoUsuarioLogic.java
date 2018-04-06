@@ -109,6 +109,24 @@ public class TipoUsuarioLogic implements ITipoUsuarioLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<TipoUsuario> getTipoUsuario(String tipo) throws Exception {
+        log.debug("finding all TipoUsuario instances");
+
+        List<TipoUsuario> list = new ArrayList<TipoUsuario>();
+
+        try {
+            list = tipoUsuarioDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all TipoUsuario failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "TipoUsuario");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveTipoUsuario(TipoUsuario entity) throws Exception {
@@ -198,6 +216,24 @@ public class TipoUsuarioLogic implements ITipoUsuarioLogic {
     public List<TipoUsuarioDTO> getDataTipoUsuario() throws Exception {
         try {
             List<TipoUsuario> tipoUsuario = tipoUsuarioDAO.findAll();
+
+            List<TipoUsuarioDTO> tipoUsuarioDTO = new ArrayList<TipoUsuarioDTO>();
+
+            for (TipoUsuario tipoUsuarioTmp : tipoUsuario) {
+                TipoUsuarioDTO tipoUsuarioDTO2 = tipoUsuarioMapper.tipoUsuarioToTipoUsuarioDTO(tipoUsuarioTmp);
+                tipoUsuarioDTO.add(tipoUsuarioDTO2);
+            }
+
+            return tipoUsuarioDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<TipoUsuarioDTO> getDataTipoUsuario(String tipo) throws Exception {
+        try {
+            List<TipoUsuario> tipoUsuario = tipoUsuarioDAO.findAll(tipo);
 
             List<TipoUsuarioDTO> tipoUsuarioDTO = new ArrayList<TipoUsuarioDTO>();
 

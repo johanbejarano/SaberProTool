@@ -116,6 +116,24 @@ public class MatriculaLogic implements IMatriculaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Matricula> getMatricula(String tipo) throws Exception {
+        log.debug("finding all Matricula instances");
+
+        List<Matricula> list = new ArrayList<Matricula>();
+
+        try {
+            list = matriculaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Matricula failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Matricula");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveMatricula(Matricula entity) throws Exception {
@@ -197,6 +215,24 @@ public class MatriculaLogic implements IMatriculaLogic {
     public List<MatriculaDTO> getDataMatricula() throws Exception {
         try {
             List<Matricula> matricula = matriculaDAO.findAll();
+
+            List<MatriculaDTO> matriculaDTO = new ArrayList<MatriculaDTO>();
+
+            for (Matricula matriculaTmp : matricula) {
+                MatriculaDTO matriculaDTO2 = matriculaMapper.matriculaToMatriculaDTO(matriculaTmp);
+                matriculaDTO.add(matriculaDTO2);
+            }
+
+            return matriculaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<MatriculaDTO> getDataMatricula(String tipo) throws Exception {
+        try {
+            List<Matricula> matricula = matriculaDAO.findAll(tipo);
 
             List<MatriculaDTO> matriculaDTO = new ArrayList<MatriculaDTO>();
 

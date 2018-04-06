@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IImagenLogic {
     public List<Imagen> getImagen() throws Exception;
+    
+    public List<Imagen> getImagen(String tipo) throws Exception;
 
     /**
          * Save an new Imagen entity
@@ -53,6 +55,8 @@ public interface IImagenLogic {
     public Long findTotalNumberImagen() throws Exception;
 
     public List<ImagenDTO> getDataImagen() throws Exception;
+    
+    public List<ImagenDTO> getDataImagen(String tipo) throws Exception;
 
     public void validateImagen(Imagen imagen) throws Exception;
 }

@@ -108,6 +108,24 @@ public class PermisoLogic implements IPermisoLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Permiso> getPermiso(String tipo) throws Exception {
+        log.debug("finding all Permiso instances");
+
+        List<Permiso> list = new ArrayList<Permiso>();
+
+        try {
+            list = permisoDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Permiso failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Permiso");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePermiso(Permiso entity) throws Exception {
@@ -180,6 +198,24 @@ public class PermisoLogic implements IPermisoLogic {
     public List<PermisoDTO> getDataPermiso() throws Exception {
         try {
             List<Permiso> permiso = permisoDAO.findAll();
+
+            List<PermisoDTO> permisoDTO = new ArrayList<PermisoDTO>();
+
+            for (Permiso permisoTmp : permiso) {
+                PermisoDTO permisoDTO2 = permisoMapper.permisoToPermisoDTO(permisoTmp);
+                permisoDTO.add(permisoDTO2);
+            }
+
+            return permisoDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<PermisoDTO> getDataPermiso(String tipo) throws Exception {
+        try {
+            List<Permiso> permiso = permisoDAO.findAll(tipo);
 
             List<PermisoDTO> permisoDTO = new ArrayList<PermisoDTO>();
 

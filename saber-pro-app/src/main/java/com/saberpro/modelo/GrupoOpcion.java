@@ -116,7 +116,7 @@ public class GrupoOpcion implements java.io.Serializable {
         this.icon = icon;
     }
 
-    @Column(name = "nombre",unique = true, nullable = false)
+    @Column(name = "nombre", nullable = false)
     public String getNombre() {
         return this.nombre;
     }

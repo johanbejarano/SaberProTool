@@ -40,7 +40,7 @@ public interface Dao<T, PK extends Serializable> {
 
     List<T> findByProperty(String propertyName, Object value);
     
-    List<T> findAllS();
+    List<T> findAll(String tipo);
     
-    List<T> findAllN();
+    
 }

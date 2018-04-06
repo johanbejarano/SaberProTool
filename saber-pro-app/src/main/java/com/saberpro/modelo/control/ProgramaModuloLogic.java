@@ -109,6 +109,24 @@ public class ProgramaModuloLogic implements IProgramaModuloLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<ProgramaModulo> getProgramaModulo(String tipo) throws Exception {
+        log.debug("finding all ProgramaModulo instances");
+
+        List<ProgramaModulo> list = new ArrayList<ProgramaModulo>();
+
+        try {
+            list = programaModuloDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all ProgramaModulo failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "ProgramaModulo");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveProgramaModulo(ProgramaModulo entity)
@@ -201,6 +219,25 @@ public class ProgramaModuloLogic implements IProgramaModuloLogic {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<ProgramaModuloDTO> getDataProgramaModulo(String tipo)
+        throws Exception {
+        try {
+            List<ProgramaModulo> programaModulo = programaModuloDAO.findAll(tipo);
+
+            List<ProgramaModuloDTO> programaModuloDTO = new ArrayList<ProgramaModuloDTO>();
+
+            for (ProgramaModulo programaModuloTmp : programaModulo) {
+                ProgramaModuloDTO programaModuloDTO2 = programaModuloMapper.programaModuloToProgramaModuloDTO(programaModuloTmp);
+                programaModuloDTO.add(programaModuloDTO2);
+            }
+
+            return programaModuloDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     @Transactional(readOnly = true)
     public ProgramaModulo getProgramaModulo(Long idProgramaModulo)
         throws Exception {

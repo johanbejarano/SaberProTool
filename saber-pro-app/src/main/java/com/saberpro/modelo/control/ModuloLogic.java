@@ -129,6 +129,24 @@ public class ModuloLogic implements IModuloLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Modulo> getModulo(String tipo) throws Exception {
+        log.debug("finding all Modulo instances");
+
+        List<Modulo> list = new ArrayList<Modulo>();
+
+        try {
+            list = moduloDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Modulo failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Modulo");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveModulo(Modulo entity) throws Exception {
@@ -235,6 +253,24 @@ public class ModuloLogic implements IModuloLogic {
     public List<ModuloDTO> getDataModulo() throws Exception {
         try {
             List<Modulo> modulo = moduloDAO.findAll();
+
+            List<ModuloDTO> moduloDTO = new ArrayList<ModuloDTO>();
+
+            for (Modulo moduloTmp : modulo) {
+                ModuloDTO moduloDTO2 = moduloMapper.moduloToModuloDTO(moduloTmp);
+                moduloDTO.add(moduloDTO2);
+            }
+
+            return moduloDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ModuloDTO> getDataModulo(String tipo) throws Exception {
+        try {
+            List<Modulo> modulo = moduloDAO.findAll(tipo);
 
             List<ModuloDTO> moduloDTO = new ArrayList<ModuloDTO>();
 

@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IPruebaRealLogic {
     public List<PruebaReal> getPruebaReal() throws Exception;
+    
+    public List<PruebaReal> getPruebaReal(String tipo) throws Exception;
 
     /**
          * Save an new PruebaReal entity
@@ -54,6 +56,8 @@ public interface IPruebaRealLogic {
     public Long findTotalNumberPruebaReal() throws Exception;
 
     public List<PruebaRealDTO> getDataPruebaReal() throws Exception;
+    
+    public List<PruebaRealDTO> getDataPruebaReal(String tipo) throws Exception;
 
     public void validatePruebaReal(PruebaReal pruebaReal)
         throws Exception;

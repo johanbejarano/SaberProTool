@@ -19,6 +19,9 @@ import java.util.Set;
 public interface IRespuestaPruebaProgramaUsuarioPreguntaLogic {
     public List<RespuestaPruebaProgramaUsuarioPregunta> getRespuestaPruebaProgramaUsuarioPregunta()
         throws Exception;
+    
+    public List<RespuestaPruebaProgramaUsuarioPregunta> getRespuestaPruebaProgramaUsuarioPregunta(String tipo)
+            throws Exception;
 
     /**
          * Save an new RespuestaPruebaProgramaUsuarioPregunta entity
@@ -64,6 +67,9 @@ public interface IRespuestaPruebaProgramaUsuarioPreguntaLogic {
 
     public List<RespuestaPruebaProgramaUsuarioPreguntaDTO> getDataRespuestaPruebaProgramaUsuarioPregunta()
         throws Exception;
+    
+    public List<RespuestaPruebaProgramaUsuarioPreguntaDTO> getDataRespuestaPruebaProgramaUsuarioPregunta(String tipo)
+            throws Exception;
 
     public void validateRespuestaPruebaProgramaUsuarioPregunta(
         RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta)

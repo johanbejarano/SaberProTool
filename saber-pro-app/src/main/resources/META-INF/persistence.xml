@@ -35,8 +35,8 @@
                 value="org.postgresql.Driver" />
              <property name="hibernate.connection.url"
                     value="jdbc:postgresql://127.0.0.1:5432/Saberpro" />
-             <property name="hibernate.connection.username" value="jhony" />
-             <property name="hibernate.connection.password" value="123" />
+             <property name="hibernate.connection.username" value="saberprotool" />
+             <property name="hibernate.connection.password" value="saberpro" />
         </properties>
      
     </persistence-unit>

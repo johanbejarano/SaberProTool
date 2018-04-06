@@ -28,7 +28,7 @@ import com.saberpro.modelo.TipoUsuario;
 public class TestTipoUsuarioDao {
 
 	private final static Logger log = LoggerFactory.getLogger(TestTipoUsuarioDao.class);
-	private static long tipoUsuId = 6L;
+	private static long tipoUsuId = 5L;
 	
 	@Autowired
 	ITipoUsuarioDAO tipoUsuarioDao;
@@ -71,7 +71,7 @@ public class TestTipoUsuarioDao {
 		
 		assertNotNull(" tipo usuario no ya existe",tipoUsuario);	
 			
-		tipoUsuario.setNombre("Competencia Opcional".toUpperCase());		
+		tipoUsuario.setNombre("Competencia".toUpperCase());		
 				
 		tipoUsuarioDao.update(tipoUsuario);		
 		

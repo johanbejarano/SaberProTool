@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IModuloLogic {
     public List<Modulo> getModulo() throws Exception;
+    
+    public List<Modulo> getModulo(String tipo) throws Exception;
 
     /**
          * Save an new Modulo entity
@@ -53,6 +55,8 @@ public interface IModuloLogic {
     public Long findTotalNumberModulo() throws Exception;
 
     public List<ModuloDTO> getDataModulo() throws Exception;
+    
+    public List<ModuloDTO> getDataModulo(String tipo) throws Exception;
 
     public void validateModulo(Modulo modulo) throws Exception;
 }

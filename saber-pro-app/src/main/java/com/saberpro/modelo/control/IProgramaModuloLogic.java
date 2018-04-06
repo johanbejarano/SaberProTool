@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IProgramaModuloLogic {
     public List<ProgramaModulo> getProgramaModulo() throws Exception;
+    
+    public List<ProgramaModulo> getProgramaModulo(String tipo) throws Exception;
 
     /**
          * Save an new ProgramaModulo entity
@@ -58,6 +60,9 @@ public interface IProgramaModuloLogic {
 
     public List<ProgramaModuloDTO> getDataProgramaModulo()
         throws Exception;
+    
+    public List<ProgramaModuloDTO> getDataProgramaModulo(String tipo)
+            throws Exception;
 
     public void validateProgramaModulo(ProgramaModulo programaModulo)
         throws Exception;

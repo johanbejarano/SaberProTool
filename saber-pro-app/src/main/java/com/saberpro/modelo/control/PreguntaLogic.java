@@ -129,6 +129,24 @@ public class PreguntaLogic implements IPreguntaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Pregunta> getPregunta(String tipo) throws Exception {
+        log.debug("finding all Pregunta instances");
+
+        List<Pregunta> list = new ArrayList<Pregunta>();
+
+        try {
+            list = preguntaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Pregunta failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Pregunta");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePregunta(Pregunta entity) throws Exception {
@@ -227,6 +245,24 @@ public class PreguntaLogic implements IPreguntaLogic {
     public List<PreguntaDTO> getDataPregunta() throws Exception {
         try {
             List<Pregunta> pregunta = preguntaDAO.findAll();
+
+            List<PreguntaDTO> preguntaDTO = new ArrayList<PreguntaDTO>();
+
+            for (Pregunta preguntaTmp : pregunta) {
+                PreguntaDTO preguntaDTO2 = preguntaMapper.preguntaToPreguntaDTO(preguntaTmp);
+                preguntaDTO.add(preguntaDTO2);
+            }
+
+            return preguntaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<PreguntaDTO> getDataPregunta(String tipo) throws Exception {
+        try {
+            List<Pregunta> pregunta = preguntaDAO.findAll(tipo);
 
             List<PreguntaDTO> preguntaDTO = new ArrayList<PreguntaDTO>();
 

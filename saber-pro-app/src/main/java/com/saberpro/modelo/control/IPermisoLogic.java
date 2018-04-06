@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IPermisoLogic {
     public List<Permiso> getPermiso() throws Exception;
+    
+    public List<Permiso> getPermiso(String tipo) throws Exception;
 
     /**
          * Save an new Permiso entity
@@ -53,6 +55,8 @@ public interface IPermisoLogic {
     public Long findTotalNumberPermiso() throws Exception;
 
     public List<PermisoDTO> getDataPermiso() throws Exception;
+    
+    public List<PermisoDTO> getDataPermiso(String tipo) throws Exception;
 
     public void validatePermiso(Permiso permiso) throws Exception;
 }

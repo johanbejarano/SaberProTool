@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IParametroLogic {
     public List<Parametro> getParametro() throws Exception;
+    
+    public List<Parametro> getParametro(String tipo) throws Exception;
 
     /**
          * Save an new Parametro entity
@@ -53,6 +55,8 @@ public interface IParametroLogic {
     public Long findTotalNumberParametro() throws Exception;
 
     public List<ParametroDTO> getDataParametro() throws Exception;
+    
+    public List<ParametroDTO> getDataParametro(String tipo) throws Exception;
 
     public void validateParametro(Parametro parametro)
         throws Exception;

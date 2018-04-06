@@ -109,6 +109,24 @@ public class ResultadoRealLogic implements IResultadoRealLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<ResultadoReal> getResultadoReal(String tipo) throws Exception {
+        log.debug("finding all ResultadoReal instances");
+
+        List<ResultadoReal> list = new ArrayList<ResultadoReal>();
+
+        try {
+            list = resultadoRealDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all ResultadoReal failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "ResultadoReal");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveResultadoReal(ResultadoReal entity)
@@ -185,6 +203,24 @@ public class ResultadoRealLogic implements IResultadoRealLogic {
     @Transactional(readOnly = true)
     public List<ResultadoRealDTO> getDataResultadoReal()
         throws Exception {
+        try {
+            List<ResultadoReal> resultadoReal = resultadoRealDAO.findAll();
+
+            List<ResultadoRealDTO> resultadoRealDTO = new ArrayList<ResultadoRealDTO>();
+
+            for (ResultadoReal resultadoRealTmp : resultadoReal) {
+                ResultadoRealDTO resultadoRealDTO2 = resultadoRealMapper.resultadoRealToResultadoRealDTO(resultadoRealTmp);
+                resultadoRealDTO.add(resultadoRealDTO2);
+            }
+
+            return resultadoRealDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ResultadoRealDTO> getDataResultadoReal(String tipo)throws Exception {
         try {
             List<ResultadoReal> resultadoReal = resultadoRealDAO.findAll();
 

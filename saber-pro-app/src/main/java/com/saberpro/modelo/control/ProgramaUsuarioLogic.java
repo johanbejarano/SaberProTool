@@ -116,6 +116,24 @@ public class ProgramaUsuarioLogic implements IProgramaUsuarioLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<ProgramaUsuario> getProgramaUsuario(String tipo) throws Exception {
+        log.debug("finding all ProgramaUsuario instances");
+
+        List<ProgramaUsuario> list = new ArrayList<ProgramaUsuario>();
+
+        try {
+            list = programaUsuarioDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all ProgramaUsuario failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "ProgramaUsuario");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveProgramaUsuario(ProgramaUsuario entity)
@@ -205,6 +223,25 @@ public class ProgramaUsuarioLogic implements IProgramaUsuarioLogic {
         throws Exception {
         try {
             List<ProgramaUsuario> programaUsuario = programaUsuarioDAO.findAll();
+
+            List<ProgramaUsuarioDTO> programaUsuarioDTO = new ArrayList<ProgramaUsuarioDTO>();
+
+            for (ProgramaUsuario programaUsuarioTmp : programaUsuario) {
+                ProgramaUsuarioDTO programaUsuarioDTO2 = programaUsuarioMapper.programaUsuarioToProgramaUsuarioDTO(programaUsuarioTmp);
+                programaUsuarioDTO.add(programaUsuarioDTO2);
+            }
+
+            return programaUsuarioDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ProgramaUsuarioDTO> getDataProgramaUsuario(String tipo)
+        throws Exception {
+        try {
+            List<ProgramaUsuario> programaUsuario = programaUsuarioDAO.findAll(tipo);
 
             List<ProgramaUsuarioDTO> programaUsuarioDTO = new ArrayList<ProgramaUsuarioDTO>();
 

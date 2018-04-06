@@ -115,6 +115,24 @@ public class PruebaLogic implements IPruebaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Prueba> getPrueba(String tipo) throws Exception {
+        log.debug("finding all Prueba instances");
+
+        List<Prueba> list = new ArrayList<Prueba>();
+
+        try {
+            list = pruebaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Prueba failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Prueba");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePrueba(Prueba entity) throws Exception {
@@ -205,6 +223,24 @@ public class PruebaLogic implements IPruebaLogic {
     public List<PruebaDTO> getDataPrueba() throws Exception {
         try {
             List<Prueba> prueba = pruebaDAO.findAll();
+
+            List<PruebaDTO> pruebaDTO = new ArrayList<PruebaDTO>();
+
+            for (Prueba pruebaTmp : prueba) {
+                PruebaDTO pruebaDTO2 = pruebaMapper.pruebaToPruebaDTO(pruebaTmp);
+                pruebaDTO.add(pruebaDTO2);
+            }
+
+            return pruebaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<PruebaDTO> getDataPrueba(String tipo) throws Exception {
+        try {
+            List<Prueba> prueba = pruebaDAO.findAll(tipo);
 
             List<PruebaDTO> pruebaDTO = new ArrayList<PruebaDTO>();
 

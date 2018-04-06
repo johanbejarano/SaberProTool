@@ -102,6 +102,24 @@ public class TipoModuloLogic implements ITipoModuloLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<TipoModulo> getTipoModulo(String tipo) throws Exception {
+        log.debug("finding all TipoModulo instances");
+
+        List<TipoModulo> list = new ArrayList<TipoModulo>();
+
+        try {
+            list = tipoModuloDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all TipoModulo failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "TipoModulo");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveTipoModulo(TipoModulo entity) throws Exception {
@@ -183,6 +201,24 @@ public class TipoModuloLogic implements ITipoModuloLogic {
     public List<TipoModuloDTO> getDataTipoModulo() throws Exception {
         try {
             List<TipoModulo> tipoModulo = tipoModuloDAO.findAll();
+
+            List<TipoModuloDTO> tipoModuloDTO = new ArrayList<TipoModuloDTO>();
+
+            for (TipoModulo tipoModuloTmp : tipoModulo) {
+                TipoModuloDTO tipoModuloDTO2 = tipoModuloMapper.tipoModuloToTipoModuloDTO(tipoModuloTmp);
+                tipoModuloDTO.add(tipoModuloDTO2);
+            }
+
+            return tipoModuloDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<TipoModuloDTO> getDataTipoModulo(String tipo) throws Exception {
+        try {
+            List<TipoModulo> tipoModulo = tipoModuloDAO.findAll(tipo);
 
             List<TipoModuloDTO> tipoModuloDTO = new ArrayList<TipoModuloDTO>();
 

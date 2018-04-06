@@ -191,27 +191,16 @@ public class JpaDaoImpl<T, PK extends Serializable> implements Dao<T, PK> {
     }
 
 	@Override
-	public List<T> findAllS() {
+	public List<T> findAll(String tipo) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
 
-        return entityManager.createQuery(cq.select(root).where(cb.equal(root.get("activo"),"S"))).getResultList();
+        return entityManager.createQuery(cq.select(root).where(cb.equal(root.get("activo"),tipo))).getResultList();
 	}
 
-	@Override
-	public List<T> findAllN() {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-        CriteriaQuery<T> cq = cb.createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
-
-        return entityManager.createQuery(cq.select(root).where(cb.equal(root.get("activo"),"N"))).getResultList();
-	}
 	
-	public String toString()
-	{
-		return "lo creo";
-	}
+	
+	
 }

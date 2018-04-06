@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IFacultadLogic {
     public List<Facultad> getFacultad() throws Exception;
+    
+    public List<Facultad> getFacultad(String tipo) throws Exception;
 
     /**
          * Save an new Facultad entity
@@ -53,6 +55,8 @@ public interface IFacultadLogic {
     public Long findTotalNumberFacultad() throws Exception;
 
     public List<FacultadDTO> getDataFacultad() throws Exception;
+    
+    public List<FacultadDTO> getDataFacultad(String tipo) throws Exception;
 
     public void validateFacultad(Facultad facultad) throws Exception;
 }

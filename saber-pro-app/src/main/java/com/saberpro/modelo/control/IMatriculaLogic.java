@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IMatriculaLogic {
     public List<Matricula> getMatricula() throws Exception;
+    
+    public List<Matricula> getMatricula(String tipo) throws Exception;
 
     /**
          * Save an new Matricula entity
@@ -53,6 +55,8 @@ public interface IMatriculaLogic {
     public Long findTotalNumberMatricula() throws Exception;
 
     public List<MatriculaDTO> getDataMatricula() throws Exception;
+    
+    public List<MatriculaDTO> getDataMatricula(String tipo) throws Exception;
 
     public void validateMatricula(Matricula matricula)
         throws Exception;

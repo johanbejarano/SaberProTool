@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface ITipoPruebaLogic {
     public List<TipoPrueba> getTipoPrueba() throws Exception;
+    
+    public List<TipoPrueba> getTipoPrueba(String tipo) throws Exception;
 
     /**
          * Save an new TipoPrueba entity
@@ -54,6 +56,8 @@ public interface ITipoPruebaLogic {
     public Long findTotalNumberTipoPrueba() throws Exception;
 
     public List<TipoPruebaDTO> getDataTipoPrueba() throws Exception;
+    
+    public List<TipoPruebaDTO> getDataTipoPrueba(String tipo) throws Exception;
 
     public void validateTipoPrueba(TipoPrueba tipoPrueba)
         throws Exception;

@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IPruebaModuloLogic {
     public List<PruebaModulo> getPruebaModulo() throws Exception;
+    
+    public List<PruebaModulo> getPruebaModulo(String tipo) throws Exception;
 
     /**
          * Save an new PruebaModulo entity
@@ -57,6 +59,9 @@ public interface IPruebaModuloLogic {
 
     public List<PruebaModuloDTO> getDataPruebaModulo()
         throws Exception;
+    
+    public List<PruebaModuloDTO> getDataPruebaModulo(String tipo)
+            throws Exception;
 
     public void validatePruebaModulo(PruebaModulo pruebaModulo)
         throws Exception;

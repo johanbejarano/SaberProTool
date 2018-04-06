@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface ITipoUsuarioLogic {
     public List<TipoUsuario> getTipoUsuario() throws Exception;
+    
+    public List<TipoUsuario> getTipoUsuario(String tipo) throws Exception;
 
     /**
          * Save an new TipoUsuario entity
@@ -54,6 +56,8 @@ public interface ITipoUsuarioLogic {
     public Long findTotalNumberTipoUsuario() throws Exception;
 
     public List<TipoUsuarioDTO> getDataTipoUsuario() throws Exception;
+    
+    public List<TipoUsuarioDTO> getDataTipoUsuario(String tipo) throws Exception;
 
     public void validateTipoUsuario(TipoUsuario tipoUsuario)
         throws Exception;

@@ -103,6 +103,24 @@ public class TipoPruebaLogic implements ITipoPruebaLogic {
         return list;
     }
 
+    @Transactional(readOnly = true)
+    public List<TipoPrueba> getTipoPrueba(String tipo) throws Exception {
+        log.debug("finding all TipoPrueba instances");
+
+        List<TipoPrueba> list = new ArrayList<TipoPrueba>();
+
+        try {
+            list = tipoPruebaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all TipoPrueba failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "TipoPrueba");
+        } finally {
+        }
+
+        return list;
+    }
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveTipoPrueba(TipoPrueba entity) throws Exception {
         log.debug("saving TipoPrueba instance");
@@ -183,6 +201,24 @@ public class TipoPruebaLogic implements ITipoPruebaLogic {
     public List<TipoPruebaDTO> getDataTipoPrueba() throws Exception {
         try {
             List<TipoPrueba> tipoPrueba = tipoPruebaDAO.findAll();
+
+            List<TipoPruebaDTO> tipoPruebaDTO = new ArrayList<TipoPruebaDTO>();
+
+            for (TipoPrueba tipoPruebaTmp : tipoPrueba) {
+                TipoPruebaDTO tipoPruebaDTO2 = tipoPruebaMapper.tipoPruebaToTipoPruebaDTO(tipoPruebaTmp);
+                tipoPruebaDTO.add(tipoPruebaDTO2);
+            }
+
+            return tipoPruebaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<TipoPruebaDTO> getDataTipoPrueba(String tipo) throws Exception {
+        try {
+            List<TipoPrueba> tipoPrueba = tipoPruebaDAO.findAll(tipo);
 
             List<TipoPruebaDTO> tipoPruebaDTO = new ArrayList<TipoPruebaDTO>();
 

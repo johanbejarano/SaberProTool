@@ -95,6 +95,24 @@ public class ParametroLogic implements IParametroLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Parametro> getParametro(String tipo) throws Exception {
+        log.debug("finding all Parametro instances");
+
+        List<Parametro> list = new ArrayList<Parametro>();
+
+        try {
+            list = parametroDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Parametro failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Parametro");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveParametro(Parametro entity) throws Exception {
@@ -167,6 +185,24 @@ public class ParametroLogic implements IParametroLogic {
     public List<ParametroDTO> getDataParametro() throws Exception {
         try {
             List<Parametro> parametro = parametroDAO.findAll();
+
+            List<ParametroDTO> parametroDTO = new ArrayList<ParametroDTO>();
+
+            for (Parametro parametroTmp : parametro) {
+                ParametroDTO parametroDTO2 = parametroMapper.parametroToParametroDTO(parametroTmp);
+                parametroDTO.add(parametroDTO2);
+            }
+
+            return parametroDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ParametroDTO> getDataParametro(String tipo) throws Exception {
+        try {
+            List<Parametro> parametro = parametroDAO.findAll(tipo);
 
             List<ParametroDTO> parametroDTO = new ArrayList<ParametroDTO>();
 

@@ -115,6 +115,27 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<RespuestaPruebaProgramaUsuarioPregunta> getRespuestaPruebaProgramaUsuarioPregunta(String tipo)
+        throws Exception {
+        log.debug(
+            "finding all RespuestaPruebaProgramaUsuarioPregunta instances");
+
+        List<RespuestaPruebaProgramaUsuarioPregunta> list = new ArrayList<RespuestaPruebaProgramaUsuarioPregunta>();
+
+        try {
+            list = respuestaPruebaProgramaUsuarioPreguntaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all RespuestaPruebaProgramaUsuarioPregunta failed",
+                e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "RespuestaPruebaProgramaUsuarioPregunta");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveRespuestaPruebaProgramaUsuarioPregunta(
@@ -202,6 +223,28 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
         try {
             List<RespuestaPruebaProgramaUsuarioPregunta> respuestaPruebaProgramaUsuarioPregunta =
                 respuestaPruebaProgramaUsuarioPreguntaDAO.findAll();
+
+            List<RespuestaPruebaProgramaUsuarioPreguntaDTO> respuestaPruebaProgramaUsuarioPreguntaDTO =
+                new ArrayList<RespuestaPruebaProgramaUsuarioPreguntaDTO>();
+
+            for (RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPreguntaTmp : respuestaPruebaProgramaUsuarioPregunta) {
+                RespuestaPruebaProgramaUsuarioPreguntaDTO respuestaPruebaProgramaUsuarioPreguntaDTO2 =
+                    respuestaPruebaProgramaUsuarioPreguntaMapper.respuestaPruebaProgramaUsuarioPreguntaToRespuestaPruebaProgramaUsuarioPreguntaDTO(respuestaPruebaProgramaUsuarioPreguntaTmp);
+                respuestaPruebaProgramaUsuarioPreguntaDTO.add(respuestaPruebaProgramaUsuarioPreguntaDTO2);
+            }
+
+            return respuestaPruebaProgramaUsuarioPreguntaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<RespuestaPruebaProgramaUsuarioPreguntaDTO> getDataRespuestaPruebaProgramaUsuarioPregunta(String tipo)
+        throws Exception {
+        try {
+            List<RespuestaPruebaProgramaUsuarioPregunta> respuestaPruebaProgramaUsuarioPregunta =
+                respuestaPruebaProgramaUsuarioPreguntaDAO.findAll(tipo);
 
             List<RespuestaPruebaProgramaUsuarioPreguntaDTO> respuestaPruebaProgramaUsuarioPreguntaDTO =
                 new ArrayList<RespuestaPruebaProgramaUsuarioPreguntaDTO>();

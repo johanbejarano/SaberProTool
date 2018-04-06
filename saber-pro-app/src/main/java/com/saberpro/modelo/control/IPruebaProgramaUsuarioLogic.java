@@ -20,6 +20,8 @@ public interface IPruebaProgramaUsuarioLogic {
     public List<PruebaProgramaUsuario> getPruebaProgramaUsuario()
         throws Exception;
 
+    public List<PruebaProgramaUsuario> getPruebaProgramaUsuario(String tipo)
+            throws Exception;
     /**
          * Save an new PruebaProgramaUsuario entity
          */
@@ -60,6 +62,9 @@ public interface IPruebaProgramaUsuarioLogic {
 
     public List<PruebaProgramaUsuarioDTO> getDataPruebaProgramaUsuario()
         throws Exception;
+    
+    public List<PruebaProgramaUsuarioDTO> getDataPruebaProgramaUsuario(String tipo)
+            throws Exception;
 
     public void validatePruebaProgramaUsuario(
         PruebaProgramaUsuario pruebaProgramaUsuario) throws Exception;

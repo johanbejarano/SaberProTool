@@ -120,6 +120,25 @@ public class PruebaProgramaUsuarioPreguntaLogic
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<PruebaProgramaUsuarioPregunta> getPruebaProgramaUsuarioPregunta(String tipo)
+        throws Exception {
+        log.debug("finding all PruebaProgramaUsuarioPregunta instances");
+
+        List<PruebaProgramaUsuarioPregunta> list = new ArrayList<PruebaProgramaUsuarioPregunta>();
+
+        try {
+            list = pruebaProgramaUsuarioPreguntaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all PruebaProgramaUsuarioPregunta failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "PruebaProgramaUsuarioPregunta");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePruebaProgramaUsuarioPregunta(
@@ -208,6 +227,27 @@ public class PruebaProgramaUsuarioPreguntaLogic
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<PruebaProgramaUsuarioPreguntaDTO> getDataPruebaProgramaUsuarioPregunta(String tipo)
+        throws Exception {
+        try {
+            List<PruebaProgramaUsuarioPregunta> pruebaProgramaUsuarioPregunta = pruebaProgramaUsuarioPreguntaDAO.findAll(tipo);
+
+            List<PruebaProgramaUsuarioPreguntaDTO> pruebaProgramaUsuarioPreguntaDTO =
+                new ArrayList<PruebaProgramaUsuarioPreguntaDTO>();
+
+            for (PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPreguntaTmp : pruebaProgramaUsuarioPregunta) {
+                PruebaProgramaUsuarioPreguntaDTO pruebaProgramaUsuarioPreguntaDTO2 =
+                    pruebaProgramaUsuarioPreguntaMapper.pruebaProgramaUsuarioPreguntaToPruebaProgramaUsuarioPreguntaDTO(pruebaProgramaUsuarioPreguntaTmp);
+                pruebaProgramaUsuarioPreguntaDTO.add(pruebaProgramaUsuarioPreguntaDTO2);
+            }
+
+            return pruebaProgramaUsuarioPreguntaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     @Transactional(readOnly = true)
     public List<PruebaProgramaUsuarioPreguntaDTO> getDataPruebaProgramaUsuarioPregunta()
         throws Exception {

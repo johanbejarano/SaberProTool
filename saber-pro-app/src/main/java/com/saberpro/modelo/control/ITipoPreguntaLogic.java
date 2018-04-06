@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface ITipoPreguntaLogic {
     public List<TipoPregunta> getTipoPregunta() throws Exception;
+    
+    public List<TipoPregunta> getTipoPregunta(String tipo) throws Exception;
 
     /**
          * Save an new TipoPregunta entity
@@ -57,6 +59,9 @@ public interface ITipoPreguntaLogic {
 
     public List<TipoPreguntaDTO> getDataTipoPregunta()
         throws Exception;
+    
+    public List<TipoPreguntaDTO> getDataTipoPregunta(String tipo)
+            throws Exception;
 
     public void validateTipoPregunta(TipoPregunta tipoPregunta)
         throws Exception;

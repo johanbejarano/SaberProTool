@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IProgramaLogic {
     public List<Programa> getPrograma() throws Exception;
+    
+    public List<Programa> getPrograma(String tipo) throws Exception;
 
     /**
          * Save an new Programa entity
@@ -53,6 +55,8 @@ public interface IProgramaLogic {
     public Long findTotalNumberPrograma() throws Exception;
 
     public List<ProgramaDTO> getDataPrograma() throws Exception;
+    
+    public List<ProgramaDTO> getDataPrograma(String tipo) throws Exception;
 
     public void validatePrograma(Programa programa) throws Exception;
     

@@ -1612,4 +1612,268 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public User loadByCodigoUsuario(long codigo) throws Exception {
 		return usuarioLogic.loadByCodigo(codigo);
 	}
+
+	@Override
+	public List<Usuario> getUsuario(String tipo) throws Exception {
+		return usuarioLogic.getUsuario(tipo);
+	}
+
+	@Override
+	public List<UsuarioDTO> getDataUsuario(String tipo) throws Exception {
+		return usuarioLogic.getDataUsuario(tipo);
+	}
+
+	@Override
+	public List<TipoUsuario> getTipoUsuario(String tipo) throws Exception {
+		return tipoUsuarioLogic.getTipoUsuario(tipo);
+	}
+
+	@Override
+	public List<TipoUsuarioDTO> getDataTipoUsuario(String tipo) throws Exception {
+		return tipoUsuarioLogic.getDataTipoUsuario(tipo);
+	}
+
+	@Override
+	public List<TipoPrueba> getTipoPrueba(String tipo) throws Exception {
+		return tipoPruebaLogic.getTipoPrueba(tipo);
+	}
+
+	@Override
+	public List<TipoPruebaDTO> getDataTipoPrueba(String tipo) throws Exception {
+		return tipoPruebaLogic.getDataTipoPrueba(tipo);
+	}
+
+	@Override
+	public List<TipoPregunta> getTipoPregunta(String tipo) throws Exception {
+		return tipoPreguntaLogic.getTipoPregunta(tipo);
+	}
+
+	@Override
+	public List<TipoPreguntaDTO> getDataTipoPregunta(String tipo) throws Exception {
+		return tipoPreguntaLogic.getDataTipoPregunta(tipo);
+	}
+
+	@Override
+	public List<TipoModulo> getTipoModulo(String tipo) throws Exception {
+		return tipoModuloLogic.getTipoModulo(tipo);
+	}
+
+	@Override
+	public List<TipoModuloDTO> getDataTipoModulo(String tipo) throws Exception {
+		return tipoModuloLogic.getDataTipoModulo(tipo);
+	}
+
+	@Override
+	public List<ResultadoReal> getResultadoReal(String tipo) throws Exception {
+		return resultadoRealLogic.getResultadoReal(tipo);
+	}
+
+	@Override
+	public List<ResultadoRealDTO> getDataResultadoReal(String tipo) throws Exception {
+		return resultadoRealLogic.getDataResultadoReal(tipo);
+	}
+
+	@Override
+	public List<RespuestaPruebaProgramaUsuarioPregunta> getRespuestaPruebaProgramaUsuarioPregunta(String tipo)
+			throws Exception {
+		return respuestaPruebaProgramaUsuarioPreguntaLogic.getRespuestaPruebaProgramaUsuarioPregunta(tipo);
+	}
+
+	@Override
+	public List<RespuestaPruebaProgramaUsuarioPreguntaDTO> getDataRespuestaPruebaProgramaUsuarioPregunta(String tipo)
+			throws Exception {
+		return respuestaPruebaProgramaUsuarioPreguntaLogic.getDataRespuestaPruebaProgramaUsuarioPregunta(tipo);
+	}
+
+	@Override
+	public List<Respuesta> getRespuesta(String tipo) throws Exception {
+		return respuestaLogic.getRespuesta(tipo);
+	}
+
+	@Override
+	public List<RespuestaDTO> getDataRespuesta(String tipo) throws Exception {
+		return respuestaLogic.getDataRespuesta(tipo);
+	}
+
+	@Override
+	public List<PruebaReal> getPruebaReal(String tipo) throws Exception {
+		return pruebaRealLogic.getPruebaReal(tipo);
+	}
+
+	@Override
+	public List<PruebaRealDTO> getDataPruebaReal(String tipo) throws Exception {
+		return pruebaRealLogic.getDataPruebaReal(tipo);
+	}
+
+	@Override
+	public List<Imagen> getImagen(String tipo) throws Exception {
+		return imagenLogic.getImagen(tipo);
+	}
+
+	@Override
+	public List<ImagenDTO> getDataImagen(String tipo) throws Exception {
+		return imagenLogic.getDataImagen(tipo);
+	}
+
+	@Override
+	public List<GrupoOpcion> getGrupoOpcion(String tipo) throws Exception {
+		return grupoOpcionLogic.getGrupoOpcion(tipo);
+	}
+
+	@Override
+	public List<GrupoOpcionDTO> getDataGrupoOpcion(String tipo) throws Exception {
+		return grupoOpcionLogic.getDataGrupoOpcion(tipo);
+	}
+
+	@Override
+	public List<Facultad> getFacultad(String tipo) throws Exception {
+		return facultadLogic.getFacultad(tipo);
+	}
+
+	@Override
+	public List<FacultadDTO> getDataFacultad(String tipo) throws Exception {
+		return facultadLogic.getDataFacultad(tipo);
+	}
+
+	@Override
+	public List<EstadoPrueba> getEstadoPrueba(String tipo) throws Exception {
+		return estadoPruebaLogic.getEstadoPrueba(tipo);
+	}
+
+	@Override
+	public List<EstadoPruebaDTO> getDataEstadoPrueba(String tipo) throws Exception {
+		return estadoPruebaLogic.getDataEstadoPrueba(tipo);
+	}
+
+	@Override
+	public List<PruebaProgramaUsuarioPregunta> getPruebaProgramaUsuarioPregunta(String tipo) throws Exception {
+		return pruebaProgramaUsuarioPreguntaLogic.getPruebaProgramaUsuarioPregunta(tipo);
+	}
+
+	@Override
+	public List<PruebaProgramaUsuarioPreguntaDTO> getDataPruebaProgramaUsuarioPregunta(String tipo) throws Exception {
+		return pruebaProgramaUsuarioPreguntaLogic.getDataPruebaProgramaUsuarioPregunta(tipo);
+	}
+
+	@Override
+	public List<PruebaProgramaUsuario> getPruebaProgramaUsuario(String tipo) throws Exception {
+		return pruebaProgramaUsuarioLogic.getPruebaProgramaUsuario(tipo);
+	}
+
+	@Override
+	public List<PruebaProgramaUsuarioDTO> getDataPruebaProgramaUsuario(String tipo) throws Exception {
+		return pruebaProgramaUsuarioLogic.getDataPruebaProgramaUsuario(tipo);
+	}
+
+	@Override
+	public List<PruebaModulo> getPruebaModulo(String tipo) throws Exception {
+		return pruebaModuloLogic.getPruebaModulo(tipo);
+	}
+
+	@Override
+	public List<PruebaModuloDTO> getDataPruebaModulo(String tipo) throws Exception {
+		return pruebaModuloLogic.getDataPruebaModulo(tipo);
+	}
+
+	@Override
+	public List<Prueba> getPrueba(String tipo) throws Exception {
+		return pruebaLogic.getPrueba(tipo);
+	}
+
+	@Override
+	public List<PruebaDTO> getDataPrueba(String tipo) throws Exception {
+		return pruebaLogic.getDataPrueba(tipo);
+	}
+
+	@Override
+	public List<ProgramaUsuario> getProgramaUsuario(String tipo) throws Exception {
+		return programaUsuarioLogic.getProgramaUsuario(tipo);
+	}
+
+	@Override
+	public List<ProgramaUsuarioDTO> getDataProgramaUsuario(String tipo) throws Exception {
+		return programaUsuarioLogic.getDataProgramaUsuario(tipo);
+	}
+
+	@Override
+	public List<ProgramaModulo> getProgramaModulo(String tipo) throws Exception {
+		return programaModuloLogic.getProgramaModulo(tipo);
+	}
+
+	@Override
+	public List<ProgramaModuloDTO> getDataProgramaModulo(String tipo) throws Exception {
+		return programaModuloLogic.getDataProgramaModulo(tipo);
+	}
+
+	@Override
+	public List<Programa> getPrograma(String tipo) throws Exception {
+		return programaLogic.getPrograma(tipo);
+	}
+
+	@Override
+	public List<ProgramaDTO> getDataPrograma(String tipo) throws Exception {
+		return programaLogic.getDataPrograma(tipo);
+	}
+
+	@Override
+	public List<Pregunta> getPregunta(String tipo) throws Exception {
+		return preguntaLogic.getPregunta(tipo);
+	}
+
+	@Override
+	public List<PreguntaDTO> getDataPregunta(String tipo) throws Exception {
+		return preguntaLogic.getDataPregunta(tipo);
+	}
+
+	@Override
+	public List<Permiso> getPermiso(String tipo) throws Exception {
+		return permisoLogic.getPermiso(tipo);
+	}
+
+	@Override
+	public List<PermisoDTO> getDataPermiso(String tipo) throws Exception {
+		return permisoLogic.getDataPermiso(tipo);
+	}
+
+	@Override
+	public List<Parametro> getParametro(String tipo) throws Exception {
+		return parametroLogic.getParametro(tipo);
+	}
+
+	@Override
+	public List<ParametroDTO> getDataParametro(String tipo) throws Exception {
+		return parametroLogic.getDataParametro(tipo);
+	}
+
+	@Override
+	public List<Opcion> getOpcion(String tipo) throws Exception {
+		return opcionLogic.getOpcion(tipo);
+	}
+
+	@Override
+	public List<OpcionDTO> getDataOpcion(String tipo) throws Exception {
+		return opcionLogic.getDataOpcion(tipo);
+	}
+
+	@Override
+	public List<Modulo> getModulo(String tipo) throws Exception {
+		return moduloLogic.getModulo(tipo);
+	}
+
+	@Override
+	public List<ModuloDTO> getDataModulo(String tipo) throws Exception {
+		return moduloLogic.getDataModulo(tipo);
+	}
+
+	@Override
+	public List<Matricula> getMatricula(String tipo) throws Exception {
+		return matriculaLogic.getMatricula(tipo);
+	}
+
+	@Override
+	public List<MatriculaDTO> getDataMatricula(String tipo) throws Exception {
+		return matriculaLogic.getDataMatricula(tipo);
+	}
+
+	
 }

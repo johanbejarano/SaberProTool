@@ -101,6 +101,24 @@ public class OpcionLogic implements IOpcionLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Opcion> getOpcion(String tipo) throws Exception {
+        log.debug("finding all Opcion instances");
+
+        List<Opcion> list = new ArrayList<Opcion>();
+
+        try {
+            list = opcionDAO.findAll();
+        } catch (Exception e) {
+            log.error("finding all Opcion failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Opcion");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveOpcion(Opcion entity) throws Exception {
@@ -173,6 +191,24 @@ public class OpcionLogic implements IOpcionLogic {
     public List<OpcionDTO> getDataOpcion() throws Exception {
         try {
             List<Opcion> opcion = opcionDAO.findAll();
+
+            List<OpcionDTO> opcionDTO = new ArrayList<OpcionDTO>();
+
+            for (Opcion opcionTmp : opcion) {
+                OpcionDTO opcionDTO2 = opcionMapper.opcionToOpcionDTO(opcionTmp);
+                opcionDTO.add(opcionDTO2);
+            }
+
+            return opcionDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<OpcionDTO> getDataOpcion(String tipo) throws Exception {
+        try {
+            List<Opcion> opcion = opcionDAO.findAll(tipo);
 
             List<OpcionDTO> opcionDTO = new ArrayList<OpcionDTO>();
 

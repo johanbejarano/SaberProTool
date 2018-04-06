@@ -125,6 +125,25 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<PruebaProgramaUsuario> getPruebaProgramaUsuario(String tipo)
+        throws Exception {
+        log.debug("finding all PruebaProgramaUsuario instances");
+
+        List<PruebaProgramaUsuario> list = new ArrayList<PruebaProgramaUsuario>();
+
+        try {
+            list = pruebaProgramaUsuarioDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all PruebaProgramaUsuario failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "PruebaProgramaUsuario");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePruebaProgramaUsuario(PruebaProgramaUsuario entity)
@@ -215,6 +234,25 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
         throws Exception {
         try {
             List<PruebaProgramaUsuario> pruebaProgramaUsuario = pruebaProgramaUsuarioDAO.findAll();
+
+            List<PruebaProgramaUsuarioDTO> pruebaProgramaUsuarioDTO = new ArrayList<PruebaProgramaUsuarioDTO>();
+
+            for (PruebaProgramaUsuario pruebaProgramaUsuarioTmp : pruebaProgramaUsuario) {
+                PruebaProgramaUsuarioDTO pruebaProgramaUsuarioDTO2 = pruebaProgramaUsuarioMapper.pruebaProgramaUsuarioToPruebaProgramaUsuarioDTO(pruebaProgramaUsuarioTmp);
+                pruebaProgramaUsuarioDTO.add(pruebaProgramaUsuarioDTO2);
+            }
+
+            return pruebaProgramaUsuarioDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<PruebaProgramaUsuarioDTO> getDataPruebaProgramaUsuario(String tipo)
+        throws Exception {
+        try {
+            List<PruebaProgramaUsuario> pruebaProgramaUsuario = pruebaProgramaUsuarioDAO.findAll(tipo);
 
             List<PruebaProgramaUsuarioDTO> pruebaProgramaUsuarioDTO = new ArrayList<PruebaProgramaUsuarioDTO>();
 

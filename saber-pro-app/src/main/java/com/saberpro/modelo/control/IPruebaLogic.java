@@ -18,6 +18,8 @@ import java.util.Set;
 */
 public interface IPruebaLogic {
     public List<Prueba> getPrueba() throws Exception;
+    
+    public List<Prueba> getPrueba(String tipo) throws Exception;
 
     /**
          * Save an new Prueba entity
@@ -53,6 +55,8 @@ public interface IPruebaLogic {
     public Long findTotalNumberPrueba() throws Exception;
 
     public List<PruebaDTO> getDataPrueba() throws Exception;
+    
+    public List<PruebaDTO> getDataPrueba(String tipo) throws Exception;
 
     public void validatePrueba(Prueba prueba) throws Exception;
     

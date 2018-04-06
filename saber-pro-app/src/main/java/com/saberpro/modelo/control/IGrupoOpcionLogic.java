@@ -19,6 +19,8 @@ import java.util.Set;
 */
 public interface IGrupoOpcionLogic {
     public List<GrupoOpcion> getGrupoOpcion() throws Exception;
+    
+    public List<GrupoOpcion> getGrupoOpcion(String tipo) throws Exception;
 
     /**
          * Save an new GrupoOpcion entity
@@ -55,6 +57,8 @@ public interface IGrupoOpcionLogic {
     public Long findTotalNumberGrupoOpcion() throws Exception;
 
     public List<GrupoOpcionDTO> getDataGrupoOpcion() throws Exception;
+    
+    public List<GrupoOpcionDTO> getDataGrupoOpcion(String tipo) throws Exception;
 
     public void validateGrupoOpcion(GrupoOpcion grupoOpcion)
         throws Exception;

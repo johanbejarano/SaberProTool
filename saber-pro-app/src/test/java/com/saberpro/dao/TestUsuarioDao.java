@@ -118,7 +118,7 @@ public class TestUsuarioDao {
 		assertNotNull("El tipousuarioDao es null",tipoUsuarioDao);
 		assertNotNull("El usuarioDao es null",usuarioDao);
 		
-		List<Usuario> list = usuarioDao.findAllS();
+		List<Usuario> list = usuarioDao.findAll();
 		
 		log.info("tamaño "+list.size());
 		for (Usuario usuario : list) {

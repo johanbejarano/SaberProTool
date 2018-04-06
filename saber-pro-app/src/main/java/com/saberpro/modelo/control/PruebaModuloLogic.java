@@ -109,6 +109,24 @@ public class PruebaModuloLogic implements IPruebaModuloLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<PruebaModulo> getPruebaModulo(String tipo) throws Exception {
+        log.debug("finding all PruebaModulo instances");
+
+        List<PruebaModulo> list = new ArrayList<PruebaModulo>();
+
+        try {
+            list = pruebaModuloDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all PruebaModulo failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "PruebaModulo");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePruebaModulo(PruebaModulo entity) throws Exception {
@@ -184,6 +202,25 @@ public class PruebaModuloLogic implements IPruebaModuloLogic {
         throws Exception {
         try {
             List<PruebaModulo> pruebaModulo = pruebaModuloDAO.findAll();
+
+            List<PruebaModuloDTO> pruebaModuloDTO = new ArrayList<PruebaModuloDTO>();
+
+            for (PruebaModulo pruebaModuloTmp : pruebaModulo) {
+                PruebaModuloDTO pruebaModuloDTO2 = pruebaModuloMapper.pruebaModuloToPruebaModuloDTO(pruebaModuloTmp);
+                pruebaModuloDTO.add(pruebaModuloDTO2);
+            }
+
+            return pruebaModuloDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<PruebaModuloDTO> getDataPruebaModulo(String tipo)
+        throws Exception {
+        try {
+            List<PruebaModulo> pruebaModulo = pruebaModuloDAO.findAll(tipo);
 
             List<PruebaModuloDTO> pruebaModuloDTO = new ArrayList<PruebaModuloDTO>();
 

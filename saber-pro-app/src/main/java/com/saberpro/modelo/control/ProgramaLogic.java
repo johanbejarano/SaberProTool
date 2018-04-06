@@ -115,6 +115,24 @@ public class ProgramaLogic implements IProgramaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Programa> getPrograma(String tipo) throws Exception {
+        log.debug("finding all Programa instances");
+
+        List<Programa> list = new ArrayList<Programa>();
+
+        try {
+            list = programaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Programa failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Programa");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void savePrograma(Programa entity) throws Exception {
@@ -206,6 +224,24 @@ public class ProgramaLogic implements IProgramaLogic {
     public List<ProgramaDTO> getDataPrograma() throws Exception {
         try {
             List<Programa> programa = programaDAO.findAll();
+
+            List<ProgramaDTO> programaDTO = new ArrayList<ProgramaDTO>();
+
+            for (Programa programaTmp : programa) {
+                ProgramaDTO programaDTO2 = programaMapper.programaToProgramaDTO(programaTmp);
+                programaDTO.add(programaDTO2);
+            }
+
+            return programaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ProgramaDTO> getDataPrograma(String tipo) throws Exception {
+        try {
+            List<Programa> programa = programaDAO.findAll(tipo);
 
             List<ProgramaDTO> programaDTO = new ArrayList<ProgramaDTO>();
 

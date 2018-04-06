@@ -62,7 +62,8 @@ public interface IUsuarioLogic {
     
     public User loadByCodigo(long codigo) throws Exception;
     
+    public List<Usuario> getUsuario(String tipo) throws Exception;
     
-    
+    public List<UsuarioDTO> getDataUsuario(String tipo) throws Exception;
     
 }

@@ -102,6 +102,24 @@ public class EstadoPruebaLogic implements IEstadoPruebaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<EstadoPrueba> getEstadoPrueba(String tipo) throws Exception {
+        log.debug("finding all EstadoPrueba instances");
+
+        List<EstadoPrueba> list = new ArrayList<EstadoPrueba>();
+
+        try {
+            list = estadoPruebaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all EstadoPrueba failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "EstadoPrueba");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveEstadoPrueba(EstadoPrueba entity) throws Exception {
@@ -187,6 +205,25 @@ public class EstadoPruebaLogic implements IEstadoPruebaLogic {
         throws Exception {
         try {
             List<EstadoPrueba> estadoPrueba = estadoPruebaDAO.findAll();
+
+            List<EstadoPruebaDTO> estadoPruebaDTO = new ArrayList<EstadoPruebaDTO>();
+
+            for (EstadoPrueba estadoPruebaTmp : estadoPrueba) {
+                EstadoPruebaDTO estadoPruebaDTO2 = estadoPruebaMapper.estadoPruebaToEstadoPruebaDTO(estadoPruebaTmp);
+                estadoPruebaDTO.add(estadoPruebaDTO2);
+            }
+
+            return estadoPruebaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<EstadoPruebaDTO> getDataEstadoPrueba(String tipo)
+        throws Exception {
+        try {
+            List<EstadoPrueba> estadoPrueba = estadoPruebaDAO.findAll(tipo);
 
             List<EstadoPruebaDTO> estadoPruebaDTO = new ArrayList<EstadoPruebaDTO>();
 

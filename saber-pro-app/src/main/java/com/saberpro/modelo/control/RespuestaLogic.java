@@ -109,6 +109,24 @@ public class RespuestaLogic implements IRespuestaLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Respuesta> getRespuesta(String tipo) throws Exception {
+        log.debug("finding all Respuesta instances");
+
+        List<Respuesta> list = new ArrayList<Respuesta>();
+
+        try {
+            list = respuestaDAO.findAll(tipo);
+        } catch (Exception e) {
+            log.error("finding all Respuesta failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "Respuesta");
+        } finally {
+        }
+
+        return list;
+    }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveRespuesta(Respuesta entity) throws Exception {
@@ -207,6 +225,24 @@ public class RespuestaLogic implements IRespuestaLogic {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<RespuestaDTO> getDataRespuesta(String tipo) throws Exception {
+        try {
+            List<Respuesta> respuesta = respuestaDAO.findAll(tipo);
+
+            List<RespuestaDTO> respuestaDTO = new ArrayList<RespuestaDTO>();
+
+            for (Respuesta respuestaTmp : respuesta) {
+                RespuestaDTO respuestaDTO2 = respuestaMapper.respuestaToRespuestaDTO(respuestaTmp);
+                respuestaDTO.add(respuestaDTO2);
+            }
+
+            return respuestaDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     @Transactional(readOnly = true)
     public Respuesta getRespuesta(Long idRespuesta) throws Exception {
         log.debug("getting Respuesta instance");

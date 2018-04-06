@@ -8,6 +8,11 @@ public class Constantes {
 	//Generales
 	public static final String ESTADO_ACTIVO = "S";
 	public static final String ESTADO_INACTIVO = "N";
+	public static final String ESTADO_PENDIENTE= "P";
+	
+	//Genero
+	public static String GENERO_MASCULINO = "M";
+	public static String GENERO_FEMENINO = "F";
 	
 	//Roles
 	public static final long USER_TYPE_ESTUDIANTE = 1L;
@@ -37,4 +42,7 @@ public class Constantes {
 	
 	//Formatos
 	 public static final DateFormat FORMATO_FECHA_SIMPLE = new SimpleDateFormat("dd/MM/yyyy");
+	 
+	//Ruta de las vistas
+	 public static final String RUTA_BASE = "#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/";
 }
