@@ -1875,5 +1875,21 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return matriculaLogic.getDataMatricula(tipo);
 	}
 
+	@Override
+	public Usuario findByEmailUsuario(String email) throws Exception {
+		return usuarioLogic.findByEmail(email);
+	}
+
+	@Override
+	public void resetByEmailUsuario(String email) throws Exception {
+		usuarioLogic.resetByEmail(email);
+		
+	}
+
+	@Override
+	public String encodePasswordUsuario(String code) throws Exception {
+		return usuarioLogic.encodePassword(code);
+	}
+
 	
 }

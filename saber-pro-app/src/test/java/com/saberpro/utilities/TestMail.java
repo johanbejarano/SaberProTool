@@ -31,8 +31,8 @@ public class TestMail {
 		list.add(new Documento("monodevelop.jpg","/home/jhony/Imágenes/icon/monodevelop.jpg"));
 		
 		try {
-			//email.sendSimple("jhonypk18@gmail.com", "prueba", "<h1>prueba</h1>");
-			//email.sendSimpleHtml("jhonypk18@gmail.com", "prueba", "<h1>prueba</h1>");
+			email.sendSimpleMessage("jhonypk18@gmail.com", "prueba", "prueba");
+			email.sendSimpleHtml("jhonypk18@gmail.com", "prueba", "<h1>prueba</h1>");
 			//email.sendMessageWithAttachmentHtml("jhonypk18@gmail.com", "prueba", "<h1>prueba</h1>",list);
 			//email.sendMessageWithAttachment("jhonypk18@gmail.com", "prueba", "<h1>prueba</h1>",list);
 			

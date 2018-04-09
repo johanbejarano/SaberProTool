@@ -8,7 +8,9 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.UsuarioDTO;
+import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.Email;
+import com.saberpro.utilities.PasswordGenerator;
 import com.saberpro.utilities.Utilities;
 
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -58,9 +61,13 @@ public class UsuarioLogic implements IUsuarioLogic {
     @Autowired
     private IGrupoOpcionDAO grupoOpcionDao;
     @Autowired
-    private Validator validator;
+    private Validator validator;    
     @Autowired
-    private Email email;
+    private PasswordGenerator passwordGenerator;
+    @Autowired
+    private Email emailCorreo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
     * DAO injected by Spring that manages Matricula entities
@@ -156,12 +163,17 @@ public class UsuarioLogic implements IUsuarioLogic {
             if (getUsuario(entity.getIdUsuario()) != null) {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
-
+            
+            String password = passwordGenerator.password(8);
+            
+            entity.setPassword(password);
+            entity.setActivo(Constantes.ESTADO_PENDIENTE);
+            
             usuarioDAO.save(entity);
             log.debug("save Usuario successful");
             
-            String message = "Se creo la cuenta correctamente\n\nSu codigo de acesso es: "+entity.getCodigo()+"\nSu contraseña es: "+entity.getPassword()+"\n\nGracias";
-            email.sendSimpleHtml(entity.getCorreo(),"SaberProTool: Creacion de cuenta",message);
+            String message = "Se creo la cuenta correctamente\n\nSu codigo de acesso es: "+entity.getCodigo()+"\nSu contraseña es: "+password+"\n\nGracias";
+            emailCorreo.sendSimpleMessage(entity.getCorreo(),"SaberProTool: Creacion de cuenta",message);
         } catch (Exception e) {
             log.error("save Usuario failed", e);
             throw e;
@@ -215,7 +227,7 @@ public class UsuarioLogic implements IUsuarioLogic {
 
         try {
             if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("Usuario");
+            	throw new Exception("El usuario no puede ser nulo");
             }
 
             validateUsuario(entity);
@@ -484,6 +496,7 @@ public class UsuarioLogic implements IUsuarioLogic {
     }
 
 	@Override
+	@Transactional(readOnly = true)
 	public Usuario findByCodigo(long codigo) throws Exception {
 		 log.debug("getting Usuario instance");
 
@@ -499,8 +512,27 @@ public class UsuarioLogic implements IUsuarioLogic {
 
 	        return entity;
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario findByEmail(String email) throws Exception {
+		 log.debug("getting Usuario instance");
+
+	        Usuario entity = null;
+
+	        try {
+	            entity = usuarioDAO.findByEmail(email);
+	        } catch (Exception e) {
+	            log.error("get Usuario failed", e);
+	            throw new ZMessManager().new FindingException("Usuario");
+	        } finally {
+	        }
+
+	        return entity;
+	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public User loadByCodigo(long codigo) throws Exception {
 		
 		Usuario usuario = usuarioDAO.findByCodigo(codigo);
@@ -520,6 +552,42 @@ public class UsuarioLogic implements IUsuarioLogic {
 		else {
 			throw new UsernameNotFoundException("Usuario no encontrado");
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void resetByEmail(String email) throws Exception {
+		log.debug("updating Usuario instance");
+
+        try {
+        	Usuario usuario = usuarioDAO.findByEmail(email);
+            if (usuario == null) {
+                throw new ZMessManager().new NullEntityExcepcion("Usuario");
+            }
+            
+            String password = passwordGenerator.password(8);
+            
+            usuario.setPassword(passwordEncoder.encode(password));  
+            usuario.setActivo(Constantes.ESTADO_PENDIENTE);
+            
+            validateUsuario(usuario);
+
+            usuarioDAO.update(usuario);
+            
+            String message = "Se reseteo clave de la cuenta correctamente\n\nSu codigo de acesso es: "+usuario.getCodigo()+"\nSu contraseña es: "+password+"\n\nGracias";
+            emailCorreo.sendSimpleMessage(usuario.getCorreo(),"SaberProTool: Reset password",message);
+
+            log.debug("update Usuario successful");
+        } catch (Exception e) {
+            log.error("update Usuario failed", e);
+            throw e;
+        } finally {
+        }
+	}
+
+	@Override
+	public String encodePassword(String code) throws Exception {
+		return passwordEncoder.encode(code);
 	}
 
 }

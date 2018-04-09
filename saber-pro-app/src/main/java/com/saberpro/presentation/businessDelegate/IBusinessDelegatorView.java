@@ -602,6 +602,10 @@ public interface IBusinessDelegatorView {
 	public void validateProgramaUsuario(ProgramaUsuario programaUsuario) throws Exception;
 
 	public Usuario findByCodigoUsuario(long codigo) throws Exception;
+	
+	public Usuario findByEmailUsuario(String email) throws Exception;
+	
+	public void resetByEmailUsuario(String email) throws Exception;
 
 	public User loadByCodigoUsuario(long codigo) throws Exception;
 
@@ -715,4 +719,6 @@ public interface IBusinessDelegatorView {
 	 public List<Matricula> getMatricula(String tipo) throws Exception;
 	 
 	 public List<MatriculaDTO> getDataMatricula(String tipo) throws Exception;
+	 
+	 public String encodePasswordUsuario(String code) throws Exception;
 }

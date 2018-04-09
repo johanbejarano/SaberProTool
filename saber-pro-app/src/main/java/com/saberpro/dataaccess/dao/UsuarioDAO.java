@@ -48,14 +48,16 @@ public class UsuarioDAO extends JpaDaoImpl<Usuario, Long> implements IUsuarioDAO
 	}
 	
 	@Override
+	public Usuario findByEmail(String email) {
+		return (Usuario)entityManager.createQuery("SELECT usu FROM Usuario usu WHERE usu.correo=:email").setParameter("email",email.toLowerCase()).getSingleResult();
+		
+	}
+	
+	@Override
 	public void save(Usuario usuario)throws DaoException {
 		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		entityManager.persist(usuario);
 	}
-	@Override
-	public void update(Usuario usuario) throws DaoException {
-		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        entityManager.merge(usuario);
-    }
+	
     
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
+import com.saberpro.utilities.FacesUtils;;
 
 
 
@@ -43,8 +44,10 @@ public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider
 			if (user != null) {
 
 				if (passwordEncoder.matches(password, user.getPassword())) {
-					return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
-							user.getAuthorities());
+					
+					FacesUtils.putinSession("usuario",businessDelegatorView.findByCodigoUsuario(codigo));  
+					
+					return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities());
 
 				} else {
 					throw new BadCredentialsException("Error en login");

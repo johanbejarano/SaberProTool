@@ -1,6 +1,7 @@
 package com.saberpro.presentation.backingBeans;
 
-import com.saberpro.utilities.*;
+
+
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,9 +10,15 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import com.saberpro.utilities.Constantes;
+import com.saberpro.utilities.FacesUtils;
+import com.saberpro.modelo.Usuario;
 
 
 @ViewScoped
@@ -49,20 +56,30 @@ public class LoginView {
 
     public String login() {
         try {
-            Authentication request = new UsernamePasswordAuthenticationToken(this.getUserId(),
-                    this.getPassword());
+            Authentication request = new UsernamePasswordAuthenticationToken(this.getUserId(),this.getPassword());
             Authentication result = authenticationManager.authenticate(request);
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(result);
 
-            FacesUtils.getHttpSession(true)
-                      .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+            FacesUtils.getHttpSession(true).setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+            
+            Usuario usuario = (Usuario)FacesUtils.getfromSession("usuario");
+            
+            if(usuario.getActivo().equals(Constantes.ESTADO_PENDIENTE)) {
+            	return "/cambiarPassword.xhtml";
+            }
+            else if(usuario.getActivo().equals(Constantes.ESTADO_ACTIVO)) {
+            	return "/XHTML/initialMenu.xhtml\";";
+            }
+            else if(usuario.getActivo().equals(Constantes.ESTADO_INACTIVO)) {
+            	FacesContext.getCurrentInstance().addMessage("",new FacesMessage(FacesMessage.SEVERITY_ERROR,"La cuenta no esta activa", ""));
+            }            
+            
         } catch (AuthenticationException e) {
-            FacesUtils.addErrorMessage("authfailed login or password");
-
-            return "/login.xhtml";
+        	FacesContext.getCurrentInstance().addMessage("",new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));      
         }
-
-        return "/XHTML/initialMenu.xhtml";
+        
+        return "/login.xhtml";
+        
     }
 }

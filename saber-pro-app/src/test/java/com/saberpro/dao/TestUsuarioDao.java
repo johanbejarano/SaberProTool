@@ -142,5 +142,20 @@ public class TestUsuarioDao {
 		
 
 	}
+	
+	@Test	
+	@Transactional(readOnly = true)
+	public void testfConsultaEmail() {
+
+		assertNotNull("El tipousuarioDao es null",tipoUsuarioDao);
+		assertNotNull("El usuarioDao es null",usuarioDao);
+		
+		Usuario usuario = usuarioDao.findByEmail("mariok24@gmail.com");
+		
+		log.info(usuario.toString());
+		
+		
+
+	}
 
 }

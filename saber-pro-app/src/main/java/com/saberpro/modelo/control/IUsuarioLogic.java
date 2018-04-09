@@ -60,7 +60,13 @@ public interface IUsuarioLogic {
     
     public Usuario findByCodigo(long codigo) throws Exception;
     
+    public Usuario findByEmail(String email) throws Exception;
+    
+    public void resetByEmail(String email) throws Exception;
+    
     public User loadByCodigo(long codigo) throws Exception;
+    
+    public String encodePassword(String code)throws Exception;
     
     public List<Usuario> getUsuario(String tipo) throws Exception;
     
