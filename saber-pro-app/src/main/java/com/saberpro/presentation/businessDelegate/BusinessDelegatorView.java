@@ -1936,5 +1936,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return usuarioLogic.findDataByCodigo(codigo);
 	}
 
+	@Override
+	public Facultad findByNombreFacultad(String nombre) throws Exception {
+		return facultadLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public FacultadDTO findDataByNombreFacultad(String nombre) throws Exception {
+		return facultadLogic.findDataByNombre(nombre);
+	}
+
 	
 }

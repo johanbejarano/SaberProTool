@@ -3,6 +3,7 @@ package com.saberpro.dataaccess.dao;
 import com.saberpro.dataaccess.api.JpaDaoImpl;
 
 import com.saberpro.modelo.Facultad;
+import com.saberpro.modelo.Usuario;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,4 +38,9 @@ public class FacultadDAO extends JpaDaoImpl<Facultad, Long>
     public static IFacultadDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IFacultadDAO) ctx.getBean("FacultadDAO");
     }
+
+	@Override
+	public Facultad findByNombre(String nombre) {
+		return (Facultad)entityManager.createQuery("SELECT fac FROM Facultad fac WHERE UPPER(sinacentos(fac.nombre))=UPPER(sinacentos(:nombre))").setParameter("nombre",nombre).getSingleResult();
+	}
 }

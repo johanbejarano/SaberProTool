@@ -57,6 +57,10 @@ public interface IFacultadLogic {
     public List<FacultadDTO> getDataFacultad() throws Exception;
     
     public List<FacultadDTO> getDataFacultad(String tipo) throws Exception;
+    
+    public Facultad findByNombre(String nombre)throws Exception;
+    
+    public FacultadDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateFacultad(Facultad facultad) throws Exception;
 }

@@ -42,11 +42,11 @@ public class OpcionDAO extends JpaDaoImpl<Opcion, Long> implements IOpcionDAO {
 
 	@Override
 	public List<Opcion> findByGrupo(long grupo) throws DaoException {
-		return entityManager.createQuery("select opc from GrupoOpcion gru,Opcion opc where gru.idGrupoOpcion=opc.grupoOpcion.idGrupoOpcion and opc.grupoOpcion.idGrupoOpcion=:grupo").setParameter("grupo",grupo).getResultList();
+		return entityManager.createQuery("select opc from GrupoOpcion gru,Opcion opc where gru.idGrupoOpcion=opc.grupoOpcion.idGrupoOpcion and opc.grupoOpcion.idGrupoOpcion=:grupo order by opc.nombre").setParameter("grupo",grupo).getResultList();
 	}
 	
 	@Override
 	public List<Opcion> findByGrupo(long grupo,String activo) throws DaoException {
-		return entityManager.createQuery("select opc from GrupoOpcion gru,Opcion opc where gru.idGrupoOpcion=opc.grupoOpcion.idGrupoOpcion and opc.grupoOpcion.idGrupoOpcion=:grupo and opc.activo=:activo").setParameter("grupo",grupo).setParameter("activo",activo).getResultList();
+		return entityManager.createQuery("select opc from GrupoOpcion gru,Opcion opc where gru.idGrupoOpcion=opc.grupoOpcion.idGrupoOpcion and opc.grupoOpcion.idGrupoOpcion=:grupo and opc.activo=:activo order by opc.nombre").setParameter("grupo",grupo).setParameter("activo",activo).getResultList();
 	}
 }

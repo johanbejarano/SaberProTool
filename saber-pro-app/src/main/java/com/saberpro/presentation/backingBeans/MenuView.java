@@ -1,10 +1,12 @@
 package com.saberpro.presentation.backingBeans;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -13,7 +15,7 @@ import org.primefaces.model.menu.MenuModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.saberpro.modelo.Usuario;
+
 import com.saberpro.modelo.dto.GrupoOpcionDTO;
 import com.saberpro.modelo.dto.OpcionDTO;
 import com.saberpro.modelo.dto.UsuarioDTO;
@@ -50,7 +52,7 @@ public class MenuView {
 					
 					DefaultSubMenu  subMenu = new DefaultSubMenu();
 					subMenu.setLabel(grupoOpcionDTO.getNombre());
-					subMenu.setIcon("ui-icon-help");
+					subMenu.setIcon(grupoOpcionDTO.getIcon());
 					
 					List<OpcionDTO> opciones = businessDelegatorView.findByDataGrupoOpcion(grupoOpcionDTO.getIdGrupoOpcion(),Constantes.ESTADO_ACTIVO);
 				
@@ -61,7 +63,7 @@ public class MenuView {
 						menuItem.setHref(opcionDTO.getRuta());
 						menuItem.setValue(opcionDTO.getNombre());
 						menuItem.setTitle(opcionDTO.getNombre());
-						//menuItem.setUrl();
+						
 						subMenu.addElement(menuItem);
 					}
 					model.addElement(subMenu);
@@ -70,6 +72,12 @@ public class MenuView {
 				
 			
 			} catch (Exception e) {
+				log.debug("error de "+e.getMessage());
+			}
+		} else {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/saber-pro-app/login.xhtml");
+			} catch (IOException e) {
 				log.debug("error de "+e.getMessage());
 			}
 		}

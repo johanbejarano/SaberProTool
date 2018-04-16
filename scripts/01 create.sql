@@ -6,7 +6,7 @@
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_estado_prueba));
 CREATE TABLE Facultad (
   id_facultad        BIGSERIAL NOT NULL, 
@@ -16,7 +16,7 @@ CREATE TABLE Facultad (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_facultad));
 CREATE TABLE Grupo_Opcion (
   id_grupo_opcion    BIGSERIAL NOT NULL, 
@@ -27,7 +27,7 @@ CREATE TABLE Grupo_Opcion (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_grupo_opcion));
 CREATE TABLE Imagen (
   id_imagen          BIGSERIAL NOT NULL, 
@@ -38,7 +38,7 @@ CREATE TABLE Imagen (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_pregunta        int8 NOT NULL, 
   PRIMARY KEY (id_imagen));
 CREATE TABLE Matricula (
@@ -61,7 +61,7 @@ CREATE TABLE Modulo (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_tipo_modulo     int8 NOT NULL, 
   PRIMARY KEY (id_modulo));
 CREATE TABLE Opcion (
@@ -73,7 +73,7 @@ CREATE TABLE Opcion (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_grupo_opcion    int8 NOT NULL, 
   PRIMARY KEY (id_opcion));
 CREATE TABLE Parametro (
@@ -85,7 +85,7 @@ CREATE TABLE Parametro (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_parametro));
 CREATE TABLE Permiso (
   id_permiso         BIGSERIAL NOT NULL, 
@@ -93,7 +93,7 @@ CREATE TABLE Permiso (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_tipo_usuario    int8 NOT NULL, 
   id_grupo_opcion    int8 NOT NULL, 
   PRIMARY KEY (id_permiso));
@@ -105,7 +105,7 @@ CREATE TABLE Pregunta (
   fecha_modificacion   timestamp, 
   usu_creador          int8 NOT NULL, 
   usu_modificador      int8, 
-  activo               char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo               char(1) NOT NULL, 
   id_modulo            int8 NOT NULL, 
   id_tipo_pregunta     int8 NOT NULL, 
   PRIMARY KEY (id_pregunta));
@@ -117,7 +117,7 @@ CREATE TABLE Programa (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_facultad        int8 NOT NULL, 
   PRIMARY KEY (id_programa));
 CREATE TABLE Programa_Modulo (
@@ -126,7 +126,7 @@ CREATE TABLE Programa_Modulo (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_programa        int8 NOT NULL, 
   id_modulo          int8 NOT NULL, 
   PRIMARY KEY (id_programa_modulo));
@@ -149,7 +149,7 @@ CREATE TABLE Prueba (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_tipo_prueba     int8 NOT NULL, 
   PRIMARY KEY (id_prueba));
 CREATE TABLE Prueba_Modulo (
@@ -159,7 +159,7 @@ CREATE TABLE Prueba_Modulo (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_prueba          int8 NOT NULL, 
   id_modulo          int8 NOT NULL, 
   PRIMARY KEY (id_prueba_modulo));
@@ -169,7 +169,7 @@ CREATE TABLE Prueba_Programa_Usuario (
   fecha_modificacion         timestamp, 
   usu_creador                int8 NOT NULL, 
   usu_modificador            int8, 
-  activo                     char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo                     char(1) NOT NULL, 
   id_prueba                  int8 NOT NULL, 
   id_programa_usuario        int8 NOT NULL, 
   id_estado_prueba           int8 NOT NULL, 
@@ -180,7 +180,7 @@ CREATE TABLE Prueba_Programa_Usuario_Pregunta (
   fecha_modificacion                  timestamp, 
   usu_creador                         int8 NOT NULL, 
   usu_modificador                     int8, 
-  activo                              char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo                              char(1) NOT NULL, 
   id_prueba_programa_usuario          int8 NOT NULL, 
   id_pregunta                         int8 NOT NULL, 
   PRIMARY KEY (id_prueba_programa_usuario_pregunta));
@@ -202,7 +202,7 @@ CREATE TABLE Respuesta (
   fecha_modificacion    timestamp, 
   usu_creador           int8 NOT NULL, 
   usu_modificador       int8, 
-  activo                char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo                char(1) NOT NULL, 
   id_pregunta           int8 NOT NULL, 
   PRIMARY KEY (id_respuesta));
 CREATE TABLE Respuesta_Prueba_Programa_Usuario_Pregunta (
@@ -212,7 +212,7 @@ CREATE TABLE Respuesta_Prueba_Programa_Usuario_Pregunta (
   fecha_modificacion                            timestamp, 
   usu_creador                                   int8 NOT NULL, 
   usu_modificador                               int8, 
-  activo                                        char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo                                        char(1) NOT NULL, 
   id_respuesta                                  int8 NOT NULL, 
   id_prueba_programa_usuario_pregunta           int8 NOT NULL, 
   PRIMARY KEY (id_Respuesta_Prueba_Programa_Usuario_Pregunta));
@@ -236,7 +236,7 @@ CREATE TABLE Tipo_Modulo (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_tipo_modulo));
 CREATE TABLE Tipo_pregunta (
   id_tipo_pregunta   BIGSERIAL NOT NULL, 
@@ -246,7 +246,7 @@ CREATE TABLE Tipo_pregunta (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_tipo_pregunta));
 CREATE TABLE Tipo_Prueba (
   id_tipo_prueba     BIGSERIAL NOT NULL, 
@@ -256,7 +256,7 @@ CREATE TABLE Tipo_Prueba (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_tipo_prueba));
 CREATE TABLE Tipo_Usuario (
   id_tipo_usuario    BIGSERIAL NOT NULL, 
@@ -266,7 +266,7 @@ CREATE TABLE Tipo_Usuario (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   PRIMARY KEY (id_tipo_usuario));
 CREATE TABLE Usuario (
   id_usuario         BIGSERIAL NOT NULL, 
@@ -282,7 +282,7 @@ CREATE TABLE Usuario (
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
   usu_modificador    int8, 
-  activo             char(1) NOT NULL CHECK(activo in ('S','N','P')), 
+  activo             char(1) NOT NULL, 
   id_tipo_usuario    int8 NOT NULL, 
   PRIMARY KEY (id_usuario));
 CREATE INDEX Facultad_id_facultad 
@@ -371,3 +371,10 @@ ALTER TABLE Programa_Modulo ADD CONSTRAINT FKPrograma_M775127 FOREIGN KEY (id_pr
 ALTER TABLE Programa_Usuario ADD CONSTRAINT FKPrograma_U742836 FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario);
 ALTER TABLE Programa_Usuario ADD CONSTRAINT FKPrograma_U800424 FOREIGN KEY (id_programa) REFERENCES Programa (id_programa);
 ALTER TABLE Programa ADD CONSTRAINT FKPrograma210184 FOREIGN KEY (id_facultad) REFERENCES Facultad (id_facultad);
+
+create or replace function sinacentos (text) returns text AS $$
+select translate($1,'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU');
+$$ language sql;
+
+
+

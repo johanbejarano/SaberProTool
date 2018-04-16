@@ -34,8 +34,7 @@ public class UsuarioDAO extends JpaDaoImpl<Usuario, Long> implements IUsuarioDAO
     @PersistenceContext
     private EntityManager entityManager;
     
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    
 
     public static IUsuarioDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IUsuarioDAO) ctx.getBean("UsuarioDAO");
@@ -51,13 +50,8 @@ public class UsuarioDAO extends JpaDaoImpl<Usuario, Long> implements IUsuarioDAO
 	public Usuario findByEmail(String email) {
 		return (Usuario)entityManager.createQuery("SELECT usu FROM Usuario usu WHERE usu.correo=:email").setParameter("email",email.toLowerCase()).getSingleResult();
 		
-	}
+	}	
 	
-	@Override
-	public void save(Usuario usuario)throws DaoException {
-		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-		entityManager.persist(usuario);
-	}
 	
     
 }

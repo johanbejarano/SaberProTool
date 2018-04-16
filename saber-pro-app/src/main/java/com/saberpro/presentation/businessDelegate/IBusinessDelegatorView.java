@@ -739,4 +739,8 @@ public interface IBusinessDelegatorView {
 	 public List<OpcionDTO> findByDataGrupoOpcion(long grupo,String activo)throws Exception;
 	 
 	 public UsuarioDTO findDataByCodigoUsuario(long codigo) throws Exception;
+	 
+	 public Facultad findByNombreFacultad(String nombre)throws Exception;
+	    
+	 public FacultadDTO findDataByNombreFacultad(String nombre)throws Exception;
 }

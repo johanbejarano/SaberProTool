@@ -129,11 +129,7 @@ public class FacultadLogic implements IFacultadLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Facultad");
             }
 
-            validateFacultad(entity);
-
-            if (getFacultad(entity.getIdFacultad()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validateFacultad(entity);            
 
             facultadDAO.save(entity);
             log.debug("save Facultad successful");
@@ -446,4 +442,42 @@ public class FacultadLogic implements IFacultadLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public Facultad findByNombre(String nombre) throws Exception {
+		log.debug("getting Facultad instance");
+
+        Facultad entity = null;
+
+        try {
+            entity = facultadDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get Facultad failed", e);
+            throw new ZMessManager().new FindingException("Facultad");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public FacultadDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting Facultad instance");
+
+        Facultad entity = null;
+        FacultadDTO entityDTO = null;
+
+        try {
+            entity = facultadDAO.findByNombre(nombre);
+            entityDTO = facultadMapper.facultadToFacultadDTO(entity);
+        } catch (Exception e) {
+            log.error("get Facultad failed", e);
+            throw new ZMessManager().new FindingException("Facultad");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }

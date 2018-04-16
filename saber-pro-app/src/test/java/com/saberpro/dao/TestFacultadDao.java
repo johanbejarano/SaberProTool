@@ -113,5 +113,20 @@ public class TestFacultadDao {
 		
 
 	}
+	
+	@Test	
+	@Transactional(readOnly = true)
+	public void testeConsulta() {
+
+		assertNotNull("El facultadDao es null",facultadDao);
+		
+		Facultad facultad = facultadDao.findByNombre("ECONOMICAS");
+		
+		
+		log.info(facultad.toString());
+		
+		
+
+	}
 
 }

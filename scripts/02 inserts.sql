@@ -274,11 +274,11 @@ insert into resultado_real(percentil_grupo,percentil_nacional,fecha_creacion,usu
 
 ALTER SEQUENCE grupo_opcion_id_grupo_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Usuario',now(),0,'S');
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Pregunta',now(),0,'S');
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Administrar',now(),0,'S');
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Prueba',now(),0,'S');
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Seguridad',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Usuario','ui-icon-person',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Pregunta','ui-icon-notice',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Administrar','ui-icon-gear',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Prueba','ui-icon-alert',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Seguridad','ui-icon-key',now(),0,'S');
 
 
 /* Parametro */

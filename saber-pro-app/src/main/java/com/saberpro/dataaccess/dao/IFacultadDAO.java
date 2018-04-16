@@ -16,4 +16,6 @@ import java.util.Set;
 *
 */
 public interface IFacultadDAO extends Dao<Facultad, Long> {
+	
+	public Facultad findByNombre(String nombre);
 }

@@ -13,8 +13,9 @@
 						<h:panelGrid columns="2" id="panelGrid" >
 												 	<h:outputText id="msgIdEstadoPrueba" value="IdEstadoPrueba"/>
 						 	<p:inputText id="txtIdEstadoPrueba" binding="#{estadoPruebaView.txtIdEstadoPrueba}">
-						 		<p:ajax update="panelEstadoPrueba,msg,panelBotones" listener="#{estadoPruebaView.listener_txtId}"/>
-						 	</p:inputText>	
+						<p:ajax update="panelEstadoPrueba,msg,panelBotones"
+							listener="#{estadoPruebaView.listener_txtId}" />
+					</p:inputText>	
 																		
 													<h:outputText id="msgActivo" value=" Activo"/>
 							<p:inputText id="txtActivo" disabled="true" binding="#{estadoPruebaView.txtActivo}"/>
