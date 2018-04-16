@@ -118,7 +118,7 @@ public class TestGrupoOpcionDao {
 		assertNotNull("El grupoOpcionDao es null",grupoOpcionDao);	
 		
 		
-		List<GrupoOpcion> list = grupoOpcionDao.findByTipoUsuario(5L);
+		List<GrupoOpcion> list = grupoOpcionDao.findByTipoUsuario(5L,"S");
 		
 		log.info("tamaño "+list.size());
 		for (GrupoOpcion grupoOpcion : list) {

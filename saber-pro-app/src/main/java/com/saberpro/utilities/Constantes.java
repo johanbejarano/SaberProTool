@@ -44,5 +44,5 @@ public class Constantes {
 	 public static final DateFormat FORMATO_FECHA_SIMPLE = new SimpleDateFormat("dd/MM/yyyy");
 	 
 	//Ruta de las vistas
-	 public static final String RUTA_BASE = "#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/";
+	 public static final String RUTA_BASE = "#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}";
 }

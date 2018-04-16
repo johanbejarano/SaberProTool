@@ -1,5 +1,7 @@
 ﻿/* Limpiar tablas */
 DELETE FROM resultado_real;
+DELETE FROM opcion;
+DELETE FROM permiso;
 DELETE FROM grupo_opcion;
 DELETE FROM matricula;
 DELETE FROM prueba_real;
@@ -21,6 +23,7 @@ DELETE FROM tipo_usuario;
 DELETE FROM modulo;
 DELETE FROM tipo_modulo;
 DELETE FROM tipo_pregunta;
+DELETE FROM parametro;
 
 
 /*Facultad*/
@@ -190,7 +193,7 @@ ello la calidad de la educación prestada.',100,now(),0,'S',4);
 /* Usuario */
 
 ALTER SEQUENCE usuario_id_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
-insert into usuario(id_usuario,nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values(0,'ADMIN','','M',9999999,9999999999,9999999999,'admin@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',5);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ADMIN','ADMINISTRADOR','M',9999999,9999999999,9999999999,'jhonypk18@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',5);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148248,1133567234,3125466543,'jhonypk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','LOPEZ SERNA','M',1156248,1154567234,3105466543,'camilopk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ANDRES','SALAZAR ZAPATA','M',1160248,1160567234,3185466543,'andrespk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
@@ -271,6 +274,40 @@ insert into resultado_real(percentil_grupo,percentil_nacional,fecha_creacion,usu
 
 ALTER SEQUENCE grupo_opcion_id_grupo_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('usuario',now(),0,'S');
-insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('pregunta',now(),0,'S');
+insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Usuario',now(),0,'S');
+insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Pregunta',now(),0,'S');
+insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Administrar',now(),0,'S');
+insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Prueba',now(),0,'S');
+insert into grupo_opcion(nombre,fecha_creacion,usu_creador,activo) values('Seguridad',now(),0,'S');
+
+
+/* Parametro */
+
+ALTER SEQUENCE parametro_id_parametro_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LA APLICACION','http://localhost:8080/saber-pro-app/',now(),0,'S');
+
+/* Opcion */
+
+ALTER SEQUENCE opcion_id_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ESTADO DE PRUEBA','/XHTML/Administrador/estadoPrueba.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('FACULTAD','/XHTML/Administrador/facultad.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('MODULO','/XHTML/Administrador/modulo.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PROGRAMA','/XHTML/Administrador/programa.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO MODULO','/XHTML/Administrador/tipoModulo.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PREGUNTA','/XHTML/Administrador/tipoPregunta.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PRUEBA','/XHTML/Administrador/tipoPrueba.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO USUARIO','/XHTML/Administrador/tipoUsuario.xhtml',now(),0,'S',3);
+
+/* Permiso */
+
+ALTER SEQUENCE permiso_id_permiso_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
+
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,1);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,3);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,5);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',4,1);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,1);
+
 

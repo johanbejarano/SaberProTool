@@ -45,7 +45,8 @@ public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider
 
 				if (passwordEncoder.matches(password, user.getPassword())) {
 					
-					FacesUtils.putinSession("usuario",businessDelegatorView.findByCodigoUsuario(codigo));  
+					FacesUtils.putinSession("usuarioDTO",businessDelegatorView.findDataByCodigoUsuario(codigo));  
+					FacesUtils.putinSession("usuario",businessDelegatorView.findByCodigoUsuario(codigo)); 
 					
 					return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities());
 

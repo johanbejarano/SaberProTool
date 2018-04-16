@@ -515,6 +515,25 @@ public class UsuarioLogic implements IUsuarioLogic {
 	
 	@Override
 	@Transactional(readOnly = true)
+	public UsuarioDTO findDataByCodigo(long codigo) throws Exception {
+		 log.debug("getting Usuario instance");
+
+	        Usuario entity = null;
+	        UsuarioDTO entityDTO = null;
+	        try {
+	            entity = usuarioDAO.findByCodigo(codigo);
+	            entityDTO = usuarioMapper.usuarioToUsuarioDTO(entity);
+	        } catch (Exception e) {
+	            log.error("get Usuario failed", e);
+	            throw new ZMessManager().new FindingException("Usuario");
+	        } finally {
+	        }
+
+	        return entityDTO;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
 	public Usuario findByEmail(String email) throws Exception {
 		 log.debug("getting Usuario instance");
 

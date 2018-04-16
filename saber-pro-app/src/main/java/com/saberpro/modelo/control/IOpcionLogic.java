@@ -1,6 +1,8 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.modelo.GrupoOpcion;
 import com.saberpro.modelo.Opcion;
+import com.saberpro.modelo.dto.GrupoOpcionDTO;
 import com.saberpro.modelo.dto.OpcionDTO;
 
 import java.math.BigDecimal;
@@ -59,4 +61,12 @@ public interface IOpcionLogic {
     public List<OpcionDTO> getDataOpcion(String tipo) throws Exception;
 
     public void validateOpcion(Opcion opcion) throws Exception;
+    
+    public List<Opcion> findByGrupo(long grupo)throws Exception;
+    
+    public List<OpcionDTO> findByDataGrupo(long grupo)throws Exception;
+    
+    public List<Opcion> findByGrupo(long grupo,String activo)throws Exception;
+    
+    public List<OpcionDTO> findByDataGrupo(long grupo,String activo)throws Exception;
 }

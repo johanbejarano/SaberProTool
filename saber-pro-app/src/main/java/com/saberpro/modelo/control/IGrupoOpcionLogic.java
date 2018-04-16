@@ -63,5 +63,11 @@ public interface IGrupoOpcionLogic {
     public void validateGrupoOpcion(GrupoOpcion grupoOpcion)
         throws Exception;
     
-    public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario)throws DaoException;
+    public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario,String activo)throws Exception;
+    
+    public List<GrupoOpcionDTO> findByDataTipoUsuario(long tipoUsuario,String activo)throws Exception;
+    
+    public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario)throws Exception;
+    
+    public List<GrupoOpcionDTO> findByDataTipoUsuario(long tipoUsuario)throws Exception;
 }

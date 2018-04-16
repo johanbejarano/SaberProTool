@@ -9,7 +9,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.GrupoOpcionDTO;
-
+import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.Utilities;
 
 import org.slf4j.Logger;
@@ -466,7 +466,78 @@ public class GrupoOpcionLogic implements IGrupoOpcionLogic {
     }
 
 	@Override
-	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario) throws DaoException {
-		return grupoOpcionDAO.findByTipoUsuario(tipoUsuario);
+	@Transactional(readOnly = true)
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario,String activo) throws Exception {
+		log.debug("finding all GrupoOpcion instances");
+
+        List<GrupoOpcion> list = new ArrayList<GrupoOpcion>();
+
+        try {
+            list = grupoOpcionDAO.findByTipoUsuario(tipoUsuario,activo);
+        } catch (Exception e) {
+            log.error("finding all GrupoOpcion failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "GrupoOpcion");
+        } finally {
+        }
+
+        return list;	
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<GrupoOpcionDTO> findByDataTipoUsuario(long tipoUsuario,String activo) throws Exception {
+		try {
+            List<GrupoOpcion> grupoOpcion = grupoOpcionDAO.findByTipoUsuario(tipoUsuario,activo);
+
+            List<GrupoOpcionDTO> grupoOpcionDTO = new ArrayList<GrupoOpcionDTO>();
+
+            for (GrupoOpcion grupoOpcionTmp : grupoOpcion) {
+                GrupoOpcionDTO grupoOpcionDTO2 = grupoOpcionMapper.grupoOpcionToGrupoOpcionDTO(grupoOpcionTmp);
+                grupoOpcionDTO.add(grupoOpcionDTO2);
+            }
+
+            return grupoOpcionDTO;
+        } catch (Exception e) {
+            throw e;
+        }
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario) throws Exception {
+		log.debug("finding all GrupoOpcion instances");
+
+        List<GrupoOpcion> list = new ArrayList<GrupoOpcion>();
+
+        try {
+            list = grupoOpcionDAO.findByTipoUsuario(tipoUsuario);
+        } catch (Exception e) {
+            log.error("finding all GrupoOpcion failed", e);
+            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+                "GrupoOpcion");
+        } finally {
+        }
+
+        return list;	
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<GrupoOpcionDTO> findByDataTipoUsuario(long tipoUsuario) throws Exception {
+		try {
+            List<GrupoOpcion> grupoOpcion = grupoOpcionDAO.findByTipoUsuario(tipoUsuario);
+
+            List<GrupoOpcionDTO> grupoOpcionDTO = new ArrayList<GrupoOpcionDTO>();
+
+            for (GrupoOpcion grupoOpcionTmp : grupoOpcion) {
+                GrupoOpcionDTO grupoOpcionDTO2 = grupoOpcionMapper.grupoOpcionToGrupoOpcionDTO(grupoOpcionTmp);
+                grupoOpcionDTO.add(grupoOpcionDTO2);
+            }
+
+            return grupoOpcionDTO;
+        } catch (Exception e) {
+            throw e;
+        }
 	}
 }

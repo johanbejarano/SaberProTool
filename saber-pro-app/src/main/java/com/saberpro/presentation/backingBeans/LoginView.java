@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.FacesUtils;
 import com.saberpro.modelo.Usuario;
+import com.saberpro.modelo.dto.UsuarioDTO;
 
 
 @ViewScoped

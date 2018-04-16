@@ -9,17 +9,6 @@
 
 
 	<h:form id="menuform">
-		<p:menubar toggleable="true">
-			<p:submenu label="Master" icon="ui-icon-pencil">				
-				<p:menuitem value="Master Pregunta"
-					url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pregunta.xhtml" />
-				<p:menuitem value="Master Usuario"
-					url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuario.xhtml" />
-			</p:submenu>
-			<p:menuitem value="Logout"
-				url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/j_spring_security_logout"
-				icon="ui-icon-close" />
-
-		</p:menubar>
+		<p:menubar  model="#{menuView.model}" autoDisplay="true"/>		
 	</h:form>
 </ui:composition>

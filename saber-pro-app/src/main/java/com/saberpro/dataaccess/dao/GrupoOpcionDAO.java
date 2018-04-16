@@ -43,6 +43,11 @@ public class GrupoOpcionDAO extends JpaDaoImpl<GrupoOpcion, Long>
     }
 
 	@Override
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario,String activo) throws DaoException {
+		return entityManager.createQuery("select gru from GrupoOpcion gru,Permiso per where per.grupoOpcion.idGrupoOpcion=gru.idGrupoOpcion and per.tipoUsuario.idTipoUsuario=:tipoUsuario and gru.activo=:activo").setParameter("tipoUsuario",tipoUsuario).setParameter("activo",activo).getResultList();
+	}
+	
+	@Override
 	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario) throws DaoException {
 		return entityManager.createQuery("select gru from GrupoOpcion gru,Permiso per where per.grupoOpcion.idGrupoOpcion=gru.idGrupoOpcion and per.tipoUsuario.idTipoUsuario=:tipoUsuario").setParameter("tipoUsuario",tipoUsuario).getResultList();
 	}

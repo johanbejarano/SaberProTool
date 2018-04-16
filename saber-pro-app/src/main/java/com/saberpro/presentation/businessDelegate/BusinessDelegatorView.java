@@ -1891,5 +1891,50 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return usuarioLogic.encodePassword(code);
 	}
 
+	@Override
+	public List<GrupoOpcion> findByTipoUsuarioGrupoOpcion(long tipoUsuario) throws Exception {
+		return grupoOpcionLogic.findByTipoUsuario(tipoUsuario);
+	}
+
+	@Override
+	public List<GrupoOpcionDTO> findByDataTipoUsuarioGrupoOpcion(long tipoUsuario) throws Exception {
+		return grupoOpcionLogic.findByDataTipoUsuario(tipoUsuario);
+	}
+	
+	@Override
+	public List<GrupoOpcion> findByTipoUsuarioGrupoOpcion(long tipoUsuario,String activo) throws Exception {
+		return grupoOpcionLogic.findByTipoUsuario(tipoUsuario,activo);
+	}
+
+	@Override
+	public List<GrupoOpcionDTO> findByDataTipoUsuarioGrupoOpcion(long tipoUsuario,String activo) throws Exception {
+		return grupoOpcionLogic.findByDataTipoUsuario(tipoUsuario,activo);
+	}
+
+	@Override
+	public List<Opcion> findByGrupoOpcion(long grupo) throws Exception {
+		return opcionLogic.findByGrupo(grupo);
+	}
+
+	@Override
+	public List<OpcionDTO> findByDataGrupoOpcion(long grupo) throws Exception {
+		return opcionLogic.findByDataGrupo(grupo);
+	}
+	
+	@Override
+	public List<Opcion> findByGrupoOpcion(long grupo,String activo) throws Exception {
+		return opcionLogic.findByGrupo(grupo,activo);
+	}
+
+	@Override
+	public List<OpcionDTO> findByDataGrupoOpcion(long grupo,String activo) throws Exception {
+		return opcionLogic.findByDataGrupo(grupo,activo);
+	}
+
+	@Override
+	public UsuarioDTO findDataByCodigoUsuario(long codigo) throws Exception {
+		return usuarioLogic.findDataByCodigo(codigo);
+	}
+
 	
 }

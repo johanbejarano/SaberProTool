@@ -1,5 +1,6 @@
 package com.saberpro.dataaccess.dao;
 
+import com.saberpro.dataaccess.api.DaoException;
 import com.saberpro.dataaccess.api.JpaDaoImpl;
 
 import com.saberpro.modelo.Opcion;
@@ -11,6 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,4 +39,14 @@ public class OpcionDAO extends JpaDaoImpl<Opcion, Long> implements IOpcionDAO {
     public static IOpcionDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IOpcionDAO) ctx.getBean("OpcionDAO");
     }
+
+	@Override
+	public List<Opcion> findByGrupo(long grupo) throws DaoException {
+		return entityManager.createQuery("select opc from GrupoOpcion gru,Opcion opc where gru.idGrupoOpcion=opc.grupoOpcion.idGrupoOpcion and opc.grupoOpcion.idGrupoOpcion=:grupo").setParameter("grupo",grupo).getResultList();
+	}
+	
+	@Override
+	public List<Opcion> findByGrupo(long grupo,String activo) throws DaoException {
+		return entityManager.createQuery("select opc from GrupoOpcion gru,Opcion opc where gru.idGrupoOpcion=opc.grupoOpcion.idGrupoOpcion and opc.grupoOpcion.idGrupoOpcion=:grupo and opc.activo=:activo").setParameter("grupo",grupo).setParameter("activo",activo).getResultList();
+	}
 }

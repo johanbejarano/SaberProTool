@@ -42,8 +42,8 @@ public interface IUsuarioLogic {
          * Load an existing Usuario entity
          *
          */
-    public Usuario getUsuario(Long idUsuario) throws Exception;
-
+    public Usuario getUsuario(Long idUsuario) throws Exception;  
+    
     public List<Usuario> findByCriteria(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)
         throws Exception;
@@ -59,6 +59,8 @@ public interface IUsuarioLogic {
     public void validateUsuario(Usuario usuario) throws Exception;
     
     public Usuario findByCodigo(long codigo) throws Exception;
+    
+    public UsuarioDTO findDataByCodigo(long codigo) throws Exception;
     
     public Usuario findByEmail(String email) throws Exception;
     

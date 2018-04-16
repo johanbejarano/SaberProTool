@@ -6,7 +6,7 @@ DROP USER IF EXISTS saberprotool;
 
 CREATE USER saberprotool WITH PASSWORD 'saberpro';
 
-GRANT INSERT,SELECT,UPDATE ON ALL TABLES IN SCHEMA public TO saberprotool;
+GRANT INSERT,SELECT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO saberprotool;
 
 GRANT SELECT,USAGE ON ALL SEQUENCES IN schema public TO saberprotool;
 

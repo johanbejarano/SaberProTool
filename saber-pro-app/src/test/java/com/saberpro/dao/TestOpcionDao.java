@@ -110,11 +110,18 @@ public class TestOpcionDao {
 		assertNotNull("El grupoOpcionDao es null",grupoOpcionDao);	
 		assertNotNull("El opcionDao es null",opcionDao);
 		
-		List<Opcion> list = opcionDao.findAll();
-		
-		for (Opcion opcion : list) {
-			log.info(opcion.toString());
+		List<Opcion> list;
+		try {
+			list = opcionDao.findByGrupo(3L,"S");
+			for (Opcion opcion : list) {
+				log.info(opcion.toString());
+			}
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
 		
 
 	}

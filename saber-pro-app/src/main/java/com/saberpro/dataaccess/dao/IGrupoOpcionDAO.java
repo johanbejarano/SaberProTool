@@ -17,5 +17,7 @@ import java.util.Set;
 */
 public interface IGrupoOpcionDAO extends Dao<GrupoOpcion, Long> {
 	
+	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario,String activo)throws DaoException;
+	
 	public List<GrupoOpcion> findByTipoUsuario(long tipoUsuario)throws DaoException;
 }

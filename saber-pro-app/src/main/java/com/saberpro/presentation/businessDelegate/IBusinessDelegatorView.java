@@ -721,4 +721,22 @@ public interface IBusinessDelegatorView {
 	 public List<MatriculaDTO> getDataMatricula(String tipo) throws Exception;
 	 
 	 public String encodePasswordUsuario(String code) throws Exception;
+	 
+	 public List<GrupoOpcion> findByTipoUsuarioGrupoOpcion(long tipoUsuario,String activo)throws Exception;
+	    
+	 public List<GrupoOpcionDTO> findByDataTipoUsuarioGrupoOpcion(long tipoUsuario,String activo)throws Exception;
+	    
+	 public List<GrupoOpcion> findByTipoUsuarioGrupoOpcion(long tipoUsuario)throws Exception;
+	    
+	 public List<GrupoOpcionDTO> findByDataTipoUsuarioGrupoOpcion(long tipoUsuario)throws Exception;
+	 
+	 public List<Opcion> findByGrupoOpcion(long grupo)throws Exception;
+	    
+	 public List<OpcionDTO> findByDataGrupoOpcion(long grupo)throws Exception;
+	    
+	 public List<Opcion> findByGrupoOpcion(long grupo,String activo)throws Exception;
+	    
+	 public List<OpcionDTO> findByDataGrupoOpcion(long grupo,String activo)throws Exception;
+	 
+	 public UsuarioDTO findDataByCodigoUsuario(long codigo) throws Exception;
 }
