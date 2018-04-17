@@ -79,9 +79,10 @@ public class FacultadView implements Serializable {
 		}
 
 		if (entity == null) {
-
-			txtDescripcion.setDisabled(false);
-			somActivo.setDisabled(false);
+			
+			txtDescripcion.resetValue();
+			somActivo.resetValue();			
+			
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
 
@@ -90,7 +91,7 @@ public class FacultadView implements Serializable {
 			txtNombre.setValue(entity.getNombre());
 			txtDescripcion.setValue(entity.getDescripcion());
 			somActivo.setValue(entity.getActivo());
-			txtDescripcion.setDisabled(false);
+			
 			btnSave.setDisabled(true);
 			btnModify.setDisabled(false);
 		}
@@ -185,6 +186,8 @@ public class FacultadView implements Serializable {
 		}
 	}	
 
+	
+	
 	public InputTextarea getTxtDescripcion() {
 		return txtDescripcion;
 	}

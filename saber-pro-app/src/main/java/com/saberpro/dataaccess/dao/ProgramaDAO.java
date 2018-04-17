@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.JpaDaoImpl;
-
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.Programa;
 
 import org.slf4j.Logger;
@@ -37,4 +37,9 @@ public class ProgramaDAO extends JpaDaoImpl<Programa, Long>
     public static IProgramaDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IProgramaDAO) ctx.getBean("ProgramaDAO");
     }
+
+	@Override
+	public Programa findByNombre(String nombre) {
+		return (Programa)entityManager.createQuery("SELECT pro FROM Programa pro WHERE UPPER(sinacentos(pro.nombre))=UPPER(sinacentos(:nombre))").setParameter("nombre",nombre).getSingleResult();
+	}
 }

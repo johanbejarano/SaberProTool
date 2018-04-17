@@ -1,6 +1,8 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.Programa;
+import com.saberpro.modelo.dto.FacultadDTO;
 import com.saberpro.modelo.dto.ProgramaDTO;
 
 import java.math.BigDecimal;
@@ -57,6 +59,10 @@ public interface IProgramaLogic {
     public List<ProgramaDTO> getDataPrograma() throws Exception;
     
     public List<ProgramaDTO> getDataPrograma(String tipo) throws Exception;
+    
+    public Programa findByNombre(String nombre)throws Exception;
+    
+    public ProgramaDTO findDataByNombre(String nombre)throws Exception;
 
     public void validatePrograma(Programa programa) throws Exception;
     

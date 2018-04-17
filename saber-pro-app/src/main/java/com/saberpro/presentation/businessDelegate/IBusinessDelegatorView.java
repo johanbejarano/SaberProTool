@@ -743,4 +743,9 @@ public interface IBusinessDelegatorView {
 	 public Facultad findByNombreFacultad(String nombre)throws Exception;
 	    
 	 public FacultadDTO findDataByNombreFacultad(String nombre)throws Exception;
+	 
+	 public Programa findByNombrePrograma(String nombre)throws Exception;
+	    
+	 public ProgramaDTO findDataByNombrePrograma(String nombre)throws Exception;
+
 }

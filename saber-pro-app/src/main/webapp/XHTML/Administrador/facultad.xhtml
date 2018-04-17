@@ -15,7 +15,7 @@
 						<p:ajax update="panelFacultad,msg" listener="#{facultadView.listener_txtId}"/>
 					</p:inputText>
 					<h:outputText id="msgDescripcion" value=" Descripcion" />
-					<p:inputTextarea rows="3" cols="20" counter="display"
+					<p:inputTextarea id="txtDescripcion" rows="3" cols="20" counter="display"
 						maxlength="1200" counterTemplate="{0} caracteres restantes"
 						autoResize="false" binding="#{facultadView.txtDescripcion}" />
 					<h:outputText value="(Opcional)" />
@@ -44,7 +44,7 @@
 				<div>
 					<p:dataTable id="dataFacultad" value="#{facultadView.data}"
 						 var="facultad" reflow="true"
-						resizableColumns="true" rows="10" scrollable="true"
+						resizableColumns="true"  scrollable="true"
 						scrollHeight="300"  widgetVar="facTable">
 						
 						<p:column headerText="Nombre" filterBy="#{facultad.nombre}"

@@ -1946,5 +1946,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return facultadLogic.findDataByNombre(nombre);
 	}
 
+	@Override
+	public Programa findByNombrePrograma(String nombre) throws Exception {
+		return programaLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public ProgramaDTO findDataByNombrePrograma(String nombre) throws Exception {
+		return programaLogic.findDataByNombre(nombre);
+	}
+
 	
 }

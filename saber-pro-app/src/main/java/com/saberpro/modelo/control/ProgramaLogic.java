@@ -143,11 +143,7 @@ public class ProgramaLogic implements IProgramaLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Programa");
             }
 
-            validatePrograma(entity);
-
-            if (getPrograma(entity.getIdPrograma()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validatePrograma(entity);           
 
             programaDAO.save(entity);
             log.debug("save Programa successful");
@@ -470,4 +466,41 @@ public class ProgramaLogic implements IProgramaLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public Programa findByNombre(String nombre) throws Exception {
+		log.debug("getting Programa instance");
+
+        Programa entity = null;
+
+        try {
+            entity = programaDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get Programa failed", e);
+            throw new ZMessManager().new FindingException("Programa");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ProgramaDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting Programa instance");
+
+        Programa entity = null;
+        ProgramaDTO entityDTO = null;
+        try {
+            entity = programaDAO.findByNombre(nombre);
+            entityDTO = programaMapper.programaToProgramaDTO(entity);
+        } catch (Exception e) {
+            log.error("get Programa failed", e);
+            throw new ZMessManager().new FindingException("Programa");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }
