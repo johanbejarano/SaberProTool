@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.JpaDaoImpl;
-
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.TipoModulo;
 
 import org.slf4j.Logger;
@@ -38,4 +38,9 @@ public class TipoModuloDAO extends JpaDaoImpl<TipoModulo, Long>
         ApplicationContext ctx) {
         return (ITipoModuloDAO) ctx.getBean("TipoModuloDAO");
     }
+
+	@Override
+	public TipoModulo findByNombre(String nombre) {
+		return (TipoModulo)entityManager.createQuery("SELECT tip FROM TipoModulo tip WHERE UPPER(sinacentos(tip.nombre))=UPPER(sinacentos(:nombre))").setParameter("nombre",nombre).getSingleResult();
+	}
 }

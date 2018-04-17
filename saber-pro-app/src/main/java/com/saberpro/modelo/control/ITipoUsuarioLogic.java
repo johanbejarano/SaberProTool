@@ -1,6 +1,8 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.TipoUsuario;
+import com.saberpro.modelo.dto.FacultadDTO;
 import com.saberpro.modelo.dto.TipoUsuarioDTO;
 
 import java.math.BigDecimal;
@@ -58,6 +60,10 @@ public interface ITipoUsuarioLogic {
     public List<TipoUsuarioDTO> getDataTipoUsuario() throws Exception;
     
     public List<TipoUsuarioDTO> getDataTipoUsuario(String tipo) throws Exception;
+    
+    public TipoUsuario findByNombre(String nombre)throws Exception;
+    
+    public TipoUsuarioDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateTipoUsuario(TipoUsuario tipoUsuario)
         throws Exception;

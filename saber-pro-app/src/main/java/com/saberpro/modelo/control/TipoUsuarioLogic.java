@@ -137,11 +137,7 @@ public class TipoUsuarioLogic implements ITipoUsuarioLogic {
                 throw new ZMessManager().new NullEntityExcepcion("TipoUsuario");
             }
 
-            validateTipoUsuario(entity);
-
-            if (getTipoUsuario(entity.getIdTipoUsuario()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validateTipoUsuario(entity);           
 
             tipoUsuarioDAO.save(entity);
             log.debug("save TipoUsuario successful");
@@ -463,4 +459,43 @@ public class TipoUsuarioLogic implements ITipoUsuarioLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoUsuario findByNombre(String nombre) throws Exception {
+		
+	        log.debug("getting TipoUsuario instance");
+
+	        TipoUsuario entity = null;
+
+	        try {
+	            entity = tipoUsuarioDAO.findByNombre(nombre);
+	        } catch (Exception e) {
+	            log.error("get TipoUsuario failed", e);
+	            throw new ZMessManager().new FindingException("TipoUsuario");
+	        } finally {
+	        }
+
+	        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoUsuarioDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting TipoUsuario instance");
+
+        TipoUsuario entity = null;
+        TipoUsuarioDTO entityDTO = null;
+
+        try {
+            entity = tipoUsuarioDAO.findByNombre(nombre);
+            entityDTO = tipoUsuarioMapper.tipoUsuarioToTipoUsuarioDTO(entity);
+        } catch (Exception e) {
+            log.error("get TipoUsuario failed", e);
+            throw new ZMessManager().new FindingException("TipoUsuario");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }

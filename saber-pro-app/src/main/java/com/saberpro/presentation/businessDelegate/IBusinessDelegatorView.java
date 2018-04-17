@@ -747,5 +747,21 @@ public interface IBusinessDelegatorView {
 	 public Programa findByNombrePrograma(String nombre)throws Exception;
 	    
 	 public ProgramaDTO findDataByNombrePrograma(String nombre)throws Exception;
+	 
+	 public TipoUsuario findByNombreTipoUsuario(String nombre)throws Exception;
+	    
+	 public TipoUsuarioDTO findDataByNombreTipoUsuario(String nombre)throws Exception;
+	 
+	 public TipoPrueba findByNombreTipoPrueba(String nombre)throws Exception;
+	    
+	 public TipoPruebaDTO findDataByNombreTipoPrueba(String nombre)throws Exception;
+	 
+	 public TipoPregunta findByNombreTipoPregunta(String nombre)throws Exception;
+	    
+	 public TipoPreguntaDTO findDataByNombreTipoPregunta(String nombre)throws Exception;
+	 
+	 public TipoModulo findByNombreTipoModulo(String nombre)throws Exception;
+	    
+	 public TipoModuloDTO findDataByNombreTipoModulo(String nombre)throws Exception;
 
 }

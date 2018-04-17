@@ -1956,5 +1956,45 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return programaLogic.findDataByNombre(nombre);
 	}
 
+	@Override
+	public TipoUsuario findByNombreTipoUsuario(String nombre) throws Exception {
+		return tipoUsuarioLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public TipoUsuarioDTO findDataByNombreTipoUsuario(String nombre) throws Exception {
+		return tipoUsuarioLogic.findDataByNombre(nombre);
+	}
+
+	@Override
+	public TipoPrueba findByNombreTipoPrueba(String nombre) throws Exception {
+		return tipoPruebaLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public TipoPruebaDTO findDataByNombreTipoPrueba(String nombre) throws Exception {
+		return tipoPruebaLogic.findDataByNombre(nombre);
+	}
+
+	@Override
+	public TipoPregunta findByNombreTipoPregunta(String nombre) throws Exception {
+		return tipoPreguntaLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public TipoPreguntaDTO findDataByNombreTipoPregunta(String nombre) throws Exception {
+		return tipoPreguntaLogic.findDataByNombre(nombre);
+	}
+
+	@Override
+	public TipoModulo findByNombreTipoModulo(String nombre) throws Exception {
+		return tipoModuloLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public TipoModuloDTO findDataByNombreTipoModulo(String nombre) throws Exception {
+		return tipoModuloLogic.findDataByNombre(nombre);
+	}
+
 	
 }

@@ -132,10 +132,7 @@ public class TipoPreguntaLogic implements ITipoPreguntaLogic {
 
             validateTipoPregunta(entity);
 
-            if (getTipoPregunta(entity.getIdTipoPregunta()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
+            
             tipoPreguntaDAO.save(entity);
             log.debug("save TipoPregunta successful");
         } catch (Exception e) {
@@ -452,4 +449,42 @@ public class TipoPreguntaLogic implements ITipoPreguntaLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoPregunta findByNombre(String nombre) throws Exception {
+		log.debug("getting TipoPregunta instance");
+
+        TipoPregunta entity = null;
+
+        try {
+            entity = tipoPreguntaDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get TipoPregunta failed", e);
+            throw new ZMessManager().new FindingException("TipoPregunta");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoPreguntaDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting TipoPregunta instance");
+
+        TipoPregunta entity = null;
+        TipoPreguntaDTO entityDTO = null;
+
+        try {
+            entity = tipoPreguntaDAO.findByNombre(nombre);
+            entityDTO = tipoPreguntaMapper.tipoPreguntaToTipoPreguntaDTO(entity);
+        } catch (Exception e) {
+            log.error("get TipoPregunta failed", e);
+            throw new ZMessManager().new FindingException("TipoPregunta");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }

@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.Dao;
-
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.TipoUsuario;
 
 import java.math.BigDecimal;
@@ -16,4 +16,6 @@ import java.util.Set;
 *
 */
 public interface ITipoUsuarioDAO extends Dao<TipoUsuario, Long> {
+	
+	public TipoUsuario findByNombre(String nombre);
 }

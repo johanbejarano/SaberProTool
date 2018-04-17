@@ -130,11 +130,7 @@ public class TipoPruebaLogic implements ITipoPruebaLogic {
                 throw new ZMessManager().new NullEntityExcepcion("TipoPrueba");
             }
 
-            validateTipoPrueba(entity);
-
-            if (getTipoPrueba(entity.getIdTipoPrueba()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validateTipoPrueba(entity);            
 
             tipoPruebaDAO.save(entity);
             log.debug("save TipoPrueba successful");
@@ -448,4 +444,42 @@ public class TipoPruebaLogic implements ITipoPruebaLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoPrueba findByNombre(String nombre) throws Exception {
+		log.debug("getting TipoPrueba instance");
+
+        TipoPrueba entity = null;
+
+        try {
+            entity = tipoPruebaDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get TipoPrueba failed", e);
+            throw new ZMessManager().new FindingException("TipoPrueba");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoPruebaDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting TipoPrueba instance");
+
+        TipoPrueba entity = null;
+        TipoPruebaDTO entityDTO = null;
+
+        try {
+            entity = tipoPruebaDAO.findByNombre(nombre);
+            entityDTO = tipoPruebaMapper.tipoPruebaToTipoPruebaDTO(entity);
+        } catch (Exception e) {
+            log.error("get TipoPrueba failed", e);
+            throw new ZMessManager().new FindingException("TipoPrueba");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }

@@ -1,51 +1,75 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">	
-			<h:form id="formDialog">
-				<p:messages id="msg" />
-				<p:growl id="men"/>
-					<p:panel id="panelTipoUsuario" header="TipoUsuario">							
-						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgIdTipoUsuario" value="IdTipoUsuario"/>
-						 	<p:inputText id="txtIdTipoUsuario" binding="#{tipoUsuarioView.txtIdTipoUsuario}">
-						 		<p:ajax update="panelTipoUsuario,msg,panelBotones" listener="#{tipoUsuarioView.listener_txtId}"/>
-						 	</p:inputText>	
-																		
-													<h:outputText id="msgActivo" value=" Activo"/>
-							<p:inputText id="txtActivo" disabled="true" binding="#{tipoUsuarioView.txtActivo}"/>
-													<h:outputText id="msgDescripcion" value=" Descripcion"/>
-							<p:inputText id="txtDescripcion" disabled="true" binding="#{tipoUsuarioView.txtDescripcion}"/>
-													<h:outputText id="msgNombre" value=" Nombre"/>
-							<p:inputText id="txtNombre" disabled="true" binding="#{tipoUsuarioView.txtNombre}"/>
-													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
-							<p:inputText id="txtUsuCreador" disabled="true" binding="#{tipoUsuarioView.txtUsuCreador}"/>
-													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
-							<p:inputText id="txtUsuModificador" disabled="true" binding="#{tipoUsuarioView.txtUsuModificador}"/>
-												
-																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
-														<p:calendar showOn="button" navigator="true" locale="en" 
-							binding="#{tipoUsuarioView.txtFechaCreacion}" >
-								<p:ajax event="dateSelect" listener="#{tipoUsuarioView.listener_txtFechaCreacion}" />
-							</p:calendar>
-														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
-														<p:calendar showOn="button" navigator="true" locale="en" 
-							binding="#{tipoUsuarioView.txtFechaModificacion}" >
-								<p:ajax event="dateSelect" listener="#{tipoUsuarioView.listener_txtFechaModificacion}" />
-							</p:calendar>
-																	   </h:panelGrid>
-				</p:panel>
-	   			<p:panel id="panelBotones">
-					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{tipoUsuarioView.btnSave}" disabled="true" value="Save" action="#{tipoUsuarioView.action_save()}" update="panelTipoUsuario,msg,panelBotones" />
-						<p:commandButton id="btnDelete" binding="#{tipoUsuarioView.btnDelete}" disabled="true" value="Delete" action="#{tipoUsuarioView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelTipoUsuario,msg,panelBotones" />
-						<p:commandButton id="btnClear" value="Clear" action="#{tipoUsuarioView.action_clear()}" update="panelTipoUsuario,msg,panelBotones" />
-					</div>
-				</p:panel>			
-			</h:form>
-  </ui:define>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="formDialog">
+			<p:messages id="msg" />
+			<p:growl id="men" />
+			<p:panel id="panelTipoUsuario" header="TipoUsuario">
+				<h:panelGrid columns="2" id="panelGrid">
+
+					<h:outputText id="msgNombre" value=" Nombre" />
+					<p:inputText id="txtNombre" binding="#{tipoUsuarioView.txtNombre}">
+						<p:ajax update="panelTipoUsuario,msg"
+							listener="#{tipoUsuarioView.listener_txtId}" />
+					</p:inputText>
+					<h:outputText id="msgDescripcion" value=" Descripcion" />
+					<p:inputTextarea id="txtDescripcion" rows="3" cols="20"
+						counter="display" maxlength="1200"
+						counterTemplate="{0} caracteres restantes" autoResize="false"
+						binding="#{tipoUsuarioView.txtDescripcion}" />
+					<h:outputText value="(Opcional)" />
+					<h:outputText id="display" />
+					<h:outputText id="msgActivo" value=" Activo" />
+					<p:selectOneMenu id="somActivo"
+						binding="#{tipoUsuarioView.somActivo}">
+						<f:selectItem itemValue="Z" itemLabel="-------------------" />
+						<f:selectItem itemValue="S" itemLabel="SI" />
+						<f:selectItem itemValue="N" itemLabel="NO" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<div align="center">
+					<p:commandButton id="btnSave" binding="#{tipoUsuarioView.btnSave}"
+						disabled="true" value="Crear"
+						action="#{tipoUsuarioView.action_create()}"
+						update="panelTipoUsuario,msg,panelTable" />
+					<p:commandButton id="btnModify"
+						binding="#{tipoUsuarioView.btnModify}" disabled="true"
+						value="Actualizar" action="#{tipoUsuarioView.action_modify()}"
+						update="panelTipoUsuario,msg,panelTable" />
+					<p:commandButton id="btnClear" value="Limpiar"
+						action="#{tipoUsuarioView.action_clear()}"
+						update="panelTipoUsuario,msg,panelTable" />
+				</div>
+			</p:panel>
+			<p:panel id="panelTable">
+				<p:dataTable id="dataTipoUsuario" value="#{tipoUsuarioView.data}"
+					var="tipoUsuario" reflow="true" resizableColumns="true"
+					scrollable="true" scrollHeight="300" widgetVar="tipTable">
+
+					<p:column headerText="Nombre" filterBy="#{tipoUsuario.nombre}"
+						filterMatchMode="contains">
+						<p:outputLabel value="#{tipoUsuario.nombre}" />
+					</p:column>
+					<p:column headerText="Activo"
+						filterBy="#{tipoUsuario.activo.equals('S')}"
+						filterMatchMode="equals">
+						<f:facet name="filter">
+							<p:selectOneButton onchange="PF('tipTable').filter()">
+								<f:converter converterId="javax.faces.Boolean" />
+								<f:selectItem itemLabel="All" itemValue="" />
+								<f:selectItem itemLabel="Activo" itemValue="true" />
+								<f:selectItem itemLabel="Inactivo" itemValue="false" />
+							</p:selectOneButton>
+						</f:facet>
+						<h:outputText
+							value="#{tipoUsuario.activo.equals('S') ? 'Sí': 'No'}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
 </ui:composition>

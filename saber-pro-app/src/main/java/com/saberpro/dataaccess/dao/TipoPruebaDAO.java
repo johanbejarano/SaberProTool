@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.JpaDaoImpl;
-
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.TipoPrueba;
 
 import org.slf4j.Logger;
@@ -38,4 +38,9 @@ public class TipoPruebaDAO extends JpaDaoImpl<TipoPrueba, Long>
         ApplicationContext ctx) {
         return (ITipoPruebaDAO) ctx.getBean("TipoPruebaDAO");
     }
+
+	@Override
+	public TipoPrueba findByNombre(String nombre) {
+		return (TipoPrueba)entityManager.createQuery("SELECT tip FROM TipoPrueba tip WHERE UPPER(sinacentos(tip.nombre))=UPPER(sinacentos(:nombre))").setParameter("nombre",nombre).getSingleResult();
+	}
 }

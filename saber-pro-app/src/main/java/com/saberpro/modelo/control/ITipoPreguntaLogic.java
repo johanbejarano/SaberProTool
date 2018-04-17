@@ -1,6 +1,8 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.TipoPregunta;
+import com.saberpro.modelo.dto.FacultadDTO;
 import com.saberpro.modelo.dto.TipoPreguntaDTO;
 
 import java.math.BigDecimal;
@@ -62,6 +64,10 @@ public interface ITipoPreguntaLogic {
     
     public List<TipoPreguntaDTO> getDataTipoPregunta(String tipo)
             throws Exception;
+    
+    public TipoPregunta findByNombre(String nombre)throws Exception;
+    
+    public TipoPreguntaDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateTipoPregunta(TipoPregunta tipoPregunta)
         throws Exception;

@@ -1,6 +1,8 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.TipoModulo;
+import com.saberpro.modelo.dto.FacultadDTO;
 import com.saberpro.modelo.dto.TipoModuloDTO;
 
 import java.math.BigDecimal;
@@ -58,6 +60,10 @@ public interface ITipoModuloLogic {
     public List<TipoModuloDTO> getDataTipoModulo() throws Exception;
     
     public List<TipoModuloDTO> getDataTipoModulo(String tipo) throws Exception;
+    
+    public TipoModulo findByNombre(String nombre)throws Exception;
+    
+    public TipoModuloDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateTipoModulo(TipoModulo tipoModulo)
         throws Exception;

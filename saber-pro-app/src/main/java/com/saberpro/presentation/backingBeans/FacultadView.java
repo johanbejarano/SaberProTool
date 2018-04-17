@@ -52,13 +52,19 @@ public class FacultadView implements Serializable {
 
 	private InputTextarea txtDescripcion;
 	private InputText txtNombre;
+	
 	private CommandButton btnSave;
 	private CommandButton btnModify;
 	private CommandButton btnClear;
+	
 	private SelectOneMenu somActivo;
+	
 	private List<FacultadDTO> data;
+	
 	private FacultadDTO selectedFacultad;
+	
 	private Facultad entity;
+	
 	private boolean showDialog;
 
 	@ManagedProperty(value = "#{BusinessDelegatorView}")

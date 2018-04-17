@@ -132,10 +132,7 @@ public class TipoModuloLogic implements ITipoModuloLogic {
 
             validateTipoModulo(entity);
 
-            if (getTipoModulo(entity.getIdTipoModulo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
+            
             tipoModuloDAO.save(entity);
             log.debug("save TipoModulo successful");
         } catch (Exception e) {
@@ -448,4 +445,42 @@ public class TipoModuloLogic implements ITipoModuloLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoModulo findByNombre(String nombre) throws Exception {
+		log.debug("getting TipoModulo instance");
+
+        TipoModulo entity = null;
+
+        try {
+            entity = tipoModuloDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get TipoModulo failed", e);
+            throw new ZMessManager().new FindingException("TipoModulo");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public TipoModuloDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting TipoModulo instance");
+
+        TipoModulo entity = null;
+        TipoModuloDTO entityDTO = null;
+
+        try {
+            entity = tipoModuloDAO.findByNombre(nombre);
+            entityDTO = tipoModuloMapper.tipoModuloToTipoModuloDTO(entity);
+        } catch (Exception e) {
+            log.error("get TipoModulo failed", e);
+            throw new ZMessManager().new FindingException("TipoModulo");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }
