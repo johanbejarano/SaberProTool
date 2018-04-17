@@ -12,7 +12,8 @@ import com.saberpro.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
@@ -49,18 +50,16 @@ import javax.faces.event.ActionEvent;
 public class EstadoPruebaView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(EstadoPruebaView.class);
-    private InputText txtActivo;
-    private InputText txtDescripcion;
-    private InputText txtNombre;
-    private InputText txtUsuCreador;
-    private InputText txtUsuModificador;
-    private InputText txtIdEstadoPrueba;
-    private Calendar txtFechaCreacion;
-    private Calendar txtFechaModificacion;
-    private CommandButton btnSave;
-    private CommandButton btnModify;
-    private CommandButton btnDelete;
-    private CommandButton btnClear;
+    
+    private InputTextarea txtDescripcion;
+	private InputText txtNombre;
+	
+	private CommandButton btnSave;
+	private CommandButton btnModify;
+	private CommandButton btnClear;
+	
+	private SelectOneMenu somActivo;
+	
     private List<EstadoPruebaDTO> data;
     private EstadoPruebaDTO selectedEstadoPrueba;
     private EstadoPrueba entity;
@@ -72,304 +71,118 @@ public class EstadoPruebaView implements Serializable {
         super();
     }
 
-    public String action_new() {
-        action_clear();
-        selectedEstadoPrueba = null;
-        setShowDialog(true);
-
-        return "";
-    }
-
-    public String action_clear() {
-        entity = null;
-        selectedEstadoPrueba = null;
-
-        if (txtActivo != null) {
-            txtActivo.setValue(null);
-            txtActivo.setDisabled(true);
-        }
-
-        if (txtDescripcion != null) {
-            txtDescripcion.setValue(null);
-            txtDescripcion.setDisabled(true);
-        }
-
-        if (txtNombre != null) {
-            txtNombre.setValue(null);
-            txtNombre.setDisabled(true);
-        }
-
-        if (txtUsuCreador != null) {
-            txtUsuCreador.setValue(null);
-            txtUsuCreador.setDisabled(true);
-        }
-
-        if (txtUsuModificador != null) {
-            txtUsuModificador.setValue(null);
-            txtUsuModificador.setDisabled(true);
-        }
-
-        if (txtFechaCreacion != null) {
-            txtFechaCreacion.setValue(null);
-            txtFechaCreacion.setDisabled(true);
-        }
-
-        if (txtFechaModificacion != null) {
-            txtFechaModificacion.setValue(null);
-            txtFechaModificacion.setDisabled(true);
-        }
-
-        if (txtIdEstadoPrueba != null) {
-            txtIdEstadoPrueba.setValue(null);
-            txtIdEstadoPrueba.setDisabled(false);
-        }
-
-        if (btnSave != null) {
-            btnSave.setDisabled(true);
-        }
-
-        if (btnDelete != null) {
-            btnDelete.setDisabled(true);
-        }
-
-        return "";
-    }
-
-    public void listener_txtFechaCreacion() {
-        Date inputDate = (Date) txtFechaCreacion.getValue();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        FacesContext.getCurrentInstance()
-                    .addMessage("",
-            new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
-    }
-
-    public void listener_txtFechaModificacion() {
-        Date inputDate = (Date) txtFechaModificacion.getValue();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        FacesContext.getCurrentInstance()
-                    .addMessage("",
-            new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
-    }
-
     public void listener_txtId() {
-        try {
-            Long idEstadoPrueba = FacesUtils.checkLong(txtIdEstadoPrueba);
-            entity = (idEstadoPrueba != null)
-                ? businessDelegatorView.getEstadoPrueba(idEstadoPrueba) : null;
-        } catch (Exception e) {
-            entity = null;
-        }
+		try {
+			String nombre = txtNombre.getValue().toString().trim();
 
-        if (entity == null) {
-            txtActivo.setDisabled(false);
-            txtDescripcion.setDisabled(false);
-            txtNombre.setDisabled(false);
-            txtUsuCreador.setDisabled(false);
-            txtUsuModificador.setDisabled(false);
-            txtFechaCreacion.setDisabled(false);
-            txtFechaModificacion.setDisabled(false);
-            txtIdEstadoPrueba.setDisabled(false);
-            btnSave.setDisabled(false);
-        } else {
-            txtActivo.setValue(entity.getActivo());
-            txtActivo.setDisabled(false);
-            txtDescripcion.setValue(entity.getDescripcion());
-            txtDescripcion.setDisabled(false);
-            txtFechaCreacion.setValue(entity.getFechaCreacion());
-            txtFechaCreacion.setDisabled(false);
-            txtFechaModificacion.setValue(entity.getFechaModificacion());
-            txtFechaModificacion.setDisabled(false);
-            txtNombre.setValue(entity.getNombre());
-            txtNombre.setDisabled(false);
-            txtUsuCreador.setValue(entity.getUsuCreador());
-            txtUsuCreador.setDisabled(false);
-            txtUsuModificador.setValue(entity.getUsuModificador());
-            txtUsuModificador.setDisabled(false);
-            txtIdEstadoPrueba.setValue(entity.getIdEstadoPrueba());
-            txtIdEstadoPrueba.setDisabled(true);
-            btnSave.setDisabled(false);
+			entity = businessDelegatorView.findByNombreEstadoPrueba(nombre);
 
-            if (btnDelete != null) {
-                btnDelete.setDisabled(false);
-            }
-        }
-    }
+		} catch (Exception e) {
+			entity = null;
+		}
 
-    public String action_edit(ActionEvent evt) {
-        selectedEstadoPrueba = (EstadoPruebaDTO) (evt.getComponent()
-                                                     .getAttributes()
-                                                     .get("selectedEstadoPrueba"));
-        txtActivo.setValue(selectedEstadoPrueba.getActivo());
-        txtActivo.setDisabled(false);
-        txtDescripcion.setValue(selectedEstadoPrueba.getDescripcion());
-        txtDescripcion.setDisabled(false);
-        txtFechaCreacion.setValue(selectedEstadoPrueba.getFechaCreacion());
-        txtFechaCreacion.setDisabled(false);
-        txtFechaModificacion.setValue(selectedEstadoPrueba.getFechaModificacion());
-        txtFechaModificacion.setDisabled(false);
-        txtNombre.setValue(selectedEstadoPrueba.getNombre());
-        txtNombre.setDisabled(false);
-        txtUsuCreador.setValue(selectedEstadoPrueba.getUsuCreador());
-        txtUsuCreador.setDisabled(false);
-        txtUsuModificador.setValue(selectedEstadoPrueba.getUsuModificador());
-        txtUsuModificador.setDisabled(false);
-        txtIdEstadoPrueba.setValue(selectedEstadoPrueba.getIdEstadoPrueba());
-        txtIdEstadoPrueba.setDisabled(true);
-        btnSave.setDisabled(false);
-        setShowDialog(true);
+		if (entity == null) {
+			
+			txtDescripcion.resetValue();
+			somActivo.resetValue();			
+			
+			btnSave.setDisabled(false);
+			btnModify.setDisabled(true);
 
-        return "";
-    }
+		} else {
 
-    public String action_save() {
-        try {
-            if ((selectedEstadoPrueba == null) && (entity == null)) {
-                action_create();
-            } else {
-                action_modify();
-            }
+			txtNombre.setValue(entity.getNombre());
+			txtDescripcion.setValue(entity.getDescripcion());
+			somActivo.setValue(entity.getActivo());
+			
+			btnSave.setDisabled(true);
+			btnModify.setDisabled(false);
+		}
+	}
 
-            data = null;
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+	public String action_clear() {
 
-        return "";
-    }
+		entity = null;
+		selectedEstadoPrueba = null;
 
-    public String action_create() {
-        try {
-            entity = new EstadoPrueba();
+		btnSave.setDisabled(true);
+		btnModify.setDisabled(true);
+		txtDescripcion.resetValue();
+		txtNombre.resetValue();
+		somActivo.resetValue();
 
-            Long idEstadoPrueba = FacesUtils.checkLong(txtIdEstadoPrueba);
+		return "";
+	}
 
-            entity.setActivo(FacesUtils.checkString(txtActivo));
-            entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
-            entity.setFechaCreacion(FacesUtils.checkDate(txtFechaCreacion));
-            entity.setFechaModificacion(FacesUtils.checkDate(
-                    txtFechaModificacion));
-            entity.setIdEstadoPrueba(idEstadoPrueba);
-            entity.setNombre(FacesUtils.checkString(txtNombre));
-            entity.setUsuCreador(FacesUtils.checkLong(txtUsuCreador));
-            entity.setUsuModificador(FacesUtils.checkLong(txtUsuModificador));
-            businessDelegatorView.saveEstadoPrueba(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
-            action_clear();
-        } catch (Exception e) {
-            entity = null;
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+	public String action_create() {
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
-        return "";
-    }
+			if (usuario != null) {
 
-    public String action_modify() {
-        try {
-            if (entity == null) {
-                Long idEstadoPrueba = new Long(selectedEstadoPrueba.getIdEstadoPrueba());
-                entity = businessDelegatorView.getEstadoPrueba(idEstadoPrueba);
-            }
+				entity = new EstadoPrueba();
 
-            entity.setActivo(FacesUtils.checkString(txtActivo));
-            entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
-            entity.setFechaCreacion(FacesUtils.checkDate(txtFechaCreacion));
-            entity.setFechaModificacion(FacesUtils.checkDate(
-                    txtFechaModificacion));
-            entity.setNombre(FacesUtils.checkString(txtNombre));
-            entity.setUsuCreador(FacesUtils.checkLong(txtUsuCreador));
-            entity.setUsuModificador(FacesUtils.checkLong(txtUsuModificador));
-            businessDelegatorView.updateEstadoPrueba(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-        } catch (Exception e) {
-            data = null;
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
+				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
+				entity.setActivo(FacesUtils.checkString(somActivo));
+				entity.setFechaCreacion(new Date());
+				entity.setUsuCreador(usuario.getIdUsuario());
 
-        return "";
-    }
+				businessDelegatorView.saveEstadoPrueba(entity);
 
-    public String action_delete_datatable(ActionEvent evt) {
-        try {
-            selectedEstadoPrueba = (EstadoPruebaDTO) (evt.getComponent()
-                                                         .getAttributes()
-                                                         .get("selectedEstadoPrueba"));
+				data = null;
 
-            Long idEstadoPrueba = new Long(selectedEstadoPrueba.getIdEstadoPrueba());
-            entity = businessDelegatorView.getEstadoPrueba(idEstadoPrueba);
-            action_delete();
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				action_clear();
 
-        return "";
-    }
+			}
 
-    public String action_delete_master() {
-        try {
-            Long idEstadoPrueba = FacesUtils.checkLong(txtIdEstadoPrueba);
-            entity = businessDelegatorView.getEstadoPrueba(idEstadoPrueba);
-            action_delete();
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+		} catch (Exception e) {
+			entity = null;
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
 
-        return "";
-    }
+		return "";
+	}
 
-    public void action_delete() throws Exception {
-        try {
-            businessDelegatorView.deleteEstadoPrueba(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
-            action_clear();
-            data = null;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+	public String action_modify() {
 
-    public String action_closeDialog() {
-        setShowDialog(false);
-        action_clear();
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			String nombre = FacesUtils.checkString(txtNombre);
 
-        return "";
-    }
+			if (usuario != null) {
 
-    public String action_modifyWitDTO(String activo, String descripcion,
-        Date fechaCreacion, Date fechaModificacion, Long idEstadoPrueba,
-        String nombre, Long usuCreador, Long usuModificador)
-        throws Exception {
-        try {
-            entity.setActivo(FacesUtils.checkString(activo));
-            entity.setDescripcion(FacesUtils.checkString(descripcion));
-            entity.setFechaCreacion(FacesUtils.checkDate(fechaCreacion));
-            entity.setFechaModificacion(FacesUtils.checkDate(fechaModificacion));
-            entity.setNombre(FacesUtils.checkString(nombre));
-            entity.setUsuCreador(FacesUtils.checkLong(usuCreador));
-            entity.setUsuModificador(FacesUtils.checkLong(usuModificador));
-            businessDelegatorView.updateEstadoPrueba(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-        } catch (Exception e) {
-            //renderManager.getOnDemandRenderer("EstadoPruebaView").requestRender();
-            FacesUtils.addErrorMessage(e.getMessage());
-            throw e;
-        }
+				entity = businessDelegatorView.findByNombreEstadoPrueba(nombre);
 
-        return "";
-    }
+				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
+				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
+				entity.setActivo(FacesUtils.checkString(somActivo));
+				entity.setFechaModificacion(new Date());
+				entity.setUsuModificador(usuario.getIdUsuario());
 
-    public InputText getTxtActivo() {
-        return txtActivo;
-    }
+				businessDelegatorView.updateEstadoPrueba(entity);
 
-    public void setTxtActivo(InputText txtActivo) {
-        this.txtActivo = txtActivo;
-    }
+				data = null;
 
-    public InputText getTxtDescripcion() {
+				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				action_clear();
+
+			}
+
+		} catch (Exception e) {
+			entity = null;
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+	}	
+
+    public InputTextarea getTxtDescripcion() {
         return txtDescripcion;
     }
 
-    public void setTxtDescripcion(InputText txtDescripcion) {
+    public void setTxtDescripcion(InputTextarea txtDescripcion) {
         this.txtDescripcion = txtDescripcion;
     }
 
@@ -379,46 +192,6 @@ public class EstadoPruebaView implements Serializable {
 
     public void setTxtNombre(InputText txtNombre) {
         this.txtNombre = txtNombre;
-    }
-
-    public InputText getTxtUsuCreador() {
-        return txtUsuCreador;
-    }
-
-    public void setTxtUsuCreador(InputText txtUsuCreador) {
-        this.txtUsuCreador = txtUsuCreador;
-    }
-
-    public InputText getTxtUsuModificador() {
-        return txtUsuModificador;
-    }
-
-    public void setTxtUsuModificador(InputText txtUsuModificador) {
-        this.txtUsuModificador = txtUsuModificador;
-    }
-
-    public Calendar getTxtFechaCreacion() {
-        return txtFechaCreacion;
-    }
-
-    public void setTxtFechaCreacion(Calendar txtFechaCreacion) {
-        this.txtFechaCreacion = txtFechaCreacion;
-    }
-
-    public Calendar getTxtFechaModificacion() {
-        return txtFechaModificacion;
-    }
-
-    public void setTxtFechaModificacion(Calendar txtFechaModificacion) {
-        this.txtFechaModificacion = txtFechaModificacion;
-    }
-
-    public InputText getTxtIdEstadoPrueba() {
-        return txtIdEstadoPrueba;
-    }
-
-    public void setTxtIdEstadoPrueba(InputText txtIdEstadoPrueba) {
-        this.txtIdEstadoPrueba = txtIdEstadoPrueba;
     }
 
     public List<EstadoPruebaDTO> getData() {
@@ -461,14 +234,6 @@ public class EstadoPruebaView implements Serializable {
         this.btnModify = btnModify;
     }
 
-    public CommandButton getBtnDelete() {
-        return btnDelete;
-    }
-
-    public void setBtnDelete(CommandButton btnDelete) {
-        this.btnDelete = btnDelete;
-    }
-
     public CommandButton getBtnClear() {
         return btnClear;
     }
@@ -497,4 +262,14 @@ public class EstadoPruebaView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public SelectOneMenu getSomActivo() {
+		return somActivo;
+	}
+
+
+
+	public void setSomActivo(SelectOneMenu somActivo) {
+		this.somActivo = somActivo;
+	}
 }
