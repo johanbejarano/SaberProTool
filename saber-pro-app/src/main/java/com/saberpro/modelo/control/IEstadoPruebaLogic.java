@@ -1,7 +1,9 @@
 package com.saberpro.modelo.control;
 
 import com.saberpro.modelo.EstadoPrueba;
+import com.saberpro.modelo.Facultad;
 import com.saberpro.modelo.dto.EstadoPruebaDTO;
+import com.saberpro.modelo.dto.FacultadDTO;
 
 import java.math.BigDecimal;
 
@@ -62,6 +64,10 @@ public interface IEstadoPruebaLogic {
     
     public List<EstadoPruebaDTO> getDataEstadoPrueba(String tipo)
             throws Exception;
+    
+    public EstadoPrueba findByNombre(String nombre)throws Exception;
+    
+    public EstadoPruebaDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateEstadoPrueba(EstadoPrueba estadoPrueba)
         throws Exception;

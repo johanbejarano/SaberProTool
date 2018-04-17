@@ -3,6 +3,7 @@ package com.saberpro.dataaccess.dao;
 import com.saberpro.dataaccess.api.Dao;
 
 import com.saberpro.modelo.EstadoPrueba;
+import com.saberpro.modelo.Facultad;
 
 import java.math.BigDecimal;
 
@@ -16,4 +17,6 @@ import java.util.Set;
 *
 */
 public interface IEstadoPruebaDAO extends Dao<EstadoPrueba, Long> {
+	
+	public EstadoPrueba findByNombre(String nombre);
 }

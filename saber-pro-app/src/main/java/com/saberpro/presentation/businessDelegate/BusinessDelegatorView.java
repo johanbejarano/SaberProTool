@@ -1996,5 +1996,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return tipoModuloLogic.findDataByNombre(nombre);
 	}
 
+	@Override
+	public EstadoPrueba findByNombreEstadoPrueba(String nombre) throws Exception {
+		return estadoPruebaLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public EstadoPruebaDTO findDataByNombreEstadoPrueba(String nombre) throws Exception {
+		return estadoPruebaLogic.findDataByNombre(nombre);
+	}
+
 	
 }

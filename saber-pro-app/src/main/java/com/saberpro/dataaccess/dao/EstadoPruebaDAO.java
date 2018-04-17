@@ -3,6 +3,7 @@ package com.saberpro.dataaccess.dao;
 import com.saberpro.dataaccess.api.JpaDaoImpl;
 
 import com.saberpro.modelo.EstadoPrueba;
+import com.saberpro.modelo.Facultad;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,4 +39,9 @@ public class EstadoPruebaDAO extends JpaDaoImpl<EstadoPrueba, Long>
         ApplicationContext ctx) {
         return (IEstadoPruebaDAO) ctx.getBean("EstadoPruebaDAO");
     }
+
+	@Override
+	public EstadoPrueba findByNombre(String nombre) {
+		return (EstadoPrueba)entityManager.createQuery("SELECT est FROM EstadoPrueba est WHERE UPPER(sinacentos(est.nombre))=UPPER(sinacentos(:nombre))").setParameter("nombre",nombre).getSingleResult();
+	}
 }

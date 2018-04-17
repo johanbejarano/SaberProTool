@@ -763,5 +763,9 @@ public interface IBusinessDelegatorView {
 	 public TipoModulo findByNombreTipoModulo(String nombre)throws Exception;
 	    
 	 public TipoModuloDTO findDataByNombreTipoModulo(String nombre)throws Exception;
+	 
+	 public EstadoPrueba findByNombreEstadoPrueba(String nombre)throws Exception;
+	    
+	 public EstadoPruebaDTO findDataByNombreEstadoPrueba(String nombre)throws Exception;
 
 }

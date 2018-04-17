@@ -130,11 +130,7 @@ public class EstadoPruebaLogic implements IEstadoPruebaLogic {
                 throw new ZMessManager().new NullEntityExcepcion("EstadoPrueba");
             }
 
-            validateEstadoPrueba(entity);
-
-            if (getEstadoPrueba(entity.getIdEstadoPrueba()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validateEstadoPrueba(entity);            
 
             estadoPruebaDAO.save(entity);
             log.debug("save EstadoPrueba successful");
@@ -453,4 +449,42 @@ public class EstadoPruebaLogic implements IEstadoPruebaLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public EstadoPrueba findByNombre(String nombre) throws Exception {
+		log.debug("getting EstadoPrueba instance");
+
+        EstadoPrueba entity = null;
+
+        try {
+            entity = estadoPruebaDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get EstadoPrueba failed", e);
+            throw new ZMessManager().new FindingException("EstadoPrueba");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public EstadoPruebaDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting EstadoPrueba instance");
+
+        EstadoPrueba entity = null;
+        EstadoPruebaDTO entityDTO = null;
+
+        try {
+            entity = estadoPruebaDAO.findByNombre(nombre);
+            entityDTO = estadoPruebaMapper.estadoPruebaToEstadoPruebaDTO(entity);
+        } catch (Exception e) {
+            log.error("get EstadoPrueba failed", e);
+            throw new ZMessManager().new FindingException("EstadoPrueba");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }
