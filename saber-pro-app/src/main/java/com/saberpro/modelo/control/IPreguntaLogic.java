@@ -3,6 +3,7 @@ package com.saberpro.modelo.control;
 import com.saberpro.modelo.Pregunta;
 import com.saberpro.modelo.dto.PreguntaDTO;
 
+import java.io.File;
 import java.math.BigDecimal;
 
 import java.util.*;
@@ -59,4 +60,8 @@ public interface IPreguntaLogic {
     public List<PreguntaDTO> getDataPregunta(String tipo) throws Exception;
 
     public void validatePregunta(Pregunta pregunta) throws Exception;
+    
+    public void importXLSFile(File archivo,long user)throws Exception;
+    
+    public void importXLSXFile(File archivo,long user)throws Exception;
 }

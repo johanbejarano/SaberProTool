@@ -287,13 +287,27 @@
 			<artifactId>primefaces-extensions</artifactId>
 			<version>6.1.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.primefaces.extensions</groupId>
 			<artifactId>resources-ckeditor</artifactId>
 			<version>6.1.0</version>
 		</dependency>
 		<!-- Ckeditor editor de texto primefaces -->
+
+		<!-- Apache poi impotar y exportar excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
+		<!-- Apache poi impotar y exportar excel -->
+		
 	</dependencies>
 
 	<build>
