@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 import java.util.Date;
@@ -767,5 +768,7 @@ public interface IBusinessDelegatorView {
 	 public EstadoPrueba findByNombreEstadoPrueba(String nombre)throws Exception;
 	    
 	 public EstadoPruebaDTO findDataByNombreEstadoPrueba(String nombre)throws Exception;
+	 
+	 public void subirFilePregunta(InputStream origen, String destino) throws Exception;
 
 }

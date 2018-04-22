@@ -1,6 +1,7 @@
 package com.saberpro.utilities;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.FileSystems;
@@ -14,13 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class Archivo {
 
-	public void copy(String origen, String destino) throws Exception {
-
-		Path origenPath = FileSystems.getDefault().getPath(origen);
+	public void copy(InputStream origen, String destino) throws Exception {
+		
 		Path destinoPath = FileSystems.getDefault().getPath(destino);
 
 		try {
-			Files.copy(origenPath, destinoPath, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(origen, destinoPath, StandardCopyOption.REPLACE_EXISTING);
 		} catch (Exception e) {
 			throw new Exception("Error de " + e.getMessage());
 		}

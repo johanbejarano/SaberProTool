@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="formDialog">
+			<p:messages id="msg" />
+			<p:growl id="men" />
+			<p:panel id="panelPregunta" header="Pregunta">
+				<h:panelGrid columns="2" id="panelGrid">
+					<h:outputText id="msgContenido" value="Contenido de la pregunta:    ->" />					
+					<pe:ckEditor id="editor" value="#{preguntaView.content}" 
+						toolbar="[[ 'NewPage','Preview'],
+						        ['Cut', 'Copy', 'Paste', 'PasteText','SpellChecker','Scayt','-','Undo', 'Redo'], 
+             					['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat','Blockquote'], 
+             					['NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'], 
+             					[ 'Link','Unlink'],
+             					[ 'Image','Table','HorizontalRule','SpecialChar','PageBreak'], 
+             					[ 'Styles','Format','Font','FontSize' ],
+             					[ 'TextColor','BGColor' ],
+             					[ 'Maximize']]"
+						skin="office2013"/>
+					<h:outputText id="msgRetroalimentacion" value=" Retroalimentacion :  ->" />
+					<p:inputTextarea id="txtRetroalimentacion" rows="3" cols="96" counter="display"
+						maxlength="1200" counterTemplate="{0} caracteres restantes" autoResize="false"/>
+					<h:outputText value="(Opcional)" />
+					<h:outputText id="display"/>
+					<h:outputText value="Agrege las respuestas: ->"/>					
+					<p:panel id="panelRespuesta" header="Respuestas">
+						<h:panelGrid columns="4" id="panelGridRespuestas" >
+							<h:outputText value="Respuesta 1 :" />
+							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
+							<p:fileUpload  mode="simple" skinSimple="true"/>
+							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>
+							<h:outputText value="Respuesta 2 :" />
+							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
+							<p:fileUpload  mode="simple" skinSimple="true"/>
+							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>
+							<h:outputText value="Respuesta 3 :" />
+							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
+							<p:fileUpload  mode="simple" skinSimple="true"/>
+							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>
+							<h:outputText value="Respuesta 4 :" />
+							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
+							<p:fileUpload  mode="simple" skinSimple="true"/>
+							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>							
+						</h:panelGrid>
+					</p:panel>					
+				</h:panelGrid>
+			</p:panel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

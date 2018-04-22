@@ -8,6 +8,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.PreguntaDTO;
+import com.saberpro.utilities.Archivo;
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.Utilities;
 
@@ -70,6 +71,8 @@ public class PreguntaLogic implements IPreguntaLogic {
 	private IPreguntaMapper preguntaMapper;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private Archivo archivo;
 
 	/**
 	 * DAO injected by Spring that manages Imagen entities
@@ -669,5 +672,11 @@ public class PreguntaLogic implements IPreguntaLogic {
 			throw new Exception(e.getMessage());
 		}
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void subirFile(InputStream origen, String destino) throws Exception {
+		archivo.copy(origen, destino);		
 	}
 }

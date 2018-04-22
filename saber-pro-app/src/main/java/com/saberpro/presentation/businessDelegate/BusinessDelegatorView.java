@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 import java.sql.*;
@@ -2004,6 +2005,12 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	@Override
 	public EstadoPruebaDTO findDataByNombreEstadoPrueba(String nombre) throws Exception {
 		return estadoPruebaLogic.findDataByNombre(nombre);
+	}
+
+	@Override
+	public void subirFilePregunta(InputStream origen, String destino) throws Exception {
+		preguntaLogic.subirFile(origen, destino);
+		
 	}
 
 	

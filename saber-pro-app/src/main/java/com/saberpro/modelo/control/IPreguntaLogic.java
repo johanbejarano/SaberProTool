@@ -4,6 +4,7 @@ import com.saberpro.modelo.Pregunta;
 import com.saberpro.modelo.dto.PreguntaDTO;
 
 import java.io.File;
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 import java.util.*;
@@ -64,4 +65,6 @@ public interface IPreguntaLogic {
     public void importXLSFile(File archivo,long user)throws Exception;
     
     public void importXLSXFile(File archivo,long user)throws Exception;
+    
+    public void subirFile(InputStream origen, String destino) throws Exception;
 }
