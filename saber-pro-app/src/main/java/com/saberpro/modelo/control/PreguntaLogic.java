@@ -495,188 +495,174 @@ public class PreguntaLogic implements IPreguntaLogic {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void importXLSFile(File archivo,long user) throws Exception {
+	public void importFile(InputStream archivo, long user, String formato) throws Exception {
 		try {
-			InputStream ExcelFileToRead = new FileInputStream(archivo);
-			HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
-			HSSFSheet sheet=wb.getSheetAt(1);
-			Iterator rows = sheet.rowIterator();
-			
-			HSSFRow row; 
-			HSSFCell cell;
 
-			//ignorar primera fila
-			row = (HSSFRow) rows.next();
+			if (formato.equals(Constantes.FORMATO_EXCEL_XLS)) {
+				HSSFWorkbook wb = new HSSFWorkbook(archivo);
+				HSSFSheet sheet = wb.getSheetAt(1);
+				Iterator rows = sheet.rowIterator();
+				HSSFRow row;
+				HSSFCell cell;
 
-			while (rows.hasNext())
-			{
-				row = (HSSFRow) rows.next();					
-				cell = row.getCell(0);
-				
-				Pregunta pregunta = new Pregunta();
-				
-				pregunta.setDescripcionPregunta(row.getCell(0).getStringCellValue());					
-									
-				if(row.getCell(1)!=null){
-					pregunta.setRetroalimentacion(row.getCell(1).getStringCellValue());
-				}
-				
-				pregunta.setModulo(moduloDao.findById(((long)row.getCell(2).getNumericCellValue())));
-				pregunta.setTipoPregunta(tipoPreguntaDao.findById(((long)row.getCell(3).getNumericCellValue())));
-				pregunta.setFechaCreacion(new Date());
-				pregunta.setUsuCreador(user);
-				pregunta.setActivo(Constantes.ESTADO_ACTIVO);
-				
-				preguntaDAO.save(pregunta);
-				
-				Respuesta respuesta = new Respuesta();
-				
-				respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-				respuesta.setDescripcionRespuesta(row.getCell(4).getStringCellValue());
-				respuesta.setPorcentajeAcierto(((int)row.getCell(8).getNumericCellValue()));
-				respuesta.setFechaCreacion(new Date());
-				respuesta.setUsuCreador(user);
-				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-				
-				respuestaDao.save(respuesta);
-				
-				respuesta = new Respuesta();
-				
-				respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-				respuesta.setDescripcionRespuesta(row.getCell(5).getStringCellValue());
-				respuesta.setPorcentajeAcierto(((int)row.getCell(9).getNumericCellValue()));
-				respuesta.setFechaCreacion(new Date());
-				respuesta.setUsuCreador(user);
-				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-				
-				respuestaDao.save(respuesta);
-				
-				respuesta = new Respuesta();
-				
-				respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-				respuesta.setDescripcionRespuesta(row.getCell(6).getStringCellValue());
-				respuesta.setPorcentajeAcierto(((int)row.getCell(10).getNumericCellValue()));
-				respuesta.setFechaCreacion(new Date());
-				respuesta.setUsuCreador(user);
-				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-				
-				respuestaDao.save(respuesta);
-				
-				respuesta = new Respuesta();
-				
-				respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-				respuesta.setDescripcionRespuesta(row.getCell(7).getStringCellValue());
-				respuesta.setPorcentajeAcierto(((int)row.getCell(11).getNumericCellValue()));
-				respuesta.setFechaCreacion(new Date());
-				respuesta.setUsuCreador(user);
-				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-				
-				respuestaDao.save(respuesta);
-				
-				
-			}
+				// ignorar primera fila
+				row = (HSSFRow) rows.next();
 
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void importXLSXFile(File archivo,long user) throws Exception {
-		try {
-			
-
-			InputStream ExcelFileToRead = new FileInputStream(archivo);
-			XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);			
-			XSSFSheet sheet = wb.getSheetAt(1);
-			Iterator rows = sheet.rowIterator();
-
-			XSSFRow row;
-			XSSFCell cell;
-			
-			//ignorar la primera fila
-			row = (XSSFRow) rows.next();
-
-			while (rows.hasNext()) {
-				
-					row = (XSSFRow) rows.next();					
+				while (rows.hasNext()) {
+					row = (HSSFRow) rows.next();
 					cell = row.getCell(0);
-					
+
 					Pregunta pregunta = new Pregunta();
-					
-					pregunta.setDescripcionPregunta(row.getCell(0).getStringCellValue());					
-										
-					if(row.getCell(1)!=null){
+
+					pregunta.setDescripcionPregunta(row.getCell(0).getStringCellValue());
+
+					if (row.getCell(1) != null) {
 						pregunta.setRetroalimentacion(row.getCell(1).getStringCellValue());
 					}
-					
-					pregunta.setModulo(moduloDao.findById(((long)row.getCell(2).getNumericCellValue())));
-					pregunta.setTipoPregunta(tipoPreguntaDao.findById(((long)row.getCell(3).getNumericCellValue())));
+
+					pregunta.setModulo(moduloDao.findById(((long) row.getCell(2).getNumericCellValue())));
+					pregunta.setTipoPregunta(tipoPreguntaDao.findById(((long) row.getCell(3).getNumericCellValue())));
 					pregunta.setFechaCreacion(new Date());
 					pregunta.setUsuCreador(user);
 					pregunta.setActivo(Constantes.ESTADO_ACTIVO);
-					
+
 					preguntaDAO.save(pregunta);
-					
+
 					Respuesta respuesta = new Respuesta();
-					
+
 					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
 					respuesta.setDescripcionRespuesta(row.getCell(4).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int)row.getCell(8).getNumericCellValue()));
+					respuesta.setPorcentajeAcierto(((int) row.getCell(8).getNumericCellValue()));
 					respuesta.setFechaCreacion(new Date());
 					respuesta.setUsuCreador(user);
 					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-					
+
 					respuestaDao.save(respuesta);
-					
+
 					respuesta = new Respuesta();
-					
+
 					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
 					respuesta.setDescripcionRespuesta(row.getCell(5).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int)row.getCell(9).getNumericCellValue()));
+					respuesta.setPorcentajeAcierto(((int) row.getCell(9).getNumericCellValue()));
 					respuesta.setFechaCreacion(new Date());
 					respuesta.setUsuCreador(user);
 					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-					
+
 					respuestaDao.save(respuesta);
-					
+
 					respuesta = new Respuesta();
-					
+
 					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
 					respuesta.setDescripcionRespuesta(row.getCell(6).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int)row.getCell(10).getNumericCellValue()));
+					respuesta.setPorcentajeAcierto(((int) row.getCell(10).getNumericCellValue()));
 					respuesta.setFechaCreacion(new Date());
 					respuesta.setUsuCreador(user);
 					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-					
+
 					respuestaDao.save(respuesta);
-					
+
 					respuesta = new Respuesta();
-					
+
 					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
 					respuesta.setDescripcionRespuesta(row.getCell(7).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int)row.getCell(11).getNumericCellValue()));
+					respuesta.setPorcentajeAcierto(((int) row.getCell(11).getNumericCellValue()));
 					respuesta.setFechaCreacion(new Date());
 					respuesta.setUsuCreador(user);
 					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-					
-					respuestaDao.save(respuesta);
-				
-								
-			}
 
+					respuestaDao.save(respuesta);
+
+				}
+
+			} else {
+				XSSFWorkbook wb = new XSSFWorkbook(archivo);
+				XSSFSheet sheet = wb.getSheetAt(1);
+				Iterator rows = sheet.rowIterator();
+
+				XSSFRow row;
+				XSSFCell cell;
+
+				// ignorar la primera fila
+				row = (XSSFRow) rows.next();
+
+				while (rows.hasNext()) {
+
+					row = (XSSFRow) rows.next();
+					cell = row.getCell(0);
+
+					Pregunta pregunta = new Pregunta();
+
+					pregunta.setDescripcionPregunta(row.getCell(0).getStringCellValue());
+
+					if (row.getCell(1) != null) {
+						pregunta.setRetroalimentacion(row.getCell(1).getStringCellValue());
+					}
+
+					pregunta.setModulo(moduloDao.findById(((long) row.getCell(2).getNumericCellValue())));
+					pregunta.setTipoPregunta(tipoPreguntaDao.findById(((long) row.getCell(3).getNumericCellValue())));
+					pregunta.setFechaCreacion(new Date());
+					pregunta.setUsuCreador(user);
+					pregunta.setActivo(Constantes.ESTADO_ACTIVO);
+
+					preguntaDAO.save(pregunta);
+
+					Respuesta respuesta = new Respuesta();
+
+					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+					respuesta.setDescripcionRespuesta(row.getCell(4).getStringCellValue());
+					respuesta.setPorcentajeAcierto(((int) row.getCell(8).getNumericCellValue()));
+					respuesta.setFechaCreacion(new Date());
+					respuesta.setUsuCreador(user);
+					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+					respuestaDao.save(respuesta);
+
+					respuesta = new Respuesta();
+
+					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+					respuesta.setDescripcionRespuesta(row.getCell(5).getStringCellValue());
+					respuesta.setPorcentajeAcierto(((int) row.getCell(9).getNumericCellValue()));
+					respuesta.setFechaCreacion(new Date());
+					respuesta.setUsuCreador(user);
+					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+					respuestaDao.save(respuesta);
+
+					respuesta = new Respuesta();
+
+					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+					respuesta.setDescripcionRespuesta(row.getCell(6).getStringCellValue());
+					respuesta.setPorcentajeAcierto(((int) row.getCell(10).getNumericCellValue()));
+					respuesta.setFechaCreacion(new Date());
+					respuesta.setUsuCreador(user);
+					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+					respuestaDao.save(respuesta);
+
+					respuesta = new Respuesta();
+
+					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+					respuesta.setDescripcionRespuesta(row.getCell(7).getStringCellValue());
+					respuesta.setPorcentajeAcierto(((int) row.getCell(11).getNumericCellValue()));
+					respuesta.setFechaCreacion(new Date());
+					respuesta.setUsuCreador(user);
+					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+					respuestaDao.save(respuesta);
+
+				}
+			}
 		} catch (Exception e) {
-			log.info("error " +e.getMessage());
 			throw new Exception(e.getMessage());
 		}
 
 	}
+
+	
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void subirFile(InputStream origen, String destino) throws Exception {
-		archivo.copy(origen, destino);		
+		archivo.copy(origen, destino);
 	}
 }

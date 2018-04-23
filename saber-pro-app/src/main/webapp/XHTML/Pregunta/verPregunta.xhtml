@@ -6,52 +6,55 @@
 	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
 	<ui:define name="content">
-		<h:form id="formDialog">
+		<h:form id="formDialog" enctype="multipart/form-data">
 			<p:messages id="msg" />
 			<p:growl id="men" />
 			<p:panel id="panelPregunta" header="Pregunta">
-				<h:panelGrid columns="2" id="panelGrid">
-					<h:outputText id="msgContenido" value="Contenido de la pregunta:    ->" />					
-					<pe:ckEditor id="editor" value="#{preguntaView.content}" 
-						toolbar="[[ 'NewPage','Preview'],
-						        ['Cut', 'Copy', 'Paste', 'PasteText','SpellChecker','Scayt','-','Undo', 'Redo'], 
-             					['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat','Blockquote'], 
-             					['NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'], 
-             					[ 'Link','Unlink'],
-             					[ 'Image','Table','HorizontalRule','SpecialChar','PageBreak'], 
-             					[ 'Styles','Format','Font','FontSize' ],
-             					[ 'TextColor','BGColor' ],
-             					[ 'Maximize']]"
-						skin="office2013"/>
-					<h:outputText id="msgRetroalimentacion" value=" Retroalimentacion :  ->" />
-					<p:inputTextarea id="txtRetroalimentacion" rows="3" cols="96" counter="display"
-						maxlength="1200" counterTemplate="{0} caracteres restantes" autoResize="false"/>
-					<h:outputText value="(Opcional)" />
-					<h:outputText id="display"/>
-					<h:outputText value="Agrege las respuestas: ->"/>					
-					<p:panel id="panelRespuesta" header="Respuestas">
-						<h:panelGrid columns="4" id="panelGridRespuestas" >
-							<h:outputText value="Respuesta 1 :" />
-							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
-							<p:fileUpload  mode="simple" skinSimple="true"/>
-							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>
-							<h:outputText value="Respuesta 2 :" />
-							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
-							<p:fileUpload  mode="simple" skinSimple="true"/>
-							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>
-							<h:outputText value="Respuesta 3 :" />
-							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
-							<p:fileUpload  mode="simple" skinSimple="true"/>
-							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>
-							<h:outputText value="Respuesta 4 :" />
-							<p:inputTextarea rows="1" cols="70" counter="display"  autoResize="false" />
-							<p:fileUpload  mode="simple" skinSimple="true"/>
-							<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s"/>							
-						</h:panelGrid>
-					</p:panel>					
+				<h:panelGrid columns="3">
+					<h:outputText  value="Crear nueva pregunta:" />	
+					<h:outputText value=""/>
+					<h:link outcome="pregunta.xhtml" value="Crear una nueva pregunta" styleClass="btn" />
+					<h:outputText  value="Importar preguntas:"/>	
+					<p:fileUpload label="Cargar archivo" value="#{preguntaView.chooseImportFile}" mode="simple" skinSimple="true" />
+					<p:commandButton value="Importar preguntas(xls o xlsx)" action="#{preguntaView.importFilePregunta}" update="msg,panelTable,men" ajax="false"/>
 				</h:panelGrid>
 			</p:panel>
+			<p:panel id="panelTable">
+				<p:dataTable id="dataPregunta" value="#{preguntaView.data}"
+					var="pregunta" reflow="true" resizableColumns="true"
+					scrollable="true" scrollHeight="300" widgetVar="tipTable"
+					paginator="true"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    rowsPerPageTemplate="10,25,50">
 
+					<p:column headerText="Descripcion" filterBy="#{pregunta.descripcionPregunta}"
+						filterMatchMode="contains" width="65%">
+						<p:outputLabel value="#{pregunta.descripcionPregunta}" />
+					</p:column>					
+					<p:column headerText="Modulo" filterBy="#{preguntaView.getModulo(pregunta.idModulo_Modulo)}"
+						filterMatchMode="contains" width="20%">
+						<p:outputLabel value="#{preguntaView.getModulo(pregunta.idModulo_Modulo)}" />
+					</p:column>
+					<p:column headerText="Activo" filterBy="#{pregunta.activo.equals('S')}" filterMatchMode="equals"
+							  width="10%" styleClass="text-center">
+						<f:facet name="filter">
+							<p:selectOneButton onchange="PF('tipTable').filter()">
+								<f:converter converterId="javax.faces.Boolean" />
+								<f:selectItem itemLabel="All" itemValue="" />
+								<f:selectItem itemLabel="Activo" itemValue="true" />
+								<f:selectItem itemLabel="Inactivo" itemValue="false" />
+							</p:selectOneButton>
+						</f:facet>
+						<h:outputText
+							value="#{pregunta.activo.equals('S') ? 'Sí': 'No'}" />
+					</p:column>
+					<p:column headerText="Opcion" width="4%">
+						<h:link outcome="pregunta.xhtml" value="Editar" styleClass="btn btn-primary">
+							<f:param name="id" value="#{pregunta.idPregunta}"/>
+						</h:link>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

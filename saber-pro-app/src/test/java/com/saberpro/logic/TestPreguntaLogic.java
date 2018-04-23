@@ -32,7 +32,7 @@ public class TestPreguntaLogic {
 	@Test
 	public void test() {
 		try {
-			preguntaLogic.importXLSXFile(archivo.leer("/home/jhony/Descargas/Prueba exportar.xlsx"),0L);
+			//preguntaLogic.importXLSXFile(archivo.leer("/home/jhony/Descargas/Prueba exportar.xlsx"),0L);
 		} catch (Exception e) {
 			log.info("error de "+e.getMessage());
 		}

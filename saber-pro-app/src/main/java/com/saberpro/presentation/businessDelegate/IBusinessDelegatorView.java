@@ -770,5 +770,7 @@ public interface IBusinessDelegatorView {
 	 public EstadoPruebaDTO findDataByNombreEstadoPrueba(String nombre)throws Exception;
 	 
 	 public void subirFilePregunta(InputStream origen, String destino) throws Exception;
+	 
+	 public void importFilePregunta(InputStream archivo,long user,String formato)throws Exception;  
 
 }

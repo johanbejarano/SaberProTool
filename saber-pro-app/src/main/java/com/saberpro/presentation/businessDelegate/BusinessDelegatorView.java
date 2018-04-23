@@ -2013,5 +2013,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		
 	}
 
+	@Override
+	public void importFilePregunta(InputStream archivo, long user, String formato) throws Exception {
+		preguntaLogic.importFile(archivo, user, formato);		
+	}
+
 	
 }

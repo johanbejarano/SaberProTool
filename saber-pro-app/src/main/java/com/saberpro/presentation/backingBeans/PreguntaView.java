@@ -69,12 +69,14 @@ public class PreguntaView implements Serializable {
     
     private InputTextarea txtRetroalimentacion;
     
+    private UploadedFile chooseImportFile;
     private UploadedFile choosePregunta;
     private UploadedFile chooseRespuesta1;
     private UploadedFile chooseRespuesta2;
     private UploadedFile chooseRespuesta3;
     private UploadedFile chooseRespuesta4;
     
+    private CommandButton importFile;
     private CommandButton subirPregunta;
     private CommandButton subirRespuesta1;
     private CommandButton subirRespuesta2;
@@ -98,6 +100,34 @@ public class PreguntaView implements Serializable {
     
     public void saveListener() {
     	
+    }
+    
+    public String getModulo(long id) {
+    	try {
+			return businessDelegatorView.getModulo(id).getNombre();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+    }
+    
+    public void importFilePregunta() {
+    	try {
+			if(chooseImportFile!=null) {
+				
+				Usuario usuario = (Usuario)FacesUtils.getfromSession("usuario");
+				
+				String ext = chooseImportFile.getFileName().substring(chooseImportFile.getFileName().lastIndexOf("."));
+				businessDelegatorView.importFilePregunta(chooseImportFile.getInputstream(),usuario.getIdUsuario(),ext);
+				
+				data = null;
+				
+				FacesUtils.addInfoMessage("Se importo correctamente las preguntas");
+			}
+			
+			
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
     }
     
     public void subirImagenPregunta() {
@@ -421,6 +451,22 @@ public class PreguntaView implements Serializable {
 
 	public void setSubirRespuesta4(CommandButton subirRespuesta4) {
 		this.subirRespuesta4 = subirRespuesta4;
+	}
+
+	public UploadedFile getChooseImportFile() {
+		return chooseImportFile;
+	}
+
+	public void setChooseImportFile(UploadedFile chooseImportFile) {
+		this.chooseImportFile = chooseImportFile;
+	}
+
+	public CommandButton getImportFile() {
+		return importFile;
+	}
+
+	public void setImportFile(CommandButton importFile) {
+		this.importFile = importFile;
 	}
 
 	

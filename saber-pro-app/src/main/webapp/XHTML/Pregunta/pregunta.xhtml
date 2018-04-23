@@ -11,6 +11,7 @@
 			<p:growl id="men" />
 			<p:panel id="panelPregunta" header="Pregunta">
 				<h:panelGrid columns="2" id="panelGrid">
+					<h:outputText  value="Tipo de competencia:    ->" />	
 					<h:outputText id="msgContenido" value="Contenido de la pregunta:    ->" />					
 					<pe:ckEditor id="editor" value="#{preguntaView.content}" 
 						toolbar="[[ 'NewPage','Preview'],

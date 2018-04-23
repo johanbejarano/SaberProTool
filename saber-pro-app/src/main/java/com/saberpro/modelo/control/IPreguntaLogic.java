@@ -62,9 +62,7 @@ public interface IPreguntaLogic {
 
     public void validatePregunta(Pregunta pregunta) throws Exception;
     
-    public void importXLSFile(File archivo,long user)throws Exception;
-    
-    public void importXLSXFile(File archivo,long user)throws Exception;
+    public void importFile(InputStream archivo,long user,String formato)throws Exception;  
     
     public void subirFile(InputStream origen, String destino) throws Exception;
 }

@@ -42,6 +42,8 @@ public class Constantes {
 	
 	//Formatos
 	 public static final DateFormat FORMATO_FECHA_SIMPLE = new SimpleDateFormat("dd/MM/yyyy");
+	 public static final String FORMATO_EXCEL_XLS = ".xls";
+	 public static final String FORMATO_EXCEL_XLSX = ".xlsx";
 	 
 	//Ruta de las vistas
 	 public static final String RUTA_BASE = "#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}";

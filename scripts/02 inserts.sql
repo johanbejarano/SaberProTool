@@ -278,7 +278,7 @@ insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Pregunta','ui-icon-notice',now(),0,'S');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Administrar','ui-icon-gear',now(),0,'S');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Prueba','ui-icon-alert',now(),0,'S');
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Seguridad','ui-icon-key',now(),0,'S');
+
 
 
 /* Parametro */
@@ -300,6 +300,7 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PRUEBA','/XHTML/Administrador/tipoPrueba.xhtml',now(),0,'S',3);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO USUARIO','/XHTML/Administrador/tipoUsuario.xhtml',now(),0,'S',3);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PREGUNTA','/XHTML/Pregunta/pregunta.xhtml',now(),0,'S',2);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('VER PREGUNTA','/XHTML/Pregunta/verPregunta.xhtml',now(),0,'S',2);
 
 /* Permiso */
 
@@ -308,7 +309,6 @@ ALTER SEQUENCE permiso_id_permiso_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,1);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,2);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,3);
-insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,5);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',4,1);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,1);
 
