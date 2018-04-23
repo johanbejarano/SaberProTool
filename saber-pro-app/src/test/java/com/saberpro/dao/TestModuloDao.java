@@ -114,6 +114,7 @@ public class TestModuloDao {
 		assertNotNull("El tipoModuloDao es null",tipoModuloDao);
 		assertNotNull("El ModuloDao es null",moduloDao);
 		
+		
 		List<Modulo> list = moduloDao.findAll();
 		
 		for (Modulo modulo : list) {

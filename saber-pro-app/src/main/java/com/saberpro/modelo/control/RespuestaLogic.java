@@ -139,9 +139,7 @@ public class RespuestaLogic implements IRespuestaLogic {
 
             validateRespuesta(entity);
 
-            if (getRespuesta(entity.getIdRespuesta()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+           
 
             respuestaDAO.save(entity);
             log.debug("save Respuesta successful");

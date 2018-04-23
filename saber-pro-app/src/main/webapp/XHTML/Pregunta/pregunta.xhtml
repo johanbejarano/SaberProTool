@@ -12,6 +12,16 @@
 			<p:panel id="panelPregunta" header="Pregunta">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText  value="Tipo de competencia:    ->" />	
+					<p:selectOneMenu id="somTipoModulo"  binding="#{preguntaView.somTipoModulo}">
+						<f:selectItem itemValue="0" itemLabel="---------------------------------" />
+						<f:selectItems value="#{preguntaView.lasTipoModuloSelectItem}"/>	
+						<p:ajax update="panelPregunta" listener="#{preguntaView.changeTipoModulo}"/>
+					</p:selectOneMenu>
+					<h:outputText  value="Modulo:" />	
+					<p:selectOneMenu id="somModulo" binding="#{preguntaView.somModulo}">
+						<f:selectItem itemValue="0" itemLabel="----------------------------------" />		
+						<f:selectItems value="#{preguntaView.lasModuloSelectItem}"/>				
+					</p:selectOneMenu>
 					<h:outputText id="msgContenido" value="Contenido de la pregunta:    ->" />					
 					<pe:ckEditor id="editor" value="#{preguntaView.content}" 
 						toolbar="[[ 'NewPage','Preview'],
@@ -56,7 +66,7 @@
 							</h:panelGrid>
 							<h:panelGrid columns="2">
 								<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
-								<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" />
+								<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta1}" />
 							</h:panelGrid>							
 					 	 </p:tab>
 					 	 <p:tab title="Respuesta II">
@@ -78,7 +88,7 @@
 								</h:panelGrid>
 								<h:panelGrid columns="2">
 									<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
-									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" />
+									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta2}"/>
 								</h:panelGrid>	
 					 	 </p:tab>
 					 	 <p:tab title="Respuesta III">
@@ -100,7 +110,7 @@
 								</h:panelGrid>
 								<h:panelGrid columns="2">
 									<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
-									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" />
+									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta3}"/>
 								</h:panelGrid>	
 					 	 </p:tab>
 					 	 <p:tab title="Respuesta IV">
@@ -122,11 +132,16 @@
 								</h:panelGrid>
 								<h:panelGrid columns="2">
 									<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
-									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" />
+									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta4}"/>
 								</h:panelGrid>	
 					 	 </p:tab>
-					 </p:tabView>		
-									
+					 </p:tabView>						
+				</h:panelGrid>
+				<h:panelGrid columns="3">
+					<p:commandButton value="Crear" action="#{preguntaView.action_create}" update="panelPregunta,men,msg" binding="#{preguntaView.crear}"/>	
+					<p:commandButton value="Actualizar" action="#{preguntaView.action_modify}" update="panelPregunta,men,msg" disabled="#{preguntaView.cargo}" binding="#{preguntaView.actualizar}"/>
+					<p:commandButton value="Limpiar" action="#{preguntaView.action_clear}" update="panelPregunta,men,msg"/>
+					<p:commandButton binding="#{preguntaView.cargar}" style="display:none;"/>
 				</h:panelGrid>
 			</p:panel>
 

@@ -173,11 +173,7 @@ public class PreguntaLogic implements IPreguntaLogic {
 				throw new ZMessManager().new NullEntityExcepcion("Pregunta");
 			}
 
-			validatePregunta(entity);
-
-			if (getPregunta(entity.getIdPregunta()) != null) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
+			validatePregunta(entity);			
 
 			preguntaDAO.save(entity);
 			log.debug("save Pregunta successful");

@@ -4,15 +4,17 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.PreguntaDTO;
-
+import com.saberpro.modelo.dto.TipoModuloDTO;
 import com.saberpro.presentation.businessDelegate.*;
 
 import com.saberpro.utilities.*;
 
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.extensions.component.ckeditor.CKEditor;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.event.RowEditEvent;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -39,6 +42,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 
 
@@ -53,7 +57,7 @@ public class PreguntaView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(PreguntaView.class);
     
-    
+    private boolean cargo = true;
     
     private String content;
     private String contentRespuesta1;
@@ -61,11 +65,19 @@ public class PreguntaView implements Serializable {
     private String contentRespuesta3;
     private String contentRespuesta4;
     
+    private InputNumber porcentajeAciertoRespuesta1;
+    private InputNumber porcentajeAciertoRespuesta2;
+    private InputNumber porcentajeAciertoRespuesta3;
+    private InputNumber porcentajeAciertoRespuesta4;
+    
     private InputText rutaPregunta;
     private InputText rutaRespuesta1;
     private InputText rutaRespuesta2;
     private InputText rutaRespuesta3;
     private InputText rutaRespuesta4;
+    
+    private SelectOneMenu somTipoModulo;
+	private SelectOneMenu somModulo;
     
     private InputTextarea txtRetroalimentacion;
     
@@ -82,6 +94,12 @@ public class PreguntaView implements Serializable {
     private CommandButton subirRespuesta2;
     private CommandButton subirRespuesta3;
     private CommandButton subirRespuesta4;
+    private CommandButton crear;
+    private CommandButton actualizar;
+    private CommandButton cargar;
+    
+    private List<SelectItem> lasTipoModuloSelectItem;
+    private List<SelectItem> lasModuloSelectItem;
     
     private List<PreguntaDTO> data;
     
@@ -89,25 +107,246 @@ public class PreguntaView implements Serializable {
     
     private Pregunta entity;
     
+    private List<Respuesta> entityRespuestas;
+    
     private boolean showDialog;
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
 
     public PreguntaView() {
-        super();
+        super();      
+     }
+    
+    public void listener_txtId() {
+    	try {
+    		if(cargo) {
+    			FacesContext facesContext = FacesContext.getCurrentInstance();
+        		Map params = facesContext.getExternalContext().getRequestParameterMap();
+        		Long id= new Long((String) params.get("id"));
+        		
+        		if(id!=null) {
+        			Object[] variable = {"pregunta",true,id,"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
+            		
+            		entity = businessDelegatorView.getPregunta(id);	
+            		
+            		Modulo modulo = businessDelegatorView.getModulo(entity.getModulo().getIdModulo());
+            		TipoModulo tipoModulo = businessDelegatorView.getTipoModulo(modulo.getTipoModulo().getIdTipoModulo());   		
+        			
+        			entityRespuestas = businessDelegatorView.findByCriteriaInRespuesta(variable,null,null);
+        			
+        			somTipoModulo.setValue(tipoModulo.getIdTipoModulo());
+        			somModulo.setValue(modulo.getIdModulo());
+        			
+        			txtRetroalimentacion.setValue(entity.getRetroalimentacion());
+        			content = entity.getDescripcionPregunta();
+        			
+        			contentRespuesta1 = entityRespuestas.get(0).getDescripcionRespuesta();
+        			contentRespuesta2 = entityRespuestas.get(1).getDescripcionRespuesta();
+        			contentRespuesta3 = entityRespuestas.get(2).getDescripcionRespuesta();
+        			contentRespuesta4 = entityRespuestas.get(3).getDescripcionRespuesta();
+        			
+        			porcentajeAciertoRespuesta1.setValue(entityRespuestas.get(0).getPorcentajeAcierto());
+        			porcentajeAciertoRespuesta2.setValue(entityRespuestas.get(1).getPorcentajeAcierto());
+        			porcentajeAciertoRespuesta3.setValue(entityRespuestas.get(2).getPorcentajeAcierto());
+        			porcentajeAciertoRespuesta4.setValue(entityRespuestas.get(3).getPorcentajeAcierto());
+        			
+        			crear.setDisabled(true);
+        			actualizar.setDisabled(false);
+        		}
+    		
+    			cargo = false;
+    			
+    		}
+    		
+					
+		} catch (Exception e) {
+			log.debug("Error "+e.getMessage());
+		}
     }
     
-    public void saveListener() {
-    	
-    }
+    public String action_create() {
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+
+			if (usuario != null) {				
+				
+				entity = new Pregunta();
+
+				entity.setActivo(Constantes.ESTADO_ACTIVO);
+				entity.setDescripcionPregunta(content);
+				entity.setFechaCreacion(new Date());
+				entity.setModulo(businessDelegatorView.getModulo(FacesUtils.checkLong(somModulo)));
+				entity.setTipoPregunta(businessDelegatorView.getTipoPregunta(Constantes.PREGUNTA_TYPE_MULTIPLE));
+				entity.setRetroalimentacion(FacesUtils.checkString(txtRetroalimentacion));
+				entity.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.savePregunta(entity);			
+
+				Respuesta respuesta = new Respuesta();
+				
+				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+				respuesta.setDescripcionRespuesta(contentRespuesta1);
+				respuesta.setFechaCreacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta1));
+				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.saveRespuesta(respuesta);
+				
+				respuesta = new Respuesta();
+				
+				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+				respuesta.setDescripcionRespuesta(contentRespuesta2);
+				respuesta.setFechaCreacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta2));
+				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.saveRespuesta(respuesta);
+				
+				respuesta = new Respuesta();
+				
+				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+				respuesta.setDescripcionRespuesta(contentRespuesta3);
+				respuesta.setFechaCreacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta3));
+				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.saveRespuesta(respuesta);
+				
+				respuesta = new Respuesta();
+				
+				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+				respuesta.setDescripcionRespuesta(contentRespuesta4);
+				respuesta.setFechaCreacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta4));
+				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.saveRespuesta(respuesta);
+
+				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				
+
+			}
+
+		} catch (Exception e) {
+			entity = null;
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+
+	}
     
+    public String action_clear() {
+		entity = null;
+		selectedPregunta = null;
+
+		txtRetroalimentacion.resetValue();
+		
+		somModulo.resetValue();
+		somTipoModulo.resetValue();
+		
+		content = "";
+		contentRespuesta1 = "";
+		contentRespuesta2 = "";
+		contentRespuesta3 = "";
+		contentRespuesta4 = "";
+		
+		porcentajeAciertoRespuesta1.resetValue();
+		porcentajeAciertoRespuesta2.resetValue();
+		porcentajeAciertoRespuesta3.resetValue();
+		porcentajeAciertoRespuesta4.resetValue();
+		
+		rutaPregunta.resetValue();
+		rutaRespuesta1.resetValue();
+		rutaRespuesta2.resetValue();
+		rutaRespuesta3.resetValue();
+		rutaRespuesta4.resetValue();
+
+		return "";
+	}
+    
+    public String action_modify() {
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");			
+
+			if (usuario != null) {			
+				
+				entity.setActivo(Constantes.ESTADO_ACTIVO);
+				entity.setDescripcionPregunta(content);
+				entity.setFechaModificacion(new Date());
+				entity.setModulo(businessDelegatorView.getModulo(FacesUtils.checkLong(somModulo)));
+				entity.setTipoPregunta(businessDelegatorView.getTipoPregunta(Constantes.PREGUNTA_TYPE_MULTIPLE));
+				entity.setRetroalimentacion(FacesUtils.checkString(txtRetroalimentacion));
+				entity.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updatePregunta(entity);			
+
+				Respuesta respuesta = entityRespuestas.get(0);				
+				
+				respuesta.setDescripcionRespuesta(contentRespuesta1);
+				respuesta.setFechaModificacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta1));				
+				respuesta.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updateRespuesta(respuesta);
+				
+				respuesta = entityRespuestas.get(1);				
+				
+				respuesta.setDescripcionRespuesta(contentRespuesta2);
+				respuesta.setFechaModificacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta2));				
+				respuesta.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updateRespuesta(respuesta);
+				
+				respuesta = entityRespuestas.get(2);
+				
+				
+				respuesta.setDescripcionRespuesta(contentRespuesta3);
+				respuesta.setFechaModificacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta3));				
+				respuesta.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updateRespuesta(respuesta);
+				
+				respuesta = entityRespuestas.get(3);
+				
+				
+				respuesta.setDescripcionRespuesta(contentRespuesta4);
+				respuesta.setFechaModificacion(new Date());
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta4));				
+				respuesta.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updateRespuesta(respuesta);
+
+				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/saber-pro-app/XHTML/Pregunta/verPregunta.xhtml");
+				
+			}
+
+		} catch (Exception e) {
+			entity = null;
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+	}
     public String getModulo(long id) {
     	try {
 			return businessDelegatorView.getModulo(id).getNombre();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
+    }
+    
+    public void changeTipoModulo() {
+    	lasModuloSelectItem = null;
     }
     
     public void importFilePregunta() {
@@ -467,6 +706,130 @@ public class PreguntaView implements Serializable {
 
 	public void setImportFile(CommandButton importFile) {
 		this.importFile = importFile;
+	}
+
+	public SelectOneMenu getSomTipoModulo() {
+		return somTipoModulo;
+	}
+
+	public void setSomTipoModulo(SelectOneMenu somTipoModulo) {
+		this.somTipoModulo = somTipoModulo;
+	}
+
+	public SelectOneMenu getSomModulo() {
+		return somModulo;
+	}
+
+	public void setSomModulo(SelectOneMenu somModulo) {
+		this.somModulo = somModulo;
+	}
+
+	public List<SelectItem> getLasTipoModuloSelectItem() {
+		if(lasTipoModuloSelectItem==null) {
+			Object[] variable = {"activo",true,Constantes.ESTADO_ACTIVO,"="};
+			lasTipoModuloSelectItem = new ArrayList<>();
+			try {
+				List<TipoModulo> list = businessDelegatorView.findByCriteriaInTipoModulo(variable,null,null);
+				for (TipoModulo tipoModulo : list) {
+					lasTipoModuloSelectItem.add(new SelectItem(tipoModulo.getIdTipoModulo(), tipoModulo.getNombre()));
+				}
+			} catch (Exception e) {
+				log.debug("Error" + e.getMessage());
+			}
+		}
+		return lasTipoModuloSelectItem;
+	}
+
+	public void setLasTipoModuloSelectItem(List<SelectItem> lasTipoModuloSelectItem) {
+		this.lasTipoModuloSelectItem = lasTipoModuloSelectItem;
+	}
+
+	public List<SelectItem> getLasModuloSelectItem() {
+		
+		if(lasModuloSelectItem==null && FacesUtils.checkInteger(somTipoModulo)!=null) {				
+				Object[] variable = {"tipoModulo",true,FacesUtils.checkInteger(somTipoModulo),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
+				lasModuloSelectItem = new ArrayList<>();				
+				try {
+					List<Modulo> list = businessDelegatorView.findByCriteriaInModulo(variable,null,null);
+					for (Modulo modulo : list) {
+						lasModuloSelectItem.add(new SelectItem(modulo.getIdModulo(),modulo.getNombre()));
+					}
+				} catch (Exception e) {
+					
+					log.debug("Error" + e.getMessage());
+				}
+			}			
+		
+		return lasModuloSelectItem;
+	}
+
+	public void setLasModuloSelectItem(List<SelectItem> lasModuloSelectItem) {
+		this.lasModuloSelectItem = lasModuloSelectItem;
+	}
+
+	public InputNumber getPorcentajeAciertoRespuesta1() {
+		return porcentajeAciertoRespuesta1;
+	}
+
+	public void setPorcentajeAciertoRespuesta1(InputNumber porcentajeAciertoRespuesta1) {
+		this.porcentajeAciertoRespuesta1 = porcentajeAciertoRespuesta1;
+	}
+
+	public InputNumber getPorcentajeAciertoRespuesta2() {
+		return porcentajeAciertoRespuesta2;
+	}
+
+	public void setPorcentajeAciertoRespuesta2(InputNumber porcentajeAciertoRespuesta2) {
+		this.porcentajeAciertoRespuesta2 = porcentajeAciertoRespuesta2;
+	}
+
+	public InputNumber getPorcentajeAciertoRespuesta3() {
+		return porcentajeAciertoRespuesta3;
+	}
+
+	public void setPorcentajeAciertoRespuesta3(InputNumber porcentajeAciertoRespuesta3) {
+		this.porcentajeAciertoRespuesta3 = porcentajeAciertoRespuesta3;
+	}
+
+	public InputNumber getPorcentajeAciertoRespuesta4() {
+		return porcentajeAciertoRespuesta4;
+	}
+
+	public void setPorcentajeAciertoRespuesta4(InputNumber porcentajeAciertoRespuesta4) {
+		this.porcentajeAciertoRespuesta4 = porcentajeAciertoRespuesta4;
+	}
+
+	public CommandButton getCrear() {
+		return crear;
+	}
+
+	public void setCrear(CommandButton crear) {
+		this.crear = crear;
+	}
+
+	public CommandButton getActualizar() {
+		return actualizar;
+	}
+
+	public void setActualizar(CommandButton actualizar) {
+		this.actualizar = actualizar;
+	}
+
+	public CommandButton getCargar() {
+		listener_txtId();
+		return cargar;
+	}
+
+	public void setCargar(CommandButton cargar) {
+		this.cargar = cargar;
+	}
+	
+	public boolean getCargo() {
+		return cargo;
+	}
+	
+	public void setCargo(boolean cargo) {
+		this.cargo = cargo;
 	}
 
 	
