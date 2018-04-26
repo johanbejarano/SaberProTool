@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.JpaDaoImpl;
-
+import com.saberpro.modelo.EstadoPrueba;
 import com.saberpro.modelo.Modulo;
 
 import org.slf4j.Logger;
@@ -36,4 +36,9 @@ public class ModuloDAO extends JpaDaoImpl<Modulo, Long> implements IModuloDAO {
     public static IModuloDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IModuloDAO) ctx.getBean("ModuloDAO");
     }
+    
+    @Override
+	public Modulo findByNombre(String nombre) {
+		return (Modulo)entityManager.createQuery("SELECT est FROM Modulo est WHERE UPPER(sinacentos(est.nombre))=UPPER(sinacentos(:nombre))").setParameter("nombre",nombre).getSingleResult();
+	}
 }

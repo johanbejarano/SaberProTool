@@ -39,39 +39,49 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-
 /**
- * @author Zathura Code Generator http://zathuracode.org/
- * www.zathuracode.org
+ * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
  *
  */
 @ManagedBean
 @ViewScoped
 public class EstadoPruebaView implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(EstadoPruebaView.class);
-    
-    private InputTextarea txtDescripcion;
+	private static final long serialVersionUID = 1L;
+	private static final Logger log = LoggerFactory.getLogger(EstadoPruebaView.class);
+
+	private boolean crear = true;
+
+	private InputTextarea txtDescripcion;
 	private InputText txtNombre;
-	
+
 	private CommandButton btnSave;
 	private CommandButton btnModify;
 	private CommandButton btnClear;
-	
+
 	private SelectOneMenu somActivo;
-	
-    private List<EstadoPruebaDTO> data;
-    private EstadoPruebaDTO selectedEstadoPrueba;
-    private EstadoPrueba entity;
-    private boolean showDialog;
-    @ManagedProperty(value = "#{BusinessDelegatorView}")
-    private IBusinessDelegatorView businessDelegatorView;
 
-    public EstadoPruebaView() {
-        super();
-    }
+	private List<EstadoPruebaDTO> data;
 
-    public void listener_txtId() {
+	private EstadoPruebaDTO selectedEstadoPrueba;
+
+	private EstadoPrueba entity;
+
+	private boolean showDialog;
+
+	@ManagedProperty(value = "#{BusinessDelegatorView}")
+	private IBusinessDelegatorView businessDelegatorView;
+
+	public EstadoPruebaView() {
+		super();
+	}
+
+	public void editar_action(String nombre) {
+
+		txtNombre.setValue(nombre);
+		listener_txtId();
+	}
+
+	public void listener_txtId() {
 		try {
 			String nombre = txtNombre.getValue().toString().trim();
 
@@ -82,23 +92,54 @@ public class EstadoPruebaView implements Serializable {
 		}
 
 		if (entity == null) {
-			
+
+			crear = true;
+
 			txtDescripcion.resetValue();
-			somActivo.resetValue();			
-			
+			somActivo.resetValue();
+
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
 
 		} else {
 
+			crear = false;
+
 			txtNombre.setValue(entity.getNombre());
 			txtDescripcion.setValue(entity.getDescripcion());
 			somActivo.setValue(entity.getActivo());
-			
+
 			btnSave.setDisabled(true);
 			btnModify.setDisabled(false);
 		}
+		action_validar();
 	}
+
+	public void verificar(CommandButton input) {
+		try {
+			if (FacesUtils.checkString(txtNombre).isEmpty())
+				input.setDisabled(true);
+			if (FacesUtils.checkString(somActivo) == null)
+				input.setDisabled(true);
+
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+		}
+
+	}
+	
+	public void action_validar() {
+    	
+    	if(crear) {
+    		btnSave.setDisabled(false);
+        	verificar(btnSave); 
+    	}
+    	else {
+    		btnModify.setDisabled(false);
+    		verificar(btnModify); 
+    	}
+    	   	
+    }
 
 	public String action_clear() {
 
@@ -132,7 +173,7 @@ public class EstadoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se creo el estado prueba exitosamente");
 				action_clear();
 
 			}
@@ -165,7 +206,7 @@ public class EstadoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se actualizo el estado prueba exitosamente");
 				action_clear();
 
 			}
@@ -176,98 +217,95 @@ public class EstadoPruebaView implements Serializable {
 		}
 
 		return "";
-	}	
+	}
 
-    public InputTextarea getTxtDescripcion() {
-        return txtDescripcion;
-    }
+	public InputTextarea getTxtDescripcion() {
+		return txtDescripcion;
+	}
 
-    public void setTxtDescripcion(InputTextarea txtDescripcion) {
-        this.txtDescripcion = txtDescripcion;
-    }
+	public void setTxtDescripcion(InputTextarea txtDescripcion) {
+		this.txtDescripcion = txtDescripcion;
+	}
 
-    public InputText getTxtNombre() {
-        return txtNombre;
-    }
+	public InputText getTxtNombre() {
+		return txtNombre;
+	}
 
-    public void setTxtNombre(InputText txtNombre) {
-        this.txtNombre = txtNombre;
-    }
+	public void setTxtNombre(InputText txtNombre) {
+		this.txtNombre = txtNombre;
+	}
 
-    public List<EstadoPruebaDTO> getData() {
-        try {
-            if (data == null) {
-                data = businessDelegatorView.getDataEstadoPrueba();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	public List<EstadoPruebaDTO> getData() {
+		try {
+			if (data == null) {
+				data = businessDelegatorView.getDataEstadoPrueba();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return data;
-    }
+		return data;
+	}
 
-    public void setData(List<EstadoPruebaDTO> estadoPruebaDTO) {
-        this.data = estadoPruebaDTO;
-    }
+	public void setData(List<EstadoPruebaDTO> estadoPruebaDTO) {
+		this.data = estadoPruebaDTO;
+	}
 
-    public EstadoPruebaDTO getSelectedEstadoPrueba() {
-        return selectedEstadoPrueba;
-    }
+	public EstadoPruebaDTO getSelectedEstadoPrueba() {
+		return selectedEstadoPrueba;
+	}
 
-    public void setSelectedEstadoPrueba(EstadoPruebaDTO estadoPrueba) {
-        this.selectedEstadoPrueba = estadoPrueba;
-    }
+	public void setSelectedEstadoPrueba(EstadoPruebaDTO estadoPrueba) {
+		this.selectedEstadoPrueba = estadoPrueba;
+	}
 
-    public CommandButton getBtnSave() {
-        return btnSave;
-    }
+	public CommandButton getBtnSave() {
+		return btnSave;
+	}
 
-    public void setBtnSave(CommandButton btnSave) {
-        this.btnSave = btnSave;
-    }
+	public void setBtnSave(CommandButton btnSave) {
+		this.btnSave = btnSave;
+	}
 
-    public CommandButton getBtnModify() {
-        return btnModify;
-    }
+	public CommandButton getBtnModify() {
+		return btnModify;
+	}
 
-    public void setBtnModify(CommandButton btnModify) {
-        this.btnModify = btnModify;
-    }
+	public void setBtnModify(CommandButton btnModify) {
+		this.btnModify = btnModify;
+	}
 
-    public CommandButton getBtnClear() {
-        return btnClear;
-    }
+	public CommandButton getBtnClear() {
+		return btnClear;
+	}
 
-    public void setBtnClear(CommandButton btnClear) {
-        this.btnClear = btnClear;
-    }
+	public void setBtnClear(CommandButton btnClear) {
+		this.btnClear = btnClear;
+	}
 
-    public TimeZone getTimeZone() {
-        return java.util.TimeZone.getDefault();
-    }
+	public TimeZone getTimeZone() {
+		return java.util.TimeZone.getDefault();
+	}
 
-    public IBusinessDelegatorView getBusinessDelegatorView() {
-        return businessDelegatorView;
-    }
+	public IBusinessDelegatorView getBusinessDelegatorView() {
+		return businessDelegatorView;
+	}
 
-    public void setBusinessDelegatorView(
-        IBusinessDelegatorView businessDelegatorView) {
-        this.businessDelegatorView = businessDelegatorView;
-    }
+	public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
+		this.businessDelegatorView = businessDelegatorView;
+	}
 
-    public boolean isShowDialog() {
-        return showDialog;
-    }
+	public boolean isShowDialog() {
+		return showDialog;
+	}
 
-    public void setShowDialog(boolean showDialog) {
-        this.showDialog = showDialog;
-    }
+	public void setShowDialog(boolean showDialog) {
+		this.showDialog = showDialog;
+	}
 
 	public SelectOneMenu getSomActivo() {
 		return somActivo;
 	}
-
-
 
 	public void setSomActivo(SelectOneMenu somActivo) {
 		this.somActivo = somActivo;

@@ -51,6 +51,8 @@ public class ProgramaView implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(ProgramaView.class);
 
+	private boolean crear = true;
+	
 	private InputTextarea txtDescripcion;
 	private InputText txtNombre;
 
@@ -88,6 +90,12 @@ public class ProgramaView implements Serializable {
 			return null;
 		}
 	}
+	
+	public void editar_action(String nombre) {   	
+    	
+    	txtNombre.setValue(nombre);
+    	listener_txtId();
+    }
 
 	public void listener_txtId() {
 		try {
@@ -100,7 +108,9 @@ public class ProgramaView implements Serializable {
 		}
 
 		if (entity == null) {
-
+			
+			crear = true;
+			
 			txtDescripcion.resetValue();
 			somActivo.resetValue();
 			somFacultad.resetValue();
@@ -109,6 +119,8 @@ public class ProgramaView implements Serializable {
 			btnModify.setDisabled(true);
 
 		} else {
+			
+			crear = false;
 
 			txtNombre.setValue(entity.getNombre());
 			txtDescripcion.setValue(entity.getDescripcion());
@@ -118,7 +130,35 @@ public class ProgramaView implements Serializable {
 			btnSave.setDisabled(true);
 			btnModify.setDisabled(false);
 		}
+		action_validar();
 	}
+	
+	public void verificar(CommandButton input) {
+    	try {
+    		if(FacesUtils.checkString(txtNombre).isEmpty()) 
+        		input.setDisabled(true);    	
+        	if(FacesUtils.checkString(somActivo)==null)
+        		input.setDisabled(true);
+        	if(FacesUtils.checkString(somFacultad)==null)
+        		input.setDisabled(true);
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+		}    	
+    		
+    }
+	
+	 public void action_validar() {
+	    	
+	    	if(crear) {
+	    		btnSave.setDisabled(false);
+	        	verificar(btnSave); 
+	    	}
+	    	else {
+	    		btnModify.setDisabled(false);
+	    		verificar(btnModify); 
+	    	}
+	    	   	
+	    }
 
 	public String action_clear() {
 		entity = null;
@@ -154,7 +194,7 @@ public class ProgramaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se creo el programa correctamente");
 				action_clear();
 
 			}
@@ -188,7 +228,7 @@ public class ProgramaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("se actualizo programa correctamente");
 				action_clear();
 
 			}

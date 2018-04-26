@@ -1,7 +1,7 @@
 package com.saberpro.dataaccess.dao;
 
 import com.saberpro.dataaccess.api.Dao;
-
+import com.saberpro.modelo.EstadoPrueba;
 import com.saberpro.modelo.Modulo;
 
 import java.math.BigDecimal;
@@ -16,4 +16,5 @@ import java.util.Set;
 *
 */
 public interface IModuloDAO extends Dao<Modulo, Long> {
+	public Modulo findByNombre(String nombre);
 }

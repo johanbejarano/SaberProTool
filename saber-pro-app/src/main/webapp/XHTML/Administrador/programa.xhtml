@@ -9,28 +9,30 @@
 			<p:messages id="msg" />
 			<p:growl id="men" />
 			<p:panel id="panelPrograma" header="Programa">
-				<h:panelGrid columns="2" id="panelGrid">
-				
+				<h:panelGrid columns="2" id="panelGrid">				
 					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" binding="#{programaView.txtNombre}">
+					<p:inputText id="txtNombre" binding="#{programaView.txtNombre}" size="50" >	
+						<p:keyFilter regEx="/[a-zA-Z ]/"/>					
 						<p:ajax update="panelPrograma,msg" listener="#{programaView.listener_txtId}"/>
 					</p:inputText>
 					<h:outputText id="msgFacultad" value="Facultad" />
-					<p:selectOneMenu id="somFacultad" binding="#{programaView.somFacultad}">
-						<f:selectItem itemValue="-1" itemLabel="-------------------" />
+					<p:selectOneMenu id="somFacultad" binding="#{programaView.somFacultad}" style="width:320px;">
+						<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
 						<f:selectItems value="#{programaView.lasFacultadSelectItem}"/>
+						<p:ajax update="panelPrograma,msg" listener="#{programaView.action_validar}"/>
 					</p:selectOneMenu>
 					<h:outputText id="msgDescripcion" value=" Descripcion" />
-					<p:inputTextarea id="txtDescripcion" rows="3" cols="20" counter="display"
+					<p:inputTextarea id="txtDescripcion" rows="5" cols="49" counter="display"
 						maxlength="1200" counterTemplate="{0} caracteres restantes"
 						autoResize="false" binding="#{programaView.txtDescripcion}"/>
 					<h:outputText value="(Opcional)" />
 					<h:outputText id="display" />
 					<h:outputText id="msgActivo" value=" Activo" />
-					<p:selectOneMenu id="somActivo" binding="#{programaView.somActivo}">
-						<f:selectItem itemValue="Z" itemLabel="-------------------" />
+					<p:selectOneMenu id="somActivo" binding="#{programaView.somActivo}" style="width:320px;">
+						<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
 						<f:selectItem itemValue="S" itemLabel="SI" />
 						<f:selectItem itemValue="N" itemLabel="NO" />
+						<p:ajax update="panelPrograma,msg" listener="#{programaView.action_validar}"/>
 					</p:selectOneMenu>	
 				</h:panelGrid>
 				<div>
@@ -58,12 +60,19 @@
 							filterMatchMode="contains">
 							<p:outputLabel value="#{programa.nombre}" />
 						</p:column>
-						<p:column headerText="Facultad" filterBy="#{programaView.getFacultad(programa.idFacultad_Facultad)}"
-							filterMatchMode="contains">
+						<p:column headerText="Facultad" filterBy="#{programa.idFacultad_Facultad}"
+							filterMatchMode="exact" width="31%">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('proTable').filter()">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{programaView.lasFacultadSelectItem}" />
+								</p:selectOneMenu>
+							</f:facet>
 							<p:outputLabel value="#{programaView.getFacultad(programa.idFacultad_Facultad)}" />
 						</p:column>
 						<p:column headerText="Activo" filterBy="#{programa.activo.equals('S')}"
-							filterMatchMode="equals">
+							filterMatchMode="equals" width="10%">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('proTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -73,6 +82,9 @@
 								</p:selectOneButton>
 							</f:facet>
 							<h:outputText value="#{programa.activo.equals('S') ? 'Sí': 'No'}" />
+						</p:column>
+						<p:column headerText="Editar" width="4%">
+							<p:commandButton value="Editar" update="formDialog" action="#{programaView.editar_action(programa.nombre)}"/>
 						</p:column>
 					</p:dataTable>
 				</div>

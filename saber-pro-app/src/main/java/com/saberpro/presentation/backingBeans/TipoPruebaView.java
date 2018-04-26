@@ -52,6 +52,8 @@ public class TipoPruebaView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(TipoPruebaView.class);
     
+    private boolean crear = true;
+    
     private InputTextarea txtDescripcion;
 	private InputText txtNombre;
 	
@@ -75,6 +77,12 @@ public class TipoPruebaView implements Serializable {
     public TipoPruebaView() {
         super();
     }
+    
+    public void editar_action(String nombre) {   	
+    	
+    	txtNombre.setValue(nombre);
+    	listener_txtId();
+    }
 
     public void listener_txtId() {
 		try {
@@ -88,6 +96,8 @@ public class TipoPruebaView implements Serializable {
 
 		if (entity == null) {
 			
+			crear = true;
+			
 			txtDescripcion.resetValue();
 			somActivo.resetValue();			
 			
@@ -95,7 +105,9 @@ public class TipoPruebaView implements Serializable {
 			btnModify.setDisabled(true);
 
 		} else {
-
+			
+			crear = false;
+			
 			txtNombre.setValue(entity.getNombre());
 			txtDescripcion.setValue(entity.getDescripcion());
 			somActivo.setValue(entity.getActivo());
@@ -103,7 +115,35 @@ public class TipoPruebaView implements Serializable {
 			btnSave.setDisabled(true);
 			btnModify.setDisabled(false);
 		}
+		action_validar();
 	}
+    
+    public void verificar(CommandButton input) {
+    	try {
+    		if(FacesUtils.checkString(txtNombre).isEmpty()) 
+        		input.setDisabled(true);   	
+        	if(FacesUtils.checkString(somActivo)==null)
+        		input.setDisabled(true);
+        	
+		} catch (Exception e) {			
+			log.debug(e.getMessage());
+		}
+    	
+    		
+    }
+    
+    public void action_validar() {
+    	
+    	if(crear) {
+    		btnSave.setDisabled(false);
+        	verificar(btnSave); 
+    	}
+    	else {
+    		btnModify.setDisabled(false);
+    		verificar(btnModify); 
+    	}
+    	   	
+    }
 
 	public String action_clear() {
 
@@ -137,7 +177,7 @@ public class TipoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se creo tipo prueba exitosamente");
 				action_clear();
 
 			}
@@ -170,7 +210,7 @@ public class TipoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se actualizo tipo prueba exitosamente");
 				action_clear();
 
 			}

@@ -227,7 +227,7 @@ public class PreguntaView implements Serializable {
 				
 				businessDelegatorView.saveRespuesta(respuesta);
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se creo la pregunta correctamente");
 				
 
 			}

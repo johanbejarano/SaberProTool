@@ -157,11 +157,7 @@ public class ModuloLogic implements IModuloLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Modulo");
             }
 
-            validateModulo(entity);
-
-            if (getModulo(entity.getIdModulo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validateModulo(entity);            
 
             moduloDAO.save(entity);
             log.debug("save Modulo successful");
@@ -499,4 +495,41 @@ public class ModuloLogic implements IModuloLogic {
 
         return list;
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public Modulo findByNombre(String nombre) throws Exception {
+		log.debug("getting Modulo instance");
+
+        Modulo entity = null;
+
+        try {
+            entity = moduloDAO.findByNombre(nombre);
+        } catch (Exception e) {
+            log.error("get Modulo failed", e);
+            throw new ZMessManager().new FindingException("Modulo");
+        } finally {
+        }
+
+        return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ModuloDTO findDataByNombre(String nombre) throws Exception {
+		log.debug("getting Modulo instance");
+
+        Modulo entity = null;
+        ModuloDTO entityDTO = null;
+        try {
+            entity = moduloDAO.findByNombre(nombre);
+            entityDTO = moduloMapper.moduloToModuloDTO(entity);
+        } catch (Exception e) {
+            log.error("get Modulo failed", e);
+            throw new ZMessManager().new FindingException("Modulo");
+        } finally {
+        }
+
+        return entityDTO;
+	}
 }

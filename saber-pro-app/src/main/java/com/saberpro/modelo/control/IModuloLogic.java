@@ -1,6 +1,8 @@
 package com.saberpro.modelo.control;
 
+import com.saberpro.modelo.EstadoPrueba;
 import com.saberpro.modelo.Modulo;
+import com.saberpro.modelo.dto.EstadoPruebaDTO;
 import com.saberpro.modelo.dto.ModuloDTO;
 
 import java.math.BigDecimal;
@@ -57,6 +59,10 @@ public interface IModuloLogic {
     public List<ModuloDTO> getDataModulo() throws Exception;
     
     public List<ModuloDTO> getDataModulo(String tipo) throws Exception;
+    
+    public Modulo findByNombre(String nombre)throws Exception;
+    
+    public ModuloDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateModulo(Modulo modulo) throws Exception;
 }

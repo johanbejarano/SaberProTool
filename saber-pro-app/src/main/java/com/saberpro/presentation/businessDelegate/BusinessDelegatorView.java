@@ -2018,5 +2018,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		preguntaLogic.importFile(archivo, user, formato);		
 	}
 
+	@Override
+	public Modulo findByNombreModulo(String nombre) throws Exception {
+		return moduloLogic.findByNombre(nombre);
+	}
+
+	@Override
+	public ModuloDTO findDataByNombreModulo(String nombre) throws Exception {
+		return moduloLogic.findDataByNombre(nombre);
+	}
+
 	
 }

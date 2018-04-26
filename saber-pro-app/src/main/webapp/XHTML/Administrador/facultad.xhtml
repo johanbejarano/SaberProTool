@@ -11,20 +11,22 @@
 			<p:panel id="panelFacultad" header="Facultad">
 				<h:panelGrid columns="2" id="panelGrid">					
 					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" binding="#{facultadView.txtNombre}">
+					<p:inputText id="txtNombre" binding="#{facultadView.txtNombre}" size="50">
+						<p:keyFilter regEx="/[a-zA-Z ]/"/>
 						<p:ajax update="panelFacultad,msg" listener="#{facultadView.listener_txtId}"/>
 					</p:inputText>
 					<h:outputText id="msgDescripcion" value=" Descripcion" />
-					<p:inputTextarea id="txtDescripcion" rows="3" cols="20" counter="display"
+					<p:inputTextarea id="txtDescripcion" rows="5" cols="49" counter="display"
 						maxlength="1200" counterTemplate="{0} caracteres restantes"
 						autoResize="false" binding="#{facultadView.txtDescripcion}" />
 					<h:outputText value="(Opcional)" />
 					<h:outputText id="display" />
 					<h:outputText id="msgActivo" value=" Activo" />
-					<p:selectOneMenu id="somActivo" binding="#{facultadView.somActivo}">
-						<f:selectItem itemValue="Z" itemLabel="-------------------" />
+					<p:selectOneMenu id="somActivo" binding="#{facultadView.somActivo}" style="width:320px;">
+						<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
 						<f:selectItem itemValue="S" itemLabel="SI" />
 						<f:selectItem itemValue="N" itemLabel="NO" />
+						<p:ajax update="panelFacultad,msg" listener="#{facultadView.action_validar}" />
 					</p:selectOneMenu>
 
 
@@ -52,7 +54,7 @@
 							<p:outputLabel value="#{facultad.nombre}" />
 						</p:column>
 						<p:column headerText="Activo" filterBy="#{facultad.activo.equals('S')}"
-							filterMatchMode="equals">
+							filterMatchMode="equals" width="10%">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('facTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -62,6 +64,10 @@
 								</p:selectOneButton>
 							</f:facet>
 							<h:outputText value="#{facultad.activo.equals('S') ? 'Sí': 'No'}" />
+						</p:column>
+						<p:column headerText="Editar" width="4%">
+							<p:commandButton value="Editar" update="formDialog"
+								action="#{facultadView.editar_action(facultad.nombre)}" />
 						</p:column>
 					</p:dataTable>
 				</div>

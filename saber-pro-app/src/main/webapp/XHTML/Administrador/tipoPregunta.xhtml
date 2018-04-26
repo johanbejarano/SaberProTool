@@ -11,12 +11,13 @@
 			<p:panel id="panelTipoPregunta" header="TipoPregunta">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" binding="#{tipoPreguntaView.txtNombre}">
+					<p:inputText id="txtNombre" binding="#{tipoPreguntaView.txtNombre}" size="50">
+						<p:keyFilter regEx="/[a-zA-Z ]/"/>
 						<p:ajax update="panelTipoPregunta,msg"
 							listener="#{tipoPreguntaView.listener_txtId}" />
 					</p:inputText>
 					<h:outputText id="msgDescripcion" value=" Descripcion" />
-					<p:inputTextarea id="txtDescripcion" rows="3" cols="20"
+					<p:inputTextarea id="txtDescripcion" rows="5" cols="49"
 						counter="display" maxlength="1200"
 						counterTemplate="{0} caracteres restantes" autoResize="false"
 						binding="#{tipoPreguntaView.txtDescripcion}" />
@@ -24,13 +25,14 @@
 					<h:outputText id="display" />
 					<h:outputText id="msgActivo" value=" Activo" />
 					<p:selectOneMenu id="somActivo"
-						binding="#{tipoPreguntaView.somActivo}">
-						<f:selectItem itemValue="Z" itemLabel="-------------------" />
+						binding="#{tipoPreguntaView.somActivo}" style="width:320px;">
+						<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
 						<f:selectItem itemValue="S" itemLabel="SI" />
 						<f:selectItem itemValue="N" itemLabel="NO" />
+						<p:ajax update="panelTipoPregunta,msg" listener="#{tipoPreguntaView.action_validar}" />
 					</p:selectOneMenu>
 				</h:panelGrid>
-				<div align="center">
+				<div>
 					<p:commandButton id="btnSave" binding="#{tipoPreguntaView.btnSave}"
 						disabled="true" value="Crear"
 						action="#{tipoPreguntaView.action_create()}"
@@ -56,7 +58,7 @@
 						</p:column>
 						<p:column headerText="Activo"
 							filterBy="#{tipoPregunta.activo.equals('S')}"
-							filterMatchMode="equals">
+							filterMatchMode="equals" width="10%">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('tipTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -66,6 +68,10 @@
 								</p:selectOneButton>
 							</f:facet>
 							<h:outputText value="#{tipoPregunta.activo.equals('S') ? 'Sí': 'No'}" />
+						</p:column>
+						<p:column headerText="Editar" width="4%">
+							<p:commandButton value="Editar" update="formDialog"
+								action="#{tipoPreguntaView.editar_action(tipoPregunta.nombre)}" />
 						</p:column>
 					</p:dataTable>
 				</div>
