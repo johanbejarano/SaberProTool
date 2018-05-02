@@ -21,22 +21,28 @@
 			</p:panel>
 			<p:panel id="panelTable">
 				<p:dataTable id="dataPregunta" value="#{preguntaView.data}"
-					var="pregunta" reflow="true" resizableColumns="true"
-					scrollable="true" scrollHeight="300" widgetVar="tipTable"
+					var="pregunta" rows="10" widgetVar="tipTable"
 					paginator="true"
                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                     rowsPerPageTemplate="10,25,50">
 
 					<p:column headerText="contenido" filterBy="#{pregunta.descripcionPregunta}"
-						filterMatchMode="contains" width="65%">
+						filterMatchMode="contains">
 						<p:outputLabel value="#{pregunta.descripcionPregunta}" />
 					</p:column>					
-					<p:column headerText="Modulo" filterBy="#{preguntaView.getModulo(pregunta.idModulo_Modulo)}"
-						filterMatchMode="contains" width="20%">
+					<p:column headerText="Modulo" filterBy="#{pregunta.idModulo_Modulo}"
+						filterMatchMode="exact" width="25%">
+						<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('tipTable').filter()">
+									<f:selectItem itemLabel="TODOS" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{preguntaView.lasModuloSelectItemFilter}" />
+								</p:selectOneMenu>
+							</f:facet>
 						<p:outputLabel value="#{preguntaView.getModulo(pregunta.idModulo_Modulo)}" />
 					</p:column>
 					<p:column headerText="Activo" filterBy="#{pregunta.activo.equals('S')}" filterMatchMode="equals"
-							  width="10%" styleClass="text-center">
+							  width="15%" styleClass="text-center">
 						<f:facet name="filter">
 							<p:selectOneButton onchange="PF('tipTable').filter()">
 								<f:converter converterId="javax.faces.Boolean" />
@@ -48,7 +54,7 @@
 						<h:outputText
 							value="#{pregunta.activo.equals('S') ? 'Sí': 'No'}" />
 					</p:column>
-					<p:column headerText="Opcion" width="4%">
+					<p:column headerText="Opcion" width="5%">
 						<h:link outcome="pregunta.xhtml" value="Editar" styleClass="btn btn-primary">
 							<f:param name="id" value="#{pregunta.idPregunta}"/>
 						</h:link>

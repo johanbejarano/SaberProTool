@@ -3,12 +3,16 @@ package com.saberpro.presentation.backingBeans;
 
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +29,9 @@ import com.saberpro.modelo.dto.UsuarioDTO;
 @ViewScoped
 @ManagedBean(name = "loginView")
 public class LoginView {
+	
+	private static final Logger log = LoggerFactory.getLogger(LoginView.class);
+	
     private String userId;
     private String password;
     @ManagedProperty(value = "#{authenticationManager}")
@@ -77,7 +84,9 @@ public class LoginView {
             }            
             
         } catch (AuthenticationException e) {
-        	FacesContext.getCurrentInstance().addMessage("",new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));      
+        	FacesContext.getCurrentInstance().addMessage("",new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+        	log.error("error de "+e.getMessage(),e);
+        	
         }
         
         return "/login.xhtml";

@@ -57,7 +57,7 @@ public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider
 				throw new BadCredentialsException("Error en login");
 			}
 		} catch (Exception e) {			
-			throw new BadCredentialsException("Error en login " + e.getMessage());
+			throw new BadCredentialsException("Error en catch login " + e.getMessage());
 		}
 
 	}

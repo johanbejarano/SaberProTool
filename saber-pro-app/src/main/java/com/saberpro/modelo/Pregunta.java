@@ -31,7 +31,7 @@ public class Pregunta implements java.io.Serializable {
     private String activo;
     @NotNull(message="descripcionpregunta no valido")
     @NotEmpty
-    @Size(max = 3000)
+    @Size(max = 3000000)
     private String descripcionPregunta;
     @NotNull(message="fechacreacion no valido")
     private Date fechaCreacion;

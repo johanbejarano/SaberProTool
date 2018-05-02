@@ -1,7 +1,7 @@
 ﻿CREATE TABLE Estado_Prueba (
   id_estado_prueba   BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -11,7 +11,7 @@
 CREATE TABLE Facultad (
   id_facultad        BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -21,7 +21,7 @@ CREATE TABLE Facultad (
 CREATE TABLE Grupo_Opcion (
   id_grupo_opcion    BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   icon               varchar(100), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
@@ -32,8 +32,8 @@ CREATE TABLE Grupo_Opcion (
 CREATE TABLE Imagen (
   id_imagen          BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL, 
-  descripcion        varchar(1200), 
-  ruta               varchar(3000), 
+  descripcion        varchar(1200000), 
+  ruta               varchar(3000000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -54,7 +54,7 @@ CREATE TABLE Matricula (
 CREATE TABLE Modulo (
   id_modulo          BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   prioridad          int8 NOT NULL, 
   cantidad_preguntas int8 NOT NULL, 
   fecha_creacion     timestamp NOT NULL, 
@@ -67,8 +67,8 @@ CREATE TABLE Modulo (
 CREATE TABLE Opcion (
   id_opcion          BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
-  ruta               varchar(3000), 
+  descripcion        varchar(1200000), 
+  ruta               varchar(3000000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -79,8 +79,8 @@ CREATE TABLE Opcion (
 CREATE TABLE Parametro (
   id_parametro       BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL, 
-  descripcion        varchar(1200), 
-  valor              varchar(3000) NOT NULL, 
+  descripcion        varchar(1200000), 
+  valor              varchar(3000000) NOT NULL, 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -99,8 +99,8 @@ CREATE TABLE Permiso (
   PRIMARY KEY (id_permiso));
 CREATE TABLE Pregunta (
   id_pregunta          BIGSERIAL NOT NULL, 
-  descripcion_pregunta varchar(3000) NOT NULL, 
-  retroalimentacion    varchar(3000), 
+  descripcion_pregunta varchar(3000000) NOT NULL, 
+  retroalimentacion    varchar(3000000), 
   fecha_creacion       timestamp NOT NULL, 
   fecha_modificacion   timestamp, 
   usu_creador          int8 NOT NULL, 
@@ -112,7 +112,7 @@ CREATE TABLE Pregunta (
 CREATE TABLE Programa (
   id_programa        BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -195,8 +195,8 @@ CREATE TABLE Prueba_Real (
   PRIMARY KEY (id_prueba_real));
 CREATE TABLE Respuesta (
   id_respuesta          BIGSERIAL NOT NULL, 
-  descripcion_respuesta varchar(3000), 
-  ruta_imagen           varchar(3000), 
+  descripcion_respuesta varchar(3000000), 
+  ruta_imagen           varchar(3000000), 
   porcentaje_acierto    int4 NOT NULL, 
   fecha_creacion        timestamp NOT NULL, 
   fecha_modificacion    timestamp, 
@@ -231,7 +231,7 @@ CREATE TABLE Resultado_Real (
 CREATE TABLE Tipo_Modulo (
   id_tipo_modulo     BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -241,7 +241,7 @@ CREATE TABLE Tipo_Modulo (
 CREATE TABLE Tipo_pregunta (
   id_tipo_pregunta   BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -251,7 +251,7 @@ CREATE TABLE Tipo_pregunta (
 CREATE TABLE Tipo_Prueba (
   id_tipo_prueba     BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 
@@ -261,7 +261,7 @@ CREATE TABLE Tipo_Prueba (
 CREATE TABLE Tipo_Usuario (
   id_tipo_usuario    BIGSERIAL NOT NULL, 
   nombre             varchar(300) NOT NULL UNIQUE, 
-  descripcion        varchar(1200), 
+  descripcion        varchar(1200000), 
   fecha_creacion     timestamp NOT NULL, 
   fecha_modificacion timestamp, 
   usu_creador        int8 NOT NULL, 

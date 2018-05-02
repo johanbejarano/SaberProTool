@@ -100,6 +100,7 @@ public class PreguntaView implements Serializable {
     
     private List<SelectItem> lasTipoModuloSelectItem;
     private List<SelectItem> lasModuloSelectItem;
+    private List<SelectItem> lasModuloSelectItemFilter;
     
     private List<PreguntaDTO> data;
     
@@ -169,7 +170,9 @@ public class PreguntaView implements Serializable {
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
-			if (usuario != null) {				
+			if (usuario != null && FacesUtils.checkInteger(porcentajeAciertoRespuesta1)!=null && FacesUtils.checkInteger(porcentajeAciertoRespuesta2)!=null
+					&& FacesUtils.checkInteger(porcentajeAciertoRespuesta3)!=null && FacesUtils.checkInteger(porcentajeAciertoRespuesta4)!=null && !contentRespuesta1.isEmpty()
+					&& !contentRespuesta2.isEmpty() && !contentRespuesta3.isEmpty() && !contentRespuesta4.isEmpty()) {				
 				
 				entity = new Pregunta();
 
@@ -229,7 +232,12 @@ public class PreguntaView implements Serializable {
 
 				FacesUtils.addInfoMessage("Se creo la pregunta correctamente");
 				
+				action_clear();
+				
 
+			}
+			else {
+				FacesUtils.addErrorMessage("no se puede crear la pregunta verifique los datos");
 			}
 
 		} catch (Exception e) {
@@ -274,7 +282,9 @@ public class PreguntaView implements Serializable {
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");			
 
-			if (usuario != null) {			
+			if (usuario != null && FacesUtils.checkInteger(porcentajeAciertoRespuesta1)!=null && FacesUtils.checkInteger(porcentajeAciertoRespuesta2)!=null
+					&& FacesUtils.checkInteger(porcentajeAciertoRespuesta3)!=null && FacesUtils.checkInteger(porcentajeAciertoRespuesta4)!=null && !contentRespuesta1.isEmpty()
+					&& !contentRespuesta2.isEmpty() && !contentRespuesta3.isEmpty() && !contentRespuesta4.isEmpty()) {			
 				
 				entity.setActivo(Constantes.ESTADO_ACTIVO);
 				entity.setDescripcionPregunta(content);
@@ -324,10 +334,13 @@ public class PreguntaView implements Serializable {
 				
 				businessDelegatorView.updateRespuesta(respuesta);
 
-				FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+				FacesUtils.addInfoMessage("Se actualizo correctamente");
 				
 				FacesContext.getCurrentInstance().getExternalContext().redirect("/saber-pro-app/XHTML/Pregunta/verPregunta.xhtml");
 				
+			}
+			else {
+				FacesUtils.addErrorMessage("no se puede actualizar verifique los datos");
 			}
 
 		} catch (Exception e) {
@@ -366,6 +379,7 @@ public class PreguntaView implements Serializable {
 			
 		} catch (Exception e) {
 			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Error importando el archivo "+e.getMessage(),e);
 		}
     }
     
@@ -830,6 +844,27 @@ public class PreguntaView implements Serializable {
 	
 	public void setCargo(boolean cargo) {
 		this.cargo = cargo;
+	}
+
+	public List<SelectItem> getLasModuloSelectItemFilter() {
+		if(lasModuloSelectItemFilter==null) {				
+			Object[] variable = {"activo",true,Constantes.ESTADO_ACTIVO,"="};
+			lasModuloSelectItemFilter = new ArrayList<>();				
+			try {
+				List<Modulo> list = businessDelegatorView.findByCriteriaInModulo(variable,null,null);
+				for (Modulo modulo : list) {
+					lasModuloSelectItemFilter.add(new SelectItem(modulo.getIdModulo(),modulo.getNombre()));
+				}
+			} catch (Exception e) {
+				
+				log.debug("Error" + e.getMessage());
+			}
+		}		
+		return lasModuloSelectItemFilter;
+	}
+
+	public void setLasModuloSelectItemFilter(List<SelectItem> lasModuloSelectItemFilter) {
+		this.lasModuloSelectItemFilter = lasModuloSelectItemFilter;
 	}
 
 	

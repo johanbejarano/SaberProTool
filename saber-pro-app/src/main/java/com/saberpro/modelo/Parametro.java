@@ -36,7 +36,7 @@ public class Parametro implements java.io.Serializable {
     private Long usuModificador;
     @NotNull(message="valor no valido")
     @NotEmpty
-    @Size(max = 3000)
+    @Size(max = 3000000)
     private String valor;
 
     public Parametro() {
