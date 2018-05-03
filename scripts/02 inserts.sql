@@ -274,10 +274,14 @@ insert into resultado_real(percentil_grupo,percentil_nacional,fecha_creacion,usu
 
 ALTER SEQUENCE grupo_opcion_id_grupo_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Usuario','ui-icon-person',now(),0,'S');
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Pregunta','ui-icon-notice',now(),0,'S');
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Administrar','ui-icon-gear',now(),0,'S');
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Prueba','ui-icon-alert',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Cuenta','fa fa-user',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Prueba','fa fa-list-alt',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Usuario','fa fa-group',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Pregunta','fa fa-exclamation',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Director','fa fa-graduation-cap',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Decano','fa fa-university',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Administrar','fa fa-gears',now(),0,'S');
+
 
 
 
@@ -286,21 +290,24 @@ insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('
 ALTER SEQUENCE parametro_id_parametro_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LA APLICACION','http://localhost:8080/saber-pro-app/',now(),0,'S');
+insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS PREGUNTAS','http://localhost:8080/saber-pro-app/pregunta/',now(),0,'S');
+insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS RESPUESTAS','http://localhost:8080/saber-pro-app/respuesta/',now(),0,'S');
 
 /* Opcion */
 
 ALTER SEQUENCE opcion_id_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ESTADO DE PRUEBA','/XHTML/Administrador/estadoPrueba.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('FACULTAD','/XHTML/Administrador/facultad.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('MODULO','/XHTML/Administrador/modulo.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PROGRAMA','/XHTML/Administrador/programa.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO MODULO','/XHTML/Administrador/tipoModulo.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PREGUNTA','/XHTML/Administrador/tipoPregunta.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PRUEBA','/XHTML/Administrador/tipoPrueba.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO USUARIO','/XHTML/Administrador/tipoUsuario.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PREGUNTA','/XHTML/Pregunta/pregunta.xhtml',now(),0,'S',2);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('VER PREGUNTA','/XHTML/Pregunta/verPregunta.xhtml',now(),0,'S',2);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ESTADO DE PRUEBA','/XHTML/Administrador/estadoPrueba.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('FACULTAD','/XHTML/Administrador/facultad.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('MODULO','/XHTML/Administrador/modulo.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PROGRAMA','/XHTML/Administrador/programa.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO MODULO','/XHTML/Administrador/tipoModulo.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PREGUNTA','/XHTML/Administrador/tipoPregunta.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO PRUEBA','/XHTML/Administrador/tipoPrueba.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('TIPO USUARIO','/XHTML/Administrador/tipoUsuario.xhtml',now(),0,'S',7);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PREGUNTA','/XHTML/Pregunta/pregunta.xhtml',now(),0,'S',4);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('VER PREGUNTA','/XHTML/Pregunta/verPregunta.xhtml',now(),0,'S',4);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PRUEBA','/XHTML/Prueba/prueba.xhtml',now(),0,'S',2);
 
 /* Permiso */
 
@@ -309,6 +316,10 @@ ALTER SEQUENCE permiso_id_permiso_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,1);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,2);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,3);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,4);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,5);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,6);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,7);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',4,1);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,1);
 

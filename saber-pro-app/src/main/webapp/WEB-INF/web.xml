@@ -52,6 +52,11 @@
 		<param-value>/WEB-INF/classes/applicationContext.xml</param-value>
 	</context-param>
 	
+	<context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
+    </context-param> 
+	
 	<!-- MVC -->
 	<servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
