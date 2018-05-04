@@ -16,4 +16,5 @@ import java.util.Set;
 *
 */
 public interface IPreguntaDAO extends Dao<Pregunta, Long> {
+	public List<Pregunta> findByRandom(long idModulo,long limit);
 }

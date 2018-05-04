@@ -2028,5 +2028,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return moduloLogic.findDataByNombre(nombre);
 	}
 
+	@Override
+	public List<Modulo> findByProgramaModulo(long idPrograma) throws Exception {
+		return moduloLogic.findByPrograma(idPrograma);
+	}
+
+	@Override
+	public List<Pregunta> findByRandomPregunta(long idModulo, long limit) throws Exception {
+		return preguntaLogic.findByRandom(idModulo, limit);
+	}
+
 	
 }

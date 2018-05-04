@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -37,4 +39,9 @@ public class PreguntaDAO extends JpaDaoImpl<Pregunta, Long>
     public static IPreguntaDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IPreguntaDAO) ctx.getBean("PreguntaDAO");
     }
+
+	@Override
+	public List<Pregunta> findByRandom(long idModulo, long limit) {		
+		return entityManager.createQuery("select pre from Pregunta pre where pre.modulo.idModulo=:idModulo order by random()").setParameter("idModulo",idModulo).setMaxResults((int) limit).getResultList();
+	}
 }

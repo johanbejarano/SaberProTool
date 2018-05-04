@@ -65,4 +65,6 @@ public interface IPreguntaLogic {
     public void importFile(InputStream archivo,long user,String formato)throws Exception;  
     
     public void subirFile(InputStream origen, String destino) throws Exception;
+    
+    public List<Pregunta> findByRandom(long idModulo,long limit)throws Exception;
 }

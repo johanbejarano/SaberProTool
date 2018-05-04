@@ -171,7 +171,7 @@ CREATE TABLE Prueba_Programa_Usuario (
   usu_modificador            int8, 
   activo                     char(1) NOT NULL, 
   id_prueba                  int8 NOT NULL, 
-  id_programa_usuario        int8 NOT NULL, 
+  id_programa_usuario        int8, 
   id_estado_prueba           int8 NOT NULL, 
   PRIMARY KEY (id_prueba_programa_usuario));
 CREATE TABLE Prueba_Programa_Usuario_Pregunta (
@@ -181,7 +181,7 @@ CREATE TABLE Prueba_Programa_Usuario_Pregunta (
   usu_creador                         int8 NOT NULL, 
   usu_modificador                     int8, 
   activo                              char(1) NOT NULL, 
-  id_prueba_programa_usuario          int8 NOT NULL, 
+  id_prueba_programa_usuario          int8, 
   id_pregunta                         int8 NOT NULL, 
   PRIMARY KEY (id_prueba_programa_usuario_pregunta));
 CREATE TABLE Prueba_Real (

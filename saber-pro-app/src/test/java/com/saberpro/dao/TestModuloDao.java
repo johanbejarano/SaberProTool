@@ -115,7 +115,7 @@ public class TestModuloDao {
 		assertNotNull("El ModuloDao es null",moduloDao);
 		
 		
-		List<Modulo> list = moduloDao.findAll();
+		List<Modulo> list = moduloDao.findByPrograma(5L);
 		
 		for (Modulo modulo : list) {
 			log.info(modulo.toString());

@@ -532,4 +532,22 @@ public class ModuloLogic implements IModuloLogic {
 
         return entityDTO;
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Modulo> findByPrograma(long idPrograma) throws Exception {
+		log.debug("getting Modulo instance");
+
+        List<Modulo> entity = null;        
+        try {
+            entity = moduloDAO.findByPrograma(idPrograma);
+            
+        } catch (Exception e) {
+            log.error("get Modulo failed", e);
+            throw new ZMessManager().new FindingException("Modulo");
+        } finally {
+        }
+
+        return entity;
+	}
 }

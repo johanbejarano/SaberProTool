@@ -143,11 +143,7 @@ public class PruebaLogic implements IPruebaLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Prueba");
             }
 
-            validatePrueba(entity);
-
-            if (getPrueba(entity.getIdPrueba()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validatePrueba(entity);            
 
             pruebaDAO.save(entity);
             log.debug("save Prueba successful");

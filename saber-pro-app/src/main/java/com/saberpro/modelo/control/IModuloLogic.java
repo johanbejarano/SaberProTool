@@ -65,4 +65,6 @@ public interface IModuloLogic {
     public ModuloDTO findDataByNombre(String nombre)throws Exception;
 
     public void validateModulo(Modulo modulo) throws Exception;
+    
+    public List<Modulo> findByPrograma(long idPrograma)throws Exception;
 }

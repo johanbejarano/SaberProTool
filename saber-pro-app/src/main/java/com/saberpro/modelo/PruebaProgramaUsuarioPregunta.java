@@ -23,7 +23,7 @@ public class PruebaProgramaUsuarioPregunta implements java.io.Serializable {
     private Long idPruebaProgramaUsuarioPregunta;
     @NotNull(message="pregunta no valido")
     private Pregunta pregunta;
-    @NotNull(message="pruebaprogramausuario no valido")
+    //@NotNull(message="pruebaprogramausuario no valido")
     private PruebaProgramaUsuario pruebaProgramaUsuario;
     @NotNull(message="activo no valido")
     @NotEmpty

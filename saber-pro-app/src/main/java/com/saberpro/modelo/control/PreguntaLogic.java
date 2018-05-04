@@ -668,4 +668,19 @@ public class PreguntaLogic implements IPreguntaLogic {
 	public void subirFile(InputStream origen, String destino) throws Exception {
 		archivo.copy(origen, destino);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Pregunta> findByRandom(long idModulo, long limit) throws Exception {
+		List<Pregunta> entity = null;
+
+		try {
+			entity = preguntaDAO.findByRandom(idModulo, limit);
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("Pregunta Count");
+		} finally {
+		}
+
+		return entity;
+	}
 }

@@ -776,5 +776,9 @@ public interface IBusinessDelegatorView {
 	 public Modulo findByNombreModulo(String nombre)throws Exception;
 	    
 	 public ModuloDTO findDataByNombreModulo(String nombre)throws Exception;
+	 
+	 public List<Modulo> findByProgramaModulo(long idPrograma)throws Exception;
+	 
+	 public List<Pregunta> findByRandomPregunta(long idModulo,long limit)throws Exception;
 
 }

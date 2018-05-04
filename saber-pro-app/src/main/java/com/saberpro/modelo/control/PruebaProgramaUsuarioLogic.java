@@ -156,11 +156,7 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
                     "PruebaProgramaUsuario");
             }
 
-            validatePruebaProgramaUsuario(entity);
-
-            if (getPruebaProgramaUsuario(entity.getIdPruebaProgramaUsuario()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validatePruebaProgramaUsuario(entity);            
 
             pruebaProgramaUsuarioDAO.save(entity);
             log.debug("save PruebaProgramaUsuario successful");

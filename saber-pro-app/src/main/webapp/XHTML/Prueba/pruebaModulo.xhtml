@@ -6,10 +6,23 @@
                 template="/WEB-INF/template.xhtml">
 		 
 	<ui:define name="content">	
+	<style>
+	.ui-picklist-list-wrapper,.ui-picklist-list-wrapper > .ui-picklist-list{
+		width:350px;
+		
+	}
+	
+	</style>
 			<h:form id="formDialog">
 				<p:messages id="msg" />
 				<p:growl id="men"/>
-						
+				<p:panel id="panelPruebaModulo" header="Selecione los modulos" style="border:0;">					
+					<p:pickList value="#{pruebaModuloView.modulos}" var="modulo" converter="moduloPickListConverter" itemLabel="#{modulo.nombre}" itemValue="#{modulo.idModulo}" />
+					<h:panelGrid columns="2" id="panelGrid" style="margin:20px;">
+						<p:commandButton value="Generar Entrenamiento" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar}"/>
+						<p:commandButton value="Generar Entrenamiento y empezar" styleClass="btn btn-primary btn-block"/>
+					</h:panelGrid>
+				</p:panel>
 			</h:form>
   </ui:define>
 </ui:composition>

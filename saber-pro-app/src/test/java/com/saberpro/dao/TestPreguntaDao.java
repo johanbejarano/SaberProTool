@@ -122,10 +122,10 @@ public class TestPreguntaDao {
 		assertNotNull("El tipoPreguntaDao es null",tipoPreguntaDao);
 		
 		
-		List<Pregunta> list = preguntaDao.findAll();
+		List<Pregunta> list = preguntaDao.findByRandom(5L,2L);
 		
 		for (Pregunta pregunta : list) {
-			log.info(pregunta.toString());
+			log.info("pregunta es "+pregunta.getIdPregunta());
 		}
 		
 

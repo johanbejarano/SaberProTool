@@ -56,7 +56,7 @@
 
 								<p:commandButton styleClass="btn btn-primary btn-block"
 									value="Iniciar Session" action="#{loginView.login}"
-									update="msgGrowl" />
+									update="msgGrowl" onclick="PF('statusDialog').show();"/>
 							</div>
 						</div>
 
@@ -71,6 +71,8 @@
 
 
 	</h:form>
+	
+	
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://code.jquery.com/jquery.js"></script>
