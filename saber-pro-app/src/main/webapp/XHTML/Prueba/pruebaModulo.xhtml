@@ -17,7 +17,7 @@
 				<p:messages id="msg" />
 				<p:growl id="men"/>
 				<p:panel id="panelPruebaModulo" header="Selecione los modulos" style="border:0;">					
-					<p:pickList value="#{pruebaModuloView.modulos}" var="modulo" converter="moduloPickListConverter" itemLabel="#{modulo.nombre}" itemValue="#{modulo.idModulo}" />
+					<p:pickList value="#{pruebaModuloView.modulos}" var="modulo" converter="moduloPickListConverter" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
 					<h:panelGrid columns="2" id="panelGrid" style="margin:20px;">
 						<p:commandButton value="Generar Entrenamiento" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar}"/>
 						<p:commandButton value="Generar Entrenamiento y empezar" styleClass="btn btn-primary btn-block"/>
