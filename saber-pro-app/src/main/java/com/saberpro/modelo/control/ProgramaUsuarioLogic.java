@@ -148,10 +148,6 @@ public class ProgramaUsuarioLogic implements IProgramaUsuarioLogic {
 
             validateProgramaUsuario(entity);
 
-            if (getProgramaUsuario(entity.getIdProgramaUsuario()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
             programaUsuarioDAO.save(entity);
             log.debug("save ProgramaUsuario successful");
         } catch (Exception e) {
@@ -272,6 +268,24 @@ public class ProgramaUsuarioLogic implements IProgramaUsuarioLogic {
         }
 
         return entity;
+    }
+    
+    @Transactional(readOnly = true)
+    public ProgramaUsuarioDTO getDataProgramaUsuario(Long idProgramaUsuario)
+        throws Exception {
+        log.debug("getting ProgramaUsuario instance");
+
+        ProgramaUsuario entity = null;
+
+        try {
+            entity = programaUsuarioDAO.findById(idProgramaUsuario);
+        } catch (Exception e) {
+            log.error("get ProgramaUsuario failed", e);
+            throw new ZMessManager().new FindingException("ProgramaUsuario");
+        } finally {
+        }
+
+        return programaUsuarioMapper.programaUsuarioToProgramaUsuarioDTO(entity);
     }
 
     @Transactional(readOnly = true)

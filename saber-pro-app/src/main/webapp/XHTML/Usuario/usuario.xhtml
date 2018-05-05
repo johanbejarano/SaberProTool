@@ -10,57 +10,74 @@
 			<p:growl id="men" />
 			<p:panel id="panelUsuario" header="Usuario">
 				<h:panelGrid columns="2" id="panelGrid">
-					<h:outputText id="msgIdUsuario" value="IdUsuario" />
-					<p:inputText id="txtIdUsuario"
-						binding="#{usuarioView.txtIdUsuario}">
-						<p:ajax update="panelUsuario,msg,panelBotones"
-							listener="#{usuarioView.listener_txtId}" />
+					<h:outputText value=" Codigo" />
+					<p:inputText binding="#{usuarioView.txtCodigo}" size="30">
+						<p:keyFilter regEx="/[0-9]/"/>
+						<p:ajax update="panelUsuario,msg" listener="#{usuarioView.listener_txtId}"/>
+					</p:inputText>
+					<h:outputText value=" Identificacion" />
+					<p:inputText binding="#{usuarioView.txtIdentificacion}" size="30">
+						<p:keyFilter regEx="/[0-9]/"/>
+						<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>
+					</p:inputText>
+					<h:outputText value=" Nombre" />
+					<p:inputText binding="#{usuarioView.txtNombre}" size="30">
+						<p:keyFilter regEx="/[a-zA-Z ]/"/>
+						<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>
+					</p:inputText>		
+					<h:outputText value=" Apellido" />
+					<p:inputText binding="#{usuarioView.txtApellido}" size="30">
+						<p:keyFilter regEx="/[a-zA-Z ]/"/>
+						<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>
+					</p:inputText>
+					<h:outputText value=" Celular" />
+					<p:inputText binding="#{usuarioView.txtCelular}" size="30">
+						<p:keyFilter regEx="/[0-9]/"/>
+						<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>
 					</p:inputText>					
-					<h:outputText id="msgApellido" value=" Apellido" />
-					<p:inputText id="txtApellido" disabled="true"
-						binding="#{usuarioView.txtApellido}" />
-					<h:outputText id="msgCelular" value=" Celular" />
-					<p:inputText id="txtCelular" disabled="true"
-						binding="#{usuarioView.txtCelular}" />
-					<h:outputText id="msgCodigo" value=" Codigo" />
-					<p:inputText id="txtCodigo" disabled="true"
-						binding="#{usuarioView.txtCodigo}" />
-					<h:outputText id="msgCorreo" value=" Correo" />
-					<p:inputText id="txtCorreo" disabled="true"
-						binding="#{usuarioView.txtCorreo}" />
-					<h:outputText id="msgGenero" value=" Genero" />
-					<p:inputText id="txtGenero" disabled="true"
-						binding="#{usuarioView.txtGenero}" />
-					<h:outputText id="msgIdentificacion" value=" Identificacion" />
-					<p:inputText id="txtIdentificacion" disabled="true"
-						binding="#{usuarioView.txtIdentificacion}" />
-					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" disabled="true"
-						binding="#{usuarioView.txtNombre}" />				
-					<h:outputText id="msgIdTipoUsuario_TipoUsuario"
-						value="Tipo de usuario" />
-					<p:selectOneMenu id="somTipoUsuario"
-								>
-								<f:selectItem itemValue="-1" itemLabel="-------------------" />								
+					<h:outputText value=" Correo" />
+					<p:inputText binding="#{usuarioView.txtCorreo}" size="30">
+						<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>
+					</p:inputText>
+					<h:outputText value=" Genero" />					
+					<p:selectOneMenu binding="#{usuarioView.somGenero}" >
+								<f:selectItem itemValue="#{null}" itemLabel="---------------------" />	
+								<f:selectItem itemValue="M" itemLabel="Masculino" />	
+								<f:selectItem itemValue="F" itemLabel="Femenino" />	
+								<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>							
+					</p:selectOneMenu>		
+					<h:outputText value="Facultad"/>
+					<p:selectOneMenu binding="#{usuarioView.somFacultas}" >
+								<f:selectItem itemValue="#{null}" itemLabel="-------------------" />	
+								<f:selectItems value="#{usuarioView.losFacultadSelectItem}"/>	
+								<p:ajax update="panelUsuario" listener="#{usuarioView.changeFacultad}"/>
+								<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>															
+					</p:selectOneMenu>	
+					<h:outputText value="Programa" />
+					<p:selectOneMenu  binding="#{usuarioView.somPrograma}" >
+								<f:selectItem itemValue="#{null}" itemLabel="-------------------" />	
+								<f:selectItems value="#{usuarioView.losProgramasSelectItem}"/>	
+								<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>															
+					</p:selectOneMenu>								
+					<h:outputText value="Tipo de usuario" rendered="#{usuarioView.mostrarTipo}"/>
+					<p:selectOneMenu binding="#{usuarioView.somTipoUsuario}" rendered="#{usuarioView.mostrarTipo}" >
+								<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
+								<f:selectItems value="#{usuarioView.losTipoUsuarioSelectItem}"/>
+								<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>								
 					</p:selectOneMenu>
-
 				</h:panelGrid>
-			</p:panel>
-			<p:panel id="panelBotones">
-				<div align="center">
-					<p:commandButton id="btnSave" binding="#{usuarioView.btnSave}"
-						disabled="true" value="Save" action="#{usuarioView.action_save()}"
-						update="panelUsuario,msg,panelBotones" />
-					<p:commandButton id="btnDelete" binding="#{usuarioView.btnDelete}"
-						disabled="true" value="Delete"
-						action="#{usuarioView.action_delete_master()}"
-						onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-						update="panelUsuario,msg,panelBotones" />
-					<p:commandButton id="btnClear" value="Clear"
+				<div>
+					<p:commandButton binding="#{usuarioView.btnSave}" action="#{usuarioView.action_create()}"
+						disabled="true" value="Guardar" 
+						update="panelUsuario,msg" />
+					<p:commandButton binding="#{usuarioView.btnModify}" action="#{usuarioView.action_modify()}"
+						disabled="true" value="Actualizar"
+						update="panelUsuario,msg" />
+					<p:commandButton id="btnClear" value="Limpiar"
 						action="#{usuarioView.action_clear()}"
-						update="panelUsuario,msg,panelBotones" />
+						update="panelUsuario,msg" />
 				</div>
-			</p:panel>
+			</p:panel>			
 		</h:form>
 	</ui:define>
 </ui:composition>

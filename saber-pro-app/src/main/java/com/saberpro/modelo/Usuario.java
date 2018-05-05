@@ -27,7 +27,7 @@ public class Usuario implements java.io.Serializable {
     @NotEmpty
     @Size(max = 1)
     private String activo;
-    @NotNull(message="apellidp no valido")
+    @NotNull(message="apellido no valido")
     @NotEmpty
     @Size(min=3,max = 300)
     private String apellido;

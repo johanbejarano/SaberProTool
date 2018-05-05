@@ -504,69 +504,76 @@ public class PreguntaLogic implements IPreguntaLogic {
 				// ignorar primera fila
 				row = (HSSFRow) rows.next();
 
-				while (rows.hasNext()) {
-					/*row = (HSSFRow) rows.next();
-					cell = row.getCell(0);
-
+				for (int i=1;i<sheet.getLastRowNum();i++) {
+					
+					row = (HSSFRow) sheet.getRow(i);				
+					
+					log.info("numero filas es "+sheet.getLastRowNum());
 					Pregunta pregunta = new Pregunta();
 
-					pregunta.setDescripcionPregunta(row.getCell(0).getStringCellValue());
+					if(row.getCell(0)!=null && row.getCell(2)!=null && row.getCell(3)!=null) {
+						pregunta.setDescripcionPregunta(row.getCell(0).getStringCellValue());
 
-					if (row.getCell(1) != null) {
-						pregunta.setRetroalimentacion(row.getCell(1).getStringCellValue());
+						if (row.getCell(1) != null) {
+							pregunta.setRetroalimentacion(row.getCell(1).getStringCellValue());
+						}
+
+						pregunta.setModulo(moduloDao.findById(((long) row.getCell(2).getNumericCellValue())));
+						pregunta.setTipoPregunta(tipoPreguntaDao.findById(((long) row.getCell(3).getNumericCellValue())));
+						pregunta.setFechaCreacion(new Date());
+						pregunta.setUsuCreador(user);
+						pregunta.setActivo(Constantes.ESTADO_ACTIVO);
+
+						preguntaDAO.save(pregunta);
+
+						Respuesta respuesta = new Respuesta();
+
+						respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));		
+						if(row.getCell(9)!=null)
+							respuesta.setDescripcionRespuesta(row.getCell(4).getStringCellValue());
+						respuesta.setPorcentajeAcierto(((int) row.getCell(8).getNumericCellValue()));
+						respuesta.setFechaCreacion(new Date());
+						respuesta.setUsuCreador(user);
+						respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+						respuestaDao.save(respuesta);
+
+						respuesta = new Respuesta();
+
+						respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+						if(row.getCell(5)!=null)
+							respuesta.setDescripcionRespuesta(row.getCell(5).getStringCellValue());
+						respuesta.setPorcentajeAcierto(((int) row.getCell(9).getNumericCellValue()));
+						respuesta.setFechaCreacion(new Date());
+						respuesta.setUsuCreador(user);
+						respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+						respuestaDao.save(respuesta);
+
+						respuesta = new Respuesta();
+
+						respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+						if(row.getCell(6)!=null)
+							respuesta.setDescripcionRespuesta(row.getCell(6).getStringCellValue());
+						respuesta.setPorcentajeAcierto(((int) row.getCell(10).getNumericCellValue()));
+						respuesta.setFechaCreacion(new Date());
+						respuesta.setUsuCreador(user);
+						respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+						respuestaDao.save(respuesta);
+
+						respuesta = new Respuesta();
+
+						respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
+						if(row.getCell(7)!=null)
+							respuesta.setDescripcionRespuesta(row.getCell(7).getStringCellValue());
+						respuesta.setPorcentajeAcierto(((int) row.getCell(11).getNumericCellValue()));
+						respuesta.setFechaCreacion(new Date());
+						respuesta.setUsuCreador(user);
+						respuesta.setActivo(Constantes.ESTADO_ACTIVO);
+
+						respuestaDao.save(respuesta);
 					}
-
-					pregunta.setModulo(moduloDao.findById(((long) row.getCell(2).getNumericCellValue())));
-					pregunta.setTipoPregunta(tipoPreguntaDao.findById(((long) row.getCell(3).getNumericCellValue())));
-					pregunta.setFechaCreacion(new Date());
-					pregunta.setUsuCreador(user);
-					pregunta.setActivo(Constantes.ESTADO_ACTIVO);
-
-					preguntaDAO.save(pregunta);
-
-					Respuesta respuesta = new Respuesta();
-
-					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-					respuesta.setDescripcionRespuesta(row.getCell(4).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int) row.getCell(8).getNumericCellValue()));
-					respuesta.setFechaCreacion(new Date());
-					respuesta.setUsuCreador(user);
-					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-
-					respuestaDao.save(respuesta);
-
-					respuesta = new Respuesta();
-
-					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-					respuesta.setDescripcionRespuesta(row.getCell(5).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int) row.getCell(9).getNumericCellValue()));
-					respuesta.setFechaCreacion(new Date());
-					respuesta.setUsuCreador(user);
-					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-
-					respuestaDao.save(respuesta);
-
-					respuesta = new Respuesta();
-
-					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-					respuesta.setDescripcionRespuesta(row.getCell(6).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int) row.getCell(10).getNumericCellValue()));
-					respuesta.setFechaCreacion(new Date());
-					respuesta.setUsuCreador(user);
-					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-
-					respuestaDao.save(respuesta);
-
-					respuesta = new Respuesta();
-
-					respuesta.setPregunta(preguntaDAO.findById(pregunta.getIdPregunta()));
-					respuesta.setDescripcionRespuesta(row.getCell(7).getStringCellValue());
-					respuesta.setPorcentajeAcierto(((int) row.getCell(11).getNumericCellValue()));
-					respuesta.setFechaCreacion(new Date());
-					respuesta.setUsuCreador(user);
-					respuesta.setActivo(Constantes.ESTADO_ACTIVO);
-
-					respuestaDao.save(respuesta);*/
 
 				}
 

@@ -780,5 +780,6 @@ public interface IBusinessDelegatorView {
 	 public List<Modulo> findByProgramaModulo(long idPrograma)throws Exception;
 	 
 	 public List<Pregunta> findByRandomPregunta(long idModulo,long limit)throws Exception;
-
+	 
+	 public ProgramaUsuarioDTO getDataProgramaUsuario(Long idProgramaUsuario) throws Exception;
 }

@@ -47,7 +47,10 @@ public interface IProgramaUsuarioLogic {
          */
     public ProgramaUsuario getProgramaUsuario(Long idProgramaUsuario)
         throws Exception;
-
+    
+    public ProgramaUsuarioDTO getDataProgramaUsuario(Long idProgramaUsuario)
+            throws Exception;
+    
     public List<ProgramaUsuario> findByCriteria(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)
         throws Exception;

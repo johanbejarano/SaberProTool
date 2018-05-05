@@ -2038,5 +2038,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return preguntaLogic.findByRandom(idModulo, limit);
 	}
 
+	@Override
+	public ProgramaUsuarioDTO getDataProgramaUsuario(Long idProgramaUsuario) throws Exception {
+		return programaUsuarioLogic.getDataProgramaUsuario(idProgramaUsuario);
+	}
+
 	
 }

@@ -3,6 +3,8 @@ package com.saberpro.presentation.backingBeans;
 import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
+import com.saberpro.modelo.dto.ProgramaUsuarioDTO;
+import com.saberpro.modelo.dto.TipoUsuarioDTO;
 import com.saberpro.modelo.dto.UsuarioDTO;
 
 import com.saberpro.presentation.businessDelegate.*;
@@ -17,6 +19,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.aspectj.annotation.LazySingletonAspectInstanceFactoryDecorator;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -51,304 +54,332 @@ import javax.faces.model.SelectItem;
 public class UsuarioView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UsuarioView.class);
+        
+    private boolean crear = true;
+    private boolean mostrarTipo = true;
+    
     private InputText txtApellido;
     private InputText txtCelular;
     private InputText txtCodigo;
-    private InputText txtCorreo;
-    private InputText txtGenero;
+    private InputText txtCorreo;    
     private InputText txtIdentificacion;
-    private InputText txtNombre;     
-    private InputText txtIdUsuario;  
+    private InputText txtNombre;    
+    
     private SelectOneMenu somTipoUsuario;
+    private SelectOneMenu somGenero;
+    private SelectOneMenu somFacultas;
+    private SelectOneMenu somPrograma;
+    
     private CommandButton btnSave;
-    private CommandButton btnModify;
-    private CommandButton btnDelete;
+    private CommandButton btnModify;   
     private CommandButton btnClear;
+    
     private List<UsuarioDTO> data;
+    
     private List<SelectItem> losTipoUsuarioSelectItem;
+    private List<SelectItem> losFacultadSelectItem;
+    private List<SelectItem> losProgramasSelectItem;
+    
     private UsuarioDTO selectedUsuario;
+    private ProgramaUsuarioDTO selectedUsuarioPrograma;
+    
     private Usuario entity;
+    private ProgramaUsuario entityPrograma;
+    private Programa entityCarrera;
+    private Facultad entityFacultad;
+    private TipoUsuario entityTipoUsuario;
+    
     private boolean showDialog;
+    
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
 
     public UsuarioView(){
         super();        
-    }
-
-    public String action_new() {
-        action_clear();
-        selectedUsuario = null;
-        setShowDialog(true);
-
-        return "";
-    }
-
-    public String action_clear() {
-        entity = null;
-        selectedUsuario = null;       
-
-        if (txtApellido != null) {
-            txtApellido.setValue(null);
-            txtApellido.setDisabled(true);
-        }
-
-        if (txtCelular != null) {
-            txtCelular.setValue(null);
-            txtCelular.setDisabled(true);
-        }
-
-        if (txtCodigo != null) {
-            txtCodigo.setValue(null);
-            txtCodigo.setDisabled(true);
-        }
-
-        if (txtCorreo != null) {
-            txtCorreo.setValue(null);
-            txtCorreo.setDisabled(true);
-        }
-
-        if (txtGenero != null) {
-            txtGenero.setValue(null);
-            txtGenero.setDisabled(true);
-        }
-
-        if (txtIdentificacion != null) {
-            txtIdentificacion.setValue(null);
-            txtIdentificacion.setDisabled(true);
-        }
-
-        if (txtNombre != null) {
-            txtNombre.setValue(null);
-            txtNombre.setDisabled(true);
-        }   
-
-        if (txtIdUsuario != null) {
-            txtIdUsuario.setValue(null);
-            txtIdUsuario.setDisabled(false);
-        }
-
-        if (btnSave != null) {
-            btnSave.setDisabled(true);
-        }
-
-        if (btnDelete != null) {
-            btnDelete.setDisabled(true);
-        }
-
-        return "";
     }    
-
+    
     public void listener_txtId() {
-        try {
-            Long idUsuario = FacesUtils.checkLong(txtIdUsuario);
-            entity = (idUsuario != null)
-                ? businessDelegatorView.getUsuario(idUsuario) : null;
-        } catch (Exception e) {
-            entity = null;
-        }
+		try {
+			long codigo = Long.parseLong(txtCodigo.getValue().toString());
+			//Usuario
+			Object[] variable = {"codigo",true,codigo,"="};
+			entity = businessDelegatorView.findByCriteriaInUsuario(variable,null,null).get(0);
+			//ProgramaUsuario
+			Object[] variable2 = {"usuario.idUsuario",true,entity.getIdUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
+			entityPrograma = businessDelegatorView.findByCriteriaInProgramaUsuario(variable2,null,null).get(0);			
+			//Programa	
+			Object[] variable3 = {"idPrograma",true,entityPrograma.getPrograma().getIdPrograma(),"="};
+			entityCarrera = businessDelegatorView.findByCriteriaInPrograma(variable3,null,null).get(0);
+			//Facultad	
+			Object[] variable4 = {"idFacultad",true,entityCarrera.getFacultad().getIdFacultad(),"="};
+			entityFacultad = businessDelegatorView.findByCriteriaInFacultad(variable4,null,null).get(0);
+			//TipoUsuario
+			Object[] variable5 = {"idTipoUsuario",true,entity.getTipoUsuario().getIdTipoUsuario(),"="};
+			entityTipoUsuario = businessDelegatorView.findByCriteriaInTipoUsuario(variable5,null,null).get(0);
+			
+		} catch (Exception e) {
+			entity = null;
+			entityPrograma = null;
+			entityTipoUsuario = null;
+			entityFacultad = null;
+			log.error("Error en "+e.getMessage(),e);
+		}
 
-        if (entity == null) {
-            txtApellido.setDisabled(false);
-            txtCelular.setDisabled(false);
-            txtCodigo.setDisabled(false);
-            txtCorreo.setDisabled(false);
-            txtGenero.setDisabled(false);
-            txtIdentificacion.setDisabled(false);
-            txtNombre.setDisabled(false);                      
-            txtIdUsuario.setDisabled(false);
-            btnSave.setDisabled(false);
-        } else {
-            txtApellido.setValue(entity.getApellido());
-            txtApellido.setDisabled(false);
-            txtCelular.setValue(entity.getCelular());
-            txtCelular.setDisabled(false);
-            txtCodigo.setValue(entity.getCodigo());
-            txtCodigo.setDisabled(false);
-            txtCorreo.setValue(entity.getCorreo());
-            txtCorreo.setDisabled(false);            
-            txtGenero.setValue(entity.getGenero());
-            txtGenero.setDisabled(false);
-            txtIdentificacion.setValue(entity.getIdentificacion());
-            txtIdentificacion.setDisabled(false);
-            txtNombre.setValue(entity.getNombre());
-            txtNombre.setDisabled(false);                    
-            txtIdUsuario.setValue(entity.getIdUsuario());
-            txtIdUsuario.setDisabled(true);
-            btnSave.setDisabled(false);
+		if (entity == null && entityPrograma==null) {
+			
+			crear = true;
+			setMostrarTipo(true);
+			somPrograma.setDisabled(false);
+			somFacultas.setDisabled(false);
+			txtApellido.resetValue();
+			txtCelular.resetValue();
+			txtCorreo.resetValue();
+			txtIdentificacion.resetValue();
+			txtNombre.resetValue();
+			
+			somFacultas.resetValue();
+			somGenero.resetValue();
+			somPrograma.resetValue();
+			somTipoUsuario.resetValue();
 
-            if (btnDelete != null) {
-                btnDelete.setDisabled(false);
-            }
-        }
+			btnSave.setDisabled(true);
+			btnModify.setDisabled(true);
+
+		} else {
+			
+			crear = false;			
+			losProgramasSelectItem = null;	
+			setMostrarTipo(true);
+			somPrograma.setDisabled(false);
+			somFacultas.setDisabled(false);
+			
+			txtNombre.setValue(entity.getNombre());
+			txtApellido.setValue(entity.getApellido());
+			txtCelular.setValue(entity.getCelular());
+			txtCorreo.setValue(entity.getCorreo());
+			txtIdentificacion.setValue(entity.getIdentificacion());		
+			
+			
+			
+			somGenero.setValue(entity.getGenero());			
+			somFacultas.setValue(entityFacultad.getIdFacultad());
+			somPrograma.setValue(entityCarrera.getIdPrograma());
+			
+			btnSave.setDisabled(true);
+			btnModify.setDisabled(true);
+			
+			if(!entityTipoUsuario.getActivo().equals(Constantes.ESTADO_ACTIVO)) {
+				setMostrarTipo(false);
+				somFacultas.setDisabled(true);
+				if(entityTipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DIRECTOR) {
+					somPrograma.setDisabled(true);
+				}
+			}
+			else {
+				somTipoUsuario.setValue(entityTipoUsuario.getIdTipoUsuario());
+				setMostrarTipo(true);
+				somPrograma.setDisabled(false);
+				somFacultas.setDisabled(false);
+			}
+			
+		}
+		action_validar();
+	}
+    
+    public void verificar(CommandButton input) {
+    	try {
+    		if(FacesUtils.checkString(txtNombre)==null || FacesUtils.checkString(txtNombre).isEmpty()) 
+        		input.setDisabled(true);  
+    		if(FacesUtils.checkString(txtApellido)==null || FacesUtils.checkString(txtApellido).isEmpty()) 
+        		input.setDisabled(true); 
+    		if(FacesUtils.checkString(txtCelular)==null || FacesUtils.checkString(txtCelular).isEmpty()) 
+        		input.setDisabled(true); 
+    		if(FacesUtils.checkString(txtCodigo)==null || FacesUtils.checkString(txtCodigo).isEmpty()) 
+        		input.setDisabled(true); 
+    		if(FacesUtils.checkString(txtCorreo)==null || FacesUtils.checkString(txtCorreo).isEmpty()) 
+        		input.setDisabled(true); 
+    		if(FacesUtils.checkString(txtIdentificacion)==null || FacesUtils.checkString(txtIdentificacion).isEmpty()) 
+        		input.setDisabled(true); 
+        	if(FacesUtils.checkString(somFacultas)==null)
+        		input.setDisabled(true);
+        	if(FacesUtils.checkString(somGenero)==null)
+        		input.setDisabled(true);
+        	if(FacesUtils.checkString(somPrograma)==null)
+        		input.setDisabled(true); 
+        	if(FacesUtils.checkString(somTipoUsuario)==null && crear)
+        		input.setDisabled(true);    
+		} catch (Exception e) {
+			log.error("Error validando "+e.getMessage(),e);
+		}    	
+    		
     }
+    
+    public String action_clear() {
+    	entity = null;
+		entityPrograma = null;
+		entityTipoUsuario = null;
+		entityFacultad = null;
+		selectedUsuario = null;
+		losProgramasSelectItem = null;		
 
-    public String action_edit(ActionEvent evt) {
-        selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes()
-                                           .get("selectedUsuario"));
-        txtApellido.setValue(selectedUsuario.getApellido());
-        txtApellido.setDisabled(false);
-        txtCelular.setValue(selectedUsuario.getCelular());
-        txtCelular.setDisabled(false);
-        txtCodigo.setValue(selectedUsuario.getCodigo());
-        txtCodigo.setDisabled(false);
-        txtCorreo.setValue(selectedUsuario.getCorreo());
-        txtCorreo.setDisabled(false);       
-        txtGenero.setValue(selectedUsuario.getGenero());
-        txtGenero.setDisabled(false);
-        txtIdentificacion.setValue(selectedUsuario.getIdentificacion());
-        txtIdentificacion.setDisabled(false);
-        txtNombre.setValue(selectedUsuario.getNombre());
-        txtNombre.setDisabled(false);              
-        txtIdUsuario.setValue(selectedUsuario.getIdUsuario());
-        txtIdUsuario.setDisabled(true);
-        btnSave.setDisabled(false);
-        setShowDialog(true);
+		btnSave.setDisabled(true);
+		btnModify.setDisabled(true);
 
-        return "";
+		txtCodigo.resetValue();
+		txtNombre.resetValue();
+		txtApellido.resetValue();
+		txtCelular.resetValue();
+		txtCorreo.resetValue();
+		txtIdentificacion.resetValue();
+		
+		somFacultas.resetValue();
+		somGenero.resetValue();
+		somPrograma.resetValue();
+		somTipoUsuario.resetValue();
+		
+		setMostrarTipo(true);
+
+		return "";
+	}
+    
+    public void action_validar() {
+    	
+    	if(crear) {
+    		btnSave.setDisabled(false);
+        	verificar(btnSave); 
+    	}
+    	else {
+    		btnModify.setDisabled(false);
+    		verificar(btnModify); 
+    	}
+    	   	
     }
-
-    public String action_save() {
-        try {
-            if ((selectedUsuario == null) && (entity == null)) {
-                action_create();
-            } else {
-                action_modify();
-            }
-
-            data = null;
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-
-        return "";
-    }
-
+    
     public String action_create() {
-        try {
-            entity = new Usuario();
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
-            Long idUsuario = FacesUtils.checkLong(txtIdUsuario);
-            
-            entity.setApellido(FacesUtils.checkString(txtApellido));
-            entity.setCelular(FacesUtils.checkLong(txtCelular));
-            entity.setCodigo(FacesUtils.checkLong(txtCodigo));
-            entity.setCorreo(FacesUtils.checkString(txtCorreo));            
-            entity.setGenero(FacesUtils.checkString(txtGenero));
-            entity.setIdUsuario(idUsuario);
-            entity.setIdentificacion(FacesUtils.checkLong(txtIdentificacion));
-            entity.setNombre(FacesUtils.checkString(txtNombre));                      
-            businessDelegatorView.saveUsuario(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
-            action_clear();
-        } catch (Exception e) {
-            entity = null;
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+			if (usuario != null) {				
+				
+				entity = new Usuario();
+				
+				entity.setCodigo(Long.parseLong(FacesUtils.checkString(txtCodigo)));
+				entity.setIdentificacion(Long.parseLong(FacesUtils.checkString(txtIdentificacion)));
+				entity.setNombre(FacesUtils.checkString(txtNombre));
+				entity.setApellido(FacesUtils.checkString(txtApellido));
+				entity.setCelular(Long.parseLong(FacesUtils.checkString(txtCelular)));
+				entity.setCorreo(FacesUtils.checkString(txtCorreo));
+				entity.setUsuCreador(usuario.getIdUsuario());
+				entity.setGenero(FacesUtils.checkString(somGenero));
+				entity.setFechaCreacion(new Date());
+				entity.setTipoUsuario(businessDelegatorView.getTipoUsuario((long)(FacesUtils.checkInteger(somTipoUsuario))));
+				
+				businessDelegatorView.saveUsuario(entity);
+				
+				entityPrograma = new ProgramaUsuario();
+				
+				entityPrograma.setActivo(Constantes.ESTADO_ACTIVO);
+				entityPrograma.setFechaCreacion(new Date());
+				entityPrograma.setPrograma(businessDelegatorView.getPrograma((long)FacesUtils.checkInteger(somPrograma)));
+				entityPrograma.setUsuario(entity);
+				entityPrograma.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.saveProgramaUsuario(entityPrograma);
+				data = null;
 
-        return "";
-    }
+				FacesUtils.addInfoMessage("Se creo el Usuario correctamente");
+				action_clear();
 
+			}
+
+		} catch (Exception e) {			
+			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Erro de crear usuario en "+e.getMessage(),e);
+		}
+
+		return "";
+
+	}
+    
     public String action_modify() {
-        try {
-            if (entity == null) {
-                Long idUsuario = new Long(selectedUsuario.getIdUsuario());
-                entity = businessDelegatorView.getUsuario(idUsuario);
-            }
-            
-            entity.setApellido(FacesUtils.checkString(txtApellido));
-            entity.setCelular(FacesUtils.checkLong(txtCelular));
-            entity.setCodigo(FacesUtils.checkLong(txtCodigo));
-            entity.setCorreo(FacesUtils.checkString(txtCorreo));            
-            entity.setGenero(FacesUtils.checkString(txtGenero));
-            entity.setIdentificacion(FacesUtils.checkLong(txtIdentificacion));
-            entity.setNombre(FacesUtils.checkString(txtNombre));            
-            businessDelegatorView.updateUsuario(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-        } catch (Exception e) {
-            data = null;
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			
 
-        return "";
+			if (usuario != null) {				
+				
+
+				entity.setCodigo(Long.parseLong(FacesUtils.checkString(txtCodigo)));
+				entity.setIdentificacion(Long.parseLong(FacesUtils.checkString(txtIdentificacion)));
+				entity.setNombre(FacesUtils.checkString(txtNombre));
+				entity.setApellido(FacesUtils.checkString(txtApellido));
+				entity.setCelular(Long.parseLong(FacesUtils.checkString(txtCelular)));
+				entity.setCorreo(FacesUtils.checkString(txtCorreo));
+				entity.setUsuModificador(usuario.getIdUsuario());
+				entity.setGenero(FacesUtils.checkString(somGenero));
+				entity.setFechaModificacion(new Date());
+				
+				if(entityTipoUsuario.getActivo().equals(Constantes.ESTADO_ACTIVO)) {
+					if(FacesUtils.checkString(somTipoUsuario)==null) {						
+						throw new Exception("No hay selecionado tipo usuario");
+					}else {
+						entity.setTipoUsuario(businessDelegatorView.getTipoUsuario((long)(FacesUtils.checkInteger(somTipoUsuario))));
+						entityPrograma.setActivo(Constantes.ESTADO_ACTIVO);
+						entityPrograma.setPrograma(businessDelegatorView.getPrograma((long)FacesUtils.checkInteger(somPrograma)));
+						entityPrograma.setFechaModificacion(new Date());								
+						entityPrograma.setUsuModificador(usuario.getIdUsuario());
+						
+						businessDelegatorView.updateProgramaUsuario(entityPrograma);
+					}
+				}
+				else {
+					Object[] variable = {"usuario.idUsuario",true,entity.getIdUsuario(),"=","programa.idPrograma",true,FacesUtils.checkInteger(somPrograma),"="};
+					ProgramaUsuario programa = businessDelegatorView.findByCriteriaInProgramaUsuario(variable,null,null).get(0);
+					if(programa!=null) {
+						programa.setFechaModificacion(new Date());
+						programa.setUsuModificador(usuario.getIdUsuario());
+						programa.setActivo(Constantes.ESTADO_ACTIVO);
+						
+						entityPrograma.setUsuModificador(usuario.getIdUsuario());
+						entityPrograma.setFechaModificacion(new Date());
+						entityPrograma.setActivo(Constantes.ESTADO_ASIGNADO);
+						
+						businessDelegatorView.updateProgramaUsuario(programa);
+						businessDelegatorView.updateProgramaUsuario(entityPrograma);
+					}
+				}
+					
+				
+				
+				
+				businessDelegatorView.updateUsuario(entity);	
+				
+				
+				
+				
+				data = null;
+
+				FacesUtils.addInfoMessage("se actualizo programa correctamente");
+				action_clear();
+
+			}
+
+		} catch (Exception e) {			
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+	}
+
+    
+    //Update vista
+    public void changeFacultad() {
+    	losProgramasSelectItem= null;
+    	somPrograma.resetValue();
+    	action_validar();
     }
-
-    public String action_delete_datatable(ActionEvent evt) {
-        try {
-            selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes()
-                                               .get("selectedUsuario"));
-
-            Long idUsuario = new Long(selectedUsuario.getIdUsuario());
-            entity = businessDelegatorView.getUsuario(idUsuario);
-            action_delete();
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-
-        return "";
-    }
-
-    public String action_delete_master() {
-        try {
-            Long idUsuario = FacesUtils.checkLong(txtIdUsuario);
-            entity = businessDelegatorView.getUsuario(idUsuario);
-            action_delete();
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-
-        return "";
-    }
-
-    public void action_delete() throws Exception {
-        try {
-            businessDelegatorView.deleteUsuario(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
-            action_clear();
-            data = null;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    public String action_closeDialog() {
-        setShowDialog(false);
-        action_clear();
-
-        return "";
-    }
-
-    public String action_modifyWitDTO(String activo, String apellido,
-        Long celular, Long codigo, String correo, Date fechaCreacion,
-        Date fechaModificacion, String genero, Long idUsuario,
-        Long identificacion, String nombre, String password, Long usuCreador,
-        Long usuModificador, Long idTipoUsuario_TipoUsuario)
-        throws Exception {
-        try {
-            entity.setActivo(FacesUtils.checkString(activo));
-            entity.setApellido(FacesUtils.checkString(apellido));
-            entity.setCelular(FacesUtils.checkLong(celular));
-            entity.setCodigo(FacesUtils.checkLong(codigo));
-            entity.setCorreo(FacesUtils.checkString(correo));
-            entity.setFechaCreacion(FacesUtils.checkDate(fechaCreacion));
-            entity.setFechaModificacion(FacesUtils.checkDate(fechaModificacion));
-            entity.setGenero(FacesUtils.checkString(genero));
-            entity.setIdentificacion(FacesUtils.checkLong(identificacion));
-            entity.setNombre(FacesUtils.checkString(nombre));
-            entity.setPassword(FacesUtils.checkString(password));
-            entity.setUsuCreador(FacesUtils.checkLong(usuCreador));
-            entity.setUsuModificador(FacesUtils.checkLong(usuModificador));
-            businessDelegatorView.updateUsuario(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-        } catch (Exception e) {
-            //renderManager.getOnDemandRenderer("UsuarioView").requestRender();
-            FacesUtils.addErrorMessage(e.getMessage());
-            throw e;
-        }
-
-        return "";
-    }    
-
+    
+    /* Getter y Setter*/
     public InputText getTxtApellido() {
         return txtApellido;
     }
@@ -381,14 +412,6 @@ public class UsuarioView implements Serializable {
         this.txtCorreo = txtCorreo;
     }
 
-    public InputText getTxtGenero() {
-        return txtGenero;
-    }
-
-    public void setTxtGenero(InputText txtGenero) {
-        this.txtGenero = txtGenero;
-    }
-
     public InputText getTxtIdentificacion() {
         return txtIdentificacion;
     }
@@ -403,15 +426,7 @@ public class UsuarioView implements Serializable {
 
     public void setTxtNombre(InputText txtNombre) {
         this.txtNombre = txtNombre;
-    }    
-
-    public InputText getTxtIdUsuario() {
-        return txtIdUsuario;
-    }
-
-    public void setTxtIdUsuario(InputText txtIdUsuario) {
-        this.txtIdUsuario = txtIdUsuario;
-    }
+    } 
 
     public List<UsuarioDTO> getData() {
         try {
@@ -451,15 +466,7 @@ public class UsuarioView implements Serializable {
 
     public void setBtnModify(CommandButton btnModify) {
         this.btnModify = btnModify;
-    }
-
-    public CommandButton getBtnDelete() {
-        return btnDelete;
-    }
-
-    public void setBtnDelete(CommandButton btnDelete) {
-        this.btnDelete = btnDelete;
-    }
+    }    
 
     public CommandButton getBtnClear() {
         return btnClear;
@@ -499,10 +506,95 @@ public class UsuarioView implements Serializable {
 	}
 
 	public List<SelectItem> getLosTipoUsuarioSelectItem() {
+		if(losTipoUsuarioSelectItem==null) {
+			try {
+				losTipoUsuarioSelectItem = new ArrayList<>();
+				Object[] variable = {"activo",true,Constantes.ESTADO_ACTIVO,"="};
+				for(TipoUsuario tipoUsuario:businessDelegatorView.findByCriteriaInTipoUsuario(variable,null,null)) {
+					losTipoUsuarioSelectItem.add(new SelectItem(tipoUsuario.getIdTipoUsuario(),tipoUsuario.getNombre()));
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 		return losTipoUsuarioSelectItem;
 	}
 
 	public void setLosTipoUsuarioSelectItem(List<SelectItem> losTipoUsuarioSelectItem) {
 		this.losTipoUsuarioSelectItem = losTipoUsuarioSelectItem;
+	}
+
+	public SelectOneMenu getSomGenero() {
+		return somGenero;
+	}
+
+	public void setSomGenero(SelectOneMenu somGenero) {
+		this.somGenero = somGenero;
+	}
+
+	public SelectOneMenu getSomFacultas() {
+		return somFacultas;
+	}
+
+	public void setSomFacultas(SelectOneMenu somFacultas) {
+		this.somFacultas = somFacultas;
+	}
+
+	public SelectOneMenu getSomPrograma() {
+		return somPrograma;
+	}
+
+	public void setSomPrograma(SelectOneMenu somPrograma) {
+		this.somPrograma = somPrograma;
+	}
+
+	public List<SelectItem> getLosFacultadSelectItem() {
+		if(losFacultadSelectItem==null) {				
+			Object[] variable = {"activo",true,Constantes.ESTADO_ACTIVO,"="};
+			losFacultadSelectItem = new ArrayList<>();				
+			try {
+				List<Facultad> list = businessDelegatorView.findByCriteriaInFacultad(variable,null,null);
+				for (Facultad facultad : list) {
+					losFacultadSelectItem.add(new SelectItem(facultad.getIdFacultad(),facultad.getNombre()));
+				}
+			} catch (Exception e) {
+				
+				log.error("Error" + e.getMessage(),e);
+			}
+		}
+		return losFacultadSelectItem;
+	}
+
+	public void setLosFacultadSelectItem(List<SelectItem> losFacultadSelectItem) {
+		this.losFacultadSelectItem = losFacultadSelectItem;
+	}
+
+	public List<SelectItem> getLosProgramasSelectItem() {
+		if(losProgramasSelectItem==null && somFacultas.getValue()!=null ) {				
+			Object[] variable = {"facultad.idFacultad",true,FacesUtils.checkInteger(somFacultas),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
+			losProgramasSelectItem = new ArrayList<>();				
+			try {
+				List<Programa> list = businessDelegatorView.findByCriteriaInPrograma(variable,null,null);
+				for (Programa programa : list) {
+					losProgramasSelectItem.add(new SelectItem(programa.getIdPrograma(),programa.getNombre()));
+				}
+			} catch (Exception e) {
+				
+				log.debug("Error" + e.getMessage());
+			}
+		}	
+		return losProgramasSelectItem;
+	}
+
+	public void setLosProgramasSelectItem(List<SelectItem> losProgramasSelectItem) {
+		this.losProgramasSelectItem = losProgramasSelectItem;
+	}
+
+	public boolean isMostrarTipo() {
+		return mostrarTipo;
+	}
+
+	public void setMostrarTipo(boolean mostrarTipo) {
+		this.mostrarTipo = mostrarTipo;
 	}
 }

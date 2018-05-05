@@ -82,9 +82,9 @@ ALTER SEQUENCE tipo_usuario_id_tipo_usuario_seq MINVALUE 1 START WITH 1 RESTART 
 
 insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ESTUDIANTE','Rol que realiza pruebas de modulos acuerdo a su programa',now(),0,'S');
 insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DOCENTE','Rol que alimenta el banco de preguntas del programa que este asignado',now(),0,'S');
-insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DIRECTOR','Rol que administra todo refente a un programa que este asignado,puede consultar y ver informes especificos',now(),0,'S');
-insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DECANO','Rol que administra todo referente a una facultad,puede consultar y ver informes generales',now(),0,'S');
-insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ADMIN','Rol que administra todo el sistema',now(),0,'S');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DIRECTOR','Rol que administra todo refente a un programa que este asignado,puede consultar y ver informes especificos',now(),0,'A');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DECANO','Rol que administra todo referente a una facultad,puede consultar y ver informes generales',now(),0,'A');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ADMIN','Rol que administra todo el sistema',now(),0,'M');
 
 /* Tipo modulo*/
 
@@ -105,7 +105,7 @@ insert into tipo_pregunta(nombre,descripcion,fecha_creacion,usu_creador,activo) 
 ALTER SEQUENCE modulo_id_modulo_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO COMPETENCIAS CIUDADANAS','Las competencias ciudadanas son un conjunto de habilidades cognitivas, emocionales y comunicativas, que debemos desarrollar desde pequeños para saber vivir con los otros y sobre todo, para actuar de manera constructiva en la sociedad',1,2,now(),0,'S',1);
-insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE COMUNICACION ESCRITA','La comunicación escrita es el proceso escrito mediante el cual un emisor (periodista, escritor, poeta etc.) dirige un mensaje a un receptor',1,2,now(),0,'S',1);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE COMUNICACION ESCRITA','La comunicación escrita es el proceso escrito mediante el cual un emisor (periodista, escritor, poeta etc.) dirige un mensaje a un receptor',1,2,now(),0,'N',1);
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE INGLÉS','El modulo de inglé es para evaluar las capacidades frente al conocimiento que posean frente a la lenguaje o idioma',1,2,now(),0,'S',1);
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE LECTURA CRÍTICA','La lectura crítica es la lectura realizada de un modo analítico. Esto significa que además de comprender los que se dice en un texto determinado, se intentará analizar lo expresado para verificar sus aciertos, sus errores y los modos en que se presenta la información',1,2,now(),0,'S',1);
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE DISEÑO DE SOFTWARE','El diseño de sistemas es el arte de definir la arquitectura de hardware y software, componentes, módulos y datos de un sistema de cómputo, a efectos de satisfacer ciertos requerimientos. ... La importancia del software multiplataforma ha incrementado la ingeniería de software a costa de los diseños de sistemas',1,2,now(),0,'S',2);
@@ -205,18 +205,19 @@ insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,
 ALTER SEQUENCE programa_usuario_id_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',1,1);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',2,1);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',3,1);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',4,1);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,1);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',2,1);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',3,1);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',4,1);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',5,1);
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,2);
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,3);
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,4);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',1,5);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',2,5);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',3,5);
-insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',4,5);
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,5);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',1,6);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',2,6);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',3,6);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',4,6);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',5,6);
 
 /* Prueba */
 
@@ -312,6 +313,11 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PREGUNTA','/XHTML/Pregunta/pregunta.xhtml',now(),0,'S',4);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('VER PREGUNTA','/XHTML/Pregunta/verPregunta.xhtml',now(),0,'S',4);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PRUEBA','/XHTML/Prueba/prueba.xhtml',now(),0,'S',2);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('USUARIO','/XHTML/Usuario/usuario.xhtml',now(),0,'S',3);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PERFIL','/XHTML/Cuenta/perfil.xhtml',now(),0,'S',1);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('RESULTADOS REALES','/XHTML/Cuenta/resultadosReales.xhtml',now(),0,'S',1);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SALIR','/j_spring_security_logout',now(),0,'S',1);
+
 
 /* Permiso */
 

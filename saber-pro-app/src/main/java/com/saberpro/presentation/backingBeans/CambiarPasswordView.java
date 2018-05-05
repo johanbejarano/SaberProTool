@@ -53,7 +53,7 @@ public class CambiarPasswordView {
 			
 			
 			if(password.isEmpty() || passwordRepeat.isEmpty()) {
-				FacesContext.getCurrentInstance().addMessage("",new FacesMessage(FacesMessage.SEVERITY_INFO,"Escriba una contraseña", "")); 
+				FacesUtils.addErrorMessage("Escriba una contraseña"); 
 			}
 			else {
 				if(password.equals(passwordRepeat)) {
@@ -63,6 +63,9 @@ public class CambiarPasswordView {
 					businessDelegatorView.updateUsuario(usuario);
 					
 					FacesContext.getCurrentInstance().getExternalContext().redirect("/saber-pro-app/XHTML/initialMenu.xhtml");
+				}
+				else {
+					FacesUtils.addErrorMessage("Las contraseñas no conciden"); 
 				}
 			}
 			

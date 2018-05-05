@@ -9,6 +9,8 @@ public class Constantes {
 	public static final String ESTADO_ACTIVO = "S";
 	public static final String ESTADO_INACTIVO = "N";
 	public static final String ESTADO_PENDIENTE= "P";
+	public static final String ESTADO_ASIGNADO= "A";
+	public static final String ESTADO_MASTER= "M";
 	
 	//Genero
 	public static String GENERO_MASCULINO = "M";

@@ -2,6 +2,8 @@ package com.saberpro.logic;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.saberpro.modelo.Usuario;
 import com.saberpro.modelo.control.IUsuarioLogic;
 import com.saberpro.presentation.backingBeans.LoginView;
 
@@ -30,10 +33,13 @@ public class TestUsuarioLogic {
 	public void test() {
 		try {
 			//usuarioLogic.resetByEmail("jhonypk18@gmail.com");
-			User user = usuarioLogic.loadByCodigo(9999999L);
 			
-			log.info(user.getUsername());
-			log.info(user.getPassword());
+			Object[] variable = {"identificacion",false,9999999999L,"=","correo",false,"jhonypk19@gmail.com","=","celular",false,9999999999L,"="};
+			List<Usuario> usuario = usuarioLogic.findByCriteria(variable,null,null);
+			for (Usuario usuario2 : usuario) {
+				log.info(usuario.toString());
+			}
+			//log.info(user.getPassword());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

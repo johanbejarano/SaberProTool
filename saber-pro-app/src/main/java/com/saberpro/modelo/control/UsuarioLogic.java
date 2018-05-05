@@ -158,16 +158,27 @@ public class UsuarioLogic implements IUsuarioLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Usuario");
             }
 
-            validateUsuario(entity);
-
-            if (getUsuario(entity.getIdUsuario()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+                    
             
             String password = passwordGenerator.password(8);
             
-            entity.setPassword(password);
+            entity.setPassword(passwordEncoder.encode(password));
             entity.setActivo(Constantes.ESTADO_PENDIENTE);
+            
+            validateUsuario(entity);    
+            Object[] identificacion = {"identificacion",true,entity.getIdentificacion(),"="};
+            Object[] correo = {"correo",true,entity.getCorreo(),"="};
+            Object[] celular = {"celular",true,entity.getCelular(),"="};
+            
+            if(findByCriteria(identificacion,null,null).size()!=0) {
+            	throw new Exception("Esa identificacion ya esta registrada");
+            }
+            if(findByCriteria(correo,null,null).size()!=0) {
+            	throw new Exception("Ese correo ya esta registrada");
+            }
+            if(findByCriteria(celular,null,null).size()!=0) {
+            	throw new Exception("Ese celular ya esta registrada");
+            }
             
             usuarioDAO.save(entity);
             log.debug("save Usuario successful");
@@ -231,7 +242,21 @@ public class UsuarioLogic implements IUsuarioLogic {
             }
 
             validateUsuario(entity);
-
+            
+            Object[] identificacion = {"identificacion",true,entity.getIdentificacion(),"=","codigo",true,entity.getCodigo(),"<>"};
+            Object[] correo = {"correo",true,entity.getCorreo(),"=","codigo",true,entity.getCodigo(),"<>"};
+            Object[] celular = {"celular",true,entity.getCelular(),"=","codigo",true,entity.getCodigo(),"<>"};
+            
+            if(findByCriteria(identificacion,null,null).size()!=0) {
+            	throw new Exception("Esa identificacion ya esta registrada");
+            }
+            if(findByCriteria(correo,null,null).size()!=0) {
+            	throw new Exception("Ese correo ya esta registrada");
+            }
+            if(findByCriteria(celular,null,null).size()!=0) {
+            	throw new Exception("Ese celular ya esta registrada");
+            }
+            
             usuarioDAO.update(entity);
 
             log.debug("update Usuario successful");
