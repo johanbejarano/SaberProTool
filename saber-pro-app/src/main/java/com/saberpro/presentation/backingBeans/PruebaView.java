@@ -91,7 +91,7 @@ public class PruebaView implements Serializable {
     	try {
     		Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
     		
-    		Object[] variable = {"usuario.idUsuario",true,usuario.getIdUsuario(),"="};
+    		Object[] variable = {"usuario.idUsuario",true,usuario.getIdUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};    		
     		
     		ProgramaUsuario programaUsuario = businessDelegatorView.findByCriteriaInProgramaUsuario(variable,null,null).get(0);
     		
@@ -99,7 +99,7 @@ public class PruebaView implements Serializable {
 	    		long idTipoPrueba = Long.parseLong(FacesUtils.checkString(somTipoPrueba));
 	    		
 	    		if(Constantes.PRUEBA_TYPE_SIMULACRO==idTipoPrueba) {
-	    			
+	    			createSimulacro(usuario,programaUsuario);
 	    		}
 	    		else if(Constantes.PRUEBA_TYPE_ENTRENAMIENTO==idTipoPrueba) {    			
 	    			createEntrenamiento(usuario,programaUsuario);
@@ -116,6 +116,98 @@ public class PruebaView implements Serializable {
     	
     }
    /* Sub procesos*/
+    private void createSimulacro(Usuario usuario,ProgramaUsuario programaUsuario) throws Exception {
+    	//si existe
+    	Object[] variablePrueba = {"tipoPrueba.idTipoPrueba",true,Constantes.PRUEBA_TYPE_SIMULACRO,"="};
+    	List<Prueba> listPrueba = businessDelegatorView.findByCriteriaInPrueba(variablePrueba, null, null);
+    	if(listPrueba.size()!=0) {
+    		for (Prueba prueba : listPrueba) {
+    			Object[] variablePruebaPrograma = {"prueba.idPrueba",true,prueba.getIdPrueba(),"=","programaUsuario.idProgramaUsuario",true,programaUsuario.getIdProgramaUsuario(),"<>"};
+    			List<PruebaProgramaUsuario> listPruebaPrograma = businessDelegatorView.findByCriteriaInPruebaProgramaUsuario(variablePruebaPrograma, null, null);
+    			if(listPruebaPrograma.size()>0) {
+    				PruebaProgramaUsuario pruebaProgramaUsuario= new PruebaProgramaUsuario();
+    				pruebaProgramaUsuario.setActivo(Constantes.ESTADO_ACTIVO);
+    				pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_INICIADO));
+    				pruebaProgramaUsuario.setFechaCreacion(new Date());
+    				pruebaProgramaUsuario.setProgramaUsuario(programaUsuario);
+    				pruebaProgramaUsuario.setPrueba(prueba);
+    				pruebaProgramaUsuario.setUsuCreador(usuario.getIdUsuario());
+    				
+    				businessDelegatorView.savePruebaProgramaUsuario(pruebaProgramaUsuario);
+    				
+    				Object[] variablePruebaPregunta = {"pruebaProgramaUsuario.idPruebaProgramaUsuario",true,listPruebaPrograma.get(0).getIdPruebaProgramaUsuario(),"="};
+    				List<PruebaProgramaUsuarioPregunta> listPruebaPregunta = businessDelegatorView.findByCriteriaInPruebaProgramaUsuarioPregunta(variablePruebaPregunta,null,null);
+    				
+    				for (PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta : listPruebaPregunta) {
+						pruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+						pruebaProgramaUsuarioPregunta.setPruebaProgramaUsuario(pruebaProgramaUsuario);
+						pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+						
+						businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+					}
+    				FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="+pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
+    				return;
+    			}
+			}
+    	}//nueva
+    	  		
+    	newSimulacro(usuario, programaUsuario);
+    	
+    	
+    }
+    
+    private void newSimulacro(Usuario usuario,ProgramaUsuario programaUsuario) throws Exception {
+    	
+    	entity = new Prueba();
+    	entity.setActivo(Constantes.ESTADO_ACTIVO);
+    	entity.setFechaCreacion(new Date());
+    	entity.setTipoPrueba(businessDelegatorView.getTipoPrueba(Constantes.PRUEBA_TYPE_SIMULACRO));
+    	entity.setUsuCreador(usuario.getIdUsuario());
+    	
+    	businessDelegatorView.savePrueba(entity);
+    	
+    	PruebaProgramaUsuario pruebaProgramaUsuario = new PruebaProgramaUsuario();
+    	
+    	pruebaProgramaUsuario.setActivo(Constantes.ESTADO_ACTIVO);
+    	pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_INICIADO));
+    	pruebaProgramaUsuario.setFechaCreacion(new Date());
+    	pruebaProgramaUsuario.setProgramaUsuario(programaUsuario);
+    	pruebaProgramaUsuario.setPrueba(entity);
+    	pruebaProgramaUsuario.setUsuCreador(usuario.getIdUsuario());
+    	
+    	businessDelegatorView.savePruebaProgramaUsuario(pruebaProgramaUsuario);
+		Object[] variableModulo = { "tipoModulo.idTipoModulo", true, Constantes.MODULO_TYPE_GENERICO, "=", "activo",
+		true, Constantes.ESTADO_ACTIVO, "=" };
+
+		List<Modulo> listModulo = businessDelegatorView.findByCriteriaInModulo(variableModulo, null, null);
+		listModulo.addAll(businessDelegatorView.findByProgramaModulo(programaUsuario.getPrograma().getIdPrograma()));
+
+		for (Modulo modulo : listModulo) {
+			PruebaModulo pruebaModulo = new PruebaModulo();
+			pruebaModulo.setActivo(Constantes.ESTADO_ACTIVO);
+			pruebaModulo.setFechaCreacion(new Date());
+			pruebaModulo.setModulo(modulo);
+			pruebaModulo.setNumeroPreguntas(modulo.getCantidadPreguntas());
+			pruebaModulo.setPrueba(entity);
+			pruebaModulo.setUsuCreador(usuario.getIdUsuario());
+			
+			businessDelegatorView.savePruebaModulo(pruebaModulo);
+			
+			List<Pregunta> listPregunta = businessDelegatorView.findByRandomPregunta(modulo.getIdModulo(),modulo.getCantidadPreguntas());
+			for (Pregunta pregunta : listPregunta) {
+				PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta = new PruebaProgramaUsuarioPregunta();
+				pruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+				pruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+				pruebaProgramaUsuarioPregunta.setPregunta(pregunta);
+				pruebaProgramaUsuarioPregunta.setPruebaProgramaUsuario(pruebaProgramaUsuario);
+				pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+			}
+		}
+		FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="+pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
+    }
+    
     private void createEntrenamiento(Usuario usuario,ProgramaUsuario programaUsuario) throws Exception {
     	    	
     	entity = new Prueba();

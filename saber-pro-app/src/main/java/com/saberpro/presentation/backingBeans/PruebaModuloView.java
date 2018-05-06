@@ -202,14 +202,20 @@ public class PruebaModuloView implements Serializable {
 	public DualListModel<Modulo> getModulos() {
 		if (modulos == null) {
 			try {
+				
+				Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+				
 				List<Modulo> modulosSource = new ArrayList<Modulo>();
 				List<Modulo> modulosTarget = new ArrayList<Modulo>();
+				
+				Object[] variable2 = {"usuario.idUsuario",true,usuario.getIdUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
+				ProgramaUsuario entityPrograma = businessDelegatorView.findByCriteriaInProgramaUsuario(variable2,null,null).get(0);	
 
 				Object[] variable = { "tipoModulo.idTipoModulo", true, Constantes.MODULO_TYPE_GENERICO, "=", "activo",
 						true, Constantes.ESTADO_ACTIVO, "=" };
 
 				List<Modulo> list = businessDelegatorView.findByCriteriaInModulo(variable, null, null);
-				list.addAll(businessDelegatorView.findByProgramaModulo(5L));
+				list.addAll(businessDelegatorView.findByProgramaModulo(entityPrograma.getPrograma().getIdPrograma()));
 				for (Modulo modulo : list) {
 					modulosSource.add(modulo);
 					log.info("modulo es " + modulo.getNombre());
