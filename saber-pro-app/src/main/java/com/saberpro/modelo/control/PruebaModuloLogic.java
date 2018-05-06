@@ -139,10 +139,7 @@ public class PruebaModuloLogic implements IPruebaModuloLogic {
 
             validatePruebaModulo(entity);
 
-            if (getPruebaModulo(entity.getIdPruebaModulo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
+           
             pruebaModuloDAO.save(entity);
             log.debug("save PruebaModulo successful");
         } catch (Exception e) {

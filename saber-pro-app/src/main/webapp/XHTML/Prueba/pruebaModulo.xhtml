@@ -17,10 +17,15 @@
 				<p:messages id="msg" />
 				<p:growl id="men"/>
 				<p:panel id="panelPruebaModulo" header="Selecione los modulos" style="border:0;">					
-					<p:pickList value="#{pruebaModuloView.modulos}" var="modulo" converter="moduloPickListConverter" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
+					<p:pickList value="#{pruebaModuloView.modulos}" var="modulo" converter="moduloPickListConverter" 
+					itemLabel="#{modulo.nombre}" itemValue="#{modulo}" showCheckbox="true" responsive="true"
+                	showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                	<f:facet name="sourceCaption">Escoger modulos</f:facet>
+        			<f:facet name="targetCaption">Modulos a entrenar</f:facet>
+					</p:pickList>
 					<h:panelGrid columns="2" id="panelGrid" style="margin:20px;">
-						<p:commandButton value="Generar Entrenamiento" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar}"/>
-						<p:commandButton value="Generar Entrenamiento y empezar" styleClass="btn btn-primary btn-block"/>
+						<p:commandButton update="msg,panelPruebaModulo" value="Generar Entrenamiento" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar(false)}"/>
+						<p:commandButton update="msg,panelPruebaModulo" value="Generar Entrenamiento y empezar" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar(true)}"/>
 					</h:panelGrid>
 				</p:panel>
 			</h:form>

@@ -152,11 +152,7 @@ public class PruebaProgramaUsuarioPreguntaLogic
             }
 
             validatePruebaProgramaUsuarioPregunta(entity);
-
-            if (getPruebaProgramaUsuarioPregunta(
-                        entity.getIdPruebaProgramaUsuarioPregunta()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+           
 
             pruebaProgramaUsuarioPreguntaDAO.save(entity);
             log.debug("save PruebaProgramaUsuarioPregunta successful");
