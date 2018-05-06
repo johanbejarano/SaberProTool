@@ -116,7 +116,7 @@ public class TestModuloDao {
 		
 		
 		List<Modulo> list = moduloDao.findByPrograma(5L);
-		
+		log.info("Tamaño es de "+list.size());
 		for (Modulo modulo : list) {
 			log.info(modulo.toString());
 		}

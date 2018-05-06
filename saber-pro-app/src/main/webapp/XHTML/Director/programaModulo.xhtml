@@ -1,51 +1,33 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
 	<ui:define name="content">	
-			<h:form id="formDialog">
-				<p:messages id="msg" />
-				<p:growl id="men"/>
-					<p:panel id="panelProgramaModulo" header="ProgramaModulo">							
-						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgIdProgramaModulo" value="IdProgramaModulo"/>
-						 	<p:inputText id="txtIdProgramaModulo" binding="#{programaModuloView.txtIdProgramaModulo}">
-						 		<p:ajax update="panelProgramaModulo,msg,panelBotones" listener="#{programaModuloView.listener_txtId}"/>
-						 	</p:inputText>	
-																		
-													<h:outputText id="msgActivo" value=" Activo"/>
-							<p:inputText id="txtActivo" disabled="true" binding="#{programaModuloView.txtActivo}"/>
-													<h:outputText id="msgUsuCreador" value=" UsuCreador"/>
-							<p:inputText id="txtUsuCreador" disabled="true" binding="#{programaModuloView.txtUsuCreador}"/>
-													<h:outputText id="msgUsuModificador" value=" UsuModificador"/>
-							<p:inputText id="txtUsuModificador" disabled="true" binding="#{programaModuloView.txtUsuModificador}"/>
-													<h:outputText id="msgIdModulo_Modulo" value=" IdModulo_Modulo"/>
-							<p:inputText id="txtIdModulo_Modulo" disabled="true" binding="#{programaModuloView.txtIdModulo_Modulo}"/>
-													<h:outputText id="msgIdPrograma_Programa" value=" IdPrograma_Programa"/>
-							<p:inputText id="txtIdPrograma_Programa" disabled="true" binding="#{programaModuloView.txtIdPrograma_Programa}"/>
-												
-																				<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
-														<p:calendar showOn="button" navigator="true" locale="en" 
-							binding="#{programaModuloView.txtFechaCreacion}" >
-								<p:ajax event="dateSelect" listener="#{programaModuloView.listener_txtFechaCreacion}" />
-							</p:calendar>
-														<h:outputText id="msgFechaModificacion" value=" FechaModificacion"/>
-														<p:calendar showOn="button" navigator="true" locale="en" 
-							binding="#{programaModuloView.txtFechaModificacion}" >
-								<p:ajax event="dateSelect" listener="#{programaModuloView.listener_txtFechaModificacion}" />
-							</p:calendar>
-																	   </h:panelGrid>
-				</p:panel>
-	   			<p:panel id="panelBotones">
-					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{programaModuloView.btnSave}" disabled="true" value="Save" action="#{programaModuloView.action_save()}" update="panelProgramaModulo,msg,panelBotones" />
-						<p:commandButton id="btnDelete" binding="#{programaModuloView.btnDelete}" disabled="true" value="Delete" action="#{programaModuloView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelProgramaModulo,msg,panelBotones" />
-						<p:commandButton id="btnClear" value="Clear" action="#{programaModuloView.action_clear()}" update="panelProgramaModulo,msg,panelBotones" />
-					</div>
-				</p:panel>			
-			</h:form>
-  </ui:define>
+		<h:form id="formDialog">
+			<p:messages id="msg" />
+			<p:growl id="men" />
+			<p:panel id="panelProgramaModulo" header="Selecion de Modulos especifico">
+				<h:panelGrid columns="2" id="panelGrid">
+					<p:outputLabel value="Facultad  :"/>
+					<p:outputLabel value="#{programaModuloView.facultad}"/>
+					<p:outputLabel value="Programa academico  :"/>
+					<p:outputLabel value="#{programaModuloView.programa}"/>
+				</h:panelGrid>
+				<div>
+					<p:pickList value="#{programaModuloView.modulos}" var="modulo" converter="moduloPickListConverter" 
+					itemLabel="#{modulo.nombre}" itemValue="#{modulo}" showCheckbox="true" responsive="true"
+                	showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+                	<f:facet name="sourceCaption">Escoger</f:facet>
+        			<f:facet name="targetCaption">Selecionados</f:facet>
+					</p:pickList>
+					<p:commandButton id="btnSave" action="#{programaModuloView.action_create}"
+						binding="#{programaModuloView.btnSave}" 
+						value="Guardar" update="panelProgramaModulo,msg" />					
+				</div>
+			</p:panel>
+		
+		</h:form>
+	</ui:define>
 </ui:composition>

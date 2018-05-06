@@ -112,6 +112,9 @@ insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacio
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE FORMULACION DE PROJECTOS','CONCEPTO DE FORMULACIÓN Y EVALUACIÓN DE PROYECTOS. “Es el conjunto organizado de acciones, realizadas ordenadamente durante un período de tiempo determinado, que responden a una demanda o problema, con el propósito de ofrecer una solución.',1,2,now(),0,'S',2);
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE PENSAMIENTO CIENTÍFICO,MATEMÁTICO Y ESTADÍSTICO','La ciencia es un conjunto de técnicas y métodos que permiten organizar el conocimiento sobre la estructura de hechos objetivos y accesibles a distintos observadores. El pensamiento, por su parte, es el producto de la mente, aquello traído a la existencia por medio de la actividad intelectual,onocimiento matemático; teorema matemático; cálculo matemático y conocimientos de estadistica',1,2,now(),0,'S',2);
 insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE RAZONAMIENTO CUANTITATIVO','El razonamiento cuantitativo. 2. En esta área se analizan las capacidades de utilización de números y términos matemáticos para resolver problemas cuantitativos, y la capacidad de analizar datos presentados bajo diversas formas tales como tablas y gráficos',1,2,now(),0,'S',2);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE DISEÑO','',1,2,now(),0,'S',2);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE ARGUMENTACION','',1,2,now(),0,'S',2);
+insert into modulo(nombre,descripcion,prioridad,cantidad_preguntas,fecha_creacion,usu_creador,activo,id_tipo_modulo) values('MODULO DE FILOSOFIA','',1,2,now(),0,'S',2);
 
 /* Programa modulo */
 
@@ -317,6 +320,7 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PERFIL','/XHTML/Cuenta/perfil.xhtml',now(),0,'S',1);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('RESULTADOS REALES','/XHTML/Cuenta/resultadosReales.xhtml',now(),0,'S',1);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SALIR','/j_spring_security_logout',now(),0,'S',1);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SELECIONAR MODULOS','/XHTML/Director/programaModulo.xhtml',now(),0,'S',5);
 
 
 /* Permiso */
@@ -327,10 +331,15 @@ insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_o
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,2);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,3);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,4);
-insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,5);
-insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,6);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',5,7);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',4,1);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',4,6);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,1);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,3);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,5);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',2,1);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',2,4);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',1,1);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',1,2);
 
 

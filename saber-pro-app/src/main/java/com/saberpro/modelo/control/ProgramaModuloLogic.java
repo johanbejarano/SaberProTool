@@ -139,11 +139,7 @@ public class ProgramaModuloLogic implements IProgramaModuloLogic {
                     "ProgramaModulo");
             }
 
-            validateProgramaModulo(entity);
-
-            if (getProgramaModulo(entity.getIdProgramaModulo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            validateProgramaModulo(entity);           
 
             programaModuloDAO.save(entity);
             log.debug("save ProgramaModulo successful");

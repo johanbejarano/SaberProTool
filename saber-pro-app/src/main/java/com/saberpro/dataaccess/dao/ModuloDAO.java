@@ -48,4 +48,6 @@ public class ModuloDAO extends JpaDaoImpl<Modulo, Long> implements IModuloDAO {
 	public List<Modulo> findByPrograma(long idPrograma) {		
 		return entityManager.createQuery("SELECT mod FROM Modulo mod,Programa pro,ProgramaModulo promod where mod.idModulo=promod.modulo.idModulo and pro.idPrograma=promod.programa.idPrograma and mod.activo='S' and pro.idPrograma=:idPrograma").setParameter("idPrograma",idPrograma).getResultList();
 	}
+
+	
 }

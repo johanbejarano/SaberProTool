@@ -17,5 +17,5 @@ import java.util.Set;
 */
 public interface IModuloDAO extends Dao<Modulo, Long> {
 	public Modulo findByNombre(String nombre);
-	public List<Modulo> findByPrograma(long idPrograma);
+	public List<Modulo> findByPrograma(long idPrograma);	
 }

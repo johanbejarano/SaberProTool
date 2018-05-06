@@ -333,9 +333,10 @@ public class UsuarioView implements Serializable {
 					}
 				}
 				else {
-					Object[] variable = {"usuario.idUsuario",true,entity.getIdUsuario(),"=","programa.idPrograma",true,FacesUtils.checkInteger(somPrograma),"="};
-					ProgramaUsuario programa = businessDelegatorView.findByCriteriaInProgramaUsuario(variable,null,null).get(0);
-					if(programa!=null) {
+					Object[] variable = {"usuario.idUsuario",true,entity.getIdUsuario(),"=","programa.idPrograma",true,FacesUtils.checkInteger(somPrograma),"=","activo",true,Constantes.ESTADO_ASIGNADO,"="};
+					List<ProgramaUsuario> programaList = businessDelegatorView.findByCriteriaInProgramaUsuario(variable,null,null);
+					if(programaList.size()!=0) {
+						ProgramaUsuario programa = programaList.get(0);
 						programa.setFechaModificacion(new Date());
 						programa.setUsuModificador(usuario.getIdUsuario());
 						programa.setActivo(Constantes.ESTADO_ACTIVO);
