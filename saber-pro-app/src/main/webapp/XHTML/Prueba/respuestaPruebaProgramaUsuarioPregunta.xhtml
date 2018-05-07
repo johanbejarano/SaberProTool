@@ -20,11 +20,12 @@
 						<p:outputLabel value="#{data.contenidoPregunta}" escape="false" />	
 						<p:outputLabel value="Respuestas" />									
 						<p:selectOneRadio value="#{data.respuestaSelecionada}" layout="responsive" columns="1">
-	            				<f:selectItems value="#{data.listRespuestas}" />            				
+	            				<f:selectItems value="#{data.listRespuestas}" />  
+	            				<p:ajax listener="#{respuestaPruebaProgramaUsuarioPreguntaView.guardarRespuesta(data.idPregunta,data.idRespuesta)}" />         				
 	        			</p:selectOneRadio>				
 					</p:panelGrid>
 				</p:dataGrid>
-				<p:commandButton value="Finalizar"/>
+				<p:commandButton value="Finalizar" styleClass="btn btn-primary" action="#{respuestaPruebaProgramaUsuarioPreguntaView.finalizarPrueba()}"/>
 			</p:panel>
 		</h:form>
 	</ui:define>

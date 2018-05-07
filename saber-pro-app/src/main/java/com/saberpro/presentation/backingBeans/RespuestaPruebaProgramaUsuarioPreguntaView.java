@@ -73,7 +73,10 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
         super();
     }
     
-
+    
+    
+    
+    
 	@PostConstruct
 	public void comprobar() {
 		try {
@@ -86,6 +89,11 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 			else {
 				//verificar concidencia con usuario en session
 				data = businessDelegatorView.findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(id);
+				PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);
+				
+				if(pruebaProgramaUsuario.getEstadoPrueba().getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_FINALIZADA) {
+					FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
+				}
 			}
 		} catch (Exception e) {
 			try {
@@ -95,7 +103,49 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 			}
 		}
 	}
-
+	
+	public void finalizarPrueba() {
+			
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			
+			if(usuario!=null) {
+				PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);
+				pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_FINALIZADA));
+				pruebaProgramaUsuario.setFechaModificacion(new Date());
+				pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+				
+				FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
+			}
+			
+		} catch (Exception e) {
+			log.error("Error de "+e.getMessage(),e);
+		}
+	}
+	
+	public void guardarRespuesta(long idPregunta,long idRespuesta) {
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			if(usuario!=null) {
+				RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta = businessDelegatorView.getRespuestaPruebaProgramaUsuarioPregunta(idRespuesta);
+				ComponentPrueba componentePrueba = dataPrueba.get((int)idPregunta);
+				Respuesta respuesta = businessDelegatorView.getRespuesta(componentePrueba.getRespuestaSelecionada());
+				
+				respuestaPruebaProgramaUsuarioPregunta.setRespuesta(respuesta);
+				respuestaPruebaProgramaUsuarioPregunta.setFechaModificacion(new Date());
+				respuestaPruebaProgramaUsuarioPregunta.setUsuModificador(usuario.getIdUsuario());
+				respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado((long)respuesta.getPorcentajeAcierto());
+				
+				businessDelegatorView.updateRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
+			}
+			
+			
+		} catch (Exception e) {
+			log.error("Error de "+e.getMessage(),e);
+		}
+	}
     
 
     public List<RespuestaPruebaProgramaUsuarioPregunta> getData() {
@@ -163,7 +213,10 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 					List<Respuesta> listRespuesta = businessDelegatorView.findByCriteriaInRespuesta(variable,null,null);
 					
 					componentePrueba.setContenidoPregunta(pregunta.getDescripcionPregunta());
-					componentePrueba.setIdPregunta(data.get(i).getIdRespuestaPruebaProgramaUsuarioPregunta());
+					componentePrueba.setIdPregunta(i);
+					componentePrueba.setIdRespuesta(data.get(i).getIdRespuestaPruebaProgramaUsuarioPregunta());
+					if(data.get(i).getRespuesta()!=null)
+						componentePrueba.setRespuestaSelecionada(data.get(i).getRespuesta().getIdRespuesta());
 					
 					List<SelectItem> lasRespuestas = new ArrayList<>();
 					

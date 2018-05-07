@@ -8,27 +8,19 @@ import javax.faces.model.SelectItem;
 public class ComponentPrueba {
 
 	private long idPregunta;
+	private long idRespuesta;
+	private long respuestaSelecionada;
 	private String numeroPregunta;
 	private String contenidoPregunta;
 	
 	private List<SelectItem> listRespuestas;
-	private String respuestaSelecionada;
+	
 	
 	
 	public ComponentPrueba() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public ComponentPrueba(long idPregunta,String numeroPregunta, String contenidoPregunta,
-			List<SelectItem> listRespuestas, String respuestaSelecionada) {
-		super();
-		this.idPregunta = idPregunta;
-		this.numeroPregunta = numeroPregunta;
-		this.contenidoPregunta = contenidoPregunta;
-		this.listRespuestas = listRespuestas;
-		this.respuestaSelecionada = respuestaSelecionada;
-	}
+	}	
 
 	public long getIdPregunta() {
 		return idPregunta;
@@ -62,12 +54,20 @@ public class ComponentPrueba {
 		this.listRespuestas = listRespuestas;
 	}
 
-	public String getRespuestaSelecionada() {
+	public long  getRespuestaSelecionada() {
 		return respuestaSelecionada;
 	}
 
-	public void setRespuestaSelecionada(String respuestaSelecionada) {
+	public void setRespuestaSelecionada(long  respuestaSelecionada) {
 		this.respuestaSelecionada = respuestaSelecionada;
+	}
+
+	public long getIdRespuesta() {
+		return idRespuesta;
+	}
+
+	public void setIdRespuesta(long idRespuesta) {
+		this.idRespuesta = idRespuesta;
 	}
 	
 	
