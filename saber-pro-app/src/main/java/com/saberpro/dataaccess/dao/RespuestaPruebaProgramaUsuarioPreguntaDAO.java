@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -39,4 +41,13 @@ public class RespuestaPruebaProgramaUsuarioPreguntaDAO extends JpaDaoImpl<Respue
         return (IRespuestaPruebaProgramaUsuarioPreguntaDAO) ctx.getBean(
             "RespuestaPruebaProgramaUsuarioPreguntaDAO");
     }
+
+	@Override
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(
+			long idPruebaProgramaUsuario) {
+		String sql ="SELECT rpu From RespuestaPruebaProgramaUsuarioPregunta rpu,PruebaProgramaUsuarioPregunta ppu,PruebaProgramaUsuario ppe "
+				+ "where rpu.pruebaProgramaUsuarioPregunta.idPruebaProgramaUsuarioPregunta=ppu.idPruebaProgramaUsuarioPregunta and ppu.pruebaProgramaUsuario.idPruebaProgramaUsuario=ppe.idPruebaProgramaUsuario "
+				+ "and ppe.idPruebaProgramaUsuario=:idPruebaProgramaUsuario and ppe.activo='S'";
+		return entityManager.createQuery(sql).setParameter("idPruebaProgramaUsuario",idPruebaProgramaUsuario).getResultList();
+	}
 }

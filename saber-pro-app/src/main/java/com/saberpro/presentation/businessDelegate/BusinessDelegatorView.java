@@ -2043,5 +2043,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return programaUsuarioLogic.getDataProgramaUsuario(idProgramaUsuario);
 	}
 
+	@Override
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(
+			long idPruebaProgramaUsuario) throws Exception {
+		return respuestaPruebaProgramaUsuarioPreguntaLogic.findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(idPruebaProgramaUsuario);
+	}
+
 	
 }

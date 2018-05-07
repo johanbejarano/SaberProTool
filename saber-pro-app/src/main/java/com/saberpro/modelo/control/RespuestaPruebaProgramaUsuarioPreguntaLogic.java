@@ -149,9 +149,7 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
                     "RespuestaPruebaProgramaUsuarioPregunta");
             }
 
-            validateRespuestaPruebaProgramaUsuarioPregunta(entity);
-
-            
+            validateRespuestaPruebaProgramaUsuarioPregunta(entity);            
 
             respuestaPruebaProgramaUsuarioPreguntaDAO.save(entity);
             log.debug("save RespuestaPruebaProgramaUsuarioPregunta successful");
@@ -478,4 +476,26 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
 
         return list;
     }
+
+	@Override
+	 @Transactional(readOnly = true)
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(
+			long idPruebaProgramaUsuario) throws Exception {
+		 log.debug(
+		            "finding all RespuestaPruebaProgramaUsuarioPregunta instances");
+
+		        List<RespuestaPruebaProgramaUsuarioPregunta> list = new ArrayList<RespuestaPruebaProgramaUsuarioPregunta>();
+
+		        try {
+		            list = respuestaPruebaProgramaUsuarioPreguntaDAO.findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(idPruebaProgramaUsuario);
+		        } catch (Exception e) {
+		            log.error("finding all RespuestaPruebaProgramaUsuarioPregunta failed",
+		                e);
+		            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+		                "RespuestaPruebaProgramaUsuarioPregunta");
+		        } finally {
+		        }
+
+		        return list;
+	}
 }

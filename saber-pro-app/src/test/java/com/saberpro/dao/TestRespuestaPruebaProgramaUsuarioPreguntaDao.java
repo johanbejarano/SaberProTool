@@ -122,8 +122,8 @@ public class TestRespuestaPruebaProgramaUsuarioPreguntaDao {
 		assertNotNull("El respuestaDao es null",respuestaDao);
 		assertNotNull("El respuestaPruebaProgramaUsuarioPreguntaDao es null",respuestaPruebaProgramaUsuarioPreguntaDao);		
 		
-		List<RespuestaPruebaProgramaUsuarioPregunta> list = respuestaPruebaProgramaUsuarioPreguntaDao.findAll();
-		
+		List<RespuestaPruebaProgramaUsuarioPregunta> list = respuestaPruebaProgramaUsuarioPreguntaDao.findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(4L);
+		log.info("El tamaño es de "+list.size());
 		for (RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta : list) {
 			log.info(respuestaPruebaProgramaUsuarioPregunta.toString());
 		}

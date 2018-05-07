@@ -317,8 +317,6 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('VER PREGUNTA','/XHTML/Pregunta/verPregunta.xhtml',now(),0,'S',4);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PRUEBA','/XHTML/Prueba/prueba.xhtml',now(),0,'S',2);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('USUARIO','/XHTML/Usuario/usuario.xhtml',now(),0,'S',3);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('PERFIL','/XHTML/Cuenta/perfil.xhtml',now(),0,'S',1);
-insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('RESULTADOS REALES','/XHTML/Cuenta/resultadosReales.xhtml',now(),0,'S',1);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SALIR','/j_spring_security_logout',now(),0,'S',1);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SELECIONAR MODULOS','/XHTML/Director/programaModulo.xhtml',now(),0,'S',5);
 

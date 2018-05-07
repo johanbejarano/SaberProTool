@@ -470,4 +470,23 @@ public class FacesUtils {
 		return blob;
 		
 	}
+	
+	public static String checkCleanText(String text) {
+		
+		boolean tiene = false;
+		String cleanText="";
+		for(char caracter:text.toCharArray()) {
+			if(caracter=='<') {
+				tiene = true;
+			}
+			if(!tiene) {
+				cleanText+=caracter;
+			}
+			if(caracter=='>'){
+				tiene = false;
+			}
+		}
+		
+		return cleanText;
+	}
 }

@@ -21,7 +21,7 @@ public class RespuestaPruebaProgramaUsuarioPregunta implements java.io.Serializa
     private Long idRespuestaPruebaProgramaUsuarioPregunta;
     @NotNull(message="pruebaprogramausuariopregunta no valido")
     private PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta;
-    @NotNull(message="respuesta no valido")
+    //@NotNull(message="respuesta no valido")
     private Respuesta respuesta;
     @NotNull(message="activo no valido")
     @NotEmpty

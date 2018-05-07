@@ -16,4 +16,6 @@ import java.util.Set;
 *
 */
 public interface IRespuestaPruebaProgramaUsuarioPreguntaDAO extends Dao<RespuestaPruebaProgramaUsuarioPregunta, Long> {
+	
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(long idPruebaProgramaUsuario);
 }

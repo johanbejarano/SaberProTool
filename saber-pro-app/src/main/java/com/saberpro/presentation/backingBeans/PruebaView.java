@@ -144,6 +144,15 @@ public class PruebaView implements Serializable {
 						pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
 						
 						businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+						
+						RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta = new RespuestaPruebaProgramaUsuarioPregunta();
+						respuestaPruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+						respuestaPruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+						respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado(0L);
+						respuestaPruebaProgramaUsuarioPregunta.setPruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+						respuestaPruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+						
+						businessDelegatorView.saveRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
 					}
     				FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="+pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
     				return;
@@ -203,6 +212,15 @@ public class PruebaView implements Serializable {
 				pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
 				
 				businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+				
+				RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta = new RespuestaPruebaProgramaUsuarioPregunta();
+				respuestaPruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+				respuestaPruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+				respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado(0L);
+				respuestaPruebaProgramaUsuarioPregunta.setPruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+				respuestaPruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+				
+				businessDelegatorView.saveRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
 			}
 		}
 		FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="+pruebaProgramaUsuario.getIdPruebaProgramaUsuario());

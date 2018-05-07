@@ -213,7 +213,7 @@ CREATE TABLE Respuesta_Prueba_Programa_Usuario_Pregunta (
   usu_creador                                   int8 NOT NULL, 
   usu_modificador                               int8, 
   activo                                        char(1) NOT NULL, 
-  id_respuesta                                  int8 NOT NULL, 
+  id_respuesta                                  int8, 
   id_prueba_programa_usuario_pregunta           int8 NOT NULL, 
   PRIMARY KEY (id_Respuesta_Prueba_Programa_Usuario_Pregunta));
 CREATE TABLE Resultado_Real (
