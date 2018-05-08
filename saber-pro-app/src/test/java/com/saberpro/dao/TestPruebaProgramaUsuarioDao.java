@@ -22,6 +22,7 @@ import com.saberpro.dataaccess.dao.IProgramaUsuarioDAO;
 import com.saberpro.dataaccess.dao.IPruebaDAO;
 import com.saberpro.dataaccess.dao.IPruebaProgramaUsuarioDAO;
 import com.saberpro.modelo.PruebaProgramaUsuario;
+import com.saberpro.modelo.dto.ResultadosModuloDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
@@ -122,9 +123,9 @@ public class TestPruebaProgramaUsuarioDao {
 		assertNotNull("El programaUsuarioDao es null",programaUsuarioDao);
 		assertNotNull("El pruebaProgramaUsuarioDao es null",pruebaProgramaUsuarioDao);
 
-		List<PruebaProgramaUsuario> list = pruebaProgramaUsuarioDao.findAll();
+		List<ResultadosModuloDTO> list = pruebaProgramaUsuarioDao.findResultado(5L,5L);
 
-		for (PruebaProgramaUsuario pruebaProgramaUsuario : list) {
+		for (ResultadosModuloDTO pruebaProgramaUsuario : list) {
 			log.info(pruebaProgramaUsuario.toString());
 		}
 

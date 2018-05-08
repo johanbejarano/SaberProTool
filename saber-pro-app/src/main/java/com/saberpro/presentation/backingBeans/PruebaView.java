@@ -4,7 +4,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.PruebaDTO;
-
+import com.saberpro.modelo.dto.PruebaProgramaUsuarioDTO;
 import com.saberpro.presentation.businessDelegate.*;
 
 import com.saberpro.utilities.*;
@@ -57,7 +57,7 @@ public class PruebaView implements Serializable {
     
     private List<SelectItem> lasTipoPruebaSelectItem;
     
-    private List<PruebaDTO> data;
+    private List<PruebaProgramaUsuario> data;   
     
     private PruebaDTO selectedPrueba;
     
@@ -86,6 +86,45 @@ public class PruebaView implements Serializable {
 		}
 
 	}
+    public void verPrueba(long idPruebaUsuarioPrograma) {
+    	try {    		
+    		PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(idPruebaUsuarioPrograma);
+    		EstadoPrueba estadoPrueba = businessDelegatorView.getEstadoPrueba(pruebaProgramaUsuario.getEstadoPrueba().getIdEstadoPrueba());  
+    		if(estadoPrueba.getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_INICIADO) {
+    			FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="+idPruebaUsuarioPrograma);
+    		}
+    		else if(estadoPrueba.getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_FINALIZADA){
+    			FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id="+idPruebaUsuarioPrograma);
+    		}
+    		
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+		}
+    }
+    
+    public String getTipoPrueba(long idPrueba) {
+    	try {
+    		Prueba prueba = businessDelegatorView.getPrueba(idPrueba);
+    		TipoPrueba tipoPrueba = businessDelegatorView.getTipoPrueba(prueba.getTipoPrueba().getIdTipoPrueba());
+    		
+    		return tipoPrueba.getNombre();
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			return "";
+		}
+    	
+    }
+    
+    public String getEstadoPrueba(long idEstadoPrueba) {
+    	try {
+    		EstadoPrueba estadoPrueba = businessDelegatorView.getEstadoPrueba(idEstadoPrueba);    		
+    		return estadoPrueba.getNombre();
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			return "";
+		}
+    	
+    }
     
     public void createPrueba() {
     	try {
@@ -99,7 +138,7 @@ public class PruebaView implements Serializable {
 	    		long idTipoPrueba = Long.parseLong(FacesUtils.checkString(somTipoPrueba));
 	    		
 	    		if(Constantes.PRUEBA_TYPE_SIMULACRO==idTipoPrueba) {
-	    			createSimulacro(usuario,programaUsuario);
+	    			newSimulacro(usuario,programaUsuario);
 	    		}
 	    		else if(Constantes.PRUEBA_TYPE_ENTRENAMIENTO==idTipoPrueba) {    			
 	    			createEntrenamiento(usuario,programaUsuario);
@@ -253,10 +292,17 @@ public class PruebaView implements Serializable {
     }
 
    /* Getter and Setter*/
-    public List<PruebaDTO> getData() {
+    public List<PruebaProgramaUsuario> getData() {
         try {
             if (data == null) {
-                data = businessDelegatorView.getDataPrueba();
+            	Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+        		if(usuario!=null) {
+        			Object[] variable = {"usuario.idUsuario",true,usuario.getIdUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};   		
+        			ProgramaUsuario programaUsuario = businessDelegatorView.findByCriteriaInProgramaUsuario(variable,null,null).get(0);
+        			Object[] variable2 = {"programaUsuario.idProgramaUsuario",true,programaUsuario.getIdProgramaUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
+        			data = businessDelegatorView.findByCriteriaInPruebaProgramaUsuario(variable2, null, null);
+        		}
+        		
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -265,7 +311,7 @@ public class PruebaView implements Serializable {
         return data;
     }
 
-    public void setData(List<PruebaDTO> pruebaDTO) {
+    public void setData(List<PruebaProgramaUsuario> pruebaDTO) {
         this.data = pruebaDTO;
     }
 

@@ -8,7 +8,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.PruebaProgramaUsuarioDTO;
-
+import com.saberpro.modelo.dto.ResultadosModuloDTO;
 import com.saberpro.utilities.Utilities;
 
 import org.slf4j.Logger;
@@ -482,4 +482,21 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 
         return list;
     }
+    
+    
+	@Override
+	@Transactional(readOnly = true)
+	public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario, long idPruebaProgramaUsuario) {
+		List<ResultadosModuloDTO> entity = null;
+
+        try {
+            entity = pruebaProgramaUsuarioDAO.findResultado(idProgramaUsuario, idPruebaProgramaUsuario);
+        } catch (Exception e) {
+            throw new ZMessManager().new FindingException(
+                "PruebaProgramaUsuario Count");
+        } finally {
+        }
+
+        return entity;
+	}
 }

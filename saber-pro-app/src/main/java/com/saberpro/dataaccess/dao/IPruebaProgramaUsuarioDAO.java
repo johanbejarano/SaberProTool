@@ -3,6 +3,7 @@ package com.saberpro.dataaccess.dao;
 import com.saberpro.dataaccess.api.Dao;
 
 import com.saberpro.modelo.PruebaProgramaUsuario;
+import com.saberpro.modelo.dto.ResultadosModuloDTO;
 
 import java.math.BigDecimal;
 
@@ -16,4 +17,6 @@ import java.util.Set;
 *
 */
 public interface IPruebaProgramaUsuarioDAO extends Dao<PruebaProgramaUsuario, Long> {
+	
+	public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario,long idPruebaProgramaUsuario);
 }

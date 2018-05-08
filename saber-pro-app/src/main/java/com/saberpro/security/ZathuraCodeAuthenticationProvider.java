@@ -51,13 +51,13 @@ public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider
 					return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities());
 
 				} else {
-					throw new BadCredentialsException("Error en login");
+					throw new Exception("Error en codigo o contraseña");
 				}
 			} else {
-				throw new BadCredentialsException("Error en login");
+				throw new Exception("Error en codigo o contraseña");
 			}
 		} catch (Exception e) {			
-			throw new BadCredentialsException("Error en catch login " + e.getMessage());
+			throw new BadCredentialsException("Error en codigo o contraseña");
 		}
 
 	}

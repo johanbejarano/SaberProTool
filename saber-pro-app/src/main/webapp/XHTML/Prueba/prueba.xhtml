@@ -21,6 +21,24 @@
 			</p:panel>
 			<p:panel id="panelMisPrueba" header="Mis prueba" style="border:0;">
 			</p:panel>
+			<p:panel id="panelTable">
+				<div>
+					<p:dataTable id="dataPrueba" value="#{pruebaView.data}"
+						var="prueba" reflow="true" resizableColumns="true"
+						scrollable="true" scrollHeight="300" widgetVar="modTable">
+						
+						<p:column headerText="Tipo Prueba">
+							<p:outputLabel value="#{pruebaView.getTipoPrueba(prueba.prueba.idPrueba)}" />
+						</p:column>
+						<p:column headerText="Estado Prueba">
+							<p:outputLabel value="#{pruebaView.getEstadoPrueba(prueba.estadoPrueba.idEstadoPrueba)}" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="Ver" action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

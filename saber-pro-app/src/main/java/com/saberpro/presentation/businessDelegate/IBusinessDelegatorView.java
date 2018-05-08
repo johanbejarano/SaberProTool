@@ -785,4 +785,6 @@ public interface IBusinessDelegatorView {
 	 
 	 public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(
 				long idPruebaProgramaUsuario) throws Exception;
+	 
+	 public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario,long idPruebaProgramaUsuario)throws Exception;
 }

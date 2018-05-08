@@ -23,8 +23,7 @@
                 	<f:facet name="sourceCaption">Escoger modulos</f:facet>
         			<f:facet name="targetCaption">Modulos a entrenar</f:facet>
 					</p:pickList>
-					<h:panelGrid columns="2" id="panelGrid" style="margin:20px;">
-						<p:commandButton update="msg,panelPruebaModulo" value="Generar Entrenamiento" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar(false)}"/>
+					<h:panelGrid columns="1" id="panelGrid" style="margin:20px;">						
 						<p:commandButton update="msg,panelPruebaModulo" value="Generar Entrenamiento y empezar" styleClass="btn btn-primary btn-block" action="#{pruebaModuloView.generar(true)}"/>
 					</h:panelGrid>
 				</p:panel>

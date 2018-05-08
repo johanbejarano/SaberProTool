@@ -2,6 +2,7 @@ package com.saberpro.modelo.control;
 
 import com.saberpro.modelo.PruebaProgramaUsuario;
 import com.saberpro.modelo.dto.PruebaProgramaUsuarioDTO;
+import com.saberpro.modelo.dto.ResultadosModuloDTO;
 
 import java.math.BigDecimal;
 
@@ -68,6 +69,8 @@ public interface IPruebaProgramaUsuarioLogic {
 
     public void validatePruebaProgramaUsuario(
         PruebaProgramaUsuario pruebaProgramaUsuario) throws Exception;
+    
+    public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario,long idPruebaProgramaUsuario)throws Exception;
     
     
 }

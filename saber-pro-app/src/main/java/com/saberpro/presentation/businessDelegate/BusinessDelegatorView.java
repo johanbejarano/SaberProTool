@@ -2049,5 +2049,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return respuestaPruebaProgramaUsuarioPreguntaLogic.findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(idPruebaProgramaUsuario);
 	}
 
+	@Override
+	public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario, long idPruebaProgramaUsuario)
+			throws Exception {
+		return pruebaProgramaUsuarioLogic.findResultado(idProgramaUsuario, idPruebaProgramaUsuario);
+	}
+
 	
 }
