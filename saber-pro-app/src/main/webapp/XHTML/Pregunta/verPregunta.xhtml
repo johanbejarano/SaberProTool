@@ -28,7 +28,7 @@
 
 					<p:column headerText="contenido" filterBy="#{pregunta.descripcionPregunta}"
 						filterMatchMode="contains">
-						<p:outputLabel value="#{pregunta.descripcionPregunta}" />
+						<p:outputLabel value="#{pregunta.descripcionPregunta}" escape="false"/>
 					</p:column>					
 					<p:column headerText="Modulo" filterBy="#{pregunta.idModulo_Modulo}"
 						filterMatchMode="exact" width="25%">

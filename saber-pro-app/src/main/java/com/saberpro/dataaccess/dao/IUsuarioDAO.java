@@ -19,4 +19,6 @@ public interface IUsuarioDAO extends Dao<Usuario, Long> {
 	
 	public Usuario findByCodigo(long codigo);
 	public Usuario findByEmail(String email);
+	public List<Usuario> findByTipoUsuarioPrograma(long idPrograma,long idTipoUsuario);
+	
 }

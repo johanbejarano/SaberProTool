@@ -74,4 +74,6 @@ public interface IUsuarioLogic {
     
     public List<UsuarioDTO> getDataUsuario(String tipo) throws Exception;
     
+    public List<Usuario> findByTipoUsuarioPrograma(long idPrograma,long idTipoUsuario) throws Exception;
+    
 }

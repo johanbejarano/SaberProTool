@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -50,6 +52,16 @@ public class UsuarioDAO extends JpaDaoImpl<Usuario, Long> implements IUsuarioDAO
 	public Usuario findByEmail(String email) {
 		return (Usuario)entityManager.createQuery("SELECT usu FROM Usuario usu WHERE usu.correo=:email").setParameter("email",email.toLowerCase()).getSingleResult();
 		
+	}	
+
+	@Override
+	public List<Usuario> findByTipoUsuarioPrograma(long idPrograma, long idTipoUsuario) {
+		String sql="SELECT usu "
+				+ "FROM Usuario usu,ProgramaUsuario pro "
+				+ "WHERE usu.idUsuario=pro.usuario.idUsuario AND "
+				+ "		 usu.tipoUsuario.idTipoUsuario=:idTipoUsuario AND "
+				+ "		 pro.programa.idPrograma=:idPrograma";
+		return entityManager.createQuery(sql).setParameter("idPrograma",idPrograma).setParameter("idTipoUsuario",idTipoUsuario).getResultList();
 	}	
 	
 	

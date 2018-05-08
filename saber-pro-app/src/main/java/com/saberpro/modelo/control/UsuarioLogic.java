@@ -634,4 +634,19 @@ public class UsuarioLogic implements IUsuarioLogic {
 		return passwordEncoder.encode(code);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Usuario> findByTipoUsuarioPrograma(long idPrograma, long idTipoUsuario) throws Exception {
+		List<Usuario> entity = null;
+
+        try {
+            entity = usuarioDAO.findByTipoUsuarioPrograma(idPrograma, idTipoUsuario);
+        } catch (Exception e) {
+            throw new ZMessManager().new FindingException("Usuario Count");
+        } finally {
+        }
+
+        return entity;
+	}
+
 }
