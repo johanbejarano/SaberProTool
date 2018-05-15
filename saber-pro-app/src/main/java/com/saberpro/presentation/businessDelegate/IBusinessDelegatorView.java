@@ -789,4 +789,6 @@ public interface IBusinessDelegatorView {
 	 public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario,long idPruebaProgramaUsuario)throws Exception;
 	 
 	 public List<Usuario> findByTipoUsuarioProgramaUsuario(long idPrograma,long idTipoUsuario) throws Exception;
+	 
+	 public List<Usuario> findByTipoUsuarioFacultadUsuario(long idFacultad,long idTipoUsuario) throws Exception;
 }

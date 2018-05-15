@@ -2060,5 +2060,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return usuarioLogic.findByTipoUsuarioPrograma(idPrograma, idTipoUsuario);
 	}
 
+	@Override
+	public List<Usuario> findByTipoUsuarioFacultadUsuario(long idFacultad, long idTipoUsuario) throws Exception {
+		return usuarioLogic.findByTipoUsuarioFacultad(idFacultad, idTipoUsuario);
+	}
+
 	
 }

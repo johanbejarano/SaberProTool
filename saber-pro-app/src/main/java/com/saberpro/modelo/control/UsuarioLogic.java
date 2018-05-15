@@ -649,4 +649,19 @@ public class UsuarioLogic implements IUsuarioLogic {
         return entity;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Usuario> findByTipoUsuarioFacultad(long idFacultad, long idTipoUsuario) throws Exception {
+		List<Usuario> entity = null;
+
+        try {
+            entity = usuarioDAO.findByTipoUsuarioFacultad(idFacultad, idTipoUsuario);
+        } catch (Exception e) {
+            throw new ZMessManager().new FindingException("Usuario Count");
+        } finally {
+        }
+
+        return entity;
+	}
+
 }

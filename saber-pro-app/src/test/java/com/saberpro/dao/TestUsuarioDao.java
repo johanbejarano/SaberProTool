@@ -20,6 +20,7 @@ import com.saberpro.dataaccess.api.DaoException;
 import com.saberpro.dataaccess.dao.ITipoUsuarioDAO;
 import com.saberpro.dataaccess.dao.IUsuarioDAO;
 import com.saberpro.modelo.Usuario;
+import com.saberpro.utilities.Constantes;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -150,9 +151,13 @@ public class TestUsuarioDao {
 		assertNotNull("El tipousuarioDao es null",tipoUsuarioDao);
 		assertNotNull("El usuarioDao es null",usuarioDao);
 		
-		Usuario usuario = usuarioDao.findByEmail("mariok24@gmail.com");
+		List<Usuario> usuarioList = usuarioDao.findByTipoUsuarioFacultad(1L,Constantes.USER_TYPE_DOCENTE);
 		
-		log.info(usuario.toString());
+		log.info("Tamaño es de "+usuarioList.size());
+		for (Usuario usuario2 : usuarioList) {
+			log.info(usuario2.toString());
+		}
+		
 		
 		
 

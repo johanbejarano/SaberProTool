@@ -76,4 +76,6 @@ public interface IUsuarioLogic {
     
     public List<Usuario> findByTipoUsuarioPrograma(long idPrograma,long idTipoUsuario) throws Exception;
     
+    public List<Usuario> findByTipoUsuarioFacultad(long idFacultad,long idTipoUsuario) throws Exception;
+    
 }
