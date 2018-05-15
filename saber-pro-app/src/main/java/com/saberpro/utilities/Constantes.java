@@ -49,4 +49,5 @@ public class Constantes {
 	 
 	//Ruta de las vistas
 	 public static final String RUTA_BASE = "#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}";
+	 public static final long TIME_PRUEBA = 3600L;
 }

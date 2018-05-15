@@ -122,7 +122,7 @@ public class AsignarDecanoView implements Serializable {
 					
 					data = null;
 					
-					FacesUtils.addInfoMessage("Se asigno el Director correctamente");
+					FacesUtils.addInfoMessage("Se asigno el Decano correctamente");
 				}
 				
 			}

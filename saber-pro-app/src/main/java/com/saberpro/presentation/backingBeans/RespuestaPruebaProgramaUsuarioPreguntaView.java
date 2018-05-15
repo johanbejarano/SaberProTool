@@ -58,13 +58,17 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
     
     private Long id;
     
+    private Long tiempo;
+    
+    private boolean esSimulacro;
+    
     private List<RespuestaPruebaProgramaUsuarioPregunta> data;
     
     private RespuestaPruebaProgramaUsuarioPreguntaDTO selectedRespuestaPruebaProgramaUsuarioPregunta;
     
     private RespuestaPruebaProgramaUsuarioPregunta entity;
     
-    private boolean showDialog;
+    
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
@@ -104,10 +108,20 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 		}
 	}
 	
+	public void terminoPrueba() {
+		log.info("Entro");
+	}
+	
 	public void finalizarPrueba() {
 			
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			
+			for (ComponentPrueba componentPrueba : dataPrueba) {
+				if(componentPrueba.getRespuestaSelecionada()==0L) {
+					throw new Exception("Debe selecionar una respuesta para cada pregunta"); 
+				}
+			}
 			
 			if(usuario!=null) {
 				PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);
@@ -121,6 +135,7 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 			}
 			
 		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
 			log.error("Error de "+e.getMessage(),e);
 		}
 	}
@@ -187,13 +202,7 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
         this.businessDelegatorView = businessDelegatorView;
     }
 
-    public boolean isShowDialog() {
-        return showDialog;
-    }
-
-    public void setShowDialog(boolean showDialog) {
-        this.showDialog = showDialog;
-    }
+    
 
 
 
@@ -240,5 +249,90 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 
 	public void setDataPrueba(List<ComponentPrueba> dataPrueba) {
 		this.dataPrueba = dataPrueba;
+	}
+
+
+
+	public boolean isEsSimulacro() {
+		try {
+			PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);
+			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
+			if(prueba.getTipoPrueba().getIdTipoPrueba()==Constantes.PRUEBA_TYPE_SIMULACRO) {
+				esSimulacro=true;
+			}
+			else {
+				esSimulacro = false;
+			}
+		} catch (Exception e) {
+			log.error("error en vista"+e.getMessage(),e);
+		}	
+		
+		return esSimulacro;
+		
+	}
+
+
+
+
+
+	public void setEsSimulacro(boolean esSimulacro) {
+		this.esSimulacro = esSimulacro;
+	}
+
+	private Long getTimeRestante() {
+		try {
+			PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);
+			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
+			
+			Date vieja = pruebaProgramaUsuario.getFechaCreacion();
+			Date nueva = new Date();
+			
+			long timeVieja = (vieja.getTime()/1000)+prueba.getTiempo();
+			long timeNueva = (nueva.getTime()/1000);
+			
+			return timeVieja-timeNueva;
+		} catch (Exception e) {
+			return 0L;
+		}
+	}
+
+
+
+	public Long getTiempo() {
+		try {
+			
+			
+			tiempo = getTimeRestante();
+			
+			if(tiempo<0) {
+				Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+				if(usuario!=null) {
+					PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);
+					pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_FINALIZADA));
+					pruebaProgramaUsuario.setFechaModificacion(new Date());
+					pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
+					
+					businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+					
+					FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
+					
+					return 0L;
+				}
+				
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tiempo;
+	}
+
+
+
+
+
+	public void setTiempo(Long tiempo) {
+		this.tiempo = tiempo;
 	}
 }

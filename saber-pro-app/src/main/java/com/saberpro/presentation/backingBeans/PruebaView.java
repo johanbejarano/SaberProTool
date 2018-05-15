@@ -134,6 +134,12 @@ public class PruebaView implements Serializable {
     		
     		ProgramaUsuario programaUsuario = businessDelegatorView.findByCriteriaInProgramaUsuario(variable,null,null).get(0);
     		
+    		for (PruebaProgramaUsuario pruebaProgramaUsuario :data) {
+				if(pruebaProgramaUsuario.getEstadoPrueba().getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_INICIADO) {
+					throw new Exception("No puede realizar ya empezo una prueba terminela"); 
+				}
+			}
+    		
     		if (usuario != null && programaUsuario!=null) {
 	    		long idTipoPrueba = Long.parseLong(FacesUtils.checkString(somTipoPrueba));
 	    		
@@ -211,6 +217,7 @@ public class PruebaView implements Serializable {
     	entity.setFechaCreacion(new Date());
     	entity.setTipoPrueba(businessDelegatorView.getTipoPrueba(Constantes.PRUEBA_TYPE_SIMULACRO));
     	entity.setUsuCreador(usuario.getIdUsuario());
+    	entity.setTiempo(Constantes.TIME_PRUEBA);
     	
     	businessDelegatorView.savePrueba(entity);
     	

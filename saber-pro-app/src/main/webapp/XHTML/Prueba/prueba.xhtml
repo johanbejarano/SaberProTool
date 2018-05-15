@@ -17,7 +17,7 @@
 						<p:ajax update="panelPrueba,msg" listener="#{pruebaView.verificar}" />
 					</p:selectOneMenu>
 				</h:panelGrid>
-				<p:commandButton value="Generar nueva prueba que desea realizar" action="#{pruebaView.createPrueba}" binding="#{pruebaView.btnGenerar}"  disabled="true" styleClass="btn btn-primary" style="margin-left:20px;"/>
+				<p:commandButton update="msg" value="Generar nueva prueba que desea realizar" action="#{pruebaView.createPrueba}" binding="#{pruebaView.btnGenerar}"  disabled="true" styleClass="btn btn-primary" style="margin-left:20px;"/>
 			</p:panel>
 			<p:panel id="panelMisPrueba" header="Mis prueba" style="border:0;">
 			</p:panel>
