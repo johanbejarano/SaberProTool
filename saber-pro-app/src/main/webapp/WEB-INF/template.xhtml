@@ -7,53 +7,69 @@
 
 <h:head>
 	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 	</f:facet>
+	<h:outputScript name="js/layout.js" library="sentinel-layout" />
+	<ui:insert name="head" />
 	<title>Saber Pro Tool</title>
-	<link
+	<!-- link
 		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/css/bootstrap.min.css"
-		rel="stylesheet" />
-	<link
+		rel="stylesheet" /-->
+	<!-- link
 		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/css/styles.css"
-		rel="stylesheet" />
+		rel="stylesheet" /-->
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script
-		src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
-	<script
-		src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/js/custom.js"></script>
+	<!-- script
+		src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script-->
+	<!-- script
+		src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/js/custom.js"></script-->
 
 </h:head>
 
 <h:body>
-	
-	<p:layout fullPage="true">
-		<p:layoutUnit position="north"  style="border:0;">
-        	<ui:include src="topbar.xhtml" />
-    	</p:layoutUnit>
-		<p:layoutUnit position="west" header="Menu" resizable="true"  collapsible="true" style="border:0;" >
-        	<ui:include src="menu.xhtml" />
-    	</p:layoutUnit>
-		<p:layoutUnit position="center" style="border:0;">
-        	<ui:insert name="content"></ui:insert>
-    	</p:layoutUnit>
-    	<p:layoutUnit position="south" style="border:0;">
-        	<ui:include src="footer.xhtml" />
-   		</p:layoutUnit>
-	</p:layout>
-	
-	
+	<ui:include src="topbar.xhtml" />
 
-	
+	<ui:include src="leftmenu.xhtml" />
+
+	<div id="layout-portlets-cover" class="fontRegular">
+		<ui:insert name="content">
+               Template
+            </ui:insert>
+
+		<ui:include src="footer.xhtml" />
+	</div>
+
+	<p:ajaxStatus
+		style="width:32px; height:32px; position:fixed; right:12px; bottom:10px">
+		<f:facet name="start">
+			<p:graphicImage name="images/preloader.gif" library="sentinel-layout" />
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<h:outputStylesheet name="css/font-icon-layout.css"
+		library="sentinel-layout" />
+	<h:outputStylesheet name="css/sentinel-layout.css"
+		library="sentinel-layout" />
+	<h:outputStylesheet name="css/core-layout.css"
+		library="sentinel-layout" />
 
 
-	<p:ajaxStatus onstart="PF('statusDialog').show()"
+	<!-- p:ajaxStatus onstart="PF('statusDialog').show()"
 		onsuccess="PF('statusDialog').hide()" />
 	<p:dialog modal="true" widgetVar="statusDialog" header="Loading"
 		draggable="false" closable="false">
 		<p:graphicImage
 			value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />
-	</p:dialog>
+	</p:dialog-->
+
 	<!-- Expired session -->
 	<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();"
 		timeout="#{session.maxInactiveInterval * 1000}" />

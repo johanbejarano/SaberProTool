@@ -1,82 +1,67 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-	<title>Saber Pro Tool</title>
-	<meta name="content-type" content="text/html; charset=UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link
-		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/css/bootstrap.min.css"
-		rel="stylesheet" />
-	<link
-		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/css/styles.css"
-		rel="stylesheet" />
-	<link REL="SHORTCUT ICON"
-		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/icon.png" />
-
+	<title>SENTINEL BLUE | Prime Faces Layouts Header</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        
+    <h:outputScript name="js/login.js" library="sentinel-layout" />
+    <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+    <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+    <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
 </h:head>
-<h:body class="login-bg">
-	<div class="header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<!-- Logo -->
-					<div class="logo">
-						<h1 class="text-muted">Saber Pro Tool</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<h:form styleClass="form-signin">
-		<p:growl id="msgGrowl" autoUpdate="true" showDetail="false" />
-		<div class="page-content container">
-			<div class="row">
-				<div class="col-md-4 col-md-offset-4">
-					<div class="login-wrapper">
-						<div class="box">
-							<div class="content-wrap">
-								<h6>Entrar a Saber Pro Tool</h6>
-								<p:outputLabel style="float: left;" value="Código" />
-								<p:inputText id="usernameField" name="j_username"
-									value="#{loginView.userId}" styleClass="form-control" />
-								<p:outputLabel style="float: left;" value="Contraseña" />
-								<a
-									href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/resetPassword.xhtml"
-									style="float: right;">Recuperar Contraseña?</a>
-								<p:password id="passwordField" name="j_password"
-									value="#{loginView.password}" feedback="false"
-									styleClass="form-control" />
+<h:body class="fontRegular login-back white-back">
+    
+    <div class="Container">
+        <div class="Container80 MaxWid500 Fnone MarAuto TexAlCenter PaddingTopPercent10">
+            <a href="" id="login-logo">
+                <h:graphicImage name="images/LOGO.svg" styleClass="Fleft" library="sentinel-layout"/>
+                <span class="Fs30 FontTitilliumSemiBoldItalic Fleft"><span class="softblue">SENTINEL</span><span class="hardblue">LAYOUT</span></span>
+            </a>
+            <div class="EmptyBox10"></div>
+        </div>
 
-								<p:commandButton styleClass="btn btn-primary btn-block"
-									value="Iniciar Session" action="#{loginView.login}"
-									update="msgGrowl" onclick="PF('statusDialog').show();"/>
-							</div>
-						</div>
+        <!-- LOGIN BOX COVER START -->
+        <div class="Container80 MaxWid500 white-back Fnone MarAuto BordRad10" id="login-box">
+            <div class="Container">
+                <div class="Container50 TexAlCenter Animated05 BoxSizeBorder TabBtn left TabBtnActiveLeft" role="1">
+                    <div class="Container80 Fnone MarAuto FontBold"><i class="icon-lock"></i> Login</div>
+                </div>
+                <div class="Container50 TexAlCenter Animated05 BoxSizeBorder TabBtn right" role="2">
+                    <div class="Container80 Fnone MarAuto FontBold"><i class="icon-key-1"></i> Permissions</div>
+                </div>
 
+                <div class="Container90 Fnone MarAuto TexAlCenter TabContent OvHidden" id="TAB1">
+                    <div class="EmptyBox50"></div>
+                    <p:inputText value="" placeholder="Username" styleClass="Container80 Fnone MarAuto Fs18"/>
+                    <div class="EmptyBox10"></div>
+                    <p:password value="" placeholder="Password" styleClass="Container80 Fnone MarAuto Fs18" feedback="false"/>
+                    <div class="EmptyBox20"></div>
+                    <div class="Container85 Fnone MarAuto softgray">
+                        <p:selectBooleanCheckbox value="accept" styleClass="Fleft" itemLabel="I Accept Terms And Policies"/>
+                    </div>
+                    <div class="EmptyBox30"></div>
+                    <p:button  value="Log In" styleClass="Fs16" href="dashboard.xhtml"></p:button>
+                    <div class="EmptyBox50"></div>
+                </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-
-
-
-	</h:form>
-	
-	
-
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://code.jquery.com/jquery.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="bootstrap/js/bootstrap.min.js"></script>
+                <div class="Container90 Fnone MarAuto DispNone TexAlCenter TabContent OvHidden" id="TAB2">
+                    <div class="EmptyBox50"></div>
+                    <p:inputText value="" placeholder="Your Email Address" styleClass="Container80 Fnone MarAuto Fs18"/>
+                    <div class="EmptyBox20"></div>
+                    <p:button  value="Send Access Request" styleClass="Fs16"></p:button>
+                    <div class="EmptyBox50"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN BOX COVER END -->
+    
 </h:body>
+
 </html>
