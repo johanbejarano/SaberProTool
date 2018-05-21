@@ -14,10 +14,12 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
-
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import java.sql.*;
@@ -64,6 +66,8 @@ public class PruebaView implements Serializable {
     private Prueba entity;
     
     private boolean showDialog;
+    
+    private PruebaProgramaUsuario pruebaProgramaUsuario;
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
@@ -124,6 +128,34 @@ public class PruebaView implements Serializable {
 			return "";
 		}
     	
+    }
+    
+    public StreamedContent getReportePDF() {
+    	try {
+			
+    		//TODO: Ojo quemado el 35
+    		
+    		Object[] variables = {"idPrueba", false, pruebaProgramaUsuario.getPrueba().getIdPrueba(), "="};
+    		List<Prueba> pruebas = businessDelegatorView.findByCriteriaInPrueba(variables, null, null);
+    		
+    		if (pruebas==null || pruebas.size()==0) {
+    			throw new Exception("No existe la prueba " + pruebaProgramaUsuario.getPrueba().getIdPrueba());
+    		}
+    		
+    		ByteArrayInputStream bais = businessDelegatorView.generarInformeIndividual(pruebas.get(0).getIdPrueba());
+    		StreamedContent archivo = new DefaultStreamedContent(bais, "application/pdf",
+					"prueba-"+pruebas.get(0).getIdPrueba()+".pdf");
+    		
+    		return archivo;
+    		
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage("Error generando el reporte");
+			return null;
+		}
+    }
+    
+    public void action_seleccionarPrueba(PruebaProgramaUsuario pruebaProgramaUsuario) {
+    	this.pruebaProgramaUsuario = pruebaProgramaUsuario;
     }
     
     public void createPrueba() {

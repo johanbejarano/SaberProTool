@@ -3,6 +3,7 @@ package com.saberpro.modelo.control;
 import com.saberpro.modelo.Prueba;
 import com.saberpro.modelo.dto.PruebaDTO;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 
 import java.util.*;
@@ -59,6 +60,8 @@ public interface IPruebaLogic {
     public List<PruebaDTO> getDataPrueba(String tipo) throws Exception;
 
     public void validatePrueba(Prueba prueba) throws Exception;
+
+	public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception;
     
    
 }

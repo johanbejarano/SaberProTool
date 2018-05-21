@@ -57,4 +57,14 @@
 	<bean id="passwordEncoder"
 		class="org.springframework.security.crypto.password.StandardPasswordEncoder">
 	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://127.0.0.1:5432/Saberpro"/> 
+        <property name="username" value="saberprotool" />
+        <property name="password" value="saberpro" />
+        
+    </bean>
+	
 </beans>

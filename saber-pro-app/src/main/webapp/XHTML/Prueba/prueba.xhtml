@@ -35,6 +35,19 @@
 						</p:column>
 						<p:column>
 							<p:commandButton value="Ver" action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}"/>
+							
+							<p:commandLink 
+								actionListener="#{pruebaView.action_seleccionarPrueba(prueba)}" 
+								ajax="false">
+							
+								<p:fileDownload value="#{pruebaView.reportePDF}" />
+							
+								<h:graphicImage
+									url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/pdf-icon.png"
+									style="width: 32px; height: 32px;"/>
+								
+							</p:commandLink>
+							
 						</p:column>
 					</p:dataTable>
 				</div>

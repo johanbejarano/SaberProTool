@@ -305,6 +305,14 @@ insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RU
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS PREGUNTAS','http://localhost:8080/saber-pro-app/pregunta/',now(),0,'S');
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS RESPUESTAS','http://localhost:8080/saber-pro-app/respuesta/',now(),0,'S');
 
+insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (4, 'SEMAFORO_ROJO_MINIMO', null, 0, '2018-05-21 15:25:07.130000', null, 0, null, 'S');
+insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (5, 'SEMAFORO_ROJO_MAXIMO', null, 130, '2018-05-21 15:26:14.323000', null, 0, null, 'S');
+insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (6, 'SEMAFORO_AMARILLO_MINIMO', null, 131, '2018-05-21 15:26:41.498000', null, 0, null, 'S');
+insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (7, 'SEMAFORO_AMARILLO_MAXIMO', null, 199, '2018-05-21 15:26:59.657000', null, 0, null, 'S');
+insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (8, 'SEMAFORO_VERDE_MINIMO', null, 200, '2018-05-21 15:27:17.192000', null, 0, null, 'S');
+insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (9, 'SEMAFORO_VERDE_MAXIMO', null, 399, '2018-05-21 15:27:39.819000', null, 0, null, 'S');
+
+
 /* Opcion */
 
 ALTER SEQUENCE opcion_id_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;

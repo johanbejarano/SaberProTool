@@ -11,6 +11,13 @@ import com.saberpro.modelo.dto.PruebaDTO;
 
 import com.saberpro.utilities.Utilities;
 
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +30,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
-
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.sql.DataSource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -54,6 +69,11 @@ public class PruebaLogic implements IPruebaLogic {
     private IPruebaMapper pruebaMapper;
     @Autowired
     private Validator validator;
+    @Autowired
+    private IParametroLogic parametroLogic; 
+    
+    @Autowired
+    private DataSource dataSource;
 
     /**
     * DAO injected by Spring that manages PruebaModulo entities
@@ -465,4 +485,76 @@ public class PruebaLogic implements IPruebaLogic {
 
         return list;
     }
+    
+    
+    @Override
+    @Transactional(readOnly = true)
+    public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception{
+    	
+    	Connection conn = null;
+    	
+    	try {
+			
+    		//1. Se consulta la prueba.
+    		Prueba prueba = getPrueba(idPrueba);
+    		if (prueba==null || !prueba.getActivo().equals("S")) {
+    			throw new Exception("No existe la prueba con ID " + idPrueba );
+    		}
+    		
+    		//2. Se consulta el parametro de la ruta de los reportes
+    		String rutaReportes = "";
+    		
+    		Parametro parametroRutaReportes = parametroLogic.getParametro(10L);
+    		if (parametroRutaReportes == null || !parametroRutaReportes.getActivo().equals("S")) {
+    			throw new Exception("No existe el parámetro 10 = Ruta reportes");
+    		}
+    		
+    		File fRutaReportes = new File(parametroRutaReportes.getValor());
+    		if (!fRutaReportes.exists() || !fRutaReportes.canRead()) {
+    			throw new Exception("No existe la ruta base de reportes o no se tienen permisos de lectura a la carpeta");
+    		}
+    		
+    		//3. Se manda a generar el reporte
+    		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    		
+    		//Se abre el reporte
+    		File fReporte = new File(fRutaReportes, "resultadosPorEstudiante.jasper");
+    		InputStream inputStream = new FileInputStream(fReporte);
+    		
+    		//Se obtiene la conexion a la BD
+    		conn = dataSource.getConnection();
+    		
+    		//Se llena el reporte
+    		Map<String, Object> params = new HashMap<>();
+    		params.put("P_ID_PRUEBA", idPrueba);
+    		params.put("P_RUTA_RECURSOS", parametroRutaReportes.getValor());
+    		
+    		JasperPrint print = JasperFillManager.fillReport(inputStream, params, conn);
+    		
+    		//4. Es exporta el reporte en PDF
+    		
+    		JRPdfExporter jrPdfExporter = new JRPdfExporter();
+			
+			jrPdfExporter.setExporterInput(new SimpleExporterInput(print));
+			jrPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(bos));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			jrPdfExporter.setConfiguration(configuration);
+			
+			jrPdfExporter.exportReport();
+			
+			//5. Retornar los bytes del PDF
+			ByteArrayInputStream is = new ByteArrayInputStream(bos.toByteArray());
+    		
+			return is;
+    		
+		} catch (Exception e) {
+			log.error("Error generando el informe individual de pruebas. IdPrueba = " + idPrueba, e);
+			throw e;
+		}finally {
+			if (conn!=null && !conn.isClosed()) {
+				conn.close();
+			}
+		}
+    }
+    
 }

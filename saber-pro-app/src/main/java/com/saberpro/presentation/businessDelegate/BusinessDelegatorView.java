@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
@@ -2063,6 +2064,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	@Override
 	public List<Usuario> findByTipoUsuarioFacultadUsuario(long idFacultad, long idTipoUsuario) throws Exception {
 		return usuarioLogic.findByTipoUsuarioFacultad(idFacultad, idTipoUsuario);
+	}
+	
+	@Override
+	public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception{
+		return pruebaLogic.generarInformeIndividual(idPrueba);
 	}
 
 	

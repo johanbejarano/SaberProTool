@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
@@ -791,4 +792,6 @@ public interface IBusinessDelegatorView {
 	 public List<Usuario> findByTipoUsuarioProgramaUsuario(long idPrograma,long idTipoUsuario) throws Exception;
 	 
 	 public List<Usuario> findByTipoUsuarioFacultadUsuario(long idFacultad,long idTipoUsuario) throws Exception;
+
+	 public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception;
 }
