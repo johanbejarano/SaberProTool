@@ -54,7 +54,7 @@
 							<p:outputLabel value="#{facultad.nombre}" />
 						</p:column>
 						<p:column headerText="Activo" filterBy="#{facultad.activo.equals('S')}"
-							filterMatchMode="equals" width="10%">
+							filterMatchMode="equals">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('facTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -63,11 +63,15 @@
 									<f:selectItem itemLabel="Inactivo" itemValue="false" />
 								</p:selectOneButton>
 							</f:facet>
+							<center>
 							<h:outputText value="#{facultad.activo.equals('S') ? 'Sí': 'No'}" />
+							</center>
 						</p:column>
-						<p:column headerText="Editar" width="4%">
+						<p:column headerText="Editar">
+						<center>
 							<p:commandButton value="Editar" update="formDialog"
 								action="#{facultadView.editar_action(facultad.nombre)}" />
+						</center>
 						</p:column>
 					</p:dataTable>
 				</div>

@@ -8,19 +8,13 @@
 
     <div id="layout-menubar" class="Unselectable fontRegular">
         <div class="layout-menubarinner-box" id="buttonArea">
-            <a href="#" id="layout-menubar-resize" class="BordRad3" title="Menu Resize"><i class="icon-th-list-2"></i></a>
-            <a href="#" id="layout-menubar-resize2" class="BordRad3" title="Open Menu"><i class="icon-menu"></i></a>
-        </div>
-
-        <div class="layout-menubarinner-box" id="searchArea">
-            <i class="icon-search floatLeft gray"></i>
-            <input type="text" class="layout-menubar-search floatLeft Animated05" placeholder="Search Here"/>
-        </div>
+            <a href="#" id="layout-menubar-resize" class="BordRad3" title="Menu Resize"><i class="fa fa-align-justify"></i></a>
+            <a href="#" id="layout-menubar-resize2" class="BordRad3" title="Open Menu"><i class="fa fa-align-justify"></i></a>
+        </div>        
         
         <h:form id="menuform">
-            <ps:menu id="sm_leftmenu">
-                <p:menuitem id="sm_dashboard" value="Dashboard" icon="icon-home-outline" outcome="dashboard" containerStyleClass="layout-menubar-active"/>
-                <p:menuitem id="sm_promotion" value="Promotion Page" icon="icon-cube" outcome="promotion-page" />
+            <ps:menu id="sm_leftmenu" model="#{menuView.model}" >
+                <!-- p:menuitem id="sm_dashboard" value="Dashboard" icon="icon-home-outline" outcome="dashboard" containerStyleClass="layout-menubar-active"/>
                 <p:submenu id="sm_sentineltheme" label="Sentinel Theme" icon="icon-gauge" >
                     <p:menuitem id="sm_sample" value="Sample Page" icon="icon-columns" outcome="sample" />
                     <p:menuitem id="sm_forms" value="Forms" icon="icon-doc-text-1" outcome="forms"/>
@@ -60,7 +54,7 @@
                 <p:menuitem id="sm_user" value="User Profile" icon="icon-vcard" outcome="empty-page" />
                 <p:menuitem id="sm_tasks" value="Tasks" icon="icon-tasks" outcome="empty-page" />
                 <p:menuitem id="sm_contact" value="Contact" icon="icon-phone" outcome="empty-page" />
-                <p:menuitem id="sm_doc" value="Documentation" icon="icon-graduation-cap" outcome="documentation" />
+                <p:menuitem id="sm_doc" value="Documentation" icon="icon-graduation-cap" outcome="documentation" /-->
             </ps:menu>
         </h:form>
     </div>

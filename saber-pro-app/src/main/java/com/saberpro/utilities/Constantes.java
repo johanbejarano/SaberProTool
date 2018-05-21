@@ -5,49 +5,48 @@ import java.text.SimpleDateFormat;
 
 public class Constantes {
 
-	//Generales
+	// Son los tipos de estados posibles para cada objeto del sistema son del atributo activo
 	public static final String ESTADO_ACTIVO = "S";
 	public static final String ESTADO_INACTIVO = "N";
 	public static final String ESTADO_PENDIENTE= "P";
 	public static final String ESTADO_ASIGNADO= "A";
 	public static final String ESTADO_MASTER= "M";
 	
-	//Genero
+	//Los genero de los usuario
 	public static String GENERO_MASCULINO = "M";
 	public static String GENERO_FEMENINO = "F";
 	
-	//Roles
+	//Los roles que hay en el sistema
 	public static final long USER_TYPE_ESTUDIANTE = 1L;
 	public static final long USER_TYPE_DOCENTE = 2L;
 	public static final long USER_TYPE_DIRECTOR = 3L;
 	public static final long USER_TYPE_DECANO = 4L;
 	public static final long USER_TYPE_ADMIN = 5L;
 	
-	//Modulos
+	//Los tipo de modulo que hay en el sistema
 	public static final long MODULO_TYPE_GENERICO = 1L;
 	public static final long MODULO_TYPE_ESPECIFICO = 2L;
 	
-	//Pregunta
+	//Los tipo de pregunta que hay en el sistema
 	public static final long PREGUNTA_TYPE_ABIERTA = 1L;
 	public static final long PREGUNTA_TYPE_MULTIPLE = 2L;
 	
-	//Prueba
+	//Los tipo de prueba que hay en el sistema
 	public static final long PRUEBA_TYPE_SIMULACRO = 1L;
 	public static final long PRUEBA_TYPE_ENTRENAMIENTO = 2L;
 	
-	//Estados
+	//Los estados posibles para una pruebaProgramaUsuario en el sistema
 	public static final long PRUEBA_ESTADO_INICIADO = 1L;
 	public static final long PRUEBA_ESTADO_PAUSADA = 2L;
 	public static final long PRUEBA_ESTADO_FINALIZADA = 3L;
 	public static final long PRUEBA_ESTADO_REINICIADA = 4L;
 	public static final long PRUEBA_ESTADO_PENDIENTE = 5L;
 	
-	//Formatos
-	 public static final DateFormat FORMATO_FECHA_SIMPLE = new SimpleDateFormat("dd/MM/yyyy");
+	//Los Formatos utilizados en el sistema
+	 public static final String FORMATO_FECHA_SIMPLE = "dd/MM/yyyy";
 	 public static final String FORMATO_EXCEL_XLS = ".xls";
 	 public static final String FORMATO_EXCEL_XLSX = ".xlsx";
 	 
-	//Ruta de las vistas
-	 public static final String RUTA_BASE = "#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}";
+	//Parametros
 	 public static final long TIME_PRUEBA = 3600L;
 }

@@ -286,10 +286,10 @@ insert into resultado_real(percentil_grupo,percentil_nacional,fecha_creacion,usu
 
 ALTER SEQUENCE grupo_opcion_id_grupo_opcion_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
 
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Cuenta','fa fa-user',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Cuenta','fa fa-user',now(),0,'N');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Prueba','fa fa-list-alt',now(),0,'S');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Usuario','fa fa-group',now(),0,'S');
-insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Pregunta','fa fa-exclamation',now(),0,'S');
+insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Pregunta','fa fa-exclamation-circle',now(),0,'S');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Director','fa fa-graduation-cap',now(),0,'S');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Decano','fa fa-university',now(),0,'S');
 insert into grupo_opcion(nombre,icon,fecha_creacion,usu_creador,activo) values('Administrar','fa fa-gears',now(),0,'S');

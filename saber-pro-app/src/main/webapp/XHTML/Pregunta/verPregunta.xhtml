@@ -13,7 +13,7 @@
 				<h:panelGrid columns="3">
 					<h:outputText  value="Crear nueva pregunta:" />	
 					<h:outputText value=""/>
-					<h:link outcome="pregunta.xhtml" value="Crear una nueva pregunta" styleClass="btn" />
+					<h:link outcome="pregunta.xhtml" value="Crear una nueva pregunta" styleClass="fa fa-plus-square" style="color:black;" />
 					<h:outputText  value="Importar preguntas:"/>	
 					<p:fileUpload label="Cargar archivo" value="#{preguntaView.chooseImportFile}" mode="simple" skinSimple="true" />
 					<p:commandButton value="Importar preguntas(xls o xlsx)" action="#{preguntaView.importFilePregunta}" update="msg,panelTable,men" ajax="false"/>
@@ -31,7 +31,7 @@
 						<p:outputLabel value="#{pregunta.descripcionPregunta}" escape="false"/>
 					</p:column>					
 					<p:column headerText="Modulo" filterBy="#{pregunta.idModulo_Modulo}"
-						filterMatchMode="exact" width="25%">
+						filterMatchMode="exact">
 						<f:facet name="filter">
 								<p:selectOneMenu onchange="PF('tipTable').filter()">
 									<f:selectItem itemLabel="TODOS" itemValue="#{null}"
@@ -42,7 +42,7 @@
 						<p:outputLabel value="#{preguntaView.getModulo(pregunta.idModulo_Modulo)}" />
 					</p:column>
 					<p:column headerText="Activo" filterBy="#{pregunta.activo.equals('S')}" filterMatchMode="equals"
-							  width="15%" styleClass="text-center">
+							  styleClass="text-center">
 						<f:facet name="filter">
 							<p:selectOneButton onchange="PF('tipTable').filter()">
 								<f:converter converterId="javax.faces.Boolean" />
@@ -55,7 +55,7 @@
 							value="#{pregunta.activo.equals('S') ? 'Sí': 'No'}" />
 					</p:column>
 					<p:column headerText="Opcion" width="5%">
-						<h:link outcome="pregunta.xhtml" value="Editar" styleClass="btn btn-primary">
+						<h:link outcome="pregunta.xhtml" value="Editar" styleClass="fa fa-cog" style="color:black;">
 							<f:param name="id" value="#{pregunta.idPregunta}"/>
 						</h:link>
 					</p:column>

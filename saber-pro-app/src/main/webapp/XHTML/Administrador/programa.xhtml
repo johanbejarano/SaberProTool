@@ -61,7 +61,7 @@
 							<p:outputLabel value="#{programa.nombre}" />
 						</p:column>
 						<p:column headerText="Facultad" filterBy="#{programa.idFacultad_Facultad}"
-							filterMatchMode="exact" width="31%">
+							filterMatchMode="exact">
 							<f:facet name="filter">
 								<p:selectOneMenu onchange="PF('proTable').filter()">
 									<f:selectItem itemLabel="TODOS" itemValue="#{null}"
@@ -72,7 +72,7 @@
 							<p:outputLabel value="#{programaView.getFacultad(programa.idFacultad_Facultad)}" />
 						</p:column>
 						<p:column headerText="Activo" filterBy="#{programa.activo.equals('S')}"
-							filterMatchMode="equals" width="10%">
+							filterMatchMode="equals" >
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('proTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -81,10 +81,14 @@
 									<f:selectItem itemLabel="Inactivo" itemValue="false" />
 								</p:selectOneButton>
 							</f:facet>
+							<center>
 							<h:outputText value="#{programa.activo.equals('S') ? 'Sí': 'No'}" />
+							</center>
 						</p:column>
-						<p:column headerText="Editar" width="4%">
+						<p:column headerText="Editar">
+						<center>
 							<p:commandButton value="Editar" update="formDialog" action="#{programaView.editar_action(programa.nombre)}"/>
+						</center>
 						</p:column>
 					</p:dataTable>
 				</div>

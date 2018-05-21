@@ -50,11 +50,11 @@
 					<p:selectOneMenu binding="#{usuarioView.somFacultas}" >
 								<f:selectItem itemValue="#{null}" itemLabel="-------------------" />	
 								<f:selectItems value="#{usuarioView.losFacultadSelectItem}"/>	
-								<p:ajax update="panelUsuario" listener="#{usuarioView.changeFacultad}"/>
+								<p:ajax update="somProgramas" listener="#{usuarioView.changeFacultad}"/>
 								<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>															
 					</p:selectOneMenu>	
 					<h:outputText value="Programa" />
-					<p:selectOneMenu  binding="#{usuarioView.somPrograma}" >
+					<p:selectOneMenu id="somProgramas" binding="#{usuarioView.somPrograma}" >
 								<f:selectItem itemValue="#{null}" itemLabel="-------------------" />	
 								<f:selectItems value="#{usuarioView.losProgramasSelectItem}"/>	
 								<p:ajax update="panelUsuario,msg" listener="#{usuarioView.action_validar}"/>															

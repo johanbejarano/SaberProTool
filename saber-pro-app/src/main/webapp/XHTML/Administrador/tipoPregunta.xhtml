@@ -8,7 +8,7 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelTipoPregunta" header="TipoPregunta">
+			<p:panel id="panelTipoPregunta" header="Tipo de Pregunta">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText id="msgNombre" value=" Nombre" />
 					<p:inputText id="txtNombre" binding="#{tipoPreguntaView.txtNombre}" size="50">
@@ -58,7 +58,7 @@
 						</p:column>
 						<p:column headerText="Activo"
 							filterBy="#{tipoPregunta.activo.equals('S')}"
-							filterMatchMode="equals" width="10%">
+							filterMatchMode="equals">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('tipTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -67,11 +67,15 @@
 									<f:selectItem itemLabel="Inactivo" itemValue="false" />
 								</p:selectOneButton>
 							</f:facet>
+							<center>
 							<h:outputText value="#{tipoPregunta.activo.equals('S') ? 'Sí': 'No'}" />
+							</center>
 						</p:column>
-						<p:column headerText="Editar" width="4%">
+						<p:column headerText="Editar" >
+						<center>
 							<p:commandButton value="Editar" update="formDialog"
 								action="#{tipoPreguntaView.editar_action(tipoPregunta.nombre)}" />
+						</center>
 						</p:column>
 					</p:dataTable>
 				</div>

@@ -74,7 +74,7 @@
 							<p:outputLabel value="#{modulo.nombre}" />
 						</p:column>
 						<p:column headerText="Tipo Modulo" filterMatchMode="exact"
-							filterBy="#{modulo.idTipoModulo_TipoModulo}" width="31%">
+							filterBy="#{modulo.idTipoModulo_TipoModulo}">
 							<f:facet name="filter">
 								<p:selectOneMenu onchange="PF('modTable').filter()">
 									<f:selectItem itemLabel="TODOS" itemValue="#{null}"
@@ -85,7 +85,7 @@
 							<p:outputLabel
 								value="#{moduloView.getTipoModulo(modulo.idTipoModulo_TipoModulo)}" />
 						</p:column>
-						<p:column headerText="Activo" width="10%"
+						<p:column headerText="Activo" 
 							filterBy="#{modulo.activo.equals('S')}" filterMatchMode="equals">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('modTable').filter()">
@@ -95,11 +95,15 @@
 									<f:selectItem itemLabel="Inactivo" itemValue="false" />
 								</p:selectOneButton>
 							</f:facet>
+							<center>
 							<h:outputText value="#{modulo.activo.equals('S') ? 'Sí': 'No'}" />
+							</center>
 						</p:column>
-						<p:column headerText="Editar" width="4%">
+						<p:column headerText="Editar" >
+						<center>
 							<p:commandButton value="Editar" update="formDialog"
 								action="#{moduloView.editar_action(modulo.nombre)}" />
+						</center>
 						</p:column>
 					</p:dataTable>
 				</div>

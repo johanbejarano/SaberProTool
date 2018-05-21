@@ -489,4 +489,8 @@ public class FacesUtils {
 		
 		return cleanText;
 	}
+	
+	public static void limpiaVariablesSession() {
+		
+	}
 }

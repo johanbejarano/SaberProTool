@@ -18,7 +18,7 @@
 							<p:ajax update="panelTable" listener="#{asignarDecanoView.limpiar}"/>						
 						</p:selectOneMenu>
 						<p:commandButton binding="#{asignarDecanoView.btnAsignar}" value="Asignar" action="#{asignarDecanoView.asignar}" update="msg,panelTable"/>
-						<p:inputText binding="#{asignarDecanoView.txtCodigo}"/>
+						<p:inputText binding="#{asignarDecanoView.txtCodigo}" size="35"/>
 					</h:panelGrid>
 				</p:panel>
 				<p:panel id="panelTable">

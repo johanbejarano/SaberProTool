@@ -51,7 +51,7 @@
 							<p:outputLabel value="#{estadoPrueba.nombre}" />
 						</p:column>
 						<p:column headerText="Activo" filterBy="#{estadoPrueba.activo.equals('S')}"
-							filterMatchMode="equals" width="10%">
+							filterMatchMode="equals">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('estTable').filter()">
 									<f:converter converterId="javax.faces.Boolean" />
@@ -60,11 +60,15 @@
 									<f:selectItem itemLabel="Inactivo" itemValue="false" />
 								</p:selectOneButton>
 							</f:facet>
+							<center>
 							<h:outputText value="#{estadoPrueba.activo.equals('S') ? 'Sí': 'No'}" />
+							</center>
 						</p:column>
-						<p:column headerText="Editar" width="4%">
+						<p:column headerText="Editar">
+						<center>
 							<p:commandButton value="Editar" update="formDialog"
 								action="#{estadoPruebaView.editar_action(estadoPrueba.nombre)}" />
+						</center>
 						</p:column>
 					</p:dataTable>
 				</div>
