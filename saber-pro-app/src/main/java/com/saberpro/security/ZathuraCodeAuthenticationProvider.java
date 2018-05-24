@@ -85,12 +85,12 @@ public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
 	
-	/*
-	 *	Metodo encargado de almacenar los datos de session del usuario logeado
-	 *	
-	 *	@param idUsuario id del usuario que acaba de inciar sesion
-	 *	
-	 */
+    /**
+    *
+    * Metodo encargado de almacenar los datos de session
+    *
+    * @param idUsuario long id del usuario que se esta logeando 
+    */ 
 	public void inicializar(long idUsuario) {
 		
 		 

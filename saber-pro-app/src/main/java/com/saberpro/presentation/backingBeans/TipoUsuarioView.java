@@ -1,153 +1,181 @@
 package com.saberpro.presentation.backingBeans;
 
-import com.saberpro.exceptions.*;
-
-import com.saberpro.modelo.*;
-import com.saberpro.modelo.dto.TipoUsuarioDTO;
-
-import com.saberpro.presentation.businessDelegate.*;
-
-import com.saberpro.utilities.*;
-
-import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.saberpro.modelo.TipoUsuario;
+import com.saberpro.modelo.Usuario;
+import com.saberpro.modelo.dto.TipoUsuarioDTO;
+import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
+import com.saberpro.utilities.FacesUtils;
+
 import java.io.Serializable;
 
-import java.sql.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-
 
 /**
- * @author Zathura Code Generator http://zathuracode.org/
- * www.zathuracode.org
+ * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
  *
  */
 @ManagedBean
 @ViewScoped
 public class TipoUsuarioView implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(TipoUsuarioView.class);
-    
-    private boolean crear = true;
-    
-    private InputTextarea txtDescripcion;
-    private InputText txtNombre;
-    
-    private CommandButton btnSave;
-    private CommandButton btnModify;
-    private CommandButton btnClear;
-    
-    private SelectOneMenu somActivo;
-    
-    private List<TipoUsuarioDTO> data;
-    
-    private TipoUsuarioDTO selectedTipoUsuario;
-    
-    private TipoUsuario entity;
-    
-    private boolean showDialog;
-    
-    @ManagedProperty(value = "#{BusinessDelegatorView}")
-    private IBusinessDelegatorView businessDelegatorView;
+	private static final long serialVersionUID = 1L;
+	private static final Logger log = LoggerFactory.getLogger(TipoUsuarioView.class);
 
-    public TipoUsuarioView() {
-        super();
-    }
-    
-    public void editar_action(String nombre) {   	
-    	
-    	txtNombre.setValue(nombre);
-    	listener_txtId();
-    }
+	// Variable encargada de indicar si se va crear un tipo de usuario o actualizar
+	// para habilitar los botones
+	private boolean crear = true;
 
-    public void listener_txtId() {
+	// Variable que se realiza un binding con tipoUsuario.xhtml para guardar el la
+	// descripcion tipo de usuario
+	private InputTextarea txtDescripcion;
+
+	// Variable que se realiza un binding con tipoUsuario.xhtml para guardar el la
+	// nombre del tipo de usuario
+	private InputText txtNombre;
+
+	// Variable que se realiza un binding con tipoUsuario.xhtml para boton de las
+	// acciones de guardar
+	private CommandButton btnSave;
+
+	// Variable que se realiza un binding con tipoUsuario.xhtml para boton de las
+	// acciones de actualizar
+	private CommandButton btnModify;
+
+	// Variable que se realiza un binding con tipoUsuario.xhtml para boton de las
+	// acciones de limpiar
+	private CommandButton btnClear;
+
+	// Variable que se realiza un binding con tipoUsuario.xhtml para guarda de los
+	// estados de activo del tipo de usuario
+	private SelectOneMenu somActivo;
+
+	// Variable que se realiza un value con tipoUsuario.xhtml mostrar los datos del
+	// datatable
+	private List<TipoUsuarioDTO> data;
+
+	// Instancia de tipo de usuario con la que se opera
+	private TipoUsuario entity;
+
+	//Delegado de negocio encargado de llamar a toda la logica
+	@ManagedProperty(value = "#{BusinessDelegatorView}")
+	private IBusinessDelegatorView businessDelegatorView;
+
+	public TipoUsuarioView() {
+		super();
+	}
+	
+    /**
+    *
+    * Metodo encargado de actualizar el formulario para actualizar un tipo usuario
+    *
+    * @param nombre String nombre del tipo de usuario    
+    */ 
+	public void editar_action(String nombre) {
+		//Modifica el campo de nombre del tipo de usuaro
+		txtNombre.setValue(nombre);
+		//Consulta y llena el formulario con los datos de ese tipo de usuario
+		listener_txtId();
+	}
+	
+   /**
+    *
+    * Metodo encargado consultar si existe un tipo de usuario y llenar el formulario
+    */ 
+	public void listener_txtId() {
 		try {
+			//Toma el nombre del tipo de usuario del input
 			String nombre = txtNombre.getValue().toString().trim();
-
+			//Consulta en base de datos si existe ese tipo de usuario
 			entity = businessDelegatorView.findByNombreTipoUsuario(nombre);
 
 		} catch (Exception e) {
+			//Si no existe la instancia se redefine a null
 			entity = null;
 		}
-
+		//En caso que no exista ese tipo de usuario
 		if (entity == null) {
-			
+			//habilita la accion de crear en la vista
 			crear = true;
-			
+			//reinicia los valores de los campos
 			txtDescripcion.resetValue();
-			somActivo.resetValue();			
-			
+			somActivo.resetValue();
+			//desabilita los botones
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
 
 		} else {
-			
+			//En caso que exista el tipo de usuario
+			//habilita la accion de actualizar
 			crear = false;
-			
+			//setea los campos con los datos que correcponde
 			txtNombre.setValue(entity.getNombre());
 			txtDescripcion.setValue(entity.getDescripcion());
 			somActivo.setValue(entity.getActivo());
-			
+			//desabilita los botonws
 			btnSave.setDisabled(true);
 			btnModify.setDisabled(false);
 		}
+		//valida los campos cumple con los requisitos
 		action_validar();
 	}
-    
-    public void verificar(CommandButton input) {
-    	try {
-    		if(FacesUtils.checkString(txtNombre).isEmpty()) 
-        		input.setDisabled(true);    	
-        	if(FacesUtils.checkString(somActivo)==null)
-        		input.setDisabled(true);
-        	
-		} catch (Exception e) {			
-			log.debug(e.getMessage());
+	
+	/**
+    *
+    * Metodo encargado de actualizar el formulario para actualizar un tipo usuario
+    *
+    * @param input commandBurron boton el cual se va verificar para activarlo si cumple las validaciones    
+    */ 
+	public void verificar(CommandButton input) {
+		try {
+			//Validacion de nombre vacio
+			if (FacesUtils.checkString(txtNombre).isEmpty())
+				input.setDisabled(true);
+			//Validacion de activo este selecionado
+			if (FacesUtils.checkString(somActivo) == null)
+				input.setDisabled(true);
+
+		} catch (Exception e) {
+			log.error("Error validando el boton "+e.getMessage(),e);
 		}
-    	
-    		
-    }
-    
-    public void action_validar() {
-    	
-    	if(crear) {
-    		btnSave.setDisabled(false);
-        	verificar(btnSave); 
-    	}
-    	else {
-    		btnModify.setDisabled(false);
-    		verificar(btnModify); 
-    	}
-    	   	
-    }
-    
-    public String action_clear() {
+
+	}
+	
+	/**
+    *
+    * Metodo encargado de activar el boton de accion dependiendo la accion a realizar y si cumple los requisitos
+    */ 
+	public void action_validar() {
+		//Se activa el boton crear
+		if (crear) {
+			btnSave.setDisabled(false);
+			verificar(btnSave);
+		} 
+		//Se activa el boton actualizar
+		else {
+			btnModify.setDisabled(false);
+			verificar(btnModify);
+		}
+
+	}
+	/**
+    *
+    * Metodo encargado de limpiar la pantalla
+    */ 
+	public String action_clear() {
 
 		entity = null;
-		selectedTipoUsuario = null;
 
 		btnSave.setDisabled(true);
 		btnModify.setDisabled(true);
@@ -157,25 +185,30 @@ public class TipoUsuarioView implements Serializable {
 
 		return "";
 	}
-    
-    public String action_create() {
+	
+	/**
+    *
+    * Metodo encargado de crear un tipo de usuarip
+    */ 
+	public String action_create() {
 		try {
+			//Se toma el usuario en session
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
-
+			//Se verifica que este definido
 			if (usuario != null) {
-
+				//Se instancia el tipo de usuario
 				entity = new TipoUsuario();
-
+				//Se le setean los campos
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaCreacion(new Date());
 				entity.setUsuCreador(usuario.getIdUsuario());
-
+				//Se crear el tipo de usuario
 				businessDelegatorView.saveTipoUsuario(entity);
-
+				//Se setean la lista de tipo de usuario del datatable
 				data = null;
-
+				//Se limpia la vista y se indica mensaje exito 
 				FacesUtils.addInfoMessage("Se creo tipo de usuario correctamente");
 				action_clear();
 
@@ -184,31 +217,37 @@ public class TipoUsuarioView implements Serializable {
 		} catch (Exception e) {
 			entity = null;
 			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Error creando el tipo de usuari "+e.getMessage(),e);
 		}
 
 		return "";
 	}
-    
-    public String action_modify() {
+
+	/**
+    *
+    * Metodo encargado de actualizar un tipo de usuario
+    */ 
+	public String action_modify() {
 
 		try {
+			//Se toma el usuario en session y se el nombre del tipo de usuario
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
-			String nombreFacultad = FacesUtils.checkString(txtNombre);
-
+			String nombre = FacesUtils.checkString(txtNombre);
+			//Se verifica que el usuario exista
 			if (usuario != null) {
-
-				entity = businessDelegatorView.findByNombreTipoUsuario(nombreFacultad);
-
+				//Se consulta ese tipo de usuario
+				entity = businessDelegatorView.findByNombreTipoUsuario(nombre);
+				//se setean los campos
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaModificacion(new Date());
 				entity.setUsuModificador(usuario.getIdUsuario());
-
+				//se actualiza
 				businessDelegatorView.updateTipoUsuario(entity);
-
+				//Se setean la lista de tipo de usuario del datatable
 				data = null;
-
+				//Se limpia la vista y se indica mensaje exito 
 				FacesUtils.addInfoMessage("Se actualizo tipo de usuario correctamente");
 				action_clear();
 
@@ -217,97 +256,78 @@ public class TipoUsuarioView implements Serializable {
 		} catch (Exception e) {
 			entity = null;
 			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Error actualizando el tipo de usuari "+e.getMessage(),e);
 		}
 
 		return "";
-	}	
+	}
 
-    public InputTextarea getTxtDescripcion() {
-        return txtDescripcion;
-    }
+	// Getter and Setter
+	public InputTextarea getTxtDescripcion() {
+		return txtDescripcion;
+	}
 
-    public void setTxtDescripcion(InputTextarea txtDescripcion) {
-        this.txtDescripcion = txtDescripcion;
-    }
+	public void setTxtDescripcion(InputTextarea txtDescripcion) {
+		this.txtDescripcion = txtDescripcion;
+	}
 
-    public InputText getTxtNombre() {
-        return txtNombre;
-    }
+	public InputText getTxtNombre() {
+		return txtNombre;
+	}
 
-    public void setTxtNombre(InputText txtNombre) {
-        this.txtNombre = txtNombre;
-    }
+	public void setTxtNombre(InputText txtNombre) {
+		this.txtNombre = txtNombre;
+	}
 
-    public List<TipoUsuarioDTO> getData() {
-        try {
-            if (data == null) {
-                data = businessDelegatorView.getDataTipoUsuario();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	public List<TipoUsuarioDTO> getData() {
+		try {
+			if (data == null) {
+				data = businessDelegatorView.getDataTipoUsuario();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return data;
-    }
+		return data;
+	}
 
-    public void setData(List<TipoUsuarioDTO> tipoUsuarioDTO) {
-        this.data = tipoUsuarioDTO;
-    }
+	public void setData(List<TipoUsuarioDTO> tipoUsuarioDTO) {
+		this.data = tipoUsuarioDTO;
+	}
 
-    public TipoUsuarioDTO getSelectedTipoUsuario() {
-        return selectedTipoUsuario;
-    }
+	public CommandButton getBtnSave() {
+		return btnSave;
+	}
 
-    public void setSelectedTipoUsuario(TipoUsuarioDTO tipoUsuario) {
-        this.selectedTipoUsuario = tipoUsuario;
-    }
+	public void setBtnSave(CommandButton btnSave) {
+		this.btnSave = btnSave;
+	}
 
-    public CommandButton getBtnSave() {
-        return btnSave;
-    }
+	public CommandButton getBtnModify() {
+		return btnModify;
+	}
 
-    public void setBtnSave(CommandButton btnSave) {
-        this.btnSave = btnSave;
-    }
+	public void setBtnModify(CommandButton btnModify) {
+		this.btnModify = btnModify;
+	}
 
-    public CommandButton getBtnModify() {
-        return btnModify;
-    }
+	public CommandButton getBtnClear() {
+		return btnClear;
+	}
 
-    public void setBtnModify(CommandButton btnModify) {
-        this.btnModify = btnModify;
-    }    
+	public void setBtnClear(CommandButton btnClear) {
+		this.btnClear = btnClear;
+	}
 
-    public CommandButton getBtnClear() {
-        return btnClear;
-    }
+	public IBusinessDelegatorView getBusinessDelegatorView() {
+		return businessDelegatorView;
+	}
 
-    public void setBtnClear(CommandButton btnClear) {
-        this.btnClear = btnClear;
-    }
+	public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
+		this.businessDelegatorView = businessDelegatorView;
+	}
 
-    public TimeZone getTimeZone() {
-        return java.util.TimeZone.getDefault();
-    }
-
-    public IBusinessDelegatorView getBusinessDelegatorView() {
-        return businessDelegatorView;
-    }
-
-    public void setBusinessDelegatorView(
-        IBusinessDelegatorView businessDelegatorView) {
-        this.businessDelegatorView = businessDelegatorView;
-    }
-
-    public boolean isShowDialog() {
-        return showDialog;
-    }
-
-    public void setShowDialog(boolean showDialog) {
-        this.showDialog = showDialog;
-    }
-    
-    public SelectOneMenu getSomActivo() {
+	public SelectOneMenu getSomActivo() {
 		return somActivo;
 	}
 

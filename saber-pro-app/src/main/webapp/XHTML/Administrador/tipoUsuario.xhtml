@@ -12,8 +12,7 @@
 				<h:panelGrid columns="2" id="panelGrid">
 
 					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" binding="#{tipoUsuarioView.txtNombre}" size="50">
-						<p:keyFilter regEx="/[a-zA-Z ]/"/>
+					<p:inputText id="txtNombre" binding="#{tipoUsuarioView.txtNombre}" size="50">						
 						<p:ajax update="panelTipoUsuario,msg"
 							listener="#{tipoUsuarioView.listener_txtId}" />
 					</p:inputText>

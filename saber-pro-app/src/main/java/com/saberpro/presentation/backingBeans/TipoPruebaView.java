@@ -1,90 +1,70 @@
 package com.saberpro.presentation.backingBeans;
 
-import com.fasterxml.jackson.core.format.InputAccessor;
-import com.saberpro.exceptions.*;
-
-import com.saberpro.modelo.*;
-import com.saberpro.modelo.dto.TipoPruebaDTO;
-
-import com.saberpro.presentation.businessDelegate.*;
-
-import com.saberpro.utilities.*;
-
-import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.saberpro.modelo.TipoPrueba;
+import com.saberpro.modelo.Usuario;
+import com.saberpro.modelo.dto.TipoPruebaDTO;
+import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
+import com.saberpro.utilities.FacesUtils;
+
 import java.io.Serializable;
 
-import java.sql.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-
 
 /**
- * @author Zathura Code Generator http://zathuracode.org/
- * www.zathuracode.org
+ * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
  *
  */
 @ManagedBean
 @ViewScoped
 public class TipoPruebaView implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(TipoPruebaView.class);
-    
-    private boolean crear = true;
-    
-    private InputTextarea txtDescripcion;
+	private static final long serialVersionUID = 1L;
+	private static final Logger log = LoggerFactory.getLogger(TipoPruebaView.class);
+
+	private boolean crear = true;
+
+	private InputTextarea txtDescripcion;
 	private InputText txtNombre;
-	
+
 	private CommandButton btnSave;
 	private CommandButton btnModify;
 	private CommandButton btnClear;
-	
+
 	private SelectOneMenu somActivo;
-	
-    private List<TipoPruebaDTO> data;
-    
-    private TipoPruebaDTO selectedTipoPrueba;
-    
-    private TipoPrueba entity;
-    
-    private boolean showDialog;
-    
-    @ManagedProperty(value = "#{BusinessDelegatorView}")
-    private IBusinessDelegatorView businessDelegatorView;
 
-    public TipoPruebaView() {
-        super();
-    }
-    
-    public void editar_action(String nombre) {   	
-    	
-    	txtNombre.setValue(nombre);
-    	listener_txtId();
-    }
+	private List<TipoPruebaDTO> data;
 
-    public void listener_txtId() {
+	private TipoPrueba entity;
+
+	private boolean showDialog;
+
+	@ManagedProperty(value = "#{BusinessDelegatorView}")
+	private IBusinessDelegatorView businessDelegatorView;
+
+	public TipoPruebaView() {
+		super();
+	}
+
+	public void editar_action(String nombre) {
+
+		txtNombre.setValue(nombre);
+		listener_txtId();
+	}
+
+	public void listener_txtId() {
 		try {
 			String nombre = txtNombre.getValue().toString().trim();
 
@@ -95,60 +75,57 @@ public class TipoPruebaView implements Serializable {
 		}
 
 		if (entity == null) {
-			
+
 			crear = true;
-			
+
 			txtDescripcion.resetValue();
-			somActivo.resetValue();			
-			
+			somActivo.resetValue();
+
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
 
 		} else {
-			
+
 			crear = false;
-			
+
 			txtNombre.setValue(entity.getNombre());
 			txtDescripcion.setValue(entity.getDescripcion());
 			somActivo.setValue(entity.getActivo());
-			
+
 			btnSave.setDisabled(true);
 			btnModify.setDisabled(false);
 		}
 		action_validar();
 	}
-    
-    public void verificar(CommandButton input) {
-    	try {
-    		if(FacesUtils.checkString(txtNombre).isEmpty()) 
-        		input.setDisabled(true);   	
-        	if(FacesUtils.checkString(somActivo)==null)
-        		input.setDisabled(true);
-        	
-		} catch (Exception e) {			
+
+	public void verificar(CommandButton input) {
+		try {
+			if (FacesUtils.checkString(txtNombre).isEmpty())
+				input.setDisabled(true);
+			if (FacesUtils.checkString(somActivo) == null)
+				input.setDisabled(true);
+
+		} catch (Exception e) {
 			log.debug(e.getMessage());
 		}
-    	
-    		
-    }
-    
-    public void action_validar() {
-    	
-    	if(crear) {
-    		btnSave.setDisabled(false);
-        	verificar(btnSave); 
-    	}
-    	else {
-    		btnModify.setDisabled(false);
-    		verificar(btnModify); 
-    	}
-    	   	
-    }
+
+	}
+
+	public void action_validar() {
+
+		if (crear) {
+			btnSave.setDisabled(false);
+			verificar(btnSave);
+		} else {
+			btnModify.setDisabled(false);
+			verificar(btnModify);
+		}
+
+	}
 
 	public String action_clear() {
 
 		entity = null;
-		selectedTipoPrueba= null;
 
 		btnSave.setDisabled(true);
 		btnModify.setDisabled(true);
@@ -221,8 +198,8 @@ public class TipoPruebaView implements Serializable {
 		}
 
 		return "";
-	}	
-    
+	}
+
 	public InputTextarea getTxtDescripcion() {
 		return txtDescripcion;
 	}
@@ -230,83 +207,74 @@ public class TipoPruebaView implements Serializable {
 	public void setTxtDescripcion(InputTextarea txtDescripcion) {
 		this.txtDescripcion = txtDescripcion;
 	}
-	
-    public InputText getTxtNombre() {
-        return txtNombre;
-    }
 
-    public void setTxtNombre(InputText txtNombre) {
-        this.txtNombre = txtNombre;
-    }    
+	public InputText getTxtNombre() {
+		return txtNombre;
+	}
 
-    public List<TipoPruebaDTO> getData() {
-        try {
-            if (data == null) {
-                data = businessDelegatorView.getDataTipoPrueba();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	public void setTxtNombre(InputText txtNombre) {
+		this.txtNombre = txtNombre;
+	}
 
-        return data;
-    }
+	public List<TipoPruebaDTO> getData() {
+		try {
+			if (data == null) {
+				data = businessDelegatorView.getDataTipoPrueba();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    public void setData(List<TipoPruebaDTO> tipoPruebaDTO) {
-        this.data = tipoPruebaDTO;
-    }
+		return data;
+	}
 
-    public TipoPruebaDTO getSelectedTipoPrueba() {
-        return selectedTipoPrueba;
-    }
+	public void setData(List<TipoPruebaDTO> tipoPruebaDTO) {
+		this.data = tipoPruebaDTO;
+	}
 
-    public void setSelectedTipoPrueba(TipoPruebaDTO tipoPrueba) {
-        this.selectedTipoPrueba = tipoPrueba;
-    }
+	public CommandButton getBtnSave() {
+		return btnSave;
+	}
 
-    public CommandButton getBtnSave() {
-        return btnSave;
-    }
+	public void setBtnSave(CommandButton btnSave) {
+		this.btnSave = btnSave;
+	}
 
-    public void setBtnSave(CommandButton btnSave) {
-        this.btnSave = btnSave;
-    }
+	public CommandButton getBtnModify() {
+		return btnModify;
+	}
 
-    public CommandButton getBtnModify() {
-        return btnModify;
-    }
+	public void setBtnModify(CommandButton btnModify) {
+		this.btnModify = btnModify;
+	}
 
-    public void setBtnModify(CommandButton btnModify) {
-        this.btnModify = btnModify;
-    }    
+	public CommandButton getBtnClear() {
+		return btnClear;
+	}
 
-    public CommandButton getBtnClear() {
-        return btnClear;
-    }
+	public void setBtnClear(CommandButton btnClear) {
+		this.btnClear = btnClear;
+	}
 
-    public void setBtnClear(CommandButton btnClear) {
-        this.btnClear = btnClear;
-    }
+	public TimeZone getTimeZone() {
+		return java.util.TimeZone.getDefault();
+	}
 
-    public TimeZone getTimeZone() {
-        return java.util.TimeZone.getDefault();
-    }
+	public IBusinessDelegatorView getBusinessDelegatorView() {
+		return businessDelegatorView;
+	}
 
-    public IBusinessDelegatorView getBusinessDelegatorView() {
-        return businessDelegatorView;
-    }
+	public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
+		this.businessDelegatorView = businessDelegatorView;
+	}
 
-    public void setBusinessDelegatorView(
-        IBusinessDelegatorView businessDelegatorView) {
-        this.businessDelegatorView = businessDelegatorView;
-    }
+	public boolean isShowDialog() {
+		return showDialog;
+	}
 
-    public boolean isShowDialog() {
-        return showDialog;
-    }
-
-    public void setShowDialog(boolean showDialog) {
-        this.showDialog = showDialog;
-    }
+	public void setShowDialog(boolean showDialog) {
+		this.showDialog = showDialog;
+	}
 
 	public SelectOneMenu getSomActivo() {
 		return somActivo;

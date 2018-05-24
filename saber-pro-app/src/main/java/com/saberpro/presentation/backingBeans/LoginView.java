@@ -1,8 +1,5 @@
 package com.saberpro.presentation.backingBeans;
 
-
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,18 +9,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.FacesUtils;
 import com.saberpro.modelo.Usuario;
-import com.saberpro.modelo.dto.UsuarioDTO;
+
 import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
 
 
@@ -34,10 +27,11 @@ public class LoginView {
 	//Variable encargada de realizar los log
 	private static final Logger log = LoggerFactory.getLogger(LoginView.class);
 	
-	//Variable que se realiza un value con login.xhtml para guardar el codigo del usuario que va acceder
+	// Variable que se realiza un value con login.xhtml para guardar el codigo del
+	// usuario que va acceder
     private String userId;
     
-  //Variable que se realiza un value con login.xhtml para guardar el correo de recuperar contraseña
+    //Variable que se realiza un value con login.xhtml para guardar el correo de recuperar contraseña
     private String email;
     
     //Variable que se realiza un value con login.xhtml para guardar la clave del usuario que va acceder
@@ -47,7 +41,7 @@ public class LoginView {
     @ManagedProperty(value = "#{authenticationManager}")
     private AuthenticationManager authenticationManager = null;
     
-  //Delegado de negocio encargado de llamar a toda la logica
+    //Delegado de negocio encargado de llamar a toda la logica
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;	
 

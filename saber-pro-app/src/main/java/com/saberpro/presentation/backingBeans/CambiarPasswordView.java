@@ -6,9 +6,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.saberpro.modelo.Usuario;
 import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
 import com.saberpro.utilities.Constantes;
