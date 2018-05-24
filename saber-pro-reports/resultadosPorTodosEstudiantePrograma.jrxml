@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultadosPorEstudiante" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9402b0d5-1611-4172-86af-7252611de900">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgresql Adapter"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="ColoredField">
 		<conditionalStyle>
@@ -17,17 +17,38 @@
 			<style mode="Opaque" backcolor="#00FF00"/>
 		</conditionalStyle>
 	</style>
-	<parameter name="P_ID_PRUEBA" class="java.lang.Long"/>
+	<style name="ColoredFieldAVG" scaleImage="FillFrame">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{puntos_acierto1}.doubleValue() >=0 && $V{puntos_acierto1}.doubleValue() <= 130]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#FF0000" markup="">
+				<box>
+					<pen lineColor="#000000"/>
+				</box>
+			</style>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{puntos_acierto1}.doubleValue() >=131 && $V{puntos_acierto1}.doubleValue() <= 199]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#FFFF00" radius="20"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{puntos_acierto1}.doubleValue() >=200]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#00FF00"/>
+		</conditionalStyle>
+	</style>
 	<parameter name="P_RUTA_RECURSOS" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\Users\Jaime Sarria\git\SaberProTool\saber-pro-reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
+	<parameter name="P_ID_TIPO_PRUEBA" class="java.lang.Long"/>
+	<parameter name="P_ID_PROGRAMA" class="java.lang.Long"/>
+	<parameter name="P_ID_MODULO" class="java.lang.Long"/>
+	<parameter name="P_PERIODO" class="java.lang.String"/>
+	<parameter name="P_ID_USUARIO" class="java.util.List"/>
 	<queryString>
-		<![CDATA[select
-  prueb.id_prueba,
+		<![CDATA[select nombre_tipo_prueba,tipo_modulo,nombre,periodo,id_usuario,codigo_estudiante,nombre_estudiante,apellido_estudiante,programa,avg(puntos_acierto) puntos_acierto from(select
+
   tipr.id_tipo_prueba,
   tipr.nombre nombre_tipo_prueba,
   espr.id_estado_prueba,
-  espr.descripcion descripcion_estado_prueba,
   timo.id_tipo_modulo,
   timo.nombre tipo_modulo,
   modu.id_modulo,
@@ -40,7 +61,7 @@
     '2'
   end
   periodo,
-  ppu.fecha_modificacion fecha_prueba,
+  usua.id_usuario,
   usua.codigo codigo_estudiante,
   usua.identificacion identificacion_estudiante,
   usua.nombre nombre_estudiante,
@@ -64,65 +85,35 @@ inner join programa prog on prus.id_programa = prog.id_programa
 inner join usuario usua on prus.id_usuario = usua.id_usuario
 inner join tipo_modulo timo on modu.id_tipo_modulo = timo.id_tipo_modulo
 inner join facultad facu on prog.id_facultad = facu.id_facultad
-where prueb.id_prueba =  $P{P_ID_PRUEBA} 
+where usua.id_tipo_usuario = 1 AND  prueb.id_tipo_prueba= $P{P_ID_TIPO_PRUEBA}  AND prog.id_programa = $P{P_ID_PROGRAMA}  AND modu.id_modulo= $P{P_ID_MODULO}  AND $X{IN,usua.correo,P_ID_USUARIO}  
+
+
 group by
-  prueb.id_prueba,
   tipr.id_tipo_prueba,
-  tipr.descripcion,
   espr.id_estado_prueba,
-  espr.descripcion,
   timo.id_tipo_modulo,
-  timo.nombre,
   modu.id_modulo,
-  modu.nombre,
   ppu.fecha_modificacion,
-  usua.codigo,
-  usua.identificacion,
-  usua.nombre,
-  usua.apellido,
-  prog.nombre]]>
+  usua.id_usuario,
+  prog.id_programa) datos   where    periodo= $P{P_PERIODO}  group by nombre_tipo_prueba,tipo_modulo,nombre,periodo,programa,id_usuario,codigo_estudiante,nombre_estudiante,apellido_estudiante]]>
 	</queryString>
-	<field name="id_prueba" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="id_prueba"/>
-	</field>
-	<field name="id_tipo_prueba" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="id_tipo_prueba"/>
-	</field>
 	<field name="nombre_tipo_prueba" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre_tipo_prueba"/>
-	</field>
-	<field name="id_estado_prueba" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="id_estado_prueba"/>
-	</field>
-	<field name="descripcion_estado_prueba" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="descripcion_estado_prueba"/>
-	</field>
-	<field name="id_tipo_modulo" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="id_tipo_modulo"/>
 	</field>
 	<field name="tipo_modulo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tipo_modulo"/>
 	</field>
-	<field name="id_modulo" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="id_modulo"/>
-	</field>
 	<field name="nombre" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
-	</field>
-	<field name="cantidad_preguntas" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="cantidad_preguntas"/>
 	</field>
 	<field name="periodo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="periodo"/>
 	</field>
-	<field name="fecha_prueba" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.label" value="fecha_prueba"/>
+	<field name="id_usuario" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="id_usuario"/>
 	</field>
 	<field name="codigo_estudiante" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="codigo_estudiante"/>
-	</field>
-	<field name="identificacion_estudiante" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.label" value="identificacion_estudiante"/>
 	</field>
 	<field name="nombre_estudiante" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre_estudiante"/>
@@ -133,12 +124,12 @@ group by
 	<field name="programa" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="programa"/>
 	</field>
-	<field name="porcentaje_acierto_en_respuesta_a_pregunta" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="porcentaje_acierto_en_respuesta_a_pregunta"/>
-	</field>
 	<field name="puntos_acierto" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="puntos_acierto"/>
 	</field>
+	<variable name="puntos_acierto1" class="java.math.BigDecimal" resetType="Column" calculation="Average">
+		<variableExpression><![CDATA[$F{puntos_acierto}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -156,22 +147,22 @@ group by
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[RESULTADO INDIVIDUAL POR PRUEBA]]></text>
+				<text><![CDATA[RESULTADO GRUPO DE ESTUDIANTES]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="117" height="41" uuid="e1081cba-95dd-42bd-84da-2126d571492c"/>
-				<imageExpression><![CDATA[$P{P_RUTA_RECURSOS}+"logoUSB.png"]]></imageExpression>
+				<imageExpression><![CDATA["logoUSB.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="428" y="0" width="143" height="40" uuid="abe85998-4ba8-4f5f-a099-c9f60829c63c"/>
-				<imageExpression><![CDATA[$P{P_RUTA_RECURSOS}+"logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="125" splitType="Stretch">
+		<band height="106" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="45" width="150" height="15" uuid="6510ef15-58ee-4155-8cf9-e2c102356f86"/>
+				<reportElement x="0" y="15" width="150" height="15" uuid="6510ef15-58ee-4155-8cf9-e2c102356f86"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
@@ -179,7 +170,7 @@ group by
 				<text><![CDATA[PERIODO ACADÉMICO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="60" width="150" height="15" uuid="db28eb54-93ce-45bb-8b83-43602d954f17"/>
+				<reportElement x="0" y="30" width="150" height="15" uuid="db28eb54-93ce-45bb-8b83-43602d954f17"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
@@ -187,14 +178,14 @@ group by
 				<text><![CDATA[TIPO PRUEBA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="110" width="380" height="15" uuid="a2c345b9-3f1d-4ec1-b341-291d2c39bb2b"/>
+				<reportElement x="80" y="90" width="380" height="15" uuid="a2c345b9-3f1d-4ec1-b341-291d2c39bb2b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[RESULTADOS:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="45" width="100" height="15" uuid="3c856351-a528-4463-a957-5d3cff8a55df"/>
+				<reportElement x="160" y="15" width="316" height="15" uuid="3c856351-a528-4463-a957-5d3cff8a55df"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
@@ -202,7 +193,7 @@ group by
 				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="60" width="100" height="15" uuid="e7ce1fa4-f280-4df1-9224-f40d015db5e8"/>
+				<reportElement x="160" y="30" width="316" height="15" uuid="e7ce1fa4-f280-4df1-9224-f40d015db5e8"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
@@ -217,68 +208,52 @@ group by
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[PROGRAMA:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="15" width="150" height="15" uuid="4108b51f-8eea-42c3-940b-64eb4e67f8ba"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[CÓDIGO ESTUDIANTE:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="30" width="150" height="15" uuid="04339b3a-416d-446a-964b-8b49b3099cfb"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[NOMBRE ESTUDIANTE:]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="160" y="0" width="200" height="15" uuid="6aaa1d68-d621-44da-a778-b052635cb957"/>
+				<reportElement x="160" y="0" width="316" height="15" uuid="6aaa1d68-d621-44da-a778-b052635cb957"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="160" y="15" width="200" height="15" uuid="8b938f27-8cf1-45bf-a66f-03a83a5ad506"/>
+			<staticText>
+				<reportElement x="0" y="45" width="150" height="15" uuid="7980ba93-0f57-4b7a-9b64-8f7f2837eb07"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codigo_estudiante}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[TIPO DE COMPETENCIA:]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="160" y="30" width="200" height="15" uuid="c557fafa-6837-4b81-a8be-e3dfa54948f1"/>
+				<reportElement x="160" y="45" width="316" height="15" uuid="0ba20071-3c38-4b3a-828b-c21364d47f2e"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nombre_estudiante}+" " +$F{apellido_estudiante}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tipo_modulo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="75" width="150" height="15" uuid="42957a57-18d4-43b1-b070-7cb4da28109f"/>
+				<reportElement x="0" y="60" width="150" height="15" uuid="79e4c305-09fd-436b-8343-a8528eff42ec"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[FECHA REALIZACIÓN PRUEBA:]]></text>
+				<text><![CDATA[MODULO]]></text>
 			</staticText>
-			<textField pattern="dd-MM-yyyy">
-				<reportElement x="160" y="75" width="100" height="15" uuid="628f008a-64a7-44b2-999d-39bdcfb5671d"/>
+			<textField>
+				<reportElement x="160" y="60" width="316" height="15" uuid="e77506bb-c279-4202-9506-c2f058e0bca4"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{fecha_prueba}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="15" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement x="90" y="0" width="180" height="15" uuid="07559023-1d6d-492b-a6c6-6ca897ae6f5d">
+				<reportElement x="180" y="-1" width="180" height="15" uuid="07559023-1d6d-492b-a6c6-6ca897ae6f5d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35671698-910d-45c3-a6a4-72200e818c26"/>
 				</reportElement>
 				<box>
@@ -293,7 +268,7 @@ group by
 				<text><![CDATA[MÓDULO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="0" width="100" height="15" uuid="eb9d4537-1f6a-4e28-8d12-372c77132693">
+				<reportElement x="360" y="-1" width="100" height="15" uuid="eb9d4537-1f6a-4e28-8d12-372c77132693">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b764acfb-3f28-43f3-891f-60f4739f9cac"/>
 				</reportElement>
 				<box>
@@ -308,20 +283,35 @@ group by
 				<text><![CDATA[PUNTAJE]]></text>
 			</staticText>
 			<ellipse>
-				<reportElement mode="Opaque" x="400" y="2" width="10" height="10" backcolor="#00FF00" uuid="c56d8c42-743b-4a51-a315-c2d5b7424013"/>
+				<reportElement mode="Opaque" x="470" y="3" width="10" height="10" forecolor="#FCF7F7" backcolor="#00FF00" uuid="c56d8c42-743b-4a51-a315-c2d5b7424013"/>
 			</ellipse>
 			<ellipse>
-				<reportElement mode="Opaque" x="420" y="2" width="10" height="10" backcolor="#FFFF00" uuid="1b20f91e-b2cd-4929-ad89-a1c2d5984899"/>
+				<reportElement mode="Opaque" x="490" y="3" width="10" height="10" forecolor="#FCFAFA" backcolor="#FFFF00" uuid="1b20f91e-b2cd-4929-ad89-a1c2d5984899"/>
 			</ellipse>
 			<ellipse>
-				<reportElement mode="Opaque" x="440" y="2" width="10" height="10" backcolor="#FF0400" uuid="d92377a8-848c-4a45-8e4f-d0ca0e086b98"/>
+				<reportElement mode="Opaque" x="510" y="3" width="10" height="10" forecolor="#FAF7F7" backcolor="#FF0400" uuid="d92377a8-848c-4a45-8e4f-d0ca0e086b98"/>
 			</ellipse>
+			<staticText>
+				<reportElement x="0" y="-1" width="180" height="15" uuid="ef582f75-f04b-4cca-b178-a6a018232f23">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35671698-910d-45c3-a6a4-72200e818c26"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField>
-				<reportElement x="90" y="0" width="180" height="15" uuid="2d794df3-d2a4-4455-84d9-7b8b3ab0061e">
+				<reportElement x="180" y="-1" width="180" height="15" uuid="2d794df3-d2a4-4455-84d9-7b8b3ab0061e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35671698-910d-45c3-a6a4-72200e818c26"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
@@ -334,7 +324,7 @@ group by
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###">
-				<reportElement x="270" y="0" width="100" height="15" uuid="592891a2-9783-4132-ab7c-610420a3732f">
+				<reportElement x="360" y="-1" width="100" height="15" uuid="592891a2-9783-4132-ab7c-610420a3732f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b764acfb-3f28-43f3-891f-60f4739f9cac"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
@@ -347,54 +337,100 @@ group by
 				<textFieldExpression><![CDATA[$F{puntos_acierto}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="5">
-				<reportElement style="ColoredField" x="400" y="2" width="50" height="10" uuid="2fdef573-a9fc-4313-8c06-24e2ecdb6ef3">
+				<reportElement style="ColoredField" x="490" y="3" width="10" height="10" uuid="2fdef573-a9fc-4313-8c06-24e2ecdb6ef3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
+			<textField>
+				<reportElement x="0" y="-1" width="180" height="15" uuid="fae602c3-7290-405e-864d-b45cec315096">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35671698-910d-45c3-a6a4-72200e818c26"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre_estudiante}+" "+$F{apellido_estudiante}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="80" splitType="Stretch">
+		<band height="161" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="Float" x="90" y="20" width="180" height="15" uuid="76accb79-4e4f-470b-890a-b9c402fa823f"/>
+				<reportElement positionType="Float" x="90" y="100" width="180" height="15" uuid="76accb79-4e4f-470b-890a-b9c402fa823f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[RANGOS DE INTERPRETACIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="110" y="35" width="160" height="15" uuid="f7b262e0-2a20-4548-aa5e-9d7ec0e71dc6"/>
+				<reportElement positionType="Float" x="110" y="115" width="160" height="15" uuid="f7b262e0-2a20-4548-aa5e-9d7ec0e71dc6"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[0 - 130 pts]]></text>
 			</staticText>
 			<ellipse>
-				<reportElement positionType="Float" mode="Opaque" x="90" y="37" width="10" height="10" backcolor="#FF0400" uuid="d702f253-a177-4689-97cc-a4c2d7c934ee"/>
+				<reportElement positionType="Float" mode="Opaque" x="90" y="117" width="10" height="10" forecolor="#FCFAFA" backcolor="#FF0400" uuid="d702f253-a177-4689-97cc-a4c2d7c934ee"/>
 			</ellipse>
 			<staticText>
-				<reportElement positionType="Float" x="110" y="50" width="160" height="15" uuid="405f6bed-35c2-496c-87b8-4a9dbf8241dc"/>
+				<reportElement positionType="Float" x="110" y="130" width="160" height="15" uuid="405f6bed-35c2-496c-87b8-4a9dbf8241dc"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[131 - 199 pts]]></text>
 			</staticText>
 			<ellipse>
-				<reportElement positionType="Float" mode="Opaque" x="90" y="52" width="10" height="10" backcolor="#FFFF00" uuid="a4161a6a-5f83-4f94-a60f-ea121fa8ee17"/>
+				<reportElement positionType="Float" mode="Opaque" x="90" y="132" width="10" height="10" forecolor="#FAF7F7" backcolor="#FFFF00" uuid="a4161a6a-5f83-4f94-a60f-ea121fa8ee17"/>
 			</ellipse>
 			<staticText>
-				<reportElement positionType="Float" x="110" y="65" width="160" height="15" uuid="64d0716a-e1bb-492e-ad75-b9952ed03ce5"/>
+				<reportElement positionType="Float" x="110" y="145" width="160" height="15" uuid="64d0716a-e1bb-492e-ad75-b9952ed03ce5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[200 - 300 pts]]></text>
 			</staticText>
 			<ellipse>
-				<reportElement positionType="Float" mode="Opaque" x="90" y="67" width="10" height="10" backcolor="#00FF00" uuid="ea6eff4b-6056-484a-8b6a-7256b252579b"/>
+				<reportElement positionType="Float" mode="Opaque" x="90" y="147" width="10" height="10" forecolor="#FCF3F2" backcolor="#00FF00" uuid="ea6eff4b-6056-484a-8b6a-7256b252579b"/>
 			</ellipse>
+			<staticText>
+				<reportElement x="90" y="54" width="150" height="15" uuid="4cfd7964-49fa-471a-b046-a57c31259662"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[PROMEDIO:]]></text>
+			</staticText>
+			<textField pattern="###">
+				<reportElement x="260" y="54" width="129" height="15" uuid="aa7bd587-d776-43df-8397-1e2167d2518f"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{puntos_acierto1}]]></textFieldExpression>
+			</textField>
+			<ellipse>
+				<reportElement mode="Opaque" x="190" y="75" width="10" height="10" forecolor="#FCFAFA" backcolor="#00FF00" uuid="84f1bede-7a01-4a64-8150-a9d085cfe469"/>
+			</ellipse>
+			<ellipse>
+				<reportElement mode="Opaque" x="210" y="75" width="10" height="10" forecolor="#FCFCFC" backcolor="#FFFF00" uuid="496b1f48-776f-4ffd-ad7b-2a47c2452bd1"/>
+			</ellipse>
+			<ellipse>
+				<reportElement mode="Opaque" x="230" y="75" width="10" height="10" forecolor="#FCFCFC" backcolor="#FF0400" uuid="e14bacb2-ea51-48f1-b281-90a3a96e874f"/>
+			</ellipse>
+			<rectangle radius="5">
+				<reportElement style="ColoredFieldAVG" mode="Opaque" x="379" y="75" width="10" height="10" uuid="d13ebda6-191b-42a6-a160-fa39b8febf0c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
 		</band>
 	</columnFooter>
 	<pageFooter>

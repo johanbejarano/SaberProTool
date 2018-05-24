@@ -205,6 +205,12 @@ insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO JULIAN','GOMEZ CARVAGAL','M',1198248,1193567234,3125766543,'mariok24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',4);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO ANDRES','GOMEZ CARVAGAL','M',1198246,1193567288,3125766156,'mariok2458@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO LOPEZ','GOMEZ CARVAGAL','M',3338246,3333567288,3335766156,'mario31k2458@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
+/* Usuarios para pruebas */
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','SARRIA REVELO','M',1148217,1133567217,3125466517,'jhonypk2417@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JOHAN','SARRIA REVELO','M',1148218,1133567218,3125466518,'jhonypk2418@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CARLOS','SARRIA REVELO','M',1148219,1133567219,3125466519,'jhonypk2419@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148220,1133567220,3125466520,'jhonypk2420@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148221,1133567221,3125466521,'jhonypk2421@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
 /* Programa usuario */
 
 ALTER SEQUENCE programa_usuario_id_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
@@ -225,6 +231,11 @@ insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_us
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'A',5,6);
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',8,7);
 insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',8,8);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,9);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,10);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,11);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,12);
+insert into programa_usuario(fecha_creacion,usu_creador,activo,id_programa,id_usuario) values(now(),0,'S',5,13);
 
 /* Prueba */
 
