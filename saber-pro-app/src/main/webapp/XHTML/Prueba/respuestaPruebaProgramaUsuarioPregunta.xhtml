@@ -34,17 +34,20 @@
 					     
     
 					 
-					<p:panel rendered="#{respuestaPruebaProgramaUsuarioPreguntaView.esSimulacro}" style="position:fixed;right:2%;top:10%;">
+					<p:panel rendered="#{respuestaPruebaProgramaUsuarioPreguntaView.esSimulacro}" style="position:fixed;right:5%;top:15%;">
 						<script>
-							window.sync = function(t) {
-								PF('knob').setValue(t.current);
-							}
+						 window.formatMe = function(value){  
+						        return "The End is near (" + value + ")";  
+						    }  
 						</script>
-						<pe:timer visible="false" ontimerstep="sync(intervalData)"
-							ontimercomplete="alert('BOOM')" timeout="#{respuestaPruebaProgramaUsuarioPreguntaView.tiempo}" />
-						<p:knob min="0" max="#{respuestaPruebaProgramaUsuarioPreguntaView.tiempo}" widgetVar="knob" disabled="true"
-							value="#{respuestaPruebaProgramaUsuarioPreguntaView.tiempo}" >							
-						</p:knob>
+						<style>
+							.ui-widget-header{
+							color:black;
+							
+							}
+						</style>
+						<pe:timer  format="HH:mm:ss"  timeout="#{respuestaPruebaProgramaUsuarioPreguntaView.tiempo}"  />
+						
 					</p:panel>	
 					
 				

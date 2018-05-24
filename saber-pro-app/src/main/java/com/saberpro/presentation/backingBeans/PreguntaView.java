@@ -70,11 +70,7 @@ public class PreguntaView implements Serializable {
     private InputNumber porcentajeAciertoRespuesta3;
     private InputNumber porcentajeAciertoRespuesta4;
     
-    private InputText rutaPregunta;
-    private InputText rutaRespuesta1;
-    private InputText rutaRespuesta2;
-    private InputText rutaRespuesta3;
-    private InputText rutaRespuesta4;
+    
     
     private SelectOneMenu somTipoModulo;
 	private SelectOneMenu somModulo;
@@ -269,11 +265,6 @@ public class PreguntaView implements Serializable {
 		porcentajeAciertoRespuesta3.resetValue();
 		porcentajeAciertoRespuesta4.resetValue();
 		
-		rutaPregunta.resetValue();
-		rutaRespuesta1.resetValue();
-		rutaRespuesta2.resetValue();
-		rutaRespuesta3.resetValue();
-		rutaRespuesta4.resetValue();
 
 		return "";
 	}
@@ -393,7 +384,7 @@ public class PreguntaView implements Serializable {
     			
     			businessDelegatorView.subirFilePregunta(choosePregunta.getInputstream(),ruta);
     			
-    			rutaPregunta.setValue(httpRuta);   			
+    			   			
     			
     			content = content +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
@@ -415,7 +406,7 @@ public class PreguntaView implements Serializable {
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta1.getInputstream(),ruta);
     			
-    			rutaRespuesta1.setValue(httpRuta);   			
+    						
     			
     			contentRespuesta1 = contentRespuesta1 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
@@ -437,7 +428,7 @@ public class PreguntaView implements Serializable {
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta2.getInputstream(),ruta);
     			
-    			rutaRespuesta2.setValue(httpRuta);   			
+    			  			
     			
     			contentRespuesta2 = contentRespuesta2 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
@@ -459,8 +450,7 @@ public class PreguntaView implements Serializable {
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta3.getInputstream(),ruta);
     			
-    			rutaRespuesta3.setValue(httpRuta);   			
-    			
+    		
     			contentRespuesta3 = contentRespuesta3 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
     			FacesUtils.addInfoMessage("Se subio el archivo correctamente");
@@ -481,7 +471,7 @@ public class PreguntaView implements Serializable {
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta4.getInputstream(),ruta);
     			
-    			rutaRespuesta4.setValue(httpRuta);   			
+    						
     			
     			contentRespuesta4 = contentRespuesta4 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
@@ -594,13 +584,7 @@ public class PreguntaView implements Serializable {
 		this.subirPregunta = subirPregunta;
 	}
 
-	public InputText getRutaPregunta() {
-		return rutaPregunta;
-	}
-
-	public void setRutaPregunta(InputText rutaPregunta) {
-		this.rutaPregunta = rutaPregunta;
-	}
+	
 
 	public InputTextarea getTxtRetroalimentacion() {
 		return txtRetroalimentacion;
@@ -642,37 +626,7 @@ public class PreguntaView implements Serializable {
 		this.chooseRespuesta4 = chooseRespuesta4;
 	}
 
-	public InputText getRutaRespuesta1() {
-		return rutaRespuesta1;
-	}
-
-	public void setRutaRespuesta1(InputText rutaRespuesta1) {
-		this.rutaRespuesta1 = rutaRespuesta1;
-	}
-
-	public InputText getRutaRespuesta2() {
-		return rutaRespuesta2;
-	}
-
-	public void setRutaRespuesta2(InputText rutaRespuesta2) {
-		this.rutaRespuesta2 = rutaRespuesta2;
-	}
-
-	public InputText getRutaRespuesta3() {
-		return rutaRespuesta3;
-	}
-
-	public void setRutaRespuesta3(InputText rutaRespuesta3) {
-		this.rutaRespuesta3 = rutaRespuesta3;
-	}
-
-	public InputText getRutaRespuesta4() {
-		return rutaRespuesta4;
-	}
-
-	public void setRutaRespuesta4(InputText rutaRespuesta4) {
-		this.rutaRespuesta4 = rutaRespuesta4;
-	}
+	
 
 	public CommandButton getSubirRespuesta1() {
 		return subirRespuesta1;

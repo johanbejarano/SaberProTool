@@ -131,7 +131,7 @@ public class RespuestaPruebaProgramaUsuarioPreguntaView implements Serializable 
 				
 				businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
 				
-				FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id="+id);	
 			}
 			
 		} catch (Exception e) {

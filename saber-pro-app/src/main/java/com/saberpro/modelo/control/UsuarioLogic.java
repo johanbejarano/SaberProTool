@@ -10,6 +10,7 @@ import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.UsuarioDTO;
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.Email;
+import com.saberpro.utilities.FacesUtils;
 import com.saberpro.utilities.PasswordGenerator;
 import com.saberpro.utilities.Utilities;
 
@@ -618,8 +619,8 @@ public class UsuarioLogic implements IUsuarioLogic {
 
             usuarioDAO.update(usuario);
             
-            String message = "Se reseteo clave de la cuenta correctamente\n\nSu codigo de acesso es: "+usuario.getCodigo()+"\nSu contraseña es: "+password+"\n\nGracias";
-            emailCorreo.sendSimpleMessage(usuario.getCorreo(),"SaberProTool: Reset password",message);
+            String message = FacesUtils.plantillaCorreo(Long.toString(usuario.getCodigo()),password);
+            emailCorreo.sendSimpleHtml(usuario.getCorreo(),"SaberProTool: Reset password",message);
 
             log.debug("update Usuario successful");
         } catch (Exception e) {

@@ -100,6 +100,9 @@ public class PruebaView implements Serializable {
     		else if(estadoPrueba.getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_FINALIZADA){
     			FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id="+idPruebaUsuarioPrograma);
     		}
+    		else if(estadoPrueba.getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_PENDIENTE){
+    			FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaModulo.xhtml?id="+idPruebaUsuarioPrograma);
+    		}
     		
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);

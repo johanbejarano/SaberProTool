@@ -228,8 +228,8 @@ public class PruebaModuloView implements Serializable {
 				for (Modulo modulo : list) {
 					Object[] variable3 = {"modulo.idModulo",true,modulo.getIdModulo(),"="};
 					List<Pregunta> listPregunta = businessDelegatorView.findByCriteriaInPregunta(variable3,null,null);
-					if(listPregunta.size()>=modulo.getCantidadPreguntas())
-						modulosSource.add(modulo);
+					
+					modulosSource.add(modulo);
 					log.info("modulo es " + modulo.getNombre());
 
 				}

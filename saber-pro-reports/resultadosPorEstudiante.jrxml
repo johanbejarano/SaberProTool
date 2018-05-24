@@ -19,7 +19,7 @@
 	</style>
 	<parameter name="P_ID_PRUEBA" class="java.lang.Long"/>
 	<parameter name="P_RUTA_RECURSOS" class="java.lang.String">
-		<defaultValueExpression><![CDATA["/Users/johan/JaspersoftWorkspace/saber-pro-reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\Users\Jaime Sarria\git\SaberProTool\saber-pro-reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select
@@ -357,7 +357,7 @@ group by
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="80" splitType="Immediate">
+		<band height="80" splitType="Stretch">
 			<staticText>
 				<reportElement positionType="Float" x="90" y="20" width="180" height="15" uuid="76accb79-4e4f-470b-890a-b9c402fa823f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
