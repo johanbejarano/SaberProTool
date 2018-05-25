@@ -215,7 +215,7 @@ public class ProgramaView implements Serializable {
 				
 				data = null;
 
-				FacesUtils.addInfoMessage("Se creo el programa correctamente");
+				FacesUtils.addInfoMessage("Se guardo exitosamente  el programa academico");
 				action_clear();
 
 			}
@@ -249,7 +249,7 @@ public class ProgramaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("se actualizo programa correctamente");
+				FacesUtils.addInfoMessage("se actualizo exitosamente el programa academico");
 				action_clear();
 
 			}
@@ -292,7 +292,7 @@ public class ProgramaView implements Serializable {
 	public List<ProgramaDTO> getData() {
 		try {
 			if (data == null) {
-				data = businessDelegatorView.getDataPrograma();
+				data = businessDelegatorView.getDataPrograma(Constantes.ESTADO_ACTIVO);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -12,6 +12,7 @@ import com.saberpro.modelo.TipoUsuario;
 import com.saberpro.modelo.Usuario;
 import com.saberpro.modelo.dto.TipoUsuarioDTO;
 import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
+import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.FacesUtils;
 
 import java.io.Serializable;
@@ -63,7 +64,7 @@ public class TipoUsuarioView implements Serializable {
 
 	// Variable que se realiza un value con tipoUsuario.xhtml mostrar los datos del
 	// datatable
-	private List<TipoUsuarioDTO> data;
+	private List<TipoUsuario> data;
 
 	// Instancia de tipo de usuario con la que se opera
 	private TipoUsuario entity;
@@ -209,7 +210,7 @@ public class TipoUsuarioView implements Serializable {
 				//Se setean la lista de tipo de usuario del datatable
 				data = null;
 				//Se limpia la vista y se indica mensaje exito 
-				FacesUtils.addInfoMessage("Se creo tipo de usuario correctamente");
+				FacesUtils.addInfoMessage("Se guardo exitosamente el tipo de usuario");
 				action_clear();
 
 			}
@@ -248,7 +249,7 @@ public class TipoUsuarioView implements Serializable {
 				//Se setean la lista de tipo de usuario del datatable
 				data = null;
 				//Se limpia la vista y se indica mensaje exito 
-				FacesUtils.addInfoMessage("Se actualizo tipo de usuario correctamente");
+				FacesUtils.addInfoMessage("Se actualizo exitosamente el tipo de usuario");
 				action_clear();
 
 			}
@@ -279,10 +280,11 @@ public class TipoUsuarioView implements Serializable {
 		this.txtNombre = txtNombre;
 	}
 
-	public List<TipoUsuarioDTO> getData() {
+	public List<TipoUsuario> getData() {
 		try {
 			if (data == null) {
-				data = businessDelegatorView.getDataTipoUsuario();
+				Object[] variable = {"activo",true,Constantes.ESTADO_ASIGNADO,"<>"};
+				data = businessDelegatorView.findByCriteriaInTipoUsuario(variable, null,null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -291,8 +293,8 @@ public class TipoUsuarioView implements Serializable {
 		return data;
 	}
 
-	public void setData(List<TipoUsuarioDTO> tipoUsuarioDTO) {
-		this.data = tipoUsuarioDTO;
+	public void setData(List<TipoUsuario> tipoUsuario) {
+		this.data = tipoUsuario;
 	}
 
 	public CommandButton getBtnSave() {

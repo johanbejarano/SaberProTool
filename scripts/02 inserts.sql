@@ -85,7 +85,7 @@ insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) v
 insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DOCENTE','Rol que alimenta el banco de preguntas del programa que este asignado',now(),0,'S');
 insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DIRECTOR','Rol que administra todo refente a un programa que este asignado,puede consultar y ver informes especificos',now(),0,'A');
 insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('DECANO','Rol que administra todo referente a una facultad,puede consultar y ver informes generales',now(),0,'A');
-insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ADMIN','Rol que administra todo el sistema',now(),0,'M');
+insert into tipo_usuario(nombre,descripcion,fecha_creacion,usu_creador,activo) values('ADMIN','Rol que administra todo el sistema',now(),0,'A');
 
 /* Tipo modulo*/
 

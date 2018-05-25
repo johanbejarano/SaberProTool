@@ -11,12 +11,12 @@
 			<p:panel id="panelTipoPrueba" header="Tipo de Prueba">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" binding="#{tipoPruebaView.txtNombre}" size="50">
-						<p:keyFilter regEx="/[a-zA-Z ]/"/>
+					<p:inputText id="txtNombre" binding="#{tipoPruebaView.txtNombre}"
+						size="50">
 						<p:ajax update="panelTipoPrueba,msg"
 							listener="#{tipoPruebaView.listener_txtId}" />
 					</p:inputText>
-					<h:outputText id="msgDescripcion" value=" Descripcion" />
+					<h:outputText id="msgDescripcion" value=" Descripciòn" />
 					<p:inputTextarea id="txtDescripcion" rows="5" cols="49"
 						counter="display" maxlength="1200"
 						counterTemplate="{0} caracteres restantes" autoResize="false"
@@ -29,19 +29,25 @@
 						<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
 						<f:selectItem itemValue="S" itemLabel="SI" />
 						<f:selectItem itemValue="N" itemLabel="NO" />
-						<p:ajax update="panelTipoPrueba,msg" listener="#{tipoPruebaView.action_validar}" />
+						<p:ajax update="panelTipoPrueba,msg"
+							listener="#{tipoPruebaView.action_validar}" />
 					</p:selectOneMenu>
 				</h:panelGrid>
 				<div>
 					<p:commandButton id="btnSave" binding="#{tipoPruebaView.btnSave}"
-						disabled="true" value="Crear"
+						disabled="true" value="Crear" onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
 						action="#{tipoPruebaView.action_create()}"
 						update="panelTipoPrueba,msg,panelTable" />
 					<p:commandButton id="btnModify"
 						binding="#{tipoPruebaView.btnModify}" disabled="true"
-						value="Actualizar" action="#{tipoPruebaView.action_modify()}"
+						value="Actualizar" onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
+						action="#{tipoPruebaView.action_modify()}"
 						update="panelTipoPrueba,msg,panelTable" />
 					<p:commandButton id="btnClear" value="Limpiar"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
 						action="#{tipoPruebaView.action_clear()}"
 						update="panelTipoPrueba,msg,panelTable" />
 				</div>
@@ -68,12 +74,16 @@
 								</p:selectOneButton>
 							</f:facet>
 							<center>
-							<h:outputText value="#{tipoPrueba.activo.equals('S') ? 'Sí': 'No'}" />
+								<h:outputText
+									value="#{tipoPrueba.activo.equals('S') ? 'Sí': 'No'}" />
 							</center>
 						</p:column>
 						<p:column headerText="Editar">
-							<center><p:commandButton value="Editar" update="formDialog"
-								action="#{tipoPruebaView.editar_action(tipoPrueba.nombre)}" />
+							<center>
+								<p:commandButton value="Editar" update="formDialog"
+									onstart="PF('statusDialog').show()"
+									onsuccess="PF('statusDialog').hide()"
+									action="#{tipoPruebaView.editar_action(tipoPrueba.nombre)}" />
 							</center>
 						</p:column>
 					</p:dataTable>

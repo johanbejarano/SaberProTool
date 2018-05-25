@@ -11,12 +11,12 @@
 			<p:panel id="panelTipoPregunta" header="Tipo de Pregunta">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText id="msgNombre" value=" Nombre" />
-					<p:inputText id="txtNombre" binding="#{tipoPreguntaView.txtNombre}" size="50">
-						<p:keyFilter regEx="/[a-zA-Z ]/"/>
+					<p:inputText id="txtNombre" binding="#{tipoPreguntaView.txtNombre}"
+						size="50">
 						<p:ajax update="panelTipoPregunta,msg"
 							listener="#{tipoPreguntaView.listener_txtId}" />
 					</p:inputText>
-					<h:outputText id="msgDescripcion" value=" Descripcion" />
+					<h:outputText id="msgDescripcion" value=" Descripciòn" />
 					<p:inputTextarea id="txtDescripcion" rows="5" cols="49"
 						counter="display" maxlength="1200"
 						counterTemplate="{0} caracteres restantes" autoResize="false"
@@ -29,19 +29,25 @@
 						<f:selectItem itemValue="#{null}" itemLabel="-------------------" />
 						<f:selectItem itemValue="S" itemLabel="SI" />
 						<f:selectItem itemValue="N" itemLabel="NO" />
-						<p:ajax update="panelTipoPregunta,msg" listener="#{tipoPreguntaView.action_validar}" />
+						<p:ajax update="panelTipoPregunta,msg"
+							listener="#{tipoPreguntaView.action_validar}" />
 					</p:selectOneMenu>
 				</h:panelGrid>
 				<div>
 					<p:commandButton id="btnSave" binding="#{tipoPreguntaView.btnSave}"
-						disabled="true" value="Crear"
+						disabled="true" value="Crear" onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
 						action="#{tipoPreguntaView.action_create()}"
 						update="panelTipoPregunta,msg,panelTable" />
 					<p:commandButton id="btnModify"
 						binding="#{tipoPreguntaView.btnModify}" disabled="true"
-						value="Actualizar" action="#{tipoPreguntaView.action_modify()}"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()" value="Actualizar"
+						action="#{tipoPreguntaView.action_modify()}"
 						update="panelTipoPregunta,msg,panelTable" />
 					<p:commandButton id="btnClear" value="Limpiar"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
 						action="#{tipoPreguntaView.action_clear()}"
 						update="panelTipoPregunta,msg,panelTable" />
 				</div>
@@ -68,14 +74,17 @@
 								</p:selectOneButton>
 							</f:facet>
 							<center>
-							<h:outputText value="#{tipoPregunta.activo.equals('S') ? 'Sí': 'No'}" />
+								<h:outputText
+									value="#{tipoPregunta.activo.equals('S') ? 'Sí': 'No'}" />
 							</center>
 						</p:column>
-						<p:column headerText="Editar" >
-						<center>
-							<p:commandButton value="Editar" update="formDialog"
-								action="#{tipoPreguntaView.editar_action(tipoPregunta.nombre)}" />
-						</center>
+						<p:column headerText="Editar">
+							<center>
+								<p:commandButton value="Editar" update="formDialog"
+									onstart="PF('statusDialog').show()"
+									onsuccess="PF('statusDialog').hide()"
+									action="#{tipoPreguntaView.editar_action(tipoPregunta.nombre)}" />
+							</center>
 						</p:column>
 					</p:dataTable>
 				</div>

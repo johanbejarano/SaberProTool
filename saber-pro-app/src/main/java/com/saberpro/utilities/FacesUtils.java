@@ -496,126 +496,22 @@ public class FacesUtils {
 		Date fecha = new Date();
 		SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat formatHora = new SimpleDateFormat("HH:mm");
-		String text="<!DOCTYPE html>" + 
-				"<html>" + 
-				"<head>" + 
-				"	<title></title>" + 
-				"</head>" + 
-				"<body>" + 
-				"	<style type=\"text/css\">" + 
-				"		@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);" + 
-				"* {" + 
-				"  transition: all 0.15s;" + 
-				"}" + 
-				"" + 
-				"body {" + 
-				"  background: #fff;" + 
-				"  color: #999998;" + 
-				"  font-family: 'Open Sans', sans-serif;" + 
-				"}" + 
-				"" + 
-				".wrap {" + 
-				"  box-shadow: 0 0 10px rgba(200, 201, 201, 0.5);" + 
-				"  background: #fff;" + 
-				"  width: 350px;" + 
-				"  position: absolute;" + 
-				"  top: 50%;" + 
-				"  left: 50%;" + 
-				"  -webkit-transform: translateX(-50%) translateY(-50%);" + 
-				"          transform: translateX(-50%) translateY(-50%);" + 
-				"}" + 
-				".wrap .block-text {" + 
-				"  padding: 25px;" + 
-				"}" + 
-				".wrap .block-text h1 {" + 
-				"  color: #B7AA9C;" + 
-				"  font-size: 20px;" + 
-				"  margin: 30px 0;" + 
-				"}" + 
-				".wrap .block-text hr {" + 
-				"  display: block;" + 
-				"  border: none;" + 
-				"  margin: 0;" + 
-				"  width: 30px;" + 
-				"  background: #efefef;" + 
-				"  margin-bottom: 25px;" + 
-				"  height: 2px;" + 
-				"}" + 
-				".wrap .block-text p {" + 
-				"  font-weight: 300;" + 
-				"  line-height: 20px;" + 
-				"  font-size: 14px;" + 
-				"}" + 
-				".wrap .block-date {" + 
-				"  position: relative;" + 
-				"  width: 100%;" + 
-				"  overflow: hidden;" + 
-				"}" + 
-				".wrap .block-date-bg {" + 
-				"  position: absolute;" + 
-				"  bottom: 0;" + 
-				"  left: 0;" + 
-				"  overflow: hidden;" + 
-				"  width: 100%;" + 
-				"}" + 
-				".wrap .date {" + 
-				"  color: #fff;" + 
-				"  position: relative;" + 
-				"  z-index: 1;" + 
-				"  font-weight: 300;" + 
-				"  letter-spacing: 1px;" + 
-				"  padding: 0px 30px 15px 30px;" + 
-				"  font-size: 18px;" + 
-				"  opacity: 0;" + 
-				"  transition: all 0.25s;" + 
-				"  -webkit-transform: translateY(40px);" + 
-				"          transform: translateY(40px);" + 
-				"}" + 
-				".wrap .day {" + 
-				"  float: left;" + 
-				"}" + 
-				".wrap .time {" + 
-				"  float: right;" + 
-				"}" + 
-				".wrap span {" + 
-				"  display: block;" + 
-				"  float: left;" + 
-				"  height: 10px;" + 
-				"  bottom: 0;" + 
-				"  left: 0;" + 
-				"  content: '';" + 
-				"}\r\n" + 
-				".wrap span.dark {" + 
-				"  background: #5FB2B2;" + 
-				"}" + 
-				".wrap span.light {" + 
-				"  background: #9BCFCF;" + 
-				"}" + 
-				".wrap span.percent-75 {" + 
-				"  width: 75%;" + 
-				"}" + 
-				".wrap span.percent-25 {" + 
-				"  width: 25%;" + 
-				"}" + 
-				"" + 
-				"" + 
-				"	</style>" + 
-				"<div class='wrap'>" + 
-				"  <div class='block-text'>" + 
-				"    <h1>Saber pro tool</h1>" + 
-				"    <hr/>" + 
-				"    <p>codigo :"+codigo+"</p>" + 
-				"    <p>clave :"+pass+"</p>" + 
+		String text=
+				"<div style='background: #fff;color: #999998;font-family:'Open Sans', sans-serif;width:100%;height:100%'>"+
+				"<div style='box-shadow: 0 0 10px rgba(200, 201, 201, 0.5);background: #fff;width: 350px;position: absolute;top: 50%;left: 50%;'>" + 
+				"  <div class='block-text'>\r\n" + 
+				"    <h1>Saber Pro Tool</h1>\r\n" + 
+				"    <hr/>\r\n" + 
+				"    <p>Codigo: "+codigo+"<br/>\r\n" + 
+				"    Clave "+pass+"</p>\r\n" +
 				"  </div>\r\n" + 
-				"  <div class='block-date'>" + 
-				"    <p class='date day'></p>" + 
-				"    <p class='date time'></p>" + 
-				"    <div class='block-date-bg'><span class='percent-75 dark'></span><span class='percent-25 light'></span></div>" + 
-				"  </div>" + 
-				"</div>" + 
-				"</body>" + 
-				"</html>"
-				;
+				"  <div class=\"block-date\">\r\n" + 
+				"    <p class=\"date day\">"+formatFecha.format(fecha)+"</p>\r\n" + 
+				"    <p class=\"date time\">"+formatHora.format(fecha)+"</p>\r\n" + 
+				"    <div class=\"block-date-bg\"><span class=\"percent-75 dark\"></span><span class=\"percent-25 light\"></span></div>\r\n" + 
+				"  </div>\r\n" + 
+				"</div>"+
+				"</div>";
 		
 		return text;
 	}

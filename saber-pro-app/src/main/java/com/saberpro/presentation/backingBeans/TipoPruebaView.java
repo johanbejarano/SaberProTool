@@ -154,7 +154,7 @@ public class TipoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se creo tipo prueba exitosamente");
+				FacesUtils.addInfoMessage("Se guardo exitosamente el tipo de prueba");
 				action_clear();
 
 			}
@@ -187,7 +187,7 @@ public class TipoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo tipo prueba exitosamente");
+				FacesUtils.addInfoMessage("Se actualizo exitosamente el tipo de prueba");
 				action_clear();
 
 			}

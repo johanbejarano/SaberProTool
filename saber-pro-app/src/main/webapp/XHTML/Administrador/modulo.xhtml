@@ -12,11 +12,10 @@
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText value=" Nombre" />
 					<p:inputText binding="#{moduloView.txtNombre}" size="50">
-						<p:keyFilter regEx="/[a-zA-Z ]/"/>
 						<p:ajax update="panelModulo,msg"
 							listener="#{moduloView.listener_txtId}" />
 					</p:inputText>
-					<h:outputText value=" Descripcion" />
+					<h:outputText value=" Descripciòn" />
 					<p:inputTextarea rows="5" cols="49" counter="display"
 						maxlength="1200" counterTemplate="{0} caracteres restantes"
 						autoResize="false" binding="#{moduloView.txtDescripcion}" />
@@ -54,12 +53,18 @@
 				</h:panelGrid>
 				<div>
 					<p:commandButton binding="#{moduloView.btnSave}"
-						action="#{moduloView.action_create}" disabled="true" value="Save"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
+						action="#{moduloView.action_create}" disabled="true" value="Crear"
 						update="panelModulo,msg,panelTable" />
 					<p:commandButton binding="#{moduloView.btnModify}"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
 						action="#{moduloView.action_modify}" disabled="true"
 						value="Actualizar" update="panelModulo,msg,panelTable" />
-					<p:commandButton value="Clear" action="#{moduloView.action_clear}"
+					<p:commandButton value="Limpiar" action="#{moduloView.action_clear}"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
 						update="panelModulo,msg,panelTable" />
 				</div>
 			</p:panel>
@@ -85,7 +90,7 @@
 							<p:outputLabel
 								value="#{moduloView.getTipoModulo(modulo.idTipoModulo_TipoModulo)}" />
 						</p:column>
-						<p:column headerText="Activo" 
+						<p:column headerText="Activo"
 							filterBy="#{modulo.activo.equals('S')}" filterMatchMode="equals">
 							<f:facet name="filter">
 								<p:selectOneButton onchange="PF('modTable').filter()">
@@ -96,19 +101,21 @@
 								</p:selectOneButton>
 							</f:facet>
 							<center>
-							<h:outputText value="#{modulo.activo.equals('S') ? 'Sí': 'No'}" />
+								<h:outputText value="#{modulo.activo.equals('S') ? 'Sí': 'No'}" />
 							</center>
 						</p:column>
-						<p:column headerText="Editar" >
-						<center>
-							<p:commandButton value="Editar" update="formDialog"
-								action="#{moduloView.editar_action(modulo.nombre)}" />
-						</center>
+						<p:column headerText="Editar">
+							<center>
+								<p:commandButton value="Editar" update="formDialog"
+									onstart="PF('statusDialog').show()"
+									onsuccess="PF('statusDialog').hide()"
+									action="#{moduloView.editar_action(modulo.nombre)}" />
+							</center>
 						</p:column>
 					</p:dataTable>
 				</div>
 			</p:panel>
-			
+
 		</h:form>
 	</ui:define>
 </ui:composition>

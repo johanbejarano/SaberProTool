@@ -204,7 +204,7 @@ public class ModuloView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se creo el modulo correctamente");
+				FacesUtils.addInfoMessage("Se guardo exitosamente el modulo");
 				action_clear();
 
 			}
@@ -240,7 +240,7 @@ public class ModuloView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo correctamente el modulo");
+				FacesUtils.addInfoMessage("Se actualizo exitosamente el modulo");
 				action_clear();
 
 			}
@@ -280,7 +280,7 @@ public class ModuloView implements Serializable {
     public List<ModuloDTO> getData() {
         try {
             if (data == null) {
-                data = businessDelegatorView.getDataModulo();
+                data = businessDelegatorView.getDataModulo(Constantes.ESTADO_ACTIVO);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -350,7 +350,7 @@ public class ModuloView implements Serializable {
 		if(lasTipoModuloSelectItem==null) {
 			lasTipoModuloSelectItem = new ArrayList<>();
 			try {
-				for (TipoModulo tipoModulo:businessDelegatorView.getTipoModulo()) {
+				for (TipoModulo tipoModulo:businessDelegatorView.getTipoModulo(Constantes.ESTADO_ACTIVO)) {
 					lasTipoModuloSelectItem.add(new SelectItem(tipoModulo.getIdTipoModulo(), tipoModulo.getNombre()));
 				}
 			} catch (Exception e) {

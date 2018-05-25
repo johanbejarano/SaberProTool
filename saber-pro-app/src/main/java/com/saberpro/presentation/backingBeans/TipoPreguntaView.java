@@ -90,6 +90,7 @@ public class TipoPreguntaView implements Serializable {
 			entity = businessDelegatorView.findByNombreTipoPregunta(nombre);
 
 		} catch (Exception e) {
+			log.error("Error consultando el tipo de pregunta "+e.getMessage(),e);
 			entity = null;
 		}
 
@@ -100,7 +101,7 @@ public class TipoPreguntaView implements Serializable {
 			txtDescripcion.resetValue();
 			somActivo.resetValue();			
 			
-			btnSave.setDisabled(false);
+			btnSave.setDisabled(true);
 			btnModify.setDisabled(true);
 
 		} else {
@@ -112,7 +113,7 @@ public class TipoPreguntaView implements Serializable {
 			somActivo.setValue(entity.getActivo());
 			
 			btnSave.setDisabled(true);
-			btnModify.setDisabled(false);
+			btnModify.setDisabled(true);
 		}
 		action_validar();
 	}
@@ -176,7 +177,7 @@ public class TipoPreguntaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se creo tipo pregunta exitosamente");
+				FacesUtils.addInfoMessage("Se guardo exitosamente el tipo de pregunta");
 				action_clear();
 
 			}
@@ -209,7 +210,7 @@ public class TipoPreguntaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo tipo pregunta exitosamente");
+				FacesUtils.addInfoMessage("Se actualizo exitosamente el tipo de pregunta");
 				action_clear();
 
 			}
