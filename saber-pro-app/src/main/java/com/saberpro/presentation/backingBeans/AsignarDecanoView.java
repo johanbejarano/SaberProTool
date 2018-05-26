@@ -71,16 +71,25 @@ public class AsignarDecanoView implements Serializable {
 	}	
 	
 	public void asignar() {
+		//Try para capturar y manejar excepciones
 		try {
+			//se instancia un nuevo usuario con el usuaro loggeado en la sesión
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			//Se verifica que el usuario exista y el combo de facultad no esté vacío
 			if(usuario!=null && FacesUtils.checkString(somFacultad)!=null) {
+				
 				long codigo = Long.parseLong(txtCodigo.getValue().toString());
 				//Usuario
+				//Instancia de los parámetros de busqueda para el método findByCriteria, en este caso, el código del usuario
 				Object[] variable = {"codigo",true,codigo,"="};
+				//Lista de usuarios del sistema
 				List<Usuario> listUser = businessDelegatorView.findByCriteriaInUsuario(variable,null,null);
+				//Lista de usuarios tipo Decano del sistema
 				List<Usuario> listDecano = businessDelegatorView.findByTipoUsuarioFacultadUsuario(FacesUtils.checkInteger(somFacultad),Constantes.USER_TYPE_DECANO);
 				if(listUser.size()!=0) {
+					//instancia del decano, usando la primera posición de la lista de usuarios
 					Usuario decano = listUser.get(0);
+					//Se comprueba que la listaDecano no esté vacía
 					if(listDecano.size()!=0) {
 						Usuario despedido = listDecano.get(0);
 						Object[] variable2 = {"usuario.idUsuario",true,despedido.getIdUsuario(),"="};

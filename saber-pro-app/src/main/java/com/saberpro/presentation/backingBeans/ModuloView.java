@@ -85,17 +85,17 @@ public class ModuloView implements Serializable {
     	txtNombre.setValue(nombre);
     	listener_txtId();
     }
-    
+    //Listener para txtNombre 
     public void listener_txtId() {
 		try {
 			String nombre = txtNombre.getValue().toString().trim();			
-
+			//Se consulta el módulo por nombre
 			entity = businessDelegatorView.findByNombreModulo(nombre);
 
 		} catch (Exception e) {
 			entity = null;			
 		}
-
+		//Si no se encuntra un módulo con ese nombre, se habilita la función de crear uno nuevo
 		if (entity == null) {
 			
 			crear = true;
@@ -110,7 +110,7 @@ public class ModuloView implements Serializable {
 
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
-
+			//Si existe un módulo con ese nombre, se setean los datos del módulo en los campos de la vista
 		} else {
 			
 			crear = false;
@@ -162,7 +162,7 @@ public class ModuloView implements Serializable {
     	}
     	   	
     }
-    
+    //Método para limpiar los campos de la vista
     public String action_clear() {
 
 		entity = null;
@@ -182,15 +182,15 @@ public class ModuloView implements Serializable {
 
 		return "";
 	}
-    
+    //Método para crear un módulo
     public String action_create() {
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
 			if (usuario != null) {				
-				
+				//Se instancia un nuevo módulo
 				entity = new Modulo();
-				
+				//Se hidratan los datos del objeto módulo
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));				
 				entity.setActivo(FacesUtils.checkString(somActivo));
@@ -199,7 +199,7 @@ public class ModuloView implements Serializable {
 				entity.setFechaCreacion(new Date());
 				entity.setUsuCreador(usuario.getIdUsuario());
 				entity.setTipoModulo(businessDelegatorView.getTipoModulo(FacesUtils.checkLong(somTipoModulo)));
-				
+				//se crea el nuevo módulo
 				businessDelegatorView.saveModulo(entity);			
 
 				data = null;
@@ -217,16 +217,16 @@ public class ModuloView implements Serializable {
 		return "";
 
 	}
-    
+    //Método para modificar un módulo
     public String action_modify() {
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 			String nombre = FacesUtils.checkString(txtNombre);
 
 			if (usuario != null) {				
-				
+				//Se consulta el módulo por nombre
 				entity = businessDelegatorView.findByNombreModulo(nombre);
-				
+				//Se modifican los datos del módulo encontrado
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));				
 				entity.setCantidadPreguntas(FacesUtils.checkLong(txtCantPreguntas));
@@ -235,7 +235,7 @@ public class ModuloView implements Serializable {
 				entity.setFechaModificacion(new Date());
 				entity.setUsuModificador(usuario.getIdUsuario());
 				entity.setTipoModulo(businessDelegatorView.getTipoModulo(FacesUtils.checkLong(somTipoModulo)));
-				
+				//Se actualiza el objeto módulo con los nuevos datos
 				businessDelegatorView.updateModulo(entity);			
 
 				data = null;

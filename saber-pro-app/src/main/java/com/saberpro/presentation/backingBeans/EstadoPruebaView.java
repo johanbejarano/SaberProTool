@@ -140,7 +140,8 @@ public class EstadoPruebaView implements Serializable {
     	}
     	   	
     }
-
+	
+	//Limpiar pantalla
 	public String action_clear() {
 
 		entity = null;
@@ -154,21 +155,26 @@ public class EstadoPruebaView implements Serializable {
 
 		return "";
 	}
-
+	
+	//Creacón de estados de la prueba
 	public String action_create() {
 		try {
+			//Se valida la sesión del usuario
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
 			if (usuario != null) {
-
+				
+				//instancia de un nuevo estado
 				entity = new EstadoPrueba();
-
+				
+				//Se hidrata el objeto estado
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaCreacion(new Date());
 				entity.setUsuCreador(usuario.getIdUsuario());
-
+				
+				//Se crea el nuevo estado
 				businessDelegatorView.saveEstadoPrueba(entity);
 
 				data = null;
@@ -186,22 +192,27 @@ public class EstadoPruebaView implements Serializable {
 		return "";
 	}
 
+	//método para modificar un estado creado
 	public String action_modify() {
 
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 			String nombre = FacesUtils.checkString(txtNombre);
-
+			
+			//Se valida que haya un usuario logeado
 			if (usuario != null) {
-
+				
+				//Se consulta el estado a modificar
 				entity = businessDelegatorView.findByNombreEstadoPrueba(nombre);
-
+				
+				//Se actualizan los datos del estado
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaModificacion(new Date());
 				entity.setUsuModificador(usuario.getIdUsuario());
 
+				//se actualiza el estado
 				businessDelegatorView.updateEstadoPrueba(entity);
 
 				data = null;

@@ -81,17 +81,21 @@ public class FacultadView implements Serializable {
 		txtNombre.setValue(nombre);
 		listener_txtId();
 	}
-
+	
+	//listener para el txtId 
 	public void listener_txtId() {
 		try {
+			//Se obtiene el contenido del txtNombre
 			String nombreFacultad = txtNombre.getValue().toString().trim();
-
+			
+			//se consulta la facultad por nombre
 			entity = businessDelegatorView.findByNombreFacultad(nombreFacultad);
 
 		} catch (Exception e) {
 			entity = null;
 		}
-
+		
+		//Si no hay ninguna facultad por ese nombre se habilitan y deshabilitan los campos de abajo
 		if (entity == null) {
 
 			crear = true;
@@ -101,7 +105,8 @@ public class FacultadView implements Serializable {
 
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
-
+			//si se encuentra una facultad con ese nombre, se setean los valores de la facultad en los campos de la vista
+			
 		} else {
 
 			crear = false;
@@ -154,26 +159,31 @@ public class FacultadView implements Serializable {
 
 		return "";
 	}
-
+	
+	//Metodo para crear una facultad
 	public String action_create() {
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
 			if (usuario != null) {
-
+				
+				//Se instancia una nueva facultad
 				entity = new Facultad();
-
+				
+				//Se hidrata la instancia de facultad con los datos de abajo
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaCreacion(new Date());
 				entity.setUsuCreador(usuario.getIdUsuario());
-
+				
+				//se guarda la nueva facultad
 				businessDelegatorView.saveFacultad(entity);
 
 				data = null;
 
 				FacesUtils.addInfoMessage("Se guardo exitosamente la facultad");
+				//se limpian los datos
 				action_clear();
 
 			}
@@ -185,23 +195,25 @@ public class FacultadView implements Serializable {
 
 		return "";
 	}
-
+	//método para modificar una facultad
 	public String action_modify() {
 
 		try {
+			
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 			String nombreFacultad = FacesUtils.checkString(txtNombre);
 
 			if (usuario != null) {
-
+				//se consulta la facultad por nombre
 				entity = businessDelegatorView.findByNombreFacultad(nombreFacultad);
-
+				//se modifican los datos de la facultad consultada anteriormente
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaModificacion(new Date());
 				entity.setUsuModificador(usuario.getIdUsuario());
 
+				//se actualizan los datos 
 				businessDelegatorView.updateFacultad(entity);
 
 				data = null;

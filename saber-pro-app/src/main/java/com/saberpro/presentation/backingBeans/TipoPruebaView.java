@@ -67,13 +67,13 @@ public class TipoPruebaView implements Serializable {
 	public void listener_txtId() {
 		try {
 			String nombre = txtNombre.getValue().toString().trim();
-
+			//Se consulta si hay un tipo de prueba con ese nombre
 			entity = businessDelegatorView.findByNombreTipoPrueba(nombre);
 
 		} catch (Exception e) {
 			entity = null;
 		}
-
+		//Si no hay un tipo de prueba con ese nombre, se desbloquea la función de crear uno nuevo
 		if (entity == null) {
 
 			crear = true;
@@ -83,7 +83,7 @@ public class TipoPruebaView implements Serializable {
 
 			btnSave.setDisabled(false);
 			btnModify.setDisabled(true);
-
+		//De lo contrario se setean los datos del tipo de prueba encontrado con ese nombre
 		} else {
 
 			crear = false;
@@ -135,21 +135,22 @@ public class TipoPruebaView implements Serializable {
 
 		return "";
 	}
-
+	//método para crear un tipo de prueba
 	public String action_create() {
 		try {
 			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
 
 			if (usuario != null) {
-
+				//se instancia un nuevo tipo de prueba
 				entity = new TipoPrueba();
-
+				
+				//se hidrata el nuevo objeto tipoprueba
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaCreacion(new Date());
 				entity.setUsuCreador(usuario.getIdUsuario());
-
+				//se guarda el nuevo objeto con sus datos
 				businessDelegatorView.saveTipoPrueba(entity);
 
 				data = null;
@@ -166,7 +167,7 @@ public class TipoPruebaView implements Serializable {
 
 		return "";
 	}
-
+	//método para modificar un tipo de prueba
 	public String action_modify() {
 
 		try {
@@ -174,15 +175,15 @@ public class TipoPruebaView implements Serializable {
 			String nombre = FacesUtils.checkString(txtNombre);
 
 			if (usuario != null) {
-
+				//Se consulta el tipo de prueba por nombre
 				entity = businessDelegatorView.findByNombreTipoPrueba(nombre);
-
+				//Se modifican los datos del objeto tipo prueba
 				entity.setDescripcion(FacesUtils.checkString(txtDescripcion));
 				entity.setNombre(FacesUtils.checkString(txtNombre).toUpperCase());
 				entity.setActivo(FacesUtils.checkString(somActivo));
 				entity.setFechaModificacion(new Date());
 				entity.setUsuModificador(usuario.getIdUsuario());
-
+				//Se actualizan los datos del tipo de prueba
 				businessDelegatorView.updateTipoPrueba(entity);
 
 				data = null;
