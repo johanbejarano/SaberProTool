@@ -8,16 +8,14 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelPrueba" header="Prueba" style="border:0;">
-				<h:panelGrid columns="2" id="panelGrid" style="margin:20px;">
-					<h:outputText value=" Tipo de prueba" style=" margin:10px 30px 0 0;" />
-					<p:selectOneMenu id="somActivo" binding="#{pruebaView.somTipoPrueba}">
-						<f:selectItem itemValue="#{null}" itemLabel="Selecione el tipo de prueba" />
-						<f:selectItems value="#{pruebaView.lasTipoPruebaSelectItem}"/>
-						<p:ajax update="panelPrueba,msg" listener="#{pruebaView.verificar}" />
-					</p:selectOneMenu>
-				</h:panelGrid>
-				<p:commandButton update="msg" value="Generar nueva prueba que desea realizar" action="#{pruebaView.createPrueba}" binding="#{pruebaView.btnGenerar}"  disabled="true" styleClass="btn btn-primary" style="margin-left:20px;"/>
+			<p:panel id="panelPrueba" header="Realizar entrenamiento"
+				style="border:0;">
+				<p:commandButton update="msg" onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()"
+					value="Generar nueva entrenamiento"
+					action="#{pruebaView.createEntrenamiento}"
+					binding="#{pruebaView.btnGenerar}" styleClass="btn btn-primary"
+					style="margin-left:20px;" />
 			</p:panel>
 			<p:panel id="panelMisPrueba" header="Mis prueba" style="border:0;">
 			</p:panel>
@@ -26,28 +24,35 @@
 					<p:dataTable id="dataPrueba" value="#{pruebaView.data}"
 						var="prueba" reflow="true" resizableColumns="true"
 						scrollable="true" scrollHeight="300" widgetVar="modTable">
-						
+
 						<p:column headerText="Tipo Prueba">
-							<p:outputLabel value="#{pruebaView.getTipoPrueba(prueba.prueba.idPrueba)}" />
+							<p:outputLabel
+								value="#{pruebaView.getTipoPrueba(prueba.prueba.idPrueba)}" />
+						</p:column>
+						<p:column headerText="Fecha">
+							<p:outputLabel value="#{prueba.fechaModificacion}" />
 						</p:column>
 						<p:column headerText="Estado Prueba">
-							<p:outputLabel value="#{pruebaView.getEstadoPrueba(prueba.estadoPrueba.idEstadoPrueba)}" />
+							<p:outputLabel
+								value="#{pruebaView.getEstadoPrueba(prueba.estadoPrueba.idEstadoPrueba)}" />
 						</p:column>
 						<p:column>
-							<p:commandButton value="Ver" action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}"/>
-							
-							<p:commandLink 
-								actionListener="#{pruebaView.action_seleccionarPrueba(prueba)}" 
+							<p:commandButton value="Ver"
+								action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}" />
+							<p:commandButton value="Revisar" />
+
+							<p:commandLink
+								actionListener="#{pruebaView.action_seleccionarPrueba(prueba)}"
 								ajax="false">
-							
+
 								<p:fileDownload value="#{pruebaView.reportePDF}" />
-							
+
 								<h:graphicImage
 									url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/pdf-icon.png"
-									style="width: 32px; height: 32px;"/>
-								
+									style="width: 32px; height: 32px;" />
+
 							</p:commandLink>
-							
+
 						</p:column>
 					</p:dataTable>
 				</div>

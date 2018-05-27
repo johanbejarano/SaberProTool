@@ -75,92 +75,117 @@ public class PruebaModuloView implements Serializable {
 		super();
 	}
 
-	@PostConstruct
-	public void comprobar() {
-		try {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			Map params = facesContext.getExternalContext().getRequestParameterMap();
-			id = new Long((String) params.get("id"));
-			if (id == null)
-				FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
-		} catch (Exception e) {
-			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
+	/*
+	 * @PostConstruct public void comprobar() { try { FacesContext facesContext =
+	 * FacesContext.getCurrentInstance(); Map params =
+	 * facesContext.getExternalContext().getRequestParameterMap(); id = new
+	 * Long((String) params.get("id")); if (id == null)
+	 * FacesContext.getCurrentInstance().getExternalContext().redirect(
+	 * "prueba.xhtml"); } catch (Exception e) { try {
+	 * FacesContext.getCurrentInstance().getExternalContext().redirect(
+	 * "prueba.xhtml"); } catch (IOException e1) { e1.printStackTrace(); } } }
+	 */
 
-	public void generar(boolean realizar) {
+	public void generar() {
 		try {
 
-			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			Usuario usuario = VariablesSession.usuario;
+			ProgramaUsuario programaUsuario = VariablesSession.programaUsuario;
 
-			if (usuario != null) {
-				
-				List<Modulo> list = modulos.getTarget();
-				pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(id);	
-				prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());			
-				
-				if(list.size()<1) {
-					FacesUtils.addErrorMessage("Debe selecionar al menos 1 modulo para entrenar");
-				}
-				else {
-					for (Modulo modulo : list) {
-						PruebaModulo pruebaModulo = new PruebaModulo();
-						pruebaModulo.setActivo(Constantes.ESTADO_ACTIVO);
-						pruebaModulo.setFechaCreacion(new Date());
-						pruebaModulo.setModulo(modulo);
-						pruebaModulo.setNumeroPreguntas(modulo.getCantidadPreguntas());
-						pruebaModulo.setPrueba(prueba);
-						pruebaModulo.setUsuCreador(usuario.getIdUsuario());
-						
-						businessDelegatorView.savePruebaModulo(pruebaModulo);						
-						
-						List<Pregunta> listPregunta = businessDelegatorView.findByRandomPregunta(modulo.getIdModulo(),modulo.getCantidadPreguntas());
-						for (Pregunta pregunta : listPregunta) {
-							PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta = new PruebaProgramaUsuarioPregunta();
-							pruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
-							pruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
-							pruebaProgramaUsuarioPregunta.setPregunta(pregunta);
-							pruebaProgramaUsuarioPregunta.setPruebaProgramaUsuario(pruebaProgramaUsuario);
-							pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
-							
-							businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
-							
-							RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta = new RespuestaPruebaProgramaUsuarioPregunta();
-							respuestaPruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
-							respuestaPruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
-							respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado(0L);
-							respuestaPruebaProgramaUsuarioPregunta.setPruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
-							respuestaPruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
-							
-							businessDelegatorView.saveRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
-						}
-					}
-					
-					if(realizar) {
-						pruebaProgramaUsuario.setFechaModificacion(new Date());
-						pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
-						pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_INICIADO));
-						businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
-						
-						FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="+pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
-					}
-					else {
-						FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
-					}
-				}
+			if (usuario != null && programaUsuario != null) {
+
+				createEntrenamiento(usuario, programaUsuario);
+
 			}
 
 		} catch (Exception e) {
-			log.error("Error generando preguntas " + e.getMessage(), e);
+			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Error generando entrenamiento " + e.getMessage(), e);
 		}
 	}
 
-	public void generarEmpezar() {
+	/* sub proceso */
+	private void createEntrenamiento(Usuario usuario, ProgramaUsuario programaUsuario) throws Exception {
 
+		prueba = new Prueba();
+		prueba.setActivo(Constantes.ESTADO_ACTIVO);
+		prueba.setFechaCreacion(new Date());
+		prueba.setTipoPrueba(businessDelegatorView.getTipoPrueba(Constantes.PRUEBA_TYPE_ENTRENAMIENTO));
+		prueba.setUsuCreador(usuario.getIdUsuario());
+
+		businessDelegatorView.savePrueba(prueba);
+
+		PruebaProgramaUsuario pruebaProgramaUsuario = new PruebaProgramaUsuario();
+
+		pruebaProgramaUsuario.setActivo(Constantes.ESTADO_ACTIVO);
+		pruebaProgramaUsuario
+				.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_PENDIENTE));
+		pruebaProgramaUsuario.setFechaCreacion(new Date());
+		pruebaProgramaUsuario.setProgramaUsuario(programaUsuario);
+		pruebaProgramaUsuario.setPrueba(prueba);
+		pruebaProgramaUsuario.setUsuCreador(usuario.getIdUsuario());
+
+		businessDelegatorView.savePruebaProgramaUsuario(pruebaProgramaUsuario);
+
+		agregarContenido(usuario, pruebaProgramaUsuario, prueba);
+
+	}
+
+	private void agregarContenido(Usuario usuario, PruebaProgramaUsuario pruebaProgramaUsuario, Prueba prueba)
+			throws Exception {
+
+		List<Modulo> list = modulos.getTarget();
+
+		if (list.size() < 1) {
+			throw new Exception("Debe selecionar al menos un modulo");
+		} else {
+			for (Modulo modulo : list) {
+				PruebaModulo pruebaModulo = new PruebaModulo();
+				pruebaModulo.setActivo(Constantes.ESTADO_ACTIVO);
+				pruebaModulo.setFechaCreacion(new Date());
+				pruebaModulo.setModulo(modulo);
+				pruebaModulo.setNumeroPreguntas(modulo.getCantidadPreguntas());
+				pruebaModulo.setPrueba(prueba);
+				pruebaModulo.setUsuCreador(usuario.getIdUsuario());
+
+				businessDelegatorView.savePruebaModulo(pruebaModulo);
+
+				List<Pregunta> listPregunta = businessDelegatorView.findByRandomPregunta(modulo.getIdModulo(),
+						modulo.getCantidadPreguntas());
+				for (Pregunta pregunta : listPregunta) {
+					PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta = new PruebaProgramaUsuarioPregunta();
+					pruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+					pruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+					pruebaProgramaUsuarioPregunta.setPregunta(pregunta);
+					pruebaProgramaUsuarioPregunta.setPruebaProgramaUsuario(pruebaProgramaUsuario);
+					pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+
+					businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+
+					RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta = new RespuestaPruebaProgramaUsuarioPregunta();
+					respuestaPruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+					respuestaPruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+					respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado(0L);
+					respuestaPruebaProgramaUsuarioPregunta
+							.setPruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+					respuestaPruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+
+					businessDelegatorView
+							.saveRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
+				}
+			}
+
+			pruebaProgramaUsuario.setFechaModificacion(new Date());
+			pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
+			pruebaProgramaUsuario
+					.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_INICIADO));
+			businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+
+			FacesContext.getCurrentInstance().getExternalContext()
+					.redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="
+							+ pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
+
+		}
 	}
 
 	/* Getter and Setter */
@@ -211,14 +236,16 @@ public class PruebaModuloView implements Serializable {
 	public DualListModel<Modulo> getModulos() {
 		if (modulos == null) {
 			try {
-				
+
 				Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
-				
+
 				List<Modulo> modulosSource = new ArrayList<Modulo>();
 				List<Modulo> modulosTarget = new ArrayList<Modulo>();
-				
-				Object[] variable2 = {"usuario.idUsuario",true,usuario.getIdUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
-				ProgramaUsuario entityPrograma = businessDelegatorView.findByCriteriaInProgramaUsuario(variable2,null,null).get(0);	
+
+				Object[] variable2 = { "usuario.idUsuario", true, usuario.getIdUsuario(), "=", "activo", true,
+						Constantes.ESTADO_ACTIVO, "=" };
+				ProgramaUsuario entityPrograma = businessDelegatorView
+						.findByCriteriaInProgramaUsuario(variable2, null, null).get(0);
 
 				Object[] variable = { "tipoModulo.idTipoModulo", true, Constantes.MODULO_TYPE_GENERICO, "=", "activo",
 						true, Constantes.ESTADO_ACTIVO, "=" };
@@ -226,9 +253,9 @@ public class PruebaModuloView implements Serializable {
 				List<Modulo> list = businessDelegatorView.findByCriteriaInModulo(variable, null, null);
 				list.addAll(businessDelegatorView.findByProgramaModulo(entityPrograma.getPrograma().getIdPrograma()));
 				for (Modulo modulo : list) {
-					Object[] variable3 = {"modulo.idModulo",true,modulo.getIdModulo(),"="};
-					List<Pregunta> listPregunta = businessDelegatorView.findByCriteriaInPregunta(variable3,null,null);
-					
+					Object[] variable3 = { "modulo.idModulo", true, modulo.getIdModulo(), "=" };
+					List<Pregunta> listPregunta = businessDelegatorView.findByCriteriaInPregunta(variable3, null, null);
+
 					modulosSource.add(modulo);
 					log.info("modulo es " + modulo.getNombre());
 

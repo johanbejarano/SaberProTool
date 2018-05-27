@@ -15,9 +15,17 @@
 					<p:column headerText="Nombre modulo" >
 						<p:outputLabel value="#{resultado.nombreModulo}" />
 					</p:column>	
-									
-					<p:column headerText="Puntaje %" >
-						<p:outputLabel value="#{resultado.porcentaje}" />
+					<p:column headerText="Preguntas incorrectas" >
+						<p:outputLabel value="#{resultado.incorrecta}" />
+					</p:column>
+					<p:column headerText="Preguntas correctas" >
+						<p:outputLabel value="#{resultado.correcta}" />
+					</p:column>
+					<p:column headerText="Numero de preguntas" >
+						<p:outputLabel value="#{resultado.numero}" />
+					</p:column>									
+					<p:column headerText="Puntuaciòn" >
+						<p:outputLabel value="#{resultado.resultado}" />
 					</p:column>	
 				</p:dataTable>
 			</p:panel>

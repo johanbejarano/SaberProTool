@@ -45,7 +45,7 @@ public class PruebaProgramaUsuarioDAO extends JpaDaoImpl<PruebaProgramaUsuario, 
 
 	@Override
 	public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario, long idPruebaProgramaUsuario) {
-		String sql ="SELECT new com.saberpro.modelo.dto.ResultadosModuloDTO(mod.nombre,(sum(rppup.porcentajeAsignado)/COUNT(*))) "
+		String sql ="SELECT new com.saberpro.modelo.dto.ResultadosModuloDTO(mod.nombre,(count(*)-(sum(rppup.porcentajeAsignado)/100)),(sum(rppup.porcentajeAsignado)/100),(count(*)),(avg(rppup.porcentajeAsignado)*300/100)) "
 				+ " FROM PruebaProgramaUsuario ppu,"
 				+ "		RespuestaPruebaProgramaUsuarioPregunta rppup,"
 				+ "		PruebaProgramaUsuarioPregunta ppup,"

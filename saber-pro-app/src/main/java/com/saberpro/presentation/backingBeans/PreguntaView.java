@@ -98,7 +98,7 @@ public class PreguntaView implements Serializable {
     private List<SelectItem> lasModuloSelectItem;
     private List<SelectItem> lasModuloSelectItemFilter;
     
-    private List<PreguntaDTO> data;
+    private List<Pregunta> data;
     
     private PreguntaDTO selectedPregunta;
     
@@ -483,20 +483,26 @@ public class PreguntaView implements Serializable {
 		}
     }
 
-    public List<PreguntaDTO> getData() {
+    public List<Pregunta> getData() {
         try {
             if (data == null) {
-                data = businessDelegatorView.getDataPregunta();
+            	if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DIRECTOR || VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_ADMIN )
+                data = businessDelegatorView.getPregunta();
+            }
+            else if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DOCENTE) {
+            	Object[] variable = {"usuCreador",true,VariablesSession.usuario.getIdUsuario(),"="};
+            	data = businessDelegatorView.findByCriteriaInPregunta(variable, null, null);
             }
         } catch (Exception e) {
+        	log.error("Error de "+e.getMessage(),e);
             e.printStackTrace();
         }
 
         return data;
     }
 
-    public void setData(List<PreguntaDTO> preguntaDTO) {
-        this.data = preguntaDTO;
+    public void setData(List<Pregunta> pregunta) {
+        this.data = pregunta;
     }
 
     public PreguntaDTO getSelectedPregunta() {
@@ -718,7 +724,16 @@ public class PreguntaView implements Serializable {
 				Object[] variable = {"tipoModulo",true,FacesUtils.checkInteger(somTipoModulo),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
 				lasModuloSelectItem = new ArrayList<>();				
 				try {
-					List<Modulo> list = businessDelegatorView.findByCriteriaInModulo(variable,null,null);
+					log.info("El tipo de usuario es "+VariablesSession.tipoUsuario.getIdTipoUsuario());
+					List<Modulo> list = null;
+					if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DOCENTE) {
+						list = businessDelegatorView.findByProgramaModulo(VariablesSession.programa.getIdPrograma());
+					}
+					else if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DIRECTOR || VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_ADMIN ) {
+						list = businessDelegatorView.findByCriteriaInModulo(variable,null,null);
+					}
+					
+					
 					for (Modulo modulo : list) {
 						lasModuloSelectItem.add(new SelectItem(modulo.getIdModulo(),modulo.getNombre()));
 					}

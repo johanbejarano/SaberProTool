@@ -39,7 +39,7 @@
 									<f:selectItems value="#{preguntaView.lasModuloSelectItemFilter}" />
 								</p:selectOneMenu>
 							</f:facet>
-						<p:outputLabel value="#{preguntaView.getModulo(pregunta.idModulo_Modulo)}" />
+						<p:outputLabel value="#{preguntaView.getModulo(pregunta.modulo.idModulo)}" />
 					</p:column>
 					<p:column headerText="Activo" filterBy="#{pregunta.activo.equals('S')}" filterMatchMode="equals"
 							  styleClass="text-center">

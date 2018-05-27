@@ -4,9 +4,10 @@ import java.util.Date;
 
 public class ResultadosModuloDTO {
 	private String nombreModulo;
-	private Date fechaInicio;
-	private Date fechaFin;
-	private long porcentaje;
+	private long incorrecta;
+	private long correcta;
+	private long numero;
+	private double resultado;
 	
 	
 	
@@ -14,13 +15,16 @@ public class ResultadosModuloDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	public ResultadosModuloDTO(String nombreModulo,long porcentaje) {
+
+
+
+	public ResultadosModuloDTO(String nombreModulo, long incorrecta, long correcta, long numero,double resultado) {
 		super();
 		this.nombreModulo = nombreModulo;
-		this.porcentaje = porcentaje;
+		this.incorrecta = incorrecta;
+		this.correcta = correcta;
+		this.numero = numero;
+		this.resultado = resultado;
 	}
 
 
@@ -28,47 +32,71 @@ public class ResultadosModuloDTO {
 	public String getNombreModulo() {
 		return nombreModulo;
 	}
-	
+
+
+
 	public void setNombreModulo(String nombreModulo) {
 		this.nombreModulo = nombreModulo;
 	}
-	public long getPorcentaje() {
-		return porcentaje;
-	}
-	public void setPorcentaje(long porcentaje) {
-		this.porcentaje = porcentaje;
-	}
 
 
 
-	public Date getFechaInicio() {
-		return fechaInicio;
+	public long getIncorrecta() {
+		return incorrecta;
 	}
 
 
 
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
+	public void setIncorrecta(long incorrecta) {
+		this.incorrecta = incorrecta;
 	}
 
 
 
-	public Date getFechaFin() {
-		return fechaFin;
+	public long getCorrecta() {
+		return correcta;
 	}
 
 
 
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
+	public void setCorrecta(long correcta) {
+		this.correcta = correcta;
+	}
+
+
+
+	public long getNumero() {
+		return numero;
+	}
+
+
+
+	public void setNumero(long numero) {
+		this.numero = numero;
+	}
+
+
+
+	public double getResultado() {
+		return resultado;
+	}
+
+
+
+	public void setResultado(double resultado) {
+		this.resultado = resultado;
 	}
 
 
 
 	@Override
 	public String toString() {
-		return "ResultadosModuloDTO [nombreModulo=" + nombreModulo + ", porcentaje=" + porcentaje + "]";
+		return "ResultadosModuloDTO [nombreModulo=" + nombreModulo + ", incorrecta=" + incorrecta + ", correcta="
+				+ correcta + ", numero=" + numero + ", resultado=" + resultado + "]";
 	}
+	
+	
+	
 	
 	
 }
