@@ -184,9 +184,10 @@ public class ProgramaModuloView implements Serializable {
 				List<Modulo> modulosSource = businessDelegatorView.findByCriteriaInModulo(variable,null,null);
 		        List<Modulo> modulosTarget = businessDelegatorView.findByProgramaModulo(programaUsuario.getPrograma().getIdPrograma());
 		      
-		        for(int i=0;i<modulosSource.size();i++) {
-		        	for(int j=0;j<modulosTarget.size();j++) {
-		        		if(modulosSource.get(i).getIdModulo()==modulosTarget.get(j).getIdModulo()) {
+		        
+		        for(int j=0;j<modulosTarget.size();j++) {
+		        	for(int i=0;i<modulosSource.size();i++) {
+		        		if(modulosSource.get(i).getIdModulo().equals(modulosTarget.get(j).getIdModulo())) {
 		        			modulosSource.remove(i);
 		        		}
 		        	}

@@ -75,7 +75,8 @@ public class PruebaView implements Serializable {
 			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
 			
 			if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_INICIADO || estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_PENDIENTE) {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id=" + idPruebaUsuarioPrograma);
+//				FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id=" + idPruebaUsuarioPrograma);
+				FacesContext.getCurrentInstance().getExternalContext().redirect("tomarPrueba.xhtml?id=" + idPruebaUsuarioPrograma);
 			} else if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_FINALIZADA) {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id=" + idPruebaUsuarioPrograma);
 			} 

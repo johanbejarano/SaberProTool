@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<h:form>
+			<p:messages id="msg" />
+			<p:growl id="men" />
+			
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Módulo:"/>
+				<p:selectOneMenu id="cmbModulo" 
+					value="#{tomarPruebaView.idModuloSeleccionado}"
+					valueChangeListener="#{tomarPruebaView.cambioModulo}">
+					<f:selectItems value="#{tomarPruebaView.modulos}"/>
+					<p:ajax update="pnlDatos"/>
+				</p:selectOneMenu>
+			</h:panelGrid>
+			
+			<div align="center">
+			
+				<p:commandLink actionListener="#{tomarPruebaView.action_anteriorPregunta}" update="pnlDatos,cmbModulo">
+					<h:graphicImage
+						url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/left.png"
+						style="width: 32px; height: 32px;" />
+				</p:commandLink>
+				
+				<p:commandLink actionListener="#{tomarPruebaView.action_siguientePregunta}" update="pnlDatos,cmbModulo">
+					<h:graphicImage
+						url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/right.png"
+						style="width: 32px; height: 32px;" />
+				</p:commandLink>
+				
+			</div>
+			
+			<p:panel id="pnlDatos">
+				<p:separator/>
+				<p:outputLabel escape="false" value="#{tomarPruebaView.preguntaActual.preguntaDTO.descripcionPregunta}"/>
+				
+				<p:separator/>
+			
+			
+				<p:dataTable value="#{tomarPruebaView.preguntaActual.respuestasDTO}" var="respuesta">
+					<p:column headerText="Respuesta">
+						<p:outputLabel value="#{respuesta.descripcionRespuesta}" escape="false"/>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

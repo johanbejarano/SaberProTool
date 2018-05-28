@@ -796,4 +796,6 @@ public interface IBusinessDelegatorView {
 	 public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception;
 	 
 	 public ByteArrayInputStream generarInformeGrupo(Long idTipoPrueba,Long idPrograma,Long idModulo,String periodo,List<String> correos) throws Exception;
+
+	 public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception;
 }

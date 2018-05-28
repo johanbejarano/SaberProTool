@@ -67,4 +67,7 @@ public interface IRespuestaPruebaProgramaUsuarioPreguntaLogic {
 	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(
 			long idPruebaProgramaUsuario) throws Exception;
 
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta(
+			long idPruebaProgramaUsuarioPregunta) throws Exception;
+
 }

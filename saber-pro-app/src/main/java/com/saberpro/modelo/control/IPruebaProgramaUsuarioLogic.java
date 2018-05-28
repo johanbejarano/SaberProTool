@@ -1,6 +1,7 @@
 package com.saberpro.modelo.control;
 
 import com.saberpro.modelo.PruebaProgramaUsuario;
+import com.saberpro.modelo.dto.ModeloPruebaDTO;
 import com.saberpro.modelo.dto.PruebaProgramaUsuarioDTO;
 import com.saberpro.modelo.dto.ResultadosModuloDTO;
 
@@ -71,6 +72,8 @@ public interface IPruebaProgramaUsuarioLogic {
         PruebaProgramaUsuario pruebaProgramaUsuario) throws Exception;
     
     public List<ResultadosModuloDTO> findResultado(long idProgramaUsuario,long idPruebaProgramaUsuario)throws Exception;
+
+	public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception;
     
     
 }

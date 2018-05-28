@@ -2077,5 +2077,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return pruebaLogic.generarInformeGrupo(idTipoPrueba, idPrograma, idModulo, periodo, correos);
 	}
 
-	
+	@Override
+	public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception{
+		return pruebaProgramaUsuarioLogic.consultarPruebaProgramaUsuario(idPruebaProgramaUsuario);
+	}
 }

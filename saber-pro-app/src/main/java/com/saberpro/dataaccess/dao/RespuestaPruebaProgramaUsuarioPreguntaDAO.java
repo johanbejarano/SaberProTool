@@ -45,9 +45,22 @@ public class RespuestaPruebaProgramaUsuarioPreguntaDAO extends JpaDaoImpl<Respue
 	@Override
 	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuario(
 			long idPruebaProgramaUsuario) {
-		String sql ="SELECT rpu From RespuestaPruebaProgramaUsuarioPregunta rpu,PruebaProgramaUsuarioPregunta ppu,PruebaProgramaUsuario ppe "
-				+ "where rpu.pruebaProgramaUsuarioPregunta.idPruebaProgramaUsuarioPregunta=ppu.idPruebaProgramaUsuarioPregunta and ppu.pruebaProgramaUsuario.idPruebaProgramaUsuario=ppe.idPruebaProgramaUsuario "
+		String sql ="SELECT rpu From RespuestaPruebaProgramaUsuarioPregunta rpu,"
+				+ " PruebaProgramaUsuarioPregunta ppu, PruebaProgramaUsuario ppe "
+				+ "where rpu.pruebaProgramaUsuarioPregunta.idPruebaProgramaUsuarioPregunta=ppu.idPruebaProgramaUsuarioPregunta and "
+				+ "ppu.pruebaProgramaUsuario.idPruebaProgramaUsuario=ppe.idPruebaProgramaUsuario "
 				+ "and ppe.idPruebaProgramaUsuario=:idPruebaProgramaUsuario and ppe.activo='S'";
 		return entityManager.createQuery(sql).setParameter("idPruebaProgramaUsuario",idPruebaProgramaUsuario).getResultList();
+	}
+	
+	@Override
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta(
+			long idPruebaProgramaUsuarioPregunta) {
+		String sql ="SELECT rpu From RespuestaPruebaProgramaUsuarioPregunta rpu,"
+				+ " PruebaProgramaUsuarioPregunta ppu, PruebaProgramaUsuario ppe "
+				+ "where rpu.pruebaProgramaUsuarioPregunta.idPruebaProgramaUsuarioPregunta=ppu.idPruebaProgramaUsuarioPregunta and "
+				+ "ppu.pruebaProgramaUsuario.idPruebaProgramaUsuario=ppe.idPruebaProgramaUsuario "
+				+ "and ppu.idPruebaProgramaUsuarioPregunta=:idPruebaProgramaUsuarioPregunta and ppu.activo='S'";
+		return entityManager.createQuery(sql).setParameter("idPruebaProgramaUsuario",idPruebaProgramaUsuarioPregunta).getResultList();
 	}
 }

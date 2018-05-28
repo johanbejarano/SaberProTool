@@ -498,4 +498,26 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
 
 		        return list;
 	}
+	
+	@Override
+	 @Transactional(readOnly = true)
+	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta(
+			long idPruebaProgramaUsuarioPregunta) throws Exception {
+		 log.debug(
+		            "finding all findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta instances");
+
+		        List<RespuestaPruebaProgramaUsuarioPregunta> list = new ArrayList<RespuestaPruebaProgramaUsuarioPregunta>();
+
+		        try {
+		            list = respuestaPruebaProgramaUsuarioPreguntaDAO.findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta(idPruebaProgramaUsuarioPregunta);
+		        } catch (Exception e) {
+		            log.error("finding all findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta failed",
+		                e);
+		            throw new ZMessManager().new GettingException(ZMessManager.ALL +
+		                "RespuestaPruebaProgramaUsuarioPregunta");
+		        } finally {
+		        }
+
+		        return list;
+	}
 }

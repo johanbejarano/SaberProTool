@@ -7,7 +7,11 @@ import com.saberpro.dto.mapper.IPruebaProgramaUsuarioMapper;
 import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
+import com.saberpro.modelo.dto.ModeloPruebaDTO;
+import com.saberpro.modelo.dto.ModuloPreguntaDTO;
+import com.saberpro.modelo.dto.PreguntaDTO;
 import com.saberpro.modelo.dto.PruebaProgramaUsuarioDTO;
+import com.saberpro.modelo.dto.RespuestaDTO;
 import com.saberpro.modelo.dto.ResultadosModuloDTO;
 import com.saberpro.utilities.Utilities;
 
@@ -26,7 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -82,6 +89,9 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
     */
     @Autowired
     IPruebaLogic logicPrueba3;
+    
+    @Autowired
+    private IRespuestaPruebaProgramaUsuarioPreguntaLogic respuestaPruebaProgramaUsuarioPreguntaLogic;
 
     public void validatePruebaProgramaUsuario(
         PruebaProgramaUsuario pruebaProgramaUsuario) throws Exception {
@@ -498,5 +508,118 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
         }
 
         return entity;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception {
+		try {
+			ModeloPruebaDTO modelo = new ModeloPruebaDTO();
+			
+			//Se consulta la prueba programa usuario
+			PruebaProgramaUsuario pruebaProgramaUsuario = getPruebaProgramaUsuario(idPruebaProgramaUsuario);
+			if (pruebaProgramaUsuario == null) {
+				throw new Exception("no existe la prueba programa usuario " + idPruebaProgramaUsuario);
+			}
+			
+			Prueba prueba = pruebaProgramaUsuario.getPrueba();
+			if (prueba==null || !prueba.getActivo().equals("S")) {
+				throw new Exception("La prueba no existe");
+			}
+			
+			modelo.setFechaFinal(prueba.getFechaFinal());
+			modelo.setFechaInicial(prueba.getFechaInicial());
+			modelo.setIdPrueba(prueba.getIdPrueba());
+			
+			//Se consultan las preguntas de la prueba
+			Set<PruebaProgramaUsuarioPregunta> preguntas = pruebaProgramaUsuario.getPruebaProgramaUsuarioPreguntas();
+			List<PruebaProgramaUsuarioPregunta> preguntasSorted = new LinkedList<>();
+			
+			for (PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta : preguntas) {
+				preguntasSorted.add(pruebaProgramaUsuarioPregunta);
+			}
+			Collections.sort(preguntasSorted, new Comparator<PruebaProgramaUsuarioPregunta>() {
+
+				@Override
+				public int compare(PruebaProgramaUsuarioPregunta o1, PruebaProgramaUsuarioPregunta o2) {
+					return o1.getIdPruebaProgramaUsuarioPregunta().compareTo(o2.getIdPruebaProgramaUsuarioPregunta());
+				}
+			});
+			
+			if (preguntasSorted == null || preguntasSorted.size()==0) {
+				throw new Exception("La prueba no tiene preguntas calculadas. Id prueba: " + prueba.getIdPrueba());
+			}
+			
+			List<ModuloPreguntaDTO> modulosPreguntas = new ArrayList<>();
+			
+			for (PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta : preguntasSorted) {
+				
+				ModuloPreguntaDTO moduloPreguntaDTO = new ModuloPreguntaDTO();
+				
+				moduloPreguntaDTO.setIdModulo(pruebaProgramaUsuarioPregunta.getPregunta().getModulo().getIdModulo());
+				moduloPreguntaDTO.setNombreModulo(pruebaProgramaUsuarioPregunta.getPregunta().getModulo().getNombre());
+				moduloPreguntaDTO.setPrioridadModulo(pruebaProgramaUsuarioPregunta.getPregunta().getModulo().getPrioridad());
+				
+				Pregunta pregunta = pruebaProgramaUsuarioPregunta.getPregunta();
+				PreguntaDTO preguntaDTO = new PreguntaDTO();
+				
+				preguntaDTO.setActivo(pregunta.getActivo());
+				preguntaDTO.setDescripcionPregunta(pregunta.getDescripcionPregunta());
+				preguntaDTO.setFechaCreacion(pregunta.getFechaCreacion());
+				preguntaDTO.setFechaModificacion(pregunta.getFechaModificacion());
+				preguntaDTO.setIdModulo_Modulo(pregunta.getModulo().getIdModulo());
+				preguntaDTO.setIdPregunta(pregunta.getIdPregunta());
+				preguntaDTO.setIdTipoPregunta_TipoPregunta(pregunta.getTipoPregunta().getIdTipoPregunta());
+				preguntaDTO.setRetroalimentacion(pregunta.getRetroalimentacion());
+				preguntaDTO.setUsuCreador(pregunta.getUsuCreador());
+				preguntaDTO.setUsuModificador(pregunta.getUsuModificador());
+				
+				moduloPreguntaDTO.setPreguntaDTO(preguntaDTO);
+				
+				Set<Respuesta> respuestas = pregunta.getRespuestas();
+				List<RespuestaDTO> respuestasDTO =  new LinkedList<>();
+				for (Respuesta respuesta : respuestas) {
+					
+					RespuestaDTO respuestaDTO = new RespuestaDTO();
+					respuestaDTO.setActivo(respuesta.getActivo());
+					respuestaDTO.setDescripcionRespuesta(respuesta.getDescripcionRespuesta());
+					respuestaDTO.setFechaCreacion(respuesta.getFechaCreacion());
+					respuestaDTO.setFechaModificacion(respuesta.getFechaModificacion());
+					respuestaDTO.setIdPregunta_Pregunta(pregunta.getIdPregunta());
+					respuestaDTO.setIdRespuesta(respuesta.getIdRespuesta());
+					respuestaDTO.setPorcentajeAcierto(respuesta.getPorcentajeAcierto());
+					respuestaDTO.setRutaImagen(respuesta.getRutaImagen());
+					respuestaDTO.setUsuCreador(respuesta.getUsuCreador());
+					respuestaDTO.setUsuModificador(respuesta.getUsuModificador());
+					
+					respuestasDTO.add(respuestaDTO);
+				}
+				
+				moduloPreguntaDTO.setRespuestasDTO(respuestasDTO);		
+				
+				modulosPreguntas.add(moduloPreguntaDTO);
+				
+			}
+			
+			//Se ordena por módulo
+			Collections.sort(modulosPreguntas, new Comparator<ModuloPreguntaDTO>() {
+
+				@Override
+				public int compare(ModuloPreguntaDTO o1, ModuloPreguntaDTO o2) {
+					return o1.getIdModulo().compareTo(o1.getIdModulo());
+				}
+
+			});
+			
+			modelo.setModuloPreguntasDTO(modulosPreguntas);
+			modelo.setNombrePrograma(pruebaProgramaUsuario.getProgramaUsuario().getPrograma().getNombre());
+			modelo.setNombreTipoPrueba(prueba.getTipoPrueba().getNombre());
+			modelo.setTiempo(prueba.getTiempo());
+			
+			return modelo;
+		} catch (Exception e) {
+			log.error("Error consultando la prueba programa usuario " + idPruebaProgramaUsuario, e);
+			throw e;
+		}
 	}
 }
