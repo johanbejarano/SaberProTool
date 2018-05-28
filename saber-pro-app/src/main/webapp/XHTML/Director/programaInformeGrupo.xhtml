@@ -8,8 +8,37 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelProgramaSimulacro" header="Creacion de Simulacro">
-				
+			<p:panel id="panelProgramaSimulacro" header="Informe grupal">
+				<h:panelGrid columns="2" id="panelGrid">
+					<p:outputLabel value="Facultad  :" />
+					<p:outputLabel value="#{datosSessionView.facultad.nombre}" />
+					<p:outputLabel value="Programa academico  :" />
+					<p:outputLabel value="#{datosSessionView.programa.nombre}" />
+					<p:outputLabel value="Tipo de prueba  :" />
+					<p:selectOneMenu binding="#{programaInformeGrupoView.somTipoModulo}">
+						<f:selectItem itemValue="#{null}" itemLabel="----------------------------------" />		
+						<f:selectItems value="#{programaInformeGrupoView.lasTipoPruebaSelectItem}"/>				
+					</p:selectOneMenu>
+					<p:outputLabel value="Modulo  :" />
+					<p:selectOneMenu binding="#{programaInformeGrupoView.somModulo}">
+						<f:selectItem itemValue="#{null}" itemLabel="----------------------------------" />		
+						<f:selectItems value="#{programaInformeGrupoView.lasModuloSelectItem}"/>				
+					</p:selectOneMenu>
+					<p:outputLabel value="Periodo  :" />
+					<p:inputMask  mask="9999-9" value="#{programaInformeGrupoView.periodo}"/>	
+					</h:panelGrid>
+					<p:pickList value="#{programaInformeGrupoView.usuarios}" var="usuario"
+						converter="moduloPickListConverter"
+						itemLabel="#{usuario.codigo} #{usuario.nombre} #{usuario.apellido}"
+						itemValue="#{usuario}" showCheckbox="true" responsive="true"
+						showSourceFilter="true" showTargetFilter="true"
+						filterMatchMode="contains">
+						<f:facet name="sourceCaption">Escoger</f:facet>
+						<f:facet name="targetCaption">Selecionados</f:facet>
+					</p:pickList>
+					<p:commandButton  ajax="false" value="Generar reporte" update="msg" >
+						<p:fileDownload value="#{programaInformeGrupoView.reportePDF}" />
+					</p:commandButton>
 			</p:panel>
 			
 			

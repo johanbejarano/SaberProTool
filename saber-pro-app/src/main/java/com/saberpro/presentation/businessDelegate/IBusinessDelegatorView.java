@@ -794,4 +794,6 @@ public interface IBusinessDelegatorView {
 	 public List<Usuario> findByTipoUsuarioFacultadUsuario(long idFacultad,long idTipoUsuario) throws Exception;
 
 	 public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception;
+	 
+	 public ByteArrayInputStream generarInformeGrupo(Long idTipoPrueba,Long idPrograma,Long idModulo,String periodo,List<String> correos) throws Exception;
 }

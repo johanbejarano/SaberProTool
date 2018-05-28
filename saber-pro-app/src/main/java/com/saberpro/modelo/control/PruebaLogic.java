@@ -556,5 +556,79 @@ public class PruebaLogic implements IPruebaLogic {
 			}
 		}
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public ByteArrayInputStream generarInformeGrupo(Long idTipoPrueba, Long idPrograma, Long idModulo, String periodo,
+			List<String> correos) throws Exception {
+Connection conn = null;
+    	
+    	try {
+			
+    		//1. Se consulta la prueba.
+    		/*Prueba prueba = getPrueba(idPrueba);
+    		if (prueba==null || !prueba.getActivo().equals("S")) {
+    			throw new Exception("No existe la prueba con ID " + idPrueba );
+    		}*/
+    		
+    		//2. Se consulta el parametro de la ruta de los reportes
+    		String rutaReportes = "";
+    		
+    		Parametro parametroRutaReportes = parametroLogic.getParametro(Constantes.PARAMETRO_REPORTES);
+    		if (parametroRutaReportes == null || !parametroRutaReportes.getActivo().equals("S")) {
+    			throw new Exception("No existe el parámetro  Ruta reportes");
+    		}
+    		
+    		File fRutaReportes = new File(parametroRutaReportes.getValor());
+    		if (!fRutaReportes.exists() || !fRutaReportes.canRead()) {
+    			throw new Exception("No existe la ruta base de reportes o no se tienen permisos de lectura a la carpeta");
+    		}
+    		
+    		//3. Se manda a generar el reporte
+    		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    		
+    		//Se abre el reporte
+    		File fReporte = new File(fRutaReportes, "resultadosPorTodosEstudiantePrograma.jasper");
+    		InputStream inputStream = new FileInputStream(fReporte);
+    		
+    		//Se obtiene la conexion a la BD
+    		conn = dataSource.getConnection();
+    		
+    		//Se llena el reporte
+    		Map<String, Object> params = new HashMap<>();
+    		params.put("P_ID_TIPO_PRUEBA", idTipoPrueba);
+    		params.put("P_ID_PROGRAMA", idPrograma);
+    		params.put("P_ID_MODULO", idModulo);
+    		params.put("P_PERIODO", periodo);
+    		params.put("P_ID_USUARIO", correos);
+    		params.put("P_RUTA_RECURSOS", parametroRutaReportes.getValor());
+    		
+    		JasperPrint print = JasperFillManager.fillReport(inputStream, params, conn);
+    		
+    		//4. Es exporta el reporte en PDF
+    		
+    		JRPdfExporter jrPdfExporter = new JRPdfExporter();
+			
+			jrPdfExporter.setExporterInput(new SimpleExporterInput(print));
+			jrPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(bos));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			jrPdfExporter.setConfiguration(configuration);
+			
+			jrPdfExporter.exportReport();
+			
+			//5. Retornar los bytes del PDF
+			ByteArrayInputStream is = new ByteArrayInputStream(bos.toByteArray());
+    		
+			return is;
+    		
+		} catch (Exception e) {
+			log.error("Error generando el informe grupal ", e);
+			throw e;
+		}finally {
+			if (conn!=null && !conn.isClosed()) {
+				conn.close();
+			}
+		}
+	}
     
 }

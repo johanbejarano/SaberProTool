@@ -2071,5 +2071,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return pruebaLogic.generarInformeIndividual(idPrueba);
 	}
 
+	@Override
+	public ByteArrayInputStream generarInformeGrupo(Long idTipoPrueba, Long idPrograma, Long idModulo, String periodo,
+			List<String> correos) throws Exception {
+		return pruebaLogic.generarInformeGrupo(idTipoPrueba, idPrograma, idModulo, periodo, correos);
+	}
+
 	
 }

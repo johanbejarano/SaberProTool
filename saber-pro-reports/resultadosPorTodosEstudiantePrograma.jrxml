@@ -151,11 +151,11 @@ group by
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="117" height="41" uuid="e1081cba-95dd-42bd-84da-2126d571492c"/>
-				<imageExpression><![CDATA["logoUSB.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{P_RUTA_RECURSOS}+"logoUSB.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="428" y="0" width="143" height="40" uuid="abe85998-4ba8-4f5f-a099-c9f60829c63c"/>
-				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{P_RUTA_RECURSOS}+"logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
