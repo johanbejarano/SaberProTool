@@ -552,7 +552,12 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 			
 			List<ModuloPreguntaDTO> modulosPreguntas = new ArrayList<>();
 			
+			int contadorPreguntasTotales = 0;
+			int contadorPreguntasContestadas = 0;
+			
 			for (PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta : preguntasSorted) {
+			
+				contadorPreguntasTotales++;
 				
 				ModuloPreguntaDTO moduloPreguntaDTO = new ModuloPreguntaDTO();
 				
@@ -604,6 +609,8 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 					
 					if (respuestaSeleccionada!=null) {
 						
+						contadorPreguntasContestadas++;
+						
 						RespuestaDTO respuestaSeleccionadaDTO = new RespuestaDTO();
 						respuestaSeleccionadaDTO.setActivo(respuestaSeleccionada.getActivo());
 						respuestaSeleccionadaDTO.setDescripcionRespuesta(respuestaSeleccionada.getDescripcionRespuesta());
@@ -639,6 +646,13 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 			modelo.setNombrePrograma(pruebaProgramaUsuario.getProgramaUsuario().getPrograma().getNombre());
 			modelo.setNombreTipoPrueba(prueba.getTipoPrueba().getNombre());
 			modelo.setTiempo(prueba.getTiempo());
+			
+			modelo.setCantidadTotalDePreguntas(contadorPreguntasTotales);
+			modelo.setCantidadTotalDePreguntasContestadas(contadorPreguntasContestadas);
+			
+			if (contadorPreguntasTotales!=0) {
+				modelo.setPorcentajeAvance((int)( (contadorPreguntasContestadas*1.0D)/(contadorPreguntasTotales*1.0D)*100D) );
+			}
 			
 			return modelo;
 		} catch (Exception e) {

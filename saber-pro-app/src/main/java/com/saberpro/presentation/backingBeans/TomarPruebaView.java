@@ -1,5 +1,7 @@
 package com.saberpro.presentation.backingBeans;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -188,6 +190,16 @@ public class TomarPruebaView implements Serializable {
     			throw new Exception("No existe la prueba programa usuario pregunta para la prueba programa usuario " + idPruebaProgramaUsuario + " "
     					+ "y la pregunta " + idPregunta);
     		}
+    		
+    		//Se actualiza el porcentaje de avance
+    		Integer contadorPreguntasTotales = modeloPruebaDTO.getCantidadTotalDePreguntas();
+    		Integer contadorPreguntasContestadas = modeloPruebaDTO.getCantidadTotalDePreguntasContestadas();
+    		
+    		contadorPreguntasContestadas++;
+    		
+    		if (contadorPreguntasTotales!=0) {
+				modeloPruebaDTO.setPorcentajeAvance((int)( (contadorPreguntasContestadas*1.0D)/(contadorPreguntasTotales*1.0D)*100D) );
+			}
     		
     		businessDelegatorView.guardarRespuestaAPregunta(lista.get(0).getIdPruebaProgramaUsuarioPregunta(), respuestaSeleccionada.getIdRespuesta());
     		

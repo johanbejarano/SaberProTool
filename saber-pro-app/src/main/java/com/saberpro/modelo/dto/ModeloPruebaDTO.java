@@ -12,8 +12,9 @@ public class ModeloPruebaDTO {
 	private Date fechaFinal;
 	private Long tiempo;
 	private List<ModuloPreguntaDTO> moduloPreguntasDTO;
-	private Integer cantidadTotalDePreguntas;
-	private Integer cantidadTotalDePreguntasContestadas;
+	private Integer cantidadTotalDePreguntas = 0;
+	private Integer cantidadTotalDePreguntasContestadas = 0;
+	private Integer porcentajeAvance;
 	
 	public Long getIdPrueba() {
 		return idPrueba;
@@ -68,6 +69,12 @@ public class ModeloPruebaDTO {
 	}
 	public void setCantidadTotalDePreguntasContestadas(Integer cantidadTotalDePreguntasContestadas) {
 		this.cantidadTotalDePreguntasContestadas = cantidadTotalDePreguntasContestadas;
+	}
+	public Integer getPorcentajeAvance() {
+		return porcentajeAvance;
+	}
+	public void setPorcentajeAvance(Integer porcentajeAvance) {
+		this.porcentajeAvance = porcentajeAvance;
 	}
 	
 }
