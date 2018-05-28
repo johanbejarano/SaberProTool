@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.saberpro.modelo.Usuario;
 import com.saberpro.modelo.control.IUsuarioLogic;
 import com.saberpro.presentation.backingBeans.LoginView;
+import com.saberpro.utilities.Constantes;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
@@ -35,9 +36,9 @@ public class TestUsuarioLogic {
 			//usuarioLogic.resetByEmail("jhonypk18@gmail.com");
 			
 			Object[] variable = {"identificacion",false,9999999999L,"=","correo",false,"jhonypk19@gmail.com","=","celular",false,9999999999L,"="};
-			List<Usuario> usuario = usuarioLogic.findByCriteria(variable,null,null);
+			List<Usuario> usuario = usuarioLogic.findByTipoUsuarioPrograma(5L,Constantes.USER_TYPE_ESTUDIANTE);
 			for (Usuario usuario2 : usuario) {
-				log.info(usuario.toString());
+				log.info(usuario2.getNombre());
 			}
 			//log.info(user.getPassword());
 		} catch (Exception e) {

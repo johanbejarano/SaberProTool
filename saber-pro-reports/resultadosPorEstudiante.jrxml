@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultadosPorEstudiante" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9402b0d5-1611-4172-86af-7252611de900">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgresql Adapter"/>
 	<style name="ColoredField">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=0 && $F{puntos_acierto}.doubleValue() <= 130]]></conditionExpression>
@@ -17,9 +17,9 @@
 			<style mode="Opaque" backcolor="#00FF00"/>
 		</conditionalStyle>
 	</style>
-	<parameter name="P_ID_PRUEBA" class="java.lang.Long"/>
+	<parameter name="P_ID_PRUEBA_PROGRAMA_USUARIO" class="java.lang.Long"/>
 	<parameter name="P_RUTA_RECURSOS" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\Users\Jaime Sarria\git\SaberProTool\saber-pro-reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select
@@ -64,7 +64,7 @@ inner join programa prog on prus.id_programa = prog.id_programa
 inner join usuario usua on prus.id_usuario = usua.id_usuario
 inner join tipo_modulo timo on modu.id_tipo_modulo = timo.id_tipo_modulo
 inner join facultad facu on prog.id_facultad = facu.id_facultad
-where prueb.id_prueba =  $P{P_ID_PRUEBA} 
+where ppu.id_prueba_programa_usuario =  $P{P_ID_PRUEBA_PROGRAMA_USUARIO} 
 group by
   prueb.id_prueba,
   tipr.id_tipo_prueba,
@@ -160,11 +160,11 @@ group by
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="117" height="41" uuid="e1081cba-95dd-42bd-84da-2126d571492c"/>
-				<imageExpression><![CDATA[$P{P_RUTA_RECURSOS}+"logoUSB.png"]]></imageExpression>
+				<imageExpression><![CDATA["logoUSB.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="428" y="0" width="143" height="40" uuid="abe85998-4ba8-4f5f-a099-c9f60829c63c"/>
-				<imageExpression><![CDATA[$P{P_RUTA_RECURSOS}+"logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -347,7 +347,7 @@ group by
 				<textFieldExpression><![CDATA[$F{puntos_acierto}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="5">
-				<reportElement style="ColoredField" x="400" y="2" width="50" height="10" uuid="2fdef573-a9fc-4313-8c06-24e2ecdb6ef3">
+				<reportElement style="ColoredField" x="420" y="2" width="10" height="10" uuid="2fdef573-a9fc-4313-8c06-24e2ecdb6ef3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<graphicElement>

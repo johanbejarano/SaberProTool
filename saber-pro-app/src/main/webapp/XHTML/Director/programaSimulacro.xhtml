@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="formDialog">
+			<p:messages id="msg" />
+			<p:growl id="men" />
+			<p:panel id="panelProgramaSimulacro" header="Creacion de Simulacro">
+				<h:panelGrid columns="2" id="panelGrid">
+					<p:outputLabel value="Facultad  :" />
+					<p:outputLabel value="#{datosSessionView.facultad.nombre}" />
+					<p:outputLabel value="Programa academico  :" />
+					<p:outputLabel value="#{datosSessionView.programa.nombre}" />
+					<p:outputLabel value="Fecha de inicio  :" />
+					<p:calendar showOn="button"
+						value="#{programaSimulacroView.fechaInicial}" />
+					<p:outputLabel value="Fecha de Finalizaciòn  :" />
+					<p:calendar showOn="button"
+						value="#{programaSimulacroView.fechaFinal}" />
+					<p:outputLabel value="Duraciòn del simulacro  :" />
+					<p:calendar pattern="HH:mm" showOn="button" timeOnly="true"
+						value="#{programaSimulacroView.tiempo}" />
+				</h:panelGrid>
+				<p:panel header="Estudiantes ">
+
+					<p:pickList value="#{programaSimulacroView.usuarios}" var="usuario"
+						converter="moduloPickListConverter"
+						itemLabel="#{usuario.codigo} #{usuario.nombre} #{usuario.apellido}"
+						itemValue="#{usuario}" showCheckbox="true" responsive="true"
+						showSourceFilter="true" showTargetFilter="true"
+						filterMatchMode="contains">
+						<f:facet name="sourceCaption">Escoger</f:facet>
+						<f:facet name="targetCaption">Selecionados</f:facet>
+					</p:pickList>
+					<p:commandButton id="btnSave"
+						binding="#{programaModuloView.btnSave}" value="Crear"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
+						update="panelProgramaSimulacro,msg"
+						action="#{programaSimulacroView.action_create}" />
+
+				</p:panel>
+			</p:panel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

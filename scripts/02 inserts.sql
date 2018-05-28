@@ -209,8 +209,8 @@ insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','SARRIA REVELO','M',1148217,1133567217,3125466517,'jhonypk2417@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JOHAN','SARRIA REVELO','M',1148218,1133567218,3125466518,'jhonypk2418@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
 insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CARLOS','SARRIA REVELO','M',1148219,1133567219,3125466519,'jhonypk2419@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148220,1133567220,3125466520,'jhonypk2420@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148221,1133567221,3125466521,'jhonypk2421@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('WILSON','SARRIA REVELO','M',1148220,1133567220,3125466520,'jhonypk2420@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('STIWAR','SARRIA REVELO','M',1148221,1133567221,3125466521,'jhonypk2421@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
 /* Programa usuario */
 
 ALTER SEQUENCE programa_usuario_id_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
@@ -316,12 +316,7 @@ insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RU
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS PREGUNTAS','http://localhost:8080/saber-pro-app/pregunta/',now(),0,'S');
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS RESPUESTAS','http://localhost:8080/saber-pro-app/respuesta/',now(),0,'S');
 
-insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (4, 'SEMAFORO_ROJO_MINIMO', null, 0, '2018-05-21 15:25:07.130000', null, 0, null, 'S');
-insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (5, 'SEMAFORO_ROJO_MAXIMO', null, 130, '2018-05-21 15:26:14.323000', null, 0, null, 'S');
-insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (6, 'SEMAFORO_AMARILLO_MINIMO', null, 131, '2018-05-21 15:26:41.498000', null, 0, null, 'S');
-insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (7, 'SEMAFORO_AMARILLO_MAXIMO', null, 199, '2018-05-21 15:26:59.657000', null, 0, null, 'S');
-insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (8, 'SEMAFORO_VERDE_MINIMO', null, 200, '2018-05-21 15:27:17.192000', null, 0, null, 'S');
-insert into parametro (id_parametro, nombre, descripcion, valor, fecha_creacion, fecha_modificacion, usu_creador, usu_modificador, activo) values (9, 'SEMAFORO_VERDE_MAXIMO', null, 399, '2018-05-21 15:27:39.819000', null, 0, null, 'S');
+
 
 
 /* Opcion */
@@ -342,6 +337,7 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('USUARIO','/XHTML/Usuario/usuario.xhtml',now(),0,'S',3);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SALIR','/j_spring_security_logout',now(),0,'S',1);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SELECIONAR MODULOS','/XHTML/Director/programaModulo.xhtml',now(),0,'S',5);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SIMULACROS','/XHTML/Director/programaSimulacro.xhtml',now(),0,'S',5);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ASIGNAR DIRECTOR','/XHTML/Decano/AsignarDirector.xhtml',now(),0,'S',6);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ASIGNAR DECANO','/XHTML/Administrador/AsignarDecano.xhtml',now(),0,'S',7);
 
