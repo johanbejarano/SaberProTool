@@ -53,6 +53,7 @@ public class TomarPruebaView implements Serializable {
 //    private List<RespuestaPruebaProgramaUsuarioPregunta> respuestas = new ArrayList<>();
     private ModeloPruebaDTO modeloPruebaDTO = null;
     private Long idModuloSeleccionado;
+    private Integer porcentajeAvance = 0;
     
     private List<SelectItem> modulos = new ArrayList<>();
     
@@ -192,13 +193,13 @@ public class TomarPruebaView implements Serializable {
     		}
     		
     		//Se actualiza el porcentaje de avance
+    		modeloPruebaDTO.setCantidadTotalDePreguntasContestadas(modeloPruebaDTO.getCantidadTotalDePreguntasContestadas()+1);
     		Integer contadorPreguntasTotales = modeloPruebaDTO.getCantidadTotalDePreguntas();
     		Integer contadorPreguntasContestadas = modeloPruebaDTO.getCantidadTotalDePreguntasContestadas();
     		
-    		contadorPreguntasContestadas++;
-    		
     		if (contadorPreguntasTotales!=0) {
-				modeloPruebaDTO.setPorcentajeAvance((int)( (contadorPreguntasContestadas*1.0D)/(contadorPreguntasTotales*1.0D)*100D) );
+    			porcentajeAvance = (int)( (contadorPreguntasContestadas*1.0D)/(contadorPreguntasTotales*1.0D)*100D);
+				modeloPruebaDTO.setPorcentajeAvance(porcentajeAvance);
 			}
     		
     		businessDelegatorView.guardarRespuestaAPregunta(lista.get(0).getIdPruebaProgramaUsuarioPregunta(), respuestaSeleccionada.getIdRespuesta());
@@ -289,6 +290,14 @@ public class TomarPruebaView implements Serializable {
 
 	public void setPreguntaActual(ModuloPreguntaDTO preguntaActual) {
 		this.preguntaActual = preguntaActual;
+	}
+
+	public Integer getPorcentajeAvance() {
+		return porcentajeAvance;
+	}
+
+	public void setPorcentajeAvance(Integer porcentajeAvance) {
+		this.porcentajeAvance = porcentajeAvance;
 	}
 	
 }
