@@ -315,6 +315,7 @@ ALTER SEQUENCE parametro_id_parametro_seq MINVALUE 1 START WITH 1 RESTART WITH 1
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LA APLICACION','http://localhost:8080/saber-pro-app/',now(),0,'S');
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS PREGUNTAS','http://localhost:8080/saber-pro-app/pregunta/',now(),0,'S');
 insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS RESPUESTAS','http://localhost:8080/saber-pro-app/respuesta/',now(),0,'S');
+insert into parametro(nombre,valor,fecha_creacion,usu_creador,activo) values('RUTA DE LAS REPORTE','/home/jhony/git/SaberProTool/saber-pro-reports/',now(),0,'S');
 
 
 
@@ -338,6 +339,8 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SALIR','/j_spring_security_logout',now(),0,'S',1);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SELECIONAR MODULOS','/XHTML/Director/programaModulo.xhtml',now(),0,'S',5);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SIMULACROS','/XHTML/Director/programaSimulacro.xhtml',now(),0,'S',5);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('INFORME ESTUDIANTE','/XHTML/Director/programaInformeEstudiante.xhtml',now(),0,'S',5);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('INFORME GRUPO','/XHTML/Director/programaInformeGrupo.xhtml',now(),0,'S',5);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ASIGNAR DIRECTOR','/XHTML/Decano/AsignarDirector.xhtml',now(),0,'S',6);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ASIGNAR DECANO','/XHTML/Administrador/AsignarDecano.xhtml',now(),0,'S',7);
 

@@ -20,7 +20,9 @@
 							<p:ajax update="panelTable" listener="#{asignarDirectorView.limpiar}"/>						
 						</p:selectOneMenu>
 						<p:commandButton binding="#{asignarDirectorView.btnAsignar}" value="Asignar" action="#{asignarDirectorView.asignar}" update="msg,panelTable"/>
-						<p:inputText binding="#{asignarDirectorView.txtCodigo}"/>
+						<p:inputText binding="#{asignarDirectorView.txtCodigo}">
+							<p:keyFilter regEx="/[0-9]/"/>
+						</p:inputText>
 					</h:panelGrid>
 				</p:panel>
 				<p:panel id="panelTable">

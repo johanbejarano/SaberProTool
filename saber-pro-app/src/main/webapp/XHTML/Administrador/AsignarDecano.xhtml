@@ -21,7 +21,9 @@
 						onstart="PF('statusDialog').show()"
 						onsuccess="PF('statusDialog').hide()" value="Asignar"
 						action="#{asignarDecanoView.asignar}" update="msg,panelTable" />
-					<p:inputText binding="#{asignarDecanoView.txtCodigo}" size="35" />
+					<p:inputText binding="#{asignarDecanoView.txtCodigo}" size="35" >
+						<p:keyFilter regEx="/[0-9]/"/>
+					</p:inputText>
 				</h:panelGrid>
 			</p:panel>
 			<p:panel id="panelTable">

@@ -36,13 +36,30 @@
 						<f:facet name="targetCaption">Selecionados</f:facet>
 					</p:pickList>
 					<p:commandButton id="btnSave"
-						binding="#{programaModuloView.btnSave}" value="Crear"
+						binding="#{programaModuloView.btnSave}" value="Crear simulacro"
 						onstart="PF('statusDialog').show()"
 						onsuccess="PF('statusDialog').hide()"
-						update="panelProgramaSimulacro,msg"
+						update="panelProgramaSimulacro,msg,panelTable"
 						action="#{programaSimulacroView.action_create}" />
-
 				</p:panel>
+			</p:panel>
+			<p:panel id="panelTable">
+				<div>
+					<p:dataTable id="dataPrueba" value="#{programaSimulacroView.data}"
+						var="prueba" reflow="true" resizableColumns="true"
+						scrollable="true" scrollHeight="300" widgetVar="modTable">
+						<p:column headerText="Fecha inicial">
+							<p:outputLabel value="#{prueba.fechaInicial}" />
+						</p:column>
+						<p:column headerText="Fecha Final">
+							<p:outputLabel value="#{prueba.fechaFinal}" />
+						</p:column>
+						<p:column headerText="Tiempo minutos)">
+							<p:outputLabel value="#{prueba.tiempo/60}" />
+						</p:column>
+						
+					</p:dataTable>
+				</div>
 			</p:panel>
 
 		</h:form>

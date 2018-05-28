@@ -181,7 +181,8 @@ public class ProgramaSimulacroView implements Serializable {
 					}
 
 				}
-
+				
+				data = null;
 				FacesUtils.addInfoMessage("Se creo el simulacro exitosamente");
 			}
 

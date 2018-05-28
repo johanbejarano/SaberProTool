@@ -8,7 +8,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.PruebaDTO;
-
+import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.Utilities;
 
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -496,17 +496,17 @@ public class PruebaLogic implements IPruebaLogic {
     	try {
 			
     		//1. Se consulta la prueba.
-    		Prueba prueba = getPrueba(idPrueba);
+    		/*Prueba prueba = getPrueba(idPrueba);
     		if (prueba==null || !prueba.getActivo().equals("S")) {
     			throw new Exception("No existe la prueba con ID " + idPrueba );
-    		}
+    		}*/
     		
     		//2. Se consulta el parametro de la ruta de los reportes
     		String rutaReportes = "";
     		
-    		Parametro parametroRutaReportes = parametroLogic.getParametro(10L);
+    		Parametro parametroRutaReportes = parametroLogic.getParametro(Constantes.PARAMETRO_REPORTES);
     		if (parametroRutaReportes == null || !parametroRutaReportes.getActivo().equals("S")) {
-    			throw new Exception("No existe el parámetro 10 = Ruta reportes");
+    			throw new Exception("No existe el parámetro  Ruta reportes");
     		}
     		
     		File fRutaReportes = new File(parametroRutaReportes.getValor());
@@ -526,7 +526,7 @@ public class PruebaLogic implements IPruebaLogic {
     		
     		//Se llena el reporte
     		Map<String, Object> params = new HashMap<>();
-    		params.put("P_ID_PRUEBA", idPrueba);
+    		params.put("P_ID_PRUEBA_PROGRAMA_USUARIO", idPrueba);
     		params.put("P_RUTA_RECURSOS", parametroRutaReportes.getValor());
     		
     		JasperPrint print = JasperFillManager.fillReport(inputStream, params, conn);
