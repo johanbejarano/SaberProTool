@@ -70,4 +70,6 @@ public interface IRespuestaPruebaProgramaUsuarioPreguntaLogic {
 	public List<RespuestaPruebaProgramaUsuarioPregunta> findRespuestasPruebaProgramaUsuarioPreguntaByPruebaProgramaUsuarioPregunta(
 			long idPruebaProgramaUsuarioPregunta) throws Exception;
 
+	public void guardarRespuestaAPregunta(Long idPruebaProgramaUsuarioPregunta, Long idRespuesta) throws Exception;
+
 }

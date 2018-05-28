@@ -17,13 +17,16 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.saberpro.modelo.PruebaProgramaUsuario;
+import com.saberpro.modelo.PruebaProgramaUsuarioPregunta;
 import com.saberpro.modelo.RespuestaPruebaProgramaUsuarioPregunta;
 import com.saberpro.modelo.dto.ModeloPruebaDTO;
 import com.saberpro.modelo.dto.ModuloPreguntaDTO;
+import com.saberpro.modelo.dto.RespuestaDTO;
 import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.FacesUtils;
@@ -163,6 +166,33 @@ public class TomarPruebaView implements Serializable {
 					}
 				}
 			}
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+    }
+    
+    public void onRowSelect(SelectEvent selectEvent) {
+    	try {
+			
+    		RespuestaDTO respuestaSeleccionada = (RespuestaDTO)selectEvent.getObject();
+    		
+    		//Se consulta el registro de prueba programa usuario pregunta
+    		Long idPruebaProgramaUsuario = this.pruebaProgramaUsuario.getIdPruebaProgramaUsuario();
+    		Long idPregunta = respuestaSeleccionada.getIdPregunta_Pregunta();
+    		
+    		Object[] variablesConsulta = {"pruebaProgramaUsuario.idPruebaProgramaUsuario", false, idPruebaProgramaUsuario, "=",
+    				"pregunta.idPregunta", false, idPregunta, "="};
+    		
+    		List<PruebaProgramaUsuarioPregunta> lista = businessDelegatorView.findByCriteriaInPruebaProgramaUsuarioPregunta(variablesConsulta, null, null);
+    		if (lista==null || lista.size()==0) {
+    			throw new Exception("No existe la prueba programa usuario pregunta para la prueba programa usuario " + idPruebaProgramaUsuario + " "
+    					+ "y la pregunta " + idPregunta);
+    		}
+    		
+    		businessDelegatorView.guardarRespuestaAPregunta(lista.get(0).getIdPruebaProgramaUsuarioPregunta(), respuestaSeleccionada.getIdRespuesta());
+    		
+    		FacesUtils.addInfoMessage("Respuesta almacenada!");
+    		
 		} catch (Exception e) {
 			FacesUtils.addErrorMessage(e.getMessage());
 		}

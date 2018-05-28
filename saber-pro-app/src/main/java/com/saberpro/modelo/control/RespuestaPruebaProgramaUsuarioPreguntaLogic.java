@@ -69,6 +69,9 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
     */
     @Autowired
     IRespuestaLogic logicRespuesta2;
+    
+    @Autowired
+    private IRespuestaLogic respuestaLogic;
 
     public void validateRespuestaPruebaProgramaUsuarioPregunta(
         RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta)
@@ -519,5 +522,41 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
 		        }
 
 		        return list;
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void guardarRespuestaAPregunta(Long idPruebaProgramaUsuarioPregunta, Long idRespuesta) throws Exception {
+		try {
+			
+			//Se consulta la prueba programa usuario
+			PruebaProgramaUsuarioPregunta programaUsuarioPregunta = 
+					logicPruebaProgramaUsuarioPregunta1.getPruebaProgramaUsuarioPregunta(idPruebaProgramaUsuarioPregunta);
+			if (programaUsuarioPregunta == null || !programaUsuarioPregunta.getActivo().equals("S")) {
+				throw new Exception("No existe programaUsuarioPregunta " + idPruebaProgramaUsuarioPregunta);
+			}
+			
+			//Se consulta la respuesta
+			Respuesta respuesta = respuestaLogic.getRespuesta(idRespuesta);
+			if (respuesta==null || !respuesta.getActivo().equals("S")) {
+				throw new Exception("no existe la respuesta " + idRespuesta);
+			}
+			
+			Set<RespuestaPruebaProgramaUsuarioPregunta> respuestasDePregunta = 
+					programaUsuarioPregunta.getRespuestaPruebaProgramaUsuarioPreguntas();
+			
+			for (RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta : respuestasDePregunta) {
+				//se actualiza la respuesta y el % de acierto
+				respuestaPruebaProgramaUsuarioPregunta.setRespuesta(respuesta);
+				respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado(new Long(respuesta.getPorcentajeAcierto()));
+				
+				updateRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
+			}
+			
+			
+		} catch (Exception e) {
+			log.error("Ocurrió un error guardando la respuesta a la pregunta", e);
+			throw e;
+		}
 	}
 }

@@ -798,4 +798,6 @@ public interface IBusinessDelegatorView {
 	 public ByteArrayInputStream generarInformeGrupo(Long idTipoPrueba,Long idPrograma,Long idModulo,String periodo,List<String> correos) throws Exception;
 
 	 public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception;
+
+	 public void guardarRespuestaAPregunta(Long idPruebaProgramaUsuarioPregunta, Long idRespuesta) throws Exception;
 }

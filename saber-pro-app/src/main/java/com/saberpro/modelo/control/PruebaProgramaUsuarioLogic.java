@@ -597,6 +597,30 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 				
 				moduloPreguntaDTO.setRespuestasDTO(respuestasDTO);		
 				
+				//Para esa prueba programa usuario pregunta, se consulta la respuesta seleccionada (Si la hay)
+				Set<RespuestaPruebaProgramaUsuarioPregunta> respuestasSeleccionadas = pruebaProgramaUsuarioPregunta.getRespuestaPruebaProgramaUsuarioPreguntas();
+				if (respuestasSeleccionadas!=null && respuestasSeleccionadas.size()>0) {
+					Respuesta respuestaSeleccionada = respuestasSeleccionadas.iterator().next().getRespuesta();
+					
+					if (respuestaSeleccionada!=null) {
+						
+						RespuestaDTO respuestaSeleccionadaDTO = new RespuestaDTO();
+						respuestaSeleccionadaDTO.setActivo(respuestaSeleccionada.getActivo());
+						respuestaSeleccionadaDTO.setDescripcionRespuesta(respuestaSeleccionada.getDescripcionRespuesta());
+						respuestaSeleccionadaDTO.setFechaCreacion(respuestaSeleccionada.getFechaCreacion());
+						respuestaSeleccionadaDTO.setFechaModificacion(respuestaSeleccionada.getFechaModificacion());
+						respuestaSeleccionadaDTO.setIdPregunta_Pregunta(pregunta.getIdPregunta());
+						respuestaSeleccionadaDTO.setIdRespuesta(respuestaSeleccionada.getIdRespuesta());
+						respuestaSeleccionadaDTO.setPorcentajeAcierto(respuestaSeleccionada.getPorcentajeAcierto());
+						respuestaSeleccionadaDTO.setRutaImagen(respuestaSeleccionada.getRutaImagen());
+						respuestaSeleccionadaDTO.setUsuCreador(respuestaSeleccionada.getUsuCreador());
+						respuestaSeleccionadaDTO.setUsuModificador(respuestaSeleccionada.getUsuModificador());
+						
+						moduloPreguntaDTO.setRespuestaSeleccionada(respuestaSeleccionadaDTO);
+					}
+					
+				}
+				
 				modulosPreguntas.add(moduloPreguntaDTO);
 				
 			}

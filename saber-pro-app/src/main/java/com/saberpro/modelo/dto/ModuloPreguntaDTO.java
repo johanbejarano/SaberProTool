@@ -11,6 +11,7 @@ public class ModuloPreguntaDTO {
 	private Long prioridadModulo;
 	private PreguntaDTO preguntaDTO;
 	private List<RespuestaDTO> respuestasDTO;
+	private RespuestaDTO respuestaSeleccionada;
 	
 	public Long getIdModulo() {
 		return idModulo;
@@ -41,6 +42,12 @@ public class ModuloPreguntaDTO {
 	}
 	public void setRespuestasDTO(List<RespuestaDTO> respuestasDTO) {
 		this.respuestasDTO = respuestasDTO;
+	}
+	public RespuestaDTO getRespuestaSeleccionada() {
+		return respuestaSeleccionada;
+	}
+	public void setRespuestaSeleccionada(RespuestaDTO respuestaSeleccionada) {
+		this.respuestaSeleccionada = respuestaSeleccionada;
 	}
 	
 }

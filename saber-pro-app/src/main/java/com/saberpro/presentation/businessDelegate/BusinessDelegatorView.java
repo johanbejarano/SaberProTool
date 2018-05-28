@@ -2081,4 +2081,9 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception{
 		return pruebaProgramaUsuarioLogic.consultarPruebaProgramaUsuario(idPruebaProgramaUsuario);
 	}
+	
+	@Override
+	public void guardarRespuestaAPregunta(Long idPruebaProgramaUsuarioPregunta, Long idRespuesta) throws Exception{
+		respuestaPruebaProgramaUsuarioPreguntaLogic.guardarRespuestaAPregunta(idPruebaProgramaUsuarioPregunta, idRespuesta);
+	}
 }

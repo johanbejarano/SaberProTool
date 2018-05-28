@@ -7,8 +7,8 @@
 
 	<ui:define name="content">
 		<h:form>
-			<p:messages id="msg" />
-			<p:growl id="men" />
+			<p:messages id="msg" autoUpdate="true"/>
+			<p:growl id="men" autoUpdate="true" />
 			
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Módulo:"/>
@@ -43,7 +43,12 @@
 				<p:separator/>
 			
 			
-				<p:dataTable value="#{tomarPruebaView.preguntaActual.respuestasDTO}" var="respuesta">
+				<p:dataTable value="#{tomarPruebaView.preguntaActual.respuestasDTO}" var="respuesta"
+					selectionMode="single" selection="#{tomarPruebaView.preguntaActual.respuestaSeleccionada}" 
+					rowKey="#{respuesta.idRespuesta}">
+					
+					<p:ajax event="rowSelect" listener="#{tomarPruebaView.onRowSelect}" />
+					
 					<p:column headerText="Respuesta">
 						<p:outputLabel value="#{respuesta.descripcionRespuesta}" escape="false"/>
 					</p:column>
