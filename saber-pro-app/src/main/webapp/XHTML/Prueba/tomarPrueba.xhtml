@@ -33,10 +33,6 @@
 									value="#{tomarPruebaView.modeloPruebaDTO.porcentajeAvance}" 
 									labelTemplate="#{tomarPruebaView.modeloPruebaDTO.porcentajeAvance}%" />
 								
-								<p:steps>
-									
-								</p:steps>
-								
 								<p:separator styleClass="Wid100"/>
 								
 								<div align="center">
@@ -70,7 +66,7 @@
 
 					<div class="Container100 Responsive"> 
 						<div class="ContainerIndent">
-							<p:panel id="pnlPregunta">
+							<p:panel id="pnlPregunta" header="PREGUNTA">
 								
 								<p:outputLabel escape="false"
 									value="#{tomarPruebaView.preguntaActual.preguntaDTO.descripcionPregunta}" />
@@ -88,7 +84,7 @@
 
 					<div class="Container100 Responsive"> 
 						<div class="ContainerIndent">
-							<p:panel id="pnlRespuestas">
+							<p:panel id="pnlRespuestas" header="OPCIONES DE RESPUESTA">
 								
 								<p:dataTable value="#{tomarPruebaView.preguntaActual.respuestasDTO}"
 									var="respuesta" selectionMode="single"
@@ -98,7 +94,7 @@
 									<p:ajax event="rowSelect" listener="#{tomarPruebaView.onRowSelect}" 
 										update=":frmPrueba:progreso"/>
 				
-									<p:column headerText="RESPUESTA">
+									<p:column>
 										<p:outputLabel value="#{respuesta.descripcionRespuesta}"
 											escape="false" />
 									</p:column>
