@@ -12,7 +12,7 @@
 				style="border:0;">
 				<p:commandButton update="msg" onstart="PF('statusDialog').show()"
 					onsuccess="PF('statusDialog').hide()"
-					value="Generar nueva entrenamiento"
+					value="Generar nuevo entrenamiento"
 					action="#{pruebaView.createEntrenamiento}"
 					binding="#{pruebaView.btnGenerar}" styleClass="btn btn-primary"
 					style="margin-left:20px;" />
@@ -23,14 +23,14 @@
 						var="prueba" reflow="true" resizableColumns="true"
 						scrollable="true" scrollHeight="300" widgetVar="modTable">
 
-						<p:column headerText="Tipo Prueba">
+						<p:column headerText="Tipo de prueba">
 							<p:outputLabel
 								value="#{pruebaView.getTipoPrueba(prueba.prueba.idPrueba)}" />
 						</p:column>
-						<p:column headerText="Fecha">
+						<p:column headerText="Fecha de realización">
 							<p:outputLabel value="#{prueba.fechaModificacion}" />
 						</p:column>
-						<p:column headerText="Estado Prueba">
+						<p:column headerText="Estado de la prueba">
 							<p:outputLabel
 								value="#{pruebaView.getEstadoPrueba(prueba.estadoPrueba.idEstadoPrueba)}" />
 						</p:column>

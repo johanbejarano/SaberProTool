@@ -9,7 +9,7 @@
 			<h:form id="formDialog">
 				<p:messages id="msg" />
 				<p:growl id="men"/>
-				<p:panel header="Asignar Director de programa">
+				<p:panel header="Asignar un director de programa">
 					<h:panelGrid columns="2">
 						<p:outputLabel value="Facultad: "/>
 						<p:outputLabel value="#{asignarDirectorView.facultad}"/>
@@ -27,7 +27,7 @@
 				</p:panel>
 				<p:panel id="panelTable">
 				<p:dataTable  value="#{asignarDirectorView.data}" scrollable="true" var="usuario"  >
-						<p:column headerText="Codigo" filterBy="#{usuario.codigo}"
+						<p:column headerText="Código" filterBy="#{usuario.codigo}"
 							filterMatchMode="contains">
 							<p:outputLabel value="#{usuario.codigo}" />
 						</p:column>

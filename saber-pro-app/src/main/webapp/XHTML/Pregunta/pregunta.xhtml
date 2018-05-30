@@ -17,7 +17,7 @@
 						<f:selectItems value="#{preguntaView.lasTipoModuloSelectItem}"/>	
 						<p:ajax update="somModulo" listener="#{preguntaView.changeTipoModulo}"/>
 					</p:selectOneMenu>
-					<h:outputText  value="Modulo:" />	
+					<h:outputText  value="Módulo:" />	
 					<p:selectOneMenu id="somModulo" binding="#{preguntaView.somModulo}">
 						<f:selectItem itemValue="0" itemLabel="----------------------------------" />		
 						<f:selectItems value="#{preguntaView.lasModuloSelectItem}"/>				
@@ -34,17 +34,17 @@
              					[ 'TextColor','BGColor' ],
              					[ 'Maximize']]"
 						skin="office2013"/>
-					<h:outputText id="msgSubirImagenP" value=" Subir Imagen:  ->" />
+					<h:outputText id="msgSubirImagenP" value=" Subir imagen:  ->" />
 					<h:panelGrid columns="3">
 						<p:fileUpload  mode="simple" skinSimple="true"  value="#{preguntaView.choosePregunta}" label="Elegir imagen" allowTypes="/(\.|\/)(gif|jpe?g|png|jpg)$/"/>
 						<p:commandButton value="Subir imagen" action="#{preguntaView.subirImagenPregunta}" update="msg,panelPregunta" ajax="false"/>						
 					</h:panelGrid>
-					<h:outputText id="msgRetroalimentacion" value=" Retroalimentacion :  ->" />
+					<h:outputText id="msgRetroalimentacion" value=" Retroalimentación :  ->" />
 					<p:inputTextarea id="txtRetroalimentacion" rows="3" cols="96" counter="display" binding="#{preguntaView.txtRetroalimentacion}"
 						maxlength="1200" counterTemplate="{0} caracteres restantes" autoResize="false"/>
 					<h:outputText value="(Opcional)" />
 					<h:outputText id="display"/>
-					<h:outputText value="Agrege las respuestas: ->"/>			
+					<h:outputText value="Agregar respuestas: ->"/>			
 					<p:tabView>
 					 	 <p:tab title="Respuesta I">
 					 	 	<pe:ckEditor value="#{preguntaView.contentRespuesta1}" 
@@ -64,7 +64,7 @@
 																			
 							</h:panelGrid>
 							<h:panelGrid columns="2">
-								<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
+								<h:outputText value="Eliga el porcentaje de acierto para la respuesta, debe de estar entre 0% a 100%:"/>	
 								<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta1}" />
 							</h:panelGrid>							
 					 	 </p:tab>
@@ -86,7 +86,7 @@
 																				
 								</h:panelGrid>
 								<h:panelGrid columns="2">
-									<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
+									<h:outputText value="Eliga el porcentaje de acierto para la respuesta, debe de estar entre 0% a 100%:"/>	
 									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta2}"/>
 								</h:panelGrid>	
 					 	 </p:tab>
@@ -108,7 +108,7 @@
 																					
 								</h:panelGrid>
 								<h:panelGrid columns="2">
-									<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
+									<h:outputText value="Eliga el porcentaje de acierto para la respuesta, debe de estar entre 0% a 100%:"/>	
 									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta3}"/>
 								</h:panelGrid>	
 					 	 </p:tab>
@@ -130,7 +130,7 @@
 																				
 								</h:panelGrid>
 								<h:panelGrid columns="2">
-									<h:outputText value="Eliga el porcentaje de acierto para la respuesta entre 0% a 100%:"/>	
+									<h:outputText value="Eliga el porcentaje de acierto para la respuesta, debe de estar entre 0% a 100%:"/>	
 									<p:inputNumber  minValue="0" maxValue="100" symbol="%" symbolPosition="s" size="40" binding="#{preguntaView.porcentajeAciertoRespuesta4}"/>
 								</h:panelGrid>	
 					 	 </p:tab>

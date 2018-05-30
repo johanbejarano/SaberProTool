@@ -8,20 +8,20 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelModulo" header="Modulo">
+			<p:panel id="panelModulo" header="Módulo">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText value=" Nombre" />
 					<p:inputText binding="#{moduloView.txtNombre}" size="50">
 						<p:ajax update="panelModulo,msg"
 							listener="#{moduloView.listener_txtId}" />
 					</p:inputText>
-					<h:outputText value=" Descripciòn" />
+					<h:outputText value=" Descripción" />
 					<p:inputTextarea rows="5" cols="49" counter="display"
 						maxlength="1200" counterTemplate="{0} caracteres restantes"
 						autoResize="false" binding="#{moduloView.txtDescripcion}" />
 					<h:outputText value="(Opcional)" />
 					<h:outputText id="display" />
-					<h:outputText value=" CantidadPreguntas" />
+					<h:outputText value=" Cantidad de preguntas" />
 					<p:spinner binding="#{moduloView.txtCantPreguntas}" min="3"
 						max="10" size="48">
 						<p:ajax update="panelModulo,msg"
@@ -33,7 +33,7 @@
 						<p:ajax update="panelModulo,msg"
 							listener="#{moduloView.action_validar}" />
 					</p:spinner>
-					<h:outputText value="Tipo de modulo" />
+					<h:outputText value="Tipo de módulo" />
 					<p:selectOneMenu binding="#{moduloView.somTipoModulo}"
 						style="width:325px;">
 						<f:selectItem itemLabel="-------------------" itemValue="#{null}" />
@@ -78,7 +78,7 @@
 							filterMatchMode="contains">
 							<p:outputLabel value="#{modulo.nombre}" />
 						</p:column>
-						<p:column headerText="Tipo Modulo" filterMatchMode="exact"
+						<p:column headerText="Tipo de módulo" filterMatchMode="exact"
 							filterBy="#{modulo.idTipoModulo_TipoModulo}">
 							<f:facet name="filter">
 								<p:selectOneMenu onchange="PF('modTable').filter()">

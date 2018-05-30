@@ -8,7 +8,7 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelTipoModulo" header="Tipo de Modulo">
+			<p:panel id="panelTipoModulo" header="Tipo de módulo">
 				<h:panelGrid columns="2" id="panelGrid">
 					<h:outputText id="msgNombre" value=" Nombre" />
 					<p:inputText id="txtNombre" binding="#{tipoModuloView.txtNombre}"
@@ -16,7 +16,7 @@
 						<p:ajax update="panelTipoModulo,msg"
 							listener="#{tipoModuloView.listener_txtId}" />
 					</p:inputText>
-					<h:outputText id="msgDescripcion" value=" Descripciòn" />
+					<h:outputText id="msgDescripcion" value=" Descripción" />
 					<p:inputTextarea id="txtDescripcion" rows="5" cols="49"
 						counter="display" maxlength="1200"
 						counterTemplate="{0} caracteres restantes" autoResize="false"

@@ -8,19 +8,19 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelProgramaSimulacro" header="Creacion de Simulacro">
+			<p:panel id="panelProgramaSimulacro" header="Creación de simulacro">
 				<h:panelGrid columns="2" id="panelGrid">
 					<p:outputLabel value="Facultad  :" />
 					<p:outputLabel value="#{datosSessionView.facultad.nombre}" />
-					<p:outputLabel value="Programa academico  :" />
+					<p:outputLabel value="Programa académico  :" />
 					<p:outputLabel value="#{datosSessionView.programa.nombre}" />
 					<p:outputLabel value="Fecha de inicio  :" />
 					<p:calendar showOn="button"
 						value="#{programaSimulacroView.fechaInicial}" />
-					<p:outputLabel value="Fecha de Finalizaciòn  :" />
+					<p:outputLabel value="Fecha de finalización  :" />
 					<p:calendar showOn="button"
 						value="#{programaSimulacroView.fechaFinal}" />
-					<p:outputLabel value="Duraciòn del simulacro  :" />
+					<p:outputLabel value="Duración del simulacro  :" />
 					<p:calendar pattern="HH:mm" showOn="button" timeOnly="true"
 						value="#{programaSimulacroView.tiempo}" />
 				</h:panelGrid>
@@ -33,7 +33,7 @@
 						showSourceFilter="true" showTargetFilter="true"
 						filterMatchMode="contains">
 						<f:facet name="sourceCaption">Escoger</f:facet>
-						<f:facet name="targetCaption">Selecionados</f:facet>
+						<f:facet name="targetCaption">Seleccionados</f:facet>
 					</p:pickList>
 					<p:commandButton id="btnSave"
 						binding="#{programaModuloView.btnSave}" value="Crear simulacro"
@@ -51,10 +51,10 @@
 						<p:column headerText="Fecha inicial">
 							<p:outputLabel value="#{prueba.fechaInicial}" />
 						</p:column>
-						<p:column headerText="Fecha Final">
+						<p:column headerText="Fecha final">
 							<p:outputLabel value="#{prueba.fechaFinal}" />
 						</p:column>
-						<p:column headerText="Tiempo minutos)">
+						<p:column headerText="Tiempo (minutos)">
 							<p:outputLabel value="#{prueba.tiempo/60}" />
 						</p:column>
 						

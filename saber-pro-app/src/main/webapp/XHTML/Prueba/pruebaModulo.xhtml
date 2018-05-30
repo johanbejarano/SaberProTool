@@ -13,19 +13,19 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelPruebaModulo" header="Selecione los modulos"
+			<p:panel id="panelPruebaModulo" header="Selecione los módulos"
 				style="border:0;">
 				<p:pickList value="#{pruebaModuloView.modulos}" var="modulo"
 					converter="moduloPickListConverter" itemLabel="#{modulo.nombre}"
 					itemValue="#{modulo}" showCheckbox="true" responsive="true"
 					showSourceFilter="true" showTargetFilter="true"
 					filterMatchMode="contains">
-					<f:facet name="sourceCaption">Escoger modulos</f:facet>
-					<f:facet name="targetCaption">Modulos a entrenar</f:facet>
+					<f:facet name="sourceCaption">Escoger módulos</f:facet>
+					<f:facet name="targetCaption">Módulos a entrenar</f:facet>
 				</p:pickList>
 				<h:panelGrid columns="1" id="panelGrid" style="margin:20px;">
 					<p:commandButton update="msg,panelPruebaModulo"
-						value="Generar Entrenamiento y empezar"
+						value="Generar entrenamiento y empezar"
 						onstart="PF('statusDialog').show()"
 						onsuccess="PF('statusDialog').hide()"
 						styleClass="btn btn-primary btn-block"

@@ -8,7 +8,7 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel header="Asignar Decano de facultad">
+			<p:panel header="Asignar un decano de facultad">
 				<h:panelGrid columns="2">
 					<p:outputLabel value="Facultad: " />
 					<p:selectOneMenu binding="#{asignarDecanoView.somFacultad}">
@@ -29,7 +29,7 @@
 			<p:panel id="panelTable">
 				<p:dataTable value="#{asignarDecanoView.data}" scrollable="true"
 					var="usuario">
-					<p:column headerText="Codigo" filterBy="#{usuario.codigo}"
+					<p:column headerText="Código" filterBy="#{usuario.codigo}"
 						filterMatchMode="contains">
 						<p:outputLabel value="#{usuario.codigo}" />
 					</p:column>

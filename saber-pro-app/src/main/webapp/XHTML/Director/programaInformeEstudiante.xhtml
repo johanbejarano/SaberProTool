@@ -13,9 +13,9 @@
 				<h:panelGrid columns="2" id="panelGrid">
 					<p:outputLabel value="Facultad  :" />
 					<p:outputLabel value="#{datosSessionView.facultad.nombre}" />
-					<p:outputLabel value="Programa academico  :" />
+					<p:outputLabel value="Programa académico  :" />
 					<p:outputLabel value="#{datosSessionView.programa.nombre}" />
-					<p:outputLabel value="Codigo  :" />
+					<p:outputLabel value="Código  :" />
 					<p:inputText binding="#{programaInformeEstudianteView.txtCodigo}">
 						<p:keyFilter regEx="/[0-9]/"/>
 					</p:inputText>
@@ -29,7 +29,7 @@
 								value="#{programaInformeEstudianteView.losUsuarios}"
 								var="usuario" reflow="true" resizableColumns="true"
 								scrollable="true" scrollHeight="300" widgetVar="userTable">
-								<p:column headerText="Codigo">
+								<p:column headerText="Código">
 									<p:outputLabel value="#{usuario.codigo}" />
 								</p:column>
 								<p:column headerText="Nombre">
@@ -44,7 +44,7 @@
 								value="#{programaInformeEstudianteView.data}" var="prueba"
 								reflow="true" resizableColumns="true" scrollable="true"
 								scrollHeight="300" widgetVar="pruebaTable">
-								<p:column headerText="Tipo Prueba">
+								<p:column headerText="Tipo de prueba">
 									<p:outputLabel
 										value="#{pruebaView.getTipoPrueba(prueba.prueba.idPrueba)}" />
 								</p:column>

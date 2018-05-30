@@ -12,7 +12,7 @@
 				<p:panel id="panelTable" header="Resultados de la prueba">
 				<p:dataTable id="dataResultados" value="#{pruebaResultadoView.data}"
 					var="resultado" >
-					<p:column headerText="Nombre modulo" >
+					<p:column headerText="Nombre del módulo" >
 						<p:outputLabel value="#{resultado.nombreModulo}" />
 					</p:column>	
 					<p:column headerText="Preguntas incorrectas" >
@@ -21,10 +21,10 @@
 					<p:column headerText="Preguntas correctas" >
 						<p:outputLabel value="#{resultado.correcta}" />
 					</p:column>
-					<p:column headerText="Numero de preguntas" >
+					<p:column headerText="Número de preguntas" >
 						<p:outputLabel value="#{resultado.numero}" />
 					</p:column>									
-					<p:column headerText="Puntuaciòn" >
+					<p:column headerText="Puntuación" >
 						<p:outputLabel value="#{resultado.resultado}" />
 					</p:column>	
 				</p:dataTable>

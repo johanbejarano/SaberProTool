@@ -8,11 +8,11 @@
 		<h:form id="formDialog">
 			<p:messages id="msg" />
 			<p:growl id="men" />
-			<p:panel id="panelProgramaModulo" header="Selecion de Modulos especifico">
+			<p:panel id="panelProgramaModulo" header="Selecion de módulos específicos">
 				<h:panelGrid columns="2" id="panelGrid">
 					<p:outputLabel value="Facultad  :"/>
 					<p:outputLabel value="#{programaModuloView.facultad}"/>
-					<p:outputLabel value="Programa academico  :"/>
+					<p:outputLabel value="Programa académico  :"/>
 					<p:outputLabel value="#{programaModuloView.programa}"/>
 				</h:panelGrid>
 				<div>
@@ -20,7 +20,7 @@
 					itemLabel="#{modulo.nombre}" itemValue="#{modulo}" showCheckbox="true" responsive="true"
                 	showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
                 	<f:facet name="sourceCaption">Escoger</f:facet>
-        			<f:facet name="targetCaption">Selecionados</f:facet>
+        			<f:facet name="targetCaption">Seleccionados</f:facet>
 					</p:pickList>
 					<p:commandButton id="btnSave" action="#{programaModuloView.action_create}"
 						binding="#{programaModuloView.btnSave}" 

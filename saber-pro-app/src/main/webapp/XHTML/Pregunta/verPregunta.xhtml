@@ -32,13 +32,13 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="10,25,50">
 
-					<p:column headerText="contenido"
+					<p:column headerText="Contenido"
 						filterBy="#{pregunta.descripcionPregunta}"
 						filterMatchMode="contains">
 						<p:outputLabel value="#{pregunta.descripcionPregunta}"
 							escape="false" />
 					</p:column>
-					<p:column headerText="Modulo"
+					<p:column headerText="Módulo"
 						filterBy="#{pregunta.idModulo_Modulo}" filterMatchMode="exact">
 						<f:facet name="filter">
 							<p:selectOneMenu onchange="PF('tipTable').filter()">
@@ -63,7 +63,7 @@
 						</f:facet>
 						<h:outputText value="#{pregunta.activo.equals('S') ? 'Sí': 'No'}" />
 					</p:column>
-					<p:column headerText="Opcion" width="5%">
+					<p:column headerText="Opción" width="5%">
 						<h:link outcome="pregunta.xhtml" value="Editar"
 							styleClass="fa fa-cog" style="color:black;">
 							<f:param name="id" value="#{pregunta.idPregunta}" />
