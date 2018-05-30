@@ -210,7 +210,7 @@ public class TipoUsuarioView implements Serializable {
 				//Se setean la lista de tipo de usuario del datatable
 				data = null;
 				//Se limpia la vista y se indica mensaje exito 
-				FacesUtils.addInfoMessage("Se guardo exitosamente el tipo de usuario");
+				FacesUtils.addInfoMessage("Se guardó exitosamente el tipo de usuario");
 				action_clear();
 
 			}
@@ -218,7 +218,7 @@ public class TipoUsuarioView implements Serializable {
 		} catch (Exception e) {
 			entity = null;
 			FacesUtils.addErrorMessage(e.getMessage());
-			log.error("Error creando el tipo de usuari "+e.getMessage(),e);
+			log.error("Error creando el tipo de usuario "+e.getMessage(),e);
 		}
 
 		return "";
@@ -249,7 +249,7 @@ public class TipoUsuarioView implements Serializable {
 				//Se setean la lista de tipo de usuario del datatable
 				data = null;
 				//Se limpia la vista y se indica mensaje exito 
-				FacesUtils.addInfoMessage("Se actualizo exitosamente el tipo de usuario");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente el tipo de usuario");
 				action_clear();
 
 			}
@@ -257,7 +257,7 @@ public class TipoUsuarioView implements Serializable {
 		} catch (Exception e) {
 			entity = null;
 			FacesUtils.addErrorMessage(e.getMessage());
-			log.error("Error actualizando el tipo de usuari "+e.getMessage(),e);
+			log.error("Error actualizando el tipo de usuario "+e.getMessage(),e);
 		}
 
 		return "";

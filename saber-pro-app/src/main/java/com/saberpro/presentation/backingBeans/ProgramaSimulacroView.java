@@ -79,7 +79,7 @@ public class ProgramaSimulacroView implements Serializable {
 				if (fechaFinal.getTime() < fechaInicial.getTime())
 					throw new Exception("La fechas no son permitidas");
 				if (tiempo.getHours() < 1)
-					throw new Exception("El tiempo minimo es de 1 hora");
+					throw new Exception("El tiempo mínimo es de 1 hora");
 				if (usuarios.getTarget().size() == 0)
 					throw new Exception("Debe selecionar al menos un estudiante");
 
@@ -183,7 +183,7 @@ public class ProgramaSimulacroView implements Serializable {
 				}
 				
 				data = null;
-				FacesUtils.addInfoMessage("Se creo el simulacro exitosamente");
+				FacesUtils.addInfoMessage("Simulacro creado exitosamente");
 			}
 
 		} catch (

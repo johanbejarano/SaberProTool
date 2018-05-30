@@ -226,14 +226,14 @@ public class PreguntaView implements Serializable {
 				
 				businessDelegatorView.saveRespuesta(respuesta);
 
-				FacesUtils.addInfoMessage("Se creo la pregunta correctamente");
+				FacesUtils.addInfoMessage("Pregunta creada correctamente");
 				
 				action_clear();
 				
 
 			}
 			else {
-				FacesUtils.addErrorMessage("no se puede crear la pregunta verifique los datos");
+				FacesUtils.addErrorMessage("No se pudo crear la pregunta, por favor verifique los datos");
 			}
 
 		} catch (Exception e) {
@@ -325,13 +325,13 @@ public class PreguntaView implements Serializable {
 				
 				businessDelegatorView.updateRespuesta(respuesta);
 
-				FacesUtils.addInfoMessage("Se actualizo correctamente");
+				FacesUtils.addInfoMessage("Pregunta actualizada correctamente");
 				
 				FacesContext.getCurrentInstance().getExternalContext().redirect("/saber-pro-app/XHTML/Pregunta/verPregunta.xhtml");
 				
 			}
 			else {
-				FacesUtils.addErrorMessage("no se puede actualizar verifique los datos");
+				FacesUtils.addErrorMessage("No se pudo actualizar la pregunta, por favor verifique los datos");
 			}
 
 		} catch (Exception e) {
@@ -364,7 +364,7 @@ public class PreguntaView implements Serializable {
 				
 				data = null;
 				
-				FacesUtils.addInfoMessage("Se importo correctamente las preguntas");
+				FacesUtils.addInfoMessage("Preguntas importadas correctamente");
 			}
 			
 			
@@ -388,7 +388,7 @@ public class PreguntaView implements Serializable {
     			
     			content = content +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
-    			FacesUtils.addInfoMessage("Se subio el archivo correctamente");
+    			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
 			
 		} catch (Exception e) {
@@ -410,7 +410,7 @@ public class PreguntaView implements Serializable {
     			
     			contentRespuesta1 = contentRespuesta1 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
-    			FacesUtils.addInfoMessage("Se subio el archivo correctamente");
+    			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
 			
 		} catch (Exception e) {
@@ -432,7 +432,7 @@ public class PreguntaView implements Serializable {
     			
     			contentRespuesta2 = contentRespuesta2 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
-    			FacesUtils.addInfoMessage("Se subio el archivo correctamente");
+    			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
 			
 		} catch (Exception e) {
@@ -453,7 +453,7 @@ public class PreguntaView implements Serializable {
     		
     			contentRespuesta3 = contentRespuesta3 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
-    			FacesUtils.addInfoMessage("Se subio el archivo correctamente");
+    			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
 			
 		} catch (Exception e) {
@@ -475,7 +475,7 @@ public class PreguntaView implements Serializable {
     			
     			contentRespuesta4 = contentRespuesta4 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
-    			FacesUtils.addInfoMessage("Se subio el archivo correctamente");
+    			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
 			
 		} catch (Exception e) {

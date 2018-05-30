@@ -99,7 +99,7 @@ public class AsignarDirectorView implements Serializable {
 					
 					data = null;
 					
-					FacesUtils.addInfoMessage("Se asigno el Director correctamente");
+					FacesUtils.addInfoMessage("Se asignó el director correctamente");
 				}
 				
 			}

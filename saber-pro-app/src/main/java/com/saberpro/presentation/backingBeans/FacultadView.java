@@ -182,7 +182,7 @@ public class FacultadView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se guardo exitosamente la facultad");
+				FacesUtils.addInfoMessage("Se guardó exitosamente la facultad");
 				//se limpian los datos
 				action_clear();
 
@@ -218,7 +218,7 @@ public class FacultadView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo exitosamente la facultad");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente la facultad");
 				action_clear();
 
 			}

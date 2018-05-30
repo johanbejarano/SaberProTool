@@ -506,7 +506,7 @@ public class PruebaLogic implements IPruebaLogic {
     		
     		Parametro parametroRutaReportes = parametroLogic.getParametro(Constantes.PARAMETRO_REPORTES);
     		if (parametroRutaReportes == null || !parametroRutaReportes.getActivo().equals("S")) {
-    			throw new Exception("No existe el parámetro  Ruta reportes");
+    			throw new Exception("No existe el parámetro  'RUTA REPORTES'");
     		}
     		
     		File fRutaReportes = new File(parametroRutaReportes.getValor());
@@ -576,7 +576,7 @@ Connection conn = null;
     		
     		Parametro parametroRutaReportes = parametroLogic.getParametro(Constantes.PARAMETRO_REPORTES);
     		if (parametroRutaReportes == null || !parametroRutaReportes.getActivo().equals("S")) {
-    			throw new Exception("No existe el parámetro  Ruta reportes");
+    			throw new Exception("No existe el parámetro  'RUTA REPORTES'");
     		}
     		
     		File fRutaReportes = new File(parametroRutaReportes.getValor());

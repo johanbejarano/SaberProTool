@@ -86,11 +86,11 @@ public class LoginView {
 		try {
 			//Se envia un correo electronico al correo con contraseña aleatoria para que recupere la contraseña
 			businessDelegatorView.resetByEmailUsuario(email);
-			FacesUtils.addInfoMessage("se le envio un correo para recuperar su contraseña");
+			FacesUtils.addInfoMessage("Se le ha enviado un correo para poder recuperar su contraseña");
 			
 		} catch (Exception e) {
 			//Mensage en caso de error
-			FacesUtils.addErrorMessage("no se encontro el correo"); 
+			FacesUtils.addErrorMessage("Correo no encontrado"); 
 			
         }
 	}

@@ -179,7 +179,7 @@ public class EstadoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se guardo exitosamente el estado de la prueba");
+				FacesUtils.addInfoMessage("Se guardó exitosamente el estado de la prueba");
 				action_clear();
 
 			}
@@ -217,7 +217,7 @@ public class EstadoPruebaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo exitosamente el estado de la prueba");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente el estado de la prueba");
 				action_clear();
 
 			}

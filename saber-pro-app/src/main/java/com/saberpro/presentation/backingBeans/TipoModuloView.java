@@ -176,7 +176,7 @@ public class TipoModuloView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se guardo exitosamente el tipo de modulo");
+				FacesUtils.addInfoMessage("Se guardó exitosamente el tipo de módulo");
 				action_clear();
 
 			}
@@ -209,7 +209,7 @@ public class TipoModuloView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo exitosamente el tipo de modulo");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente el tipo de módulo");
 				action_clear();
 
 			}

@@ -172,20 +172,20 @@ public class UsuarioLogic implements IUsuarioLogic {
             Object[] celular = {"celular",true,entity.getCelular(),"="};
             
             if(findByCriteria(identificacion,null,null).size()!=0) {
-            	throw new Exception("Esa identificacion ya esta registrada");
+            	throw new Exception("El número de identificación ya se encuentra registrado");
             }
             if(findByCriteria(correo,null,null).size()!=0) {
-            	throw new Exception("Ese correo ya esta registrada");
+            	throw new Exception("La dirección de correo ya se encuentra registrado");
             }
             if(findByCriteria(celular,null,null).size()!=0) {
-            	throw new Exception("Ese celular ya esta registrada");
+            	throw new Exception("El número de celular ya se encuentra registrado");
             }
             
             usuarioDAO.save(entity);
             log.debug("save Usuario successful");
             
-            String message = "Se creo la cuenta correctamente\n\nSu codigo de acesso es: "+entity.getCodigo()+"\nSu contraseña es: "+password+"\n\nGracias";
-            emailCorreo.sendSimpleMessage(entity.getCorreo(),"SaberProTool: Creacion de cuenta",message);
+            String message = "Se creó la cuenta correctamente\n\nSu código de acceso es: "+entity.getCodigo()+"\nSu contraseña es: "+password+"\n\nGracias por ingresar a nuestra plataforma";
+            emailCorreo.sendSimpleMessage(entity.getCorreo(),"SaberProTool: Creación de cuenta",message);
         } catch (Exception e) {
             log.error("save Usuario failed", e);
             throw e;
@@ -249,13 +249,13 @@ public class UsuarioLogic implements IUsuarioLogic {
             Object[] celular = {"celular",true,entity.getCelular(),"=","codigo",true,entity.getCodigo(),"<>"};
             
             if(findByCriteria(identificacion,null,null).size()!=0) {
-            	throw new Exception("Esa identificacion ya esta registrada");
+            	throw new Exception("El número de identificación ya se encuentra registrado");
             }
             if(findByCriteria(correo,null,null).size()!=0) {
-            	throw new Exception("Ese correo ya esta registrada");
+            	throw new Exception("La dirección de correo ya se encuentra registrado");
             }
             if(findByCriteria(celular,null,null).size()!=0) {
-            	throw new Exception("Ese celular ya esta registrada");
+            	throw new Exception("El número de celular ya se encuentra registrado");
             }
             
             usuarioDAO.update(entity);
@@ -620,7 +620,7 @@ public class UsuarioLogic implements IUsuarioLogic {
             usuarioDAO.update(usuario);
             
             String message = FacesUtils.plantillaCorreo(Long.toString(usuario.getCodigo()),password);
-            emailCorreo.sendSimpleHtml(usuario.getCorreo(),"SaberProTool: Reset password",message);
+            emailCorreo.sendSimpleHtml(usuario.getCorreo(),"SaberProTool: Reestablecer contraseña de la cuenta",message);
 
             log.debug("update Usuario successful");
         } catch (Exception e) {

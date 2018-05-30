@@ -215,7 +215,7 @@ public class ProgramaView implements Serializable {
 				
 				data = null;
 
-				FacesUtils.addInfoMessage("Se guardo exitosamente  el programa academico");
+				FacesUtils.addInfoMessage("Se guardó exitosamente  el programa académico");
 				action_clear();
 
 			}
@@ -249,7 +249,7 @@ public class ProgramaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("se actualizo exitosamente el programa academico");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente el programa académico");
 				action_clear();
 
 			}

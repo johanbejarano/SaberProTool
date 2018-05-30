@@ -519,7 +519,7 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 			//Se consulta la prueba programa usuario
 			PruebaProgramaUsuario pruebaProgramaUsuario = getPruebaProgramaUsuario(idPruebaProgramaUsuario);
 			if (pruebaProgramaUsuario == null) {
-				throw new Exception("no existe la prueba programa usuario " + idPruebaProgramaUsuario);
+				throw new Exception("No existe la prueba programa usuario " + idPruebaProgramaUsuario);
 			}
 			
 			Prueba prueba = pruebaProgramaUsuario.getPrueba();
@@ -656,7 +656,7 @@ public class PruebaProgramaUsuarioLogic implements IPruebaProgramaUsuarioLogic {
 			
 			return modelo;
 		} catch (Exception e) {
-			log.error("Error consultando la prueba programa usuario " + idPruebaProgramaUsuario, e);
+			log.error("Error consultando la prueba programa usuario: " + idPruebaProgramaUsuario, e);
 			throw e;
 		}
 	}

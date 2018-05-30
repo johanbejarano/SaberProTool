@@ -539,7 +539,7 @@ public class RespuestaPruebaProgramaUsuarioPreguntaLogic
 			//Se consulta la respuesta
 			Respuesta respuesta = respuestaLogic.getRespuesta(idRespuesta);
 			if (respuesta==null || !respuesta.getActivo().equals("S")) {
-				throw new Exception("no existe la respuesta " + idRespuesta);
+				throw new Exception("No existe la respuesta " + idRespuesta);
 			}
 			
 			Set<RespuestaPruebaProgramaUsuarioPregunta> respuestasDePregunta = 

@@ -131,7 +131,7 @@ public class AsignarDecanoView implements Serializable {
 					
 					data = null;
 					
-					FacesUtils.addInfoMessage("Se asigno el Decano exitosamente");
+					FacesUtils.addInfoMessage("Se asignó el decano exitosamente");
 				}
 				
 			}

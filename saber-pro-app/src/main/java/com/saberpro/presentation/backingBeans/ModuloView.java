@@ -204,7 +204,7 @@ public class ModuloView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se guardo exitosamente el modulo");
+				FacesUtils.addInfoMessage("Se guardó exitosamente el módulo");
 				action_clear();
 
 			}
@@ -240,7 +240,7 @@ public class ModuloView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo exitosamente el modulo");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente el modulo");
 				action_clear();
 
 			}

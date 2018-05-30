@@ -102,12 +102,12 @@ public class ProgramaModuloView implements Serializable {
 					businessDelegatorView.saveProgramaModulo(programaModulo);
 				}
 				
-				FacesUtils.addInfoMessage("Se actualizo correctamente");
+				FacesUtils.addInfoMessage("Se actualizó correctamente");
 			}
 
 		} catch (Exception e) {			
 			FacesUtils.addErrorMessage(e.getMessage());
-			log.error("Erro de crear usuario en "+e.getMessage(),e);
+			log.error("Erro de creación de usuario en "+e.getMessage(),e);
 		}
 
 		return "";
@@ -196,7 +196,7 @@ public class ProgramaModuloView implements Serializable {
 		        modulos = new DualListModel<Modulo>(modulosSource,modulosTarget);
 				
 			} catch (Exception e) {
-				log.error("error de "+e.getMessage(),e);
+				log.error("Error en: "+e.getMessage(),e);
 			}
 		}
 		return modulos;

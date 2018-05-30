@@ -177,7 +177,7 @@ public class TipoPreguntaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se guardo exitosamente el tipo de pregunta");
+				FacesUtils.addInfoMessage("Se guardó exitosamente el tipo de pregunta");
 				action_clear();
 
 			}
@@ -210,7 +210,7 @@ public class TipoPreguntaView implements Serializable {
 
 				data = null;
 
-				FacesUtils.addInfoMessage("Se actualizo exitosamente el tipo de pregunta");
+				FacesUtils.addInfoMessage("Se actualizó exitosamente el tipo de pregunta");
 				action_clear();
 
 			}

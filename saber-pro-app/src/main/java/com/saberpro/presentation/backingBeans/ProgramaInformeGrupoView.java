@@ -78,7 +78,7 @@ public class ProgramaInformeGrupoView implements Serializable {
 			if(FacesUtils.checkString(somModulo)==null || FacesUtils.checkString(somTipoModulo)==null || periodo==null)
 				throw new Exception("Verifique los datos");
 			if(usuarios.getTarget().size()==0)
-				throw new Exception("Debe selecionar al menos 1 estudiante");
+				throw new Exception("Debe seleccionar al menos 1 estudiante para generar el reporte");
 			
 			long idTipoPrueba = FacesUtils.checkLong(somTipoModulo);
 			long idModulo = FacesUtils.checkLong(somModulo);

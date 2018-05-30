@@ -287,14 +287,15 @@ public class UsuarioView implements Serializable {
 				businessDelegatorView.saveProgramaUsuario(entityPrograma);
 				data = null;
 
-				FacesUtils.addInfoMessage("Se creo el Usuario correctamente");
+				FacesUtils.addInfoMessage("Usuario creado exitosamente correctamente");
+				FacesUtils.addInfoMessage("Usuario y contraseña enviados al correo");
 				action_clear();
 
 			}
 
 		} catch (Exception e) {			
 			FacesUtils.addErrorMessage(e.getMessage());
-			log.error("Erro de crear usuario en "+e.getMessage(),e);
+			log.error("Error al crear el usuario "+e.getMessage(),e);
 		}
 
 		return "";
@@ -360,7 +361,7 @@ public class UsuarioView implements Serializable {
 				
 				data = null;
 
-				FacesUtils.addInfoMessage("se actualizo programa correctamente");
+				FacesUtils.addInfoMessage("Usuario actualizado correctamente");
 				action_clear();
 
 			}
