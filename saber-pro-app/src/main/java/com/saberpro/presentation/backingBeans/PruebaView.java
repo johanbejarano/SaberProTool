@@ -85,7 +85,26 @@ public class PruebaView implements Serializable {
 			log.error(e.getMessage(), e);
 		}
 	}
-
+	
+	// Control ver resultado en detalle
+	
+	public void verResultado(long idPruebaUsuarioPrograma){
+		try {
+			PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(idPruebaUsuarioPrograma);
+			EstadoPrueba estadoPrueba = businessDelegatorView.getEstadoPrueba(pruebaProgramaUsuario.getEstadoPrueba().getIdEstadoPrueba());
+			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
+			
+			if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_INICIADO || estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_PENDIENTE) {
+				FacesUtils.addInfoMessage("La prueba debe estar finalizada para ver los resultados en detalle");
+			} else if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_FINALIZADA) {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("tomarPrueba.xhtml?id=" + idPruebaUsuarioPrograma);
+			}
+			
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage("Error: " + e.getMessage());
+		}
+	}
+	
 	public StreamedContent getReportePDF() {
 		try {
 

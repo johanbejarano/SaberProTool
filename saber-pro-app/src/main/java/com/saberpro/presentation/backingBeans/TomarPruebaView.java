@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +24,16 @@ import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.saberpro.modelo.Prueba;
 import com.saberpro.modelo.PruebaProgramaUsuario;
 import com.saberpro.modelo.PruebaProgramaUsuarioPregunta;
 import com.saberpro.modelo.RespuestaPruebaProgramaUsuarioPregunta;
+import com.saberpro.modelo.Usuario;
 import com.saberpro.modelo.dto.ModeloPruebaDTO;
 import com.saberpro.modelo.dto.ModuloPreguntaDTO;
 import com.saberpro.modelo.dto.RespuestaDTO;
 import com.saberpro.presentation.businessDelegate.IBusinessDelegatorView;
+import com.saberpro.utilities.ComponentPrueba;
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.FacesUtils;
 
@@ -54,6 +58,8 @@ public class TomarPruebaView implements Serializable {
     private ModeloPruebaDTO modeloPruebaDTO = null;
     private Long idModuloSeleccionado;
     private Integer porcentajeAvance = 0;
+    
+    private boolean esSimulacro;
     
     private List<SelectItem> modulos = new ArrayList<>();
     
@@ -231,6 +237,60 @@ public class TomarPruebaView implements Serializable {
 		}
     }
 	
+    
+    public void finalizarPrueba() {
+		
+    	Long idPruebaProgramaUsuario = this.pruebaProgramaUsuario.getIdPruebaProgramaUsuario();
+    	Integer contadorPreguntasTotales = modeloPruebaDTO.getCantidadTotalDePreguntas();
+		Integer contadorPreguntasContestadas = modeloPruebaDTO.getCantidadTotalDePreguntasContestadas();
+		Integer contadorPreguntasSinContestar = contadorPreguntasTotales-contadorPreguntasContestadas;
+    	
+    	
+		try {
+			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+			
+			if (contadorPreguntasTotales!=contadorPreguntasContestadas) {
+				FacesUtils.addErrorMessage("Aún no ha contestado todas las preguntas de la prueba");
+				FacesUtils.addInfoMessage("Cantidad de preguntas sin contestar: "+contadorPreguntasSinContestar);
+			}
+			
+			if(usuario!=null && contadorPreguntasContestadas==contadorPreguntasTotales) {
+				PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(idPruebaProgramaUsuario);
+				pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_FINALIZADA));
+				pruebaProgramaUsuario.setFechaModificacion(new Date());
+				pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
+				
+				businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+				
+				FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id="+idPruebaProgramaUsuario);	
+			}
+			
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Error de "+e.getMessage(),e);
+		}
+	}
+    
+    public boolean isEsSimulacro() {
+    	Long idPruebaProgramaUsuario = this.pruebaProgramaUsuario.getIdPruebaProgramaUsuario();
+    	
+    	try {
+			PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(idPruebaProgramaUsuario);
+			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
+			if(prueba.getTipoPrueba().getIdTipoPrueba()==Constantes.PRUEBA_TYPE_SIMULACRO) {
+				esSimulacro=true;
+			}
+			else {
+				esSimulacro = false;
+			}
+		} catch (Exception e) {
+			log.error("error en vista"+e.getMessage(),e);
+		}	
+		
+		return esSimulacro;
+		
+	}
+    
     public TimeZone getTimeZone() {
         return java.util.TimeZone.getDefault();
     }

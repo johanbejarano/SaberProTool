@@ -132,8 +132,17 @@
 											url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/right.png"
 											style="width: 32px; height: 32px;" />
 									</p:commandLink>
+								<div align="right" >
+									<p:commandButton value="Finalizar prueba" 
+									action="#{tomarPruebaView.finalizarPrueba()}"
+									update="pnlPregunta,pnlRespuestas, :frmPrueba"
+									/>
 								</div>
-
+									
+								</div>
+								
+								
+								
 							</p:panel>
 						</div>
 					</div>

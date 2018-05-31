@@ -37,7 +37,9 @@
 						<p:column>
 							<p:commandButton value="Ver"
 								action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}" />
-							<p:commandButton value="Revisar" />
+							
+							<p:commandButton value="Revisar" 
+								action="#{pruebaView.verResultado(prueba.idPruebaProgramaUsuario)}" update=":formDialog"/>
 
 							<p:commandLink
 								actionListener="#{pruebaView.action_seleccionarPrueba(prueba)}"
