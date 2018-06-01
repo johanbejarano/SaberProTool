@@ -716,4 +716,19 @@ public class PreguntaLogic implements IPreguntaLogic {
 
 		return entity;
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Pregunta> findByPruebaProgramaUsuario(long idPruebaProgramaUsuario) throws Exception {
+		List<Pregunta> entity = null;
+
+		try {
+			entity = preguntaDAO.findByPruebaProgramaUsuario(idPruebaProgramaUsuario);
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("Pregunta Count");
+		} finally {
+		}
+
+		return entity;
+	}
 }

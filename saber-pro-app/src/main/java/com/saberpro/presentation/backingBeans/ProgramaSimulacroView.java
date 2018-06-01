@@ -55,6 +55,7 @@ public class ProgramaSimulacroView implements Serializable {
 	private Date tiempo;
 
 	private CommandButton btnSave;
+	private CommandButton btnUpdate;
 
 	private List<Prueba> data;
 	private List<Pregunta> lasPreguntas;
@@ -67,15 +68,177 @@ public class ProgramaSimulacroView implements Serializable {
 	public ProgramaSimulacroView() {
 		super();
 	}
-
-	public String action_create() {
+	
+	public void editar(long idPrueba) {
 		try {
+			usuarios = null;
+			usuarios = getUsuarios();
+			btnSave.setDisabled(true);
+			btnUpdate.setDisabled(false);
+			
+			entity = businessDelegatorView.getPrueba(idPrueba);
+			
+			int time = entity.getTiempo().intValue();
+			int min = (time / 60) % 60;
+			int hor = (time / (60 * 60)) % 24;
+			
+			fechaInicial = entity.getFechaInicial();
+			fechaFinal = entity.getFechaFinal();		
+			tiempo = new Date(0,0,0,hor, min);
+			
+			List<Usuario> listUsuario = businessDelegatorView.findByUsuarioInPruebaUsuario(idPrueba);
+			List<Usuario> listSource = usuarios.getSource();
+					
+			
+			for(int j=0;j<listUsuario.size();j++) {
+	        	for(int i=0;i<listSource.size();i++) {
+	        		if(listSource.get(i).getIdUsuario().equals(listUsuario.get(j).getIdUsuario())) {
+	        			listSource.remove(i);
+	        		}
+	        	}
+	        }
+			
+			usuarios = new DualListModel<>(listSource, listUsuario);
+			
+			
+		} catch (Exception e) {
+			log.error("error en editar "+e.getMessage(),e);
+		}
+	}
+	
+	public void updateSimulacro() {
+		
+		try {
+			
 			Usuario usuario = VariablesSession.usuario;
+			Date date = new Date();
+			Date fecha = new Date(date.getYear(),date.getMonth(), date.getDate());
 
 			if (usuario != null) {
 
 				if (fechaFinal == null || fechaInicial == null || tiempo == null)
 					throw new Exception("Los campos no pueden estar vacios");
+				if(fecha.getTime()>fechaInicial.getTime())
+					throw new Exception("Los Fecha no es valida");
+				if (fechaFinal.getTime() < fechaInicial.getTime())
+					throw new Exception("La fechas no son permitidas");
+				if (tiempo.getHours() < 1)
+					throw new Exception("El tiempo mínimo es de 1 hora");
+				if (usuarios.getTarget().size() == 0)
+					throw new Exception("Debe selecionar al menos un estudiante");
+			
+				entity.setFechaInicial(fechaInicial);
+				entity.setFechaFinal(fechaFinal);
+				
+				long duracion = (tiempo.getHours() * 60 * 60) + (tiempo.getMinutes() * 60);
+
+				entity.setTiempo(duracion);
+				entity.setUsuModificador(usuario.getIdUsuario());
+				entity.setFechaModificacion(new Date());
+				
+				businessDelegatorView.updatePrueba(entity);
+
+				List<Usuario> listUsuario = businessDelegatorView.findByUsuarioInPruebaUsuario(entity.getIdPrueba());
+				List<Usuario> listTarget = usuarios.getTarget();
+				
+				Object[] variablePPU = { "prueba.idPrueba", true,entity.getIdPrueba(), "="};
+				
+				List<PruebaProgramaUsuario> lasPruebaProgramaUsuario = businessDelegatorView.findByCriteriaInPruebaProgramaUsuario(variablePPU, null,null);
+				if(lasPruebaProgramaUsuario.size()==0)
+					throw new Exception("No se encontraro pruebas previas");					
+				
+				List<Pregunta> lasPreguntas = businessDelegatorView.findByPruebaProgramaUsuarioPregunta(lasPruebaProgramaUsuario.get(0).getIdPruebaProgramaUsuario());
+				
+				for(int j=0;j<listUsuario.size();j++) {
+		        	for(int i=0;i<listTarget.size();i++) {
+		        		if(listTarget.get(i).getIdUsuario().equals(listUsuario.get(j).getIdUsuario())) {
+		        			listTarget.remove(i);
+		        			
+		        		}
+		        	}
+		        }
+				
+				for (Usuario estudiantes : listTarget) {
+					Object[] variableUsuario = { "usuario.idUsuario", true, estudiantes.getIdUsuario(), "=", "activo",
+							true, Constantes.ESTADO_ACTIVO, "=" };
+
+					PruebaProgramaUsuario pruebaProgramaUsuario = new PruebaProgramaUsuario();
+					ProgramaUsuario programaUsuario = businessDelegatorView
+							.findByCriteriaInProgramaUsuario(variableUsuario, null, null).get(0);
+
+					pruebaProgramaUsuario.setActivo(Constantes.ESTADO_ACTIVO);
+					pruebaProgramaUsuario
+							.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_PENDIENTE));
+					pruebaProgramaUsuario.setFechaCreacion(new Date());
+					pruebaProgramaUsuario.setProgramaUsuario(programaUsuario);
+					pruebaProgramaUsuario.setPrueba(entity);
+					pruebaProgramaUsuario.setUsuCreador(usuario.getIdUsuario());
+
+					businessDelegatorView.savePruebaProgramaUsuario(pruebaProgramaUsuario);
+
+					for (Pregunta pregunta : lasPreguntas) {
+
+						PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta = new PruebaProgramaUsuarioPregunta();
+						pruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+						pruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+						pruebaProgramaUsuarioPregunta.setPregunta(pregunta);
+						pruebaProgramaUsuarioPregunta.setPruebaProgramaUsuario(pruebaProgramaUsuario);
+						pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+
+						businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+
+						RespuestaPruebaProgramaUsuarioPregunta respuestaPruebaProgramaUsuarioPregunta = new RespuestaPruebaProgramaUsuarioPregunta();
+						respuestaPruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
+						respuestaPruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
+						respuestaPruebaProgramaUsuarioPregunta.setPorcentajeAsignado(0L);
+						respuestaPruebaProgramaUsuarioPregunta
+								.setPruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+						respuestaPruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
+
+						businessDelegatorView
+								.saveRespuestaPruebaProgramaUsuarioPregunta(respuestaPruebaProgramaUsuarioPregunta);
+					}
+
+				}
+				
+				data = null;
+				entity = null;
+				FacesUtils.addInfoMessage("Simulacro actualizado exitosamente");
+				
+				btnSave.setDisabled(false);
+				btnUpdate.setDisabled(true);
+				limpiar();
+			
+			}
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public void limpiar() {
+		usuarios = null;
+		fechaFinal = null;
+		fechaInicial = null;
+		tiempo = null;
+		entity = null;
+		
+		btnSave.setDisabled(false);
+		btnUpdate.setDisabled(true);
+	}
+
+	public String action_create() {
+		try {
+			Usuario usuario = VariablesSession.usuario;
+			Date date = new Date();
+			Date fecha = new Date(date.getYear(),date.getMonth(), date.getDate());
+
+			if (usuario != null) {
+
+				if (fechaFinal == null || fechaInicial == null || tiempo == null)
+					throw new Exception("Los campos no pueden estar vacios");
+				if(fecha.getTime()>fechaInicial.getTime())
+					throw new Exception("Los Fecha no es valida");
 				if (fechaFinal.getTime() < fechaInicial.getTime())
 					throw new Exception("La fechas no son permitidas");
 				if (tiempo.getHours() < 1)
@@ -123,14 +286,7 @@ public class ProgramaSimulacroView implements Serializable {
 							modulo.getCantidadPreguntas());
 
 					for (Pregunta pregunta : listPregunta) {
-
-						PruebaProgramaUsuarioPregunta pruebaProgramaUsuarioPregunta = new PruebaProgramaUsuarioPregunta();
-						pruebaProgramaUsuarioPregunta.setActivo(Constantes.ESTADO_ACTIVO);
-						pruebaProgramaUsuarioPregunta.setFechaCreacion(new Date());
-						pruebaProgramaUsuarioPregunta.setPregunta(pregunta);
-						pruebaProgramaUsuarioPregunta.setUsuCreador(usuario.getIdUsuario());
-
-						businessDelegatorView.savePruebaProgramaUsuarioPregunta(pruebaProgramaUsuarioPregunta);
+						
 						lasPreguntas.add(pregunta);
 
 					}
@@ -184,6 +340,7 @@ public class ProgramaSimulacroView implements Serializable {
 				
 				data = null;
 				FacesUtils.addInfoMessage("Simulacro creado exitosamente");
+				limpiar();
 			}
 
 		} catch (
@@ -278,6 +435,14 @@ public class ProgramaSimulacroView implements Serializable {
 
 	public void setTiempo(Date tiempo) {
 		this.tiempo = tiempo;
+	}
+
+	public CommandButton getBtnUpdate() {
+		return btnUpdate;
+	}
+
+	public void setBtnUpdate(CommandButton btnUpdate) {
+		this.btnUpdate = btnUpdate;
 	}
 
 }

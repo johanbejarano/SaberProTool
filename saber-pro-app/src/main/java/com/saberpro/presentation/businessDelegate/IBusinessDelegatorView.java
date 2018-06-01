@@ -792,6 +792,8 @@ public interface IBusinessDelegatorView {
 	 public List<Usuario> findByTipoUsuarioProgramaUsuario(long idPrograma,long idTipoUsuario) throws Exception;
 	 
 	 public List<Usuario> findByTipoUsuarioFacultadUsuario(long idFacultad,long idTipoUsuario) throws Exception;
+	 
+	 public List<Usuario> findByUsuarioInPruebaUsuario(long idPrueba)throws Exception;
 
 	 public ByteArrayInputStream generarInformeIndividual(Long idPrueba) throws Exception;
 	 
@@ -804,4 +806,6 @@ public interface IBusinessDelegatorView {
 	 public void asignarDecano(Usuario decano,Usuario despedido,long user,long idFacultad)throws Exception;
 	 
 	 public void savePregunta(Pregunta entity,List<Respuesta> listRespuesta) throws Exception;
+	 
+	 public List<Pregunta> findByPruebaProgramaUsuarioPregunta(long idPruebaProgramaUsuario)throws Exception;
 }

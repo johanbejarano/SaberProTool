@@ -36,32 +36,48 @@
 						<f:facet name="targetCaption">Seleccionados</f:facet>
 					</p:pickList>
 					<p:commandButton id="btnSave"
-						binding="#{programaModuloView.btnSave}" value="Crear simulacro"
+						binding="#{programaSimulacroView.btnSave}" value="Crear simulacro"
 						onstart="PF('statusDialog').show()"
 						onsuccess="PF('statusDialog').hide()"
 						update="panelProgramaSimulacro,msg,panelTable"
 						action="#{programaSimulacroView.action_create}" />
+					<p:commandButton value="Actualizar simulacro" disabled="true"
+						binding="#{programaSimulacroView.btnUpdate}"
+						action="#{programaSimulacroView.updateSimulacro}"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
+						update="panelProgramaSimulacro,msg,panelTable" />
+					<p:commandButton value="Limpiar"
+						onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()"
+						action="#{programaSimulacroView.limpiar}"
+						update="panelProgramaSimulacro,msg,panelTable" />
+				</p:panel>
+
+				<p:panel id="panelTable">
+					<div>
+						<p:dataTable id="dataPrueba" value="#{programaSimulacroView.data}"
+							var="prueba" reflow="true" resizableColumns="true"
+							scrollable="true" scrollHeight="300" widgetVar="modTable">
+							<p:column headerText="Fecha inicial">
+								<p:outputLabel value="#{prueba.fechaInicial}" />
+							</p:column>
+							<p:column headerText="Fecha final">
+								<p:outputLabel value="#{prueba.fechaFinal}" />
+							</p:column>
+							<p:column headerText="Tiempo (minutos)">
+								<p:outputLabel value="#{prueba.tiempo/60}" />
+							</p:column>
+							<p:column headerText="Editar">
+								<p:commandButton value="editar"
+									action="#{programaSimulacroView.editar(prueba.idPrueba)}"
+									update="formDialog" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
 				</p:panel>
 			</p:panel>
-			<p:panel id="panelTable">
-				<div>
-					<p:dataTable id="dataPrueba" value="#{programaSimulacroView.data}"
-						var="prueba" reflow="true" resizableColumns="true"
-						scrollable="true" scrollHeight="300" widgetVar="modTable">
-						<p:column headerText="Fecha inicial">
-							<p:outputLabel value="#{prueba.fechaInicial}" />
-						</p:column>
-						<p:column headerText="Fecha final">
-							<p:outputLabel value="#{prueba.fechaFinal}" />
-						</p:column>
-						<p:column headerText="Tiempo (minutos)">
-							<p:outputLabel value="#{prueba.tiempo/60}" />
-						</p:column>
-						
-					</p:dataTable>
-				</div>
-			</p:panel>
-
 		</h:form>
 	</ui:define>
 </ui:composition>

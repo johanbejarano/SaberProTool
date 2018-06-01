@@ -28,10 +28,8 @@ public class Prueba implements java.io.Serializable {
     @Size(max = 1)
     private String activo;
     @NotNull(message="fechacreacion no valido")    
-    private Date fechaCreacion;  
-    @Future
-    private Date fechaFinal;
-    @Future
+    private Date fechaCreacion; 
+    private Date fechaFinal; 
     private Date fechaInicial;
     private Date fechaModificacion;
     private Long tiempo;

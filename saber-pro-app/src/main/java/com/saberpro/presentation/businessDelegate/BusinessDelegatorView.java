@@ -2097,4 +2097,14 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public void savePregunta(Pregunta entity, List<Respuesta> listRespuesta) throws Exception {
 		preguntaLogic.savePregunta(entity, listRespuesta);
 	}
+
+	@Override
+	public List<Usuario> findByUsuarioInPruebaUsuario(long idPrueba) throws Exception {
+		return usuarioLogic.findByUsuarioInPrueba(idPrueba);
+	}
+
+	@Override
+	public List<Pregunta> findByPruebaProgramaUsuarioPregunta(long idPruebaProgramaUsuario) throws Exception {
+		return preguntaLogic.findByPruebaProgramaUsuario(idPruebaProgramaUsuario);
+	}
 }

@@ -44,4 +44,18 @@ public class PreguntaDAO extends JpaDaoImpl<Pregunta, Long>
 	public List<Pregunta> findByRandom(long idModulo, long limit) {		
 		return entityManager.createQuery("select pre from Pregunta pre where pre.modulo.idModulo=:idModulo order by random()").setParameter("idModulo",idModulo).setMaxResults((int) limit).getResultList();
 	}
+
+	@Override
+	public List<Pregunta> findByPruebaProgramaUsuario(long idPruebaProgramaUsuario) {
+		String sql="SELECT pre " + 
+				" FROM " + 
+				"  PruebaProgramaUsuario ppu," + 
+				"  PruebaProgramaUsuarioPregunta ppup," + 
+				"  Pregunta pre" + 
+				" WHERE " + 
+				"  ppu.idPruebaProgramaUsuario=ppup.pruebaProgramaUsuario.idPruebaProgramaUsuario AND" + 
+				"  ppup.pregunta.idPregunta = pre.idPregunta AND"+
+				"  ppu.idPruebaProgramaUsuario=:idPruebaProgramaUsuario";
+		return entityManager.createQuery(sql).setParameter("idPruebaProgramaUsuario",idPruebaProgramaUsuario).getResultList();
+	}
 }
