@@ -199,7 +199,8 @@ public class TomarPruebaView implements Serializable {
     		}
     		
     		//Se actualiza el porcentaje de avance
-    		if(modeloPruebaDTO.getCantidadTotalDePreguntas()!=modeloPruebaDTO.getCantidadTotalDePreguntasContestadas())
+    		log.info("la respuesta selecionada es "+preguntaActual.getRespuestaSeleccionada().getIdRespuesta());
+    		if(modeloPruebaDTO.getCantidadTotalDePreguntas()!=modeloPruebaDTO.getCantidadTotalDePreguntasContestadas() || preguntaActual.getRespuestaSeleccionada()==null)
     			modeloPruebaDTO.setCantidadTotalDePreguntasContestadas(modeloPruebaDTO.getCantidadTotalDePreguntasContestadas()+1);
     		Integer contadorPreguntasTotales = modeloPruebaDTO.getCantidadTotalDePreguntas();
     		Integer contadorPreguntasContestadas = modeloPruebaDTO.getCantidadTotalDePreguntasContestadas();

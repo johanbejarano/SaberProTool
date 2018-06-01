@@ -568,11 +568,13 @@ public class UsuarioLogic implements IUsuarioLogic {
 		if (usuario != null) {
 			List<GrupoOpcion> grupos = grupoOpcionDao.findByTipoUsuario(usuario.getTipoUsuario().getIdTipoUsuario());
 			List<GrantedAuthority> permisos = new ArrayList<>();
+			TipoUsuario tipoUsuario = tipoUsuarioLogic.getTipoUsuario(usuario.getTipoUsuario().getIdTipoUsuario());
 
-			for (GrupoOpcion grupoOpcion : grupos) {
-				permisos.add(new SimpleGrantedAuthority("ROLE_" + grupoOpcion.getNombre()));
-			}
-
+			
+			permisos.add(new SimpleGrantedAuthority("ROLE_"+ tipoUsuario.getNombre()));
+			
+			log.info("Tipo de usuario: " + tipoUsuario.getNombre());
+			
 			User user = new User(Long.toString(usuario.getCodigo()), usuario.getPassword(), permisos);
 
 			return user;

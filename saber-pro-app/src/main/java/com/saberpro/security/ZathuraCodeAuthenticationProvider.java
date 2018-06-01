@@ -63,7 +63,7 @@ public class ZathuraCodeAuthenticationProvider implements AuthenticationProvider
 					
 					//Se envia el token de seguridad con datos de usuario y sus permisos
 					return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities());
-
+					
 				} else {
 					//Excepcion si hay error en la contraseña
 					throw new Exception("Error en codigo o contraseña");
