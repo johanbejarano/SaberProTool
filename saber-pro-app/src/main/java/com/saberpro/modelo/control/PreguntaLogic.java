@@ -8,6 +8,7 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.PreguntaDTO;
+import com.saberpro.modelo.dto.ResultadosPreguntaDTO;
 import com.saberpro.utilities.Archivo;
 import com.saberpro.utilities.Constantes;
 import com.saberpro.utilities.Utilities;
@@ -724,6 +725,21 @@ public class PreguntaLogic implements IPreguntaLogic {
 
 		try {
 			entity = preguntaDAO.findByPruebaProgramaUsuario(idPruebaProgramaUsuario);
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("Pregunta Count");
+		} finally {
+		}
+
+		return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ResultadosPreguntaDTO> findByTopPregunta(long idModulo) throws Exception {
+		List<ResultadosPreguntaDTO> entity = null;
+
+		try {
+			entity = preguntaDAO.findByTopPregunta(idModulo);
 		} catch (Exception e) {
 			throw new ZMessManager().new FindingException("Pregunta Count");
 		} finally {

@@ -808,4 +808,6 @@ public interface IBusinessDelegatorView {
 	 public void savePregunta(Pregunta entity,List<Respuesta> listRespuesta) throws Exception;
 	 
 	 public List<Pregunta> findByPruebaProgramaUsuarioPregunta(long idPruebaProgramaUsuario)throws Exception;
+	 
+	 public List<ResultadosPreguntaDTO> findByTopPregunta(long idModulo)throws Exception;
 }

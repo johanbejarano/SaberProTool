@@ -3,6 +3,7 @@ package com.saberpro.dataaccess.dao;
 import com.saberpro.dataaccess.api.JpaDaoImpl;
 
 import com.saberpro.modelo.Pregunta;
+import com.saberpro.modelo.dto.ResultadosPreguntaDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,24 @@ public class PreguntaDAO extends JpaDaoImpl<Pregunta, Long>
 				"  ppup.pregunta.idPregunta = pre.idPregunta AND"+
 				"  ppu.idPruebaProgramaUsuario=:idPruebaProgramaUsuario";
 		return entityManager.createQuery(sql).setParameter("idPruebaProgramaUsuario",idPruebaProgramaUsuario).getResultList();
+	}
+
+	@Override
+	public List<ResultadosPreguntaDTO> findByTopPregunta(long idModulo) {
+		String sql ="Select new com.saberpro.modelo.dto.ResultadosPreguntaDTO(pre.idPregunta," + 
+				"  pre.descripcionPregunta,\n" + 
+				"  count(rppup.porcentajeAsignado)) " + 
+				" FROM " + 
+				"  Modulo mod, " + 
+				"  Pregunta pre, " + 
+				"  PruebaProgramaUsuarioPregunta ppup, " + 
+				"  RespuestaPruebaProgramaUsuarioPregunta rppup" + 
+				" WHERE " + 
+				"  pre.modulo.idModulo=mod.idModulo AND" + 
+				"  ppup.pregunta.idPregunta = pre.idPregunta AND" + 
+				"  ppup.idPruebaProgramaUsuarioPregunta = rppup.pruebaProgramaUsuarioPregunta.idPruebaProgramaUsuarioPregunta AND" + 
+				"  rppup.porcentajeAsignado=0 AND mod.idModulo=:idModulo" + 
+				"  Group by pre.idPregunta order by count(rppup.porcentajeAsignado) desc";
+		return entityManager.createQuery(sql).setParameter("idModulo",idModulo).getResultList();
 	}
 }

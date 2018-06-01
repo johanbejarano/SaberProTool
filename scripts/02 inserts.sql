@@ -341,6 +341,7 @@ insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('SIMULACROS','/XHTML/Director/programaSimulacro.xhtml',now(),0,'S',5);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('INFORME ESTUDIANTE','/XHTML/Director/programaInformeEstudiante.xhtml',now(),0,'S',5);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('INFORME GRUPO','/XHTML/Director/programaInformeGrupo.xhtml',now(),0,'S',5);
+insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('INFORME PREGUNTAS','/XHTML/Director/programaInformePregunta.xhtml',now(),0,'S',5);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ASIGNAR DIRECTOR','/XHTML/Decano/AsignarDirector.xhtml',now(),0,'S',6);
 insert into opcion(nombre,ruta,fecha_creacion,usu_creador,activo,id_grupo_opcion) values('ASIGNAR DECANO','/XHTML/Administrador/AsignarDecano.xhtml',now(),0,'S',7);
 

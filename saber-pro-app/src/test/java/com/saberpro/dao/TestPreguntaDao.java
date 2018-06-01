@@ -21,6 +21,7 @@ import com.saberpro.dataaccess.dao.IModuloDAO;
 import com.saberpro.dataaccess.dao.IPreguntaDAO;
 import com.saberpro.dataaccess.dao.ITipoPreguntaDAO;
 import com.saberpro.modelo.Pregunta;
+import com.saberpro.modelo.dto.ResultadosPreguntaDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -122,10 +123,10 @@ public class TestPreguntaDao {
 		assertNotNull("El tipoPreguntaDao es null",tipoPreguntaDao);
 		
 		
-		List<Pregunta> list = preguntaDao.findByPruebaProgramaUsuario(1L);
+		List<ResultadosPreguntaDTO> list = preguntaDao.findByTopPregunta(1L);
 		
-		for (Pregunta pregunta : list) {
-			log.info("pregunta es "+pregunta.getIdPregunta());
+		for (ResultadosPreguntaDTO pregunta : list) {
+			log.info("pregunta es "+pregunta.toString());
 		}
 		
 

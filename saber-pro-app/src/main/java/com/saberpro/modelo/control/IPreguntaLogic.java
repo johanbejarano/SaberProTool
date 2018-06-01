@@ -3,6 +3,7 @@ package com.saberpro.modelo.control;
 import com.saberpro.modelo.Pregunta;
 import com.saberpro.modelo.Respuesta;
 import com.saberpro.modelo.dto.PreguntaDTO;
+import com.saberpro.modelo.dto.ResultadosPreguntaDTO;
 
 import java.io.File;
 import java.io.InputStream;
@@ -71,4 +72,6 @@ public interface IPreguntaLogic {
     public List<Pregunta> findByRandom(long idModulo,long limit)throws Exception;
     
     public List<Pregunta> findByPruebaProgramaUsuario(long idPruebaProgramaUsuario)throws Exception;
+    
+    public List<ResultadosPreguntaDTO> findByTopPregunta(long idModulo)throws Exception;
 }
