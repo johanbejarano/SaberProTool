@@ -800,4 +800,8 @@ public interface IBusinessDelegatorView {
 	 public ModeloPruebaDTO consultarPruebaProgramaUsuario(Long idPruebaProgramaUsuario) throws Exception;
 
 	 public void guardarRespuestaAPregunta(Long idPruebaProgramaUsuarioPregunta, Long idRespuesta) throws Exception;
+	 
+	 public void asignarDecano(Usuario decano,Usuario despedido,long user,long idFacultad)throws Exception;
+	 
+	 public void savePregunta(Pregunta entity,List<Respuesta> listRespuesta) throws Exception;
 }

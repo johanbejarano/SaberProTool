@@ -182,7 +182,7 @@ public class PruebaModuloView implements Serializable {
 			businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
 
 			FacesContext.getCurrentInstance().getExternalContext()
-					.redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id="
+					.redirect("tomarPrueba.xhtml?id="
 							+ pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
 
 		}

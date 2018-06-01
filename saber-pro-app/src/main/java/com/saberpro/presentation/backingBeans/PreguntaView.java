@@ -180,51 +180,51 @@ public class PreguntaView implements Serializable {
 				entity.setRetroalimentacion(FacesUtils.checkString(txtRetroalimentacion));
 				entity.setUsuCreador(usuario.getIdUsuario());
 				
-				businessDelegatorView.savePregunta(entity);			
+				
+				
+				List<Respuesta> listRespuesta = new ArrayList<>();
 
 				Respuesta respuesta = new Respuesta();
 				
 				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
 				respuesta.setDescripcionRespuesta(contentRespuesta1);
 				respuesta.setFechaCreacion(new Date());
-				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta1));
-				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta1));				
 				respuesta.setUsuCreador(usuario.getIdUsuario());
 				
-				businessDelegatorView.saveRespuesta(respuesta);
+				listRespuesta.add(respuesta);
 				
 				respuesta = new Respuesta();
 				
 				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
 				respuesta.setDescripcionRespuesta(contentRespuesta2);
 				respuesta.setFechaCreacion(new Date());
-				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta2));
-				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta2));				
 				respuesta.setUsuCreador(usuario.getIdUsuario());
 				
-				businessDelegatorView.saveRespuesta(respuesta);
+				listRespuesta.add(respuesta);
 				
 				respuesta = new Respuesta();
 				
 				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
 				respuesta.setDescripcionRespuesta(contentRespuesta3);
 				respuesta.setFechaCreacion(new Date());
-				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta3));
-				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta3));			
 				respuesta.setUsuCreador(usuario.getIdUsuario());
 				
-				businessDelegatorView.saveRespuesta(respuesta);
+				listRespuesta.add(respuesta);
 				
 				respuesta = new Respuesta();
 				
 				respuesta.setActivo(Constantes.ESTADO_ACTIVO);
 				respuesta.setDescripcionRespuesta(contentRespuesta4);
 				respuesta.setFechaCreacion(new Date());
-				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta4));
-				respuesta.setPregunta(businessDelegatorView.getPregunta(entity.getIdPregunta()));
+				respuesta.setPorcentajeAcierto(FacesUtils.checkInteger(porcentajeAciertoRespuesta4));				
 				respuesta.setUsuCreador(usuario.getIdUsuario());
 				
-				businessDelegatorView.saveRespuesta(respuesta);
+				listRespuesta.add(respuesta);
+				
+				businessDelegatorView.savePregunta(entity, listRespuesta);
 
 				FacesUtils.addInfoMessage("Pregunta creada correctamente");
 				

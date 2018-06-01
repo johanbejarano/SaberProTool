@@ -2086,4 +2086,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public void guardarRespuestaAPregunta(Long idPruebaProgramaUsuarioPregunta, Long idRespuesta) throws Exception{
 		respuestaPruebaProgramaUsuarioPreguntaLogic.guardarRespuestaAPregunta(idPruebaProgramaUsuarioPregunta, idRespuesta);
 	}
+
+	@Override
+	public void asignarDecano(Usuario decano, Usuario despedido, long user, long idFacultad) throws Exception {
+		usuarioLogic.asignarDecano(decano, despedido, user, idFacultad);
+		
+	}
+
+	@Override
+	public void savePregunta(Pregunta entity, List<Respuesta> listRespuesta) throws Exception {
+		preguntaLogic.savePregunta(entity, listRespuesta);
+	}
 }

@@ -39,7 +39,7 @@
 							escape="false" />
 					</p:column>
 					<p:column headerText="Módulo"
-						filterBy="#{pregunta.idModulo_Modulo}" filterMatchMode="exact">
+						filterBy="#{pregunta.modulo.idModulo}" filterMatchMode="exact">
 						<f:facet name="filter">
 							<p:selectOneMenu onchange="PF('tipTable').filter()">
 								<f:selectItem itemLabel="TODOS" itemValue="#{null}"

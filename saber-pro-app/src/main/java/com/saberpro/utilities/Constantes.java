@@ -49,5 +49,5 @@ public class Constantes {
 	 
 	//Parametros
 	 public static final long TIME_PRUEBA = 3600L;
-	 public static final long PARAMETRO_REPORTES = 10L;
+	 public static final long PARAMETRO_REPORTES = 4L;
 }

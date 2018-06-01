@@ -199,7 +199,8 @@ public class TomarPruebaView implements Serializable {
     		}
     		
     		//Se actualiza el porcentaje de avance
-    		modeloPruebaDTO.setCantidadTotalDePreguntasContestadas(modeloPruebaDTO.getCantidadTotalDePreguntasContestadas()+1);
+    		if(modeloPruebaDTO.getCantidadTotalDePreguntas()!=modeloPruebaDTO.getCantidadTotalDePreguntasContestadas())
+    			modeloPruebaDTO.setCantidadTotalDePreguntasContestadas(modeloPruebaDTO.getCantidadTotalDePreguntasContestadas()+1);
     		Integer contadorPreguntasTotales = modeloPruebaDTO.getCantidadTotalDePreguntas();
     		Integer contadorPreguntasContestadas = modeloPruebaDTO.getCantidadTotalDePreguntasContestadas();
     		

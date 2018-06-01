@@ -183,6 +183,32 @@ public class PreguntaLogic implements IPreguntaLogic {
 		} finally {
 		}
 	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void savePregunta(Pregunta entity,List<Respuesta> listRespuesta) throws Exception {
+		log.debug("saving Pregunta instance");
+
+		try {
+			if (entity == null) {
+				throw new ZMessManager().new NullEntityExcepcion("Pregunta");
+			}
+
+			validatePregunta(entity);			
+
+			preguntaDAO.save(entity);
+			
+			for (Respuesta respuesta : listRespuesta) {
+				respuesta.setPregunta(entity);				
+				respuestaDAO.save(respuesta);
+			}
+			
+			log.debug("save Pregunta successful");
+		} catch (Exception e) {
+			log.error("save Pregunta failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void deletePregunta(Pregunta entity) throws Exception {

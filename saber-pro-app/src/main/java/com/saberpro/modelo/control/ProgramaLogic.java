@@ -8,7 +8,8 @@ import com.saberpro.exceptions.*;
 
 import com.saberpro.modelo.*;
 import com.saberpro.modelo.dto.ProgramaDTO;
-
+import com.saberpro.utilities.Constantes;
+import com.saberpro.utilities.FacesUtils;
 import com.saberpro.utilities.Utilities;
 
 import org.slf4j.Logger;
@@ -48,6 +49,8 @@ public class ProgramaLogic implements IProgramaLogic {
      * DAO injected by Spring that manages Programa entities
      *
      */
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
     @Autowired
     private IProgramaDAO programaDAO;
     @Autowired
@@ -146,6 +149,29 @@ public class ProgramaLogic implements IProgramaLogic {
             validatePrograma(entity);           
 
             programaDAO.save(entity);
+            
+            Facultad facultad = entity.getFacultad();
+            Usuario usuario = usuarioDAO.findById(entity.getUsuCreador());
+			Object[] variable = {"facultad.idFacultad",true,facultad.getIdFacultad(),"="};
+			Programa programa = findByCriteria(variable,null,null).get(0);
+			List<Usuario> decanoList = usuarioDAO.findByTipoUsuarioPrograma(programa.getIdPrograma(),Constantes.USER_TYPE_DECANO);
+			
+			if(decanoList.size()!=0) {
+				Usuario decano = decanoList.get(0);
+				
+				if(decano!=null) {
+					ProgramaUsuario programaUsuario = new ProgramaUsuario();
+					programaUsuario.setActivo(Constantes.ESTADO_ASIGNADO);
+					programaUsuario.setFechaCreacion(new Date());
+					programaUsuario.setPrograma(entity);
+					programaUsuario.setUsuario(decano);
+					programaUsuario.setUsuCreador(usuario.getIdUsuario());
+					
+					programaUsuarioDAO.save(programaUsuario);
+				}
+			}
+            
+            
             log.debug("save Programa successful");
         } catch (Exception e) {
             log.error("save Programa failed", e);

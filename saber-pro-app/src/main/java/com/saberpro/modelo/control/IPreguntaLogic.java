@@ -1,6 +1,7 @@
 package com.saberpro.modelo.control;
 
 import com.saberpro.modelo.Pregunta;
+import com.saberpro.modelo.Respuesta;
 import com.saberpro.modelo.dto.PreguntaDTO;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public interface IPreguntaLogic {
          * Save an new Pregunta entity
          */
     public void savePregunta(Pregunta entity) throws Exception;
+    public void savePregunta(Pregunta entity,List<Respuesta> listRespuesta) throws Exception;
 
     /**
          * Delete an existing Pregunta entity

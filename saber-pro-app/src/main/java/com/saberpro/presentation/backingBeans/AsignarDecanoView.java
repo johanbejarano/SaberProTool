@@ -86,53 +86,18 @@ public class AsignarDecanoView implements Serializable {
 				List<Usuario> listUser = businessDelegatorView.findByCriteriaInUsuario(variable,null,null);
 				//Lista de usuarios tipo Decano del sistema
 				List<Usuario> listDecano = businessDelegatorView.findByTipoUsuarioFacultadUsuario(FacesUtils.checkInteger(somFacultad),Constantes.USER_TYPE_DECANO);
-				if(listUser.size()!=0) {
-					//instancia del decano, usando la primera posición de la lista de usuarios
-					Usuario decano = listUser.get(0);
-					//Se comprueba que la listaDecano no esté vacía
-					if(listDecano.size()!=0) {
-						Usuario despedido = listDecano.get(0);
-						Object[] variable2 = {"usuario.idUsuario",true,despedido.getIdUsuario(),"="};
-						List<ProgramaUsuario> listProgramaUsuari = businessDelegatorView.findByCriteriaInProgramaUsuario(variable2,null,null);
-						for (ProgramaUsuario programaUsuario : listProgramaUsuari) {
-							if(programaUsuario.getActivo().equals("A")) {
-								businessDelegatorView.deleteProgramaUsuario(programaUsuario);
-							}
-						}
-						despedido.setTipoUsuario(businessDelegatorView.getTipoUsuario(Constantes.USER_TYPE_DOCENTE));
-						despedido.setFechaModificacion(new Date());
-						despedido.setUsuModificador(usuario.getIdUsuario());
-						
-						businessDelegatorView.updateUsuario(despedido);
-					}			
-					
-					decano.setTipoUsuario(businessDelegatorView.getTipoUsuario(Constantes.USER_TYPE_DECANO));
-					decano.setFechaModificacion(new Date());
-					decano.setUsuModificador(usuario.getIdUsuario());
-					
-					businessDelegatorView.updateUsuario(decano);
-					
-					Object[] variable5 = {"usuario.idUsuario",true,decano.getIdUsuario(),"=","activo",true,Constantes.ESTADO_ACTIVO,"="};
-					ProgramaUsuario entityPrograma = businessDelegatorView.findByCriteriaInProgramaUsuario(variable5,null,null).get(0);
-					
-					Object[] variable3 = {"facultad.idFacultad",true,FacesUtils.checkInteger(somFacultad),"="};					
-					List<Programa> listPrograma = businessDelegatorView.findByCriteriaInPrograma(variable3,null,null);
-					for (Programa programa : listPrograma) {
-						ProgramaUsuario programaUsuario = new ProgramaUsuario();
-						programaUsuario.setActivo(Constantes.ESTADO_ASIGNADO);
-						programaUsuario.setFechaCreacion(new Date());
-						programaUsuario.setPrograma(programa);
-						programaUsuario.setUsuario(decano);
-						programaUsuario.setUsuCreador(usuario.getIdUsuario());
-						
-						if(entityPrograma.getPrograma().getIdPrograma()!=programa.getIdPrograma())
-							businessDelegatorView.saveProgramaUsuario(programaUsuario);
-					}
-					
-					data = null;
-					
-					FacesUtils.addInfoMessage("Se asignó el decano exitosamente");
+				if(listUser.size()==0) {
+					throw new Exception("Ese codigo no es valido");				
 				}
+				if(listDecano.size()==0)
+					businessDelegatorView.asignarDecano(listUser.get(0),null,usuario.getIdUsuario(),FacesUtils.checkInteger(somFacultad));
+				else
+					businessDelegatorView.asignarDecano(listUser.get(0),listDecano.get(0),usuario.getIdUsuario(),FacesUtils.checkInteger(somFacultad));
+					
+				data = null;
+					
+				FacesUtils.addInfoMessage("Se asignó el decano exitosamente");
+				
 				
 			}
 			else {
@@ -140,7 +105,7 @@ public class AsignarDecanoView implements Serializable {
 			}
 			
 		} catch (Exception e) {
-			FacesUtils.addErrorMessage("Verifique los datos");
+			FacesUtils.addErrorMessage(e.getMessage());
 			log.error(e.getMessage(),e);
 		}
 	}

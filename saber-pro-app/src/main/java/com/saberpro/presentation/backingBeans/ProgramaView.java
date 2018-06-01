@@ -190,28 +190,7 @@ public class ProgramaView implements Serializable {
 				entity.setUsuCreador(usuario.getIdUsuario());
 				entity.setFacultad(businessDelegatorView.getFacultad(Long.parseLong(FacesUtils.checkString(somFacultad))));
 				
-				businessDelegatorView.savePrograma(entity);			
-				
-				Facultad facultad = businessDelegatorView.getFacultad((long)FacesUtils.checkInteger(somFacultad));
-				Object[] variable = {"facultad.idFacultad",true,facultad.getIdFacultad(),"="};
-				Programa programa = businessDelegatorView.findByCriteriaInPrograma(variable,null,null).get(0);
-				List<Usuario> decanoList = businessDelegatorView.findByTipoUsuarioProgramaUsuario(programa.getIdPrograma(),Constantes.USER_TYPE_DECANO);
-				
-				if(decanoList.size()!=0) {
-					Usuario decano = decanoList.get(0);
-					
-					if(decano!=null) {
-						ProgramaUsuario programaUsuario = new ProgramaUsuario();
-						programaUsuario.setActivo(Constantes.ESTADO_ASIGNADO);
-						programaUsuario.setFechaCreacion(new Date());
-						programaUsuario.setPrograma(entity);
-						programaUsuario.setUsuario(decano);
-						programaUsuario.setUsuCreador(usuario.getIdUsuario());
-						
-						businessDelegatorView.saveProgramaUsuario(programaUsuario);
-					}
-				}
-				
+				businessDelegatorView.savePrograma(entity);	
 				
 				data = null;
 

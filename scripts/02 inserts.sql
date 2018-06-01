@@ -358,6 +358,7 @@ insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_o
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',4,6);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,1);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,3);
+insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,4);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',3,5);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',2,1);
 insert into permiso(fecha_creacion,usu_creador,activo,id_tipo_usuario,id_grupo_opcion) values(now(),0,'S',2,4);
