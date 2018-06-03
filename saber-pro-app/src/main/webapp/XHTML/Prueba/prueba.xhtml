@@ -27,6 +27,9 @@
 							<p:outputLabel
 								value="#{pruebaView.getTipoPrueba(prueba.prueba.idPrueba)}" />
 						</p:column>
+						<p:column headerText="Tiempo abierto">
+							<p:outputLabel value="#{pruebaView.fechaRangoFechas(prueba.prueba.idPrueba)}" />
+						</p:column>						
 						<p:column headerText="Fecha de realización">
 							<p:outputLabel value="#{prueba.fechaModificacion}" />
 						</p:column>
@@ -36,12 +39,12 @@
 						</p:column>
 						<p:column>
 							<p:commandButton value="Ver"
-								action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}" />
+								action="#{pruebaView.verPrueba(prueba.idPruebaProgramaUsuario)}" update=":formDialog"/>
 							
 							<p:commandButton value="Revisar" 
 								action="#{pruebaView.verResultado(prueba.idPruebaProgramaUsuario)}" update=":formDialog"/>
 
-							<p:commandLink
+							<!-- p:commandLink
 								actionListener="#{pruebaView.action_seleccionarPrueba(prueba)}"
 								ajax="false">
 
@@ -51,7 +54,7 @@
 									url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/pdf-icon.png"
 									style="width: 32px; height: 32px;" />
 
-							</p:commandLink>
+							</p:commandLink-->
 
 						</p:column>
 					</p:dataTable>

@@ -8,8 +8,7 @@
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll" />
 		<intercept-url pattern="/login.xhtml" access="permitAll" />
-		<intercept-url pattern="/XHTML/*" access="isAuthenticated()" />
-		
+		<intercept-url pattern="/XHTML/*" access="isAuthenticated()" />		
 		<intercept-url pattern="/XHTML/Administrador/*" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/XHTML/Decano/*" access="hasRole('ROLE_DECANO')"  />
 		<intercept-url pattern="/XHTML/Director/*" access="hasRole('ROLE_DIRECTOR')" />

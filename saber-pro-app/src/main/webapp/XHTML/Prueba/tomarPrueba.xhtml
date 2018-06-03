@@ -14,11 +14,11 @@
 				<div class="ContainerIndent">
 					<div class="EmptyBox20"></div>
 
-					<div class="Container100 Responsive"> 
+					<div class="Container100 Responsive">
 						<div class="ContainerIndent">
 							<p:panel id="progreso">
-								
-								<h:panelGrid columns="2">
+
+								<h:panelGrid columns="3">
 									<p:outputLabel value="Módulo:" />
 									<p:selectOneMenu id="cmbModulo"
 										value="#{tomarPruebaView.idModuloSeleccionado}"
@@ -26,15 +26,30 @@
 										<f:selectItems value="#{tomarPruebaView.modulos}" />
 										<p:ajax update="pnlPregunta,pnlRespuestas" />
 									</p:selectOneMenu>
-									
+									<p:panel rendered="#{tomarPruebaView.esSimulacro}">
+										<script>
+											window.formatMe = function(value) {
+												return "The End is near ("
+														+ value + ")";
+											}
+										</script>
+										<style>
+											.ui-widget-header {
+												color: black;
+											}
+											</style>
+										<pe:timer format="HH:mm:ss"
+											timeout="#{tomarPruebaView.tiempo}" 
+											listener="#{tomarPruebaView.verificarTime}"/>
+									</p:panel>
 								</h:panelGrid>
-								
-								<p:progressBar 
-									value="#{tomarPruebaView.modeloPruebaDTO.porcentajeAvance}" 
+
+								<p:progressBar
+									value="#{tomarPruebaView.modeloPruebaDTO.porcentajeAvance}"
 									labelTemplate="#{tomarPruebaView.modeloPruebaDTO.porcentajeAvance}%" />
-								
-								<p:separator styleClass="Wid100"/>
-								
+
+								<p:separator styleClass="Wid100" />
+
 								<div align="center">
 
 									<p:commandLink
@@ -44,7 +59,7 @@
 											url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/left.png"
 											style="width: 32px; height: 32px;" />
 									</p:commandLink>
-					
+
 									<p:commandLink
 										actionListener="#{tomarPruebaView.action_siguientePregunta}"
 										update="pnlPregunta,pnlRespuestas,cmbModulo">
@@ -59,41 +74,43 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="Container100">
 				<div class="ContainerIndent">
 					<div class="EmptyBox20"></div>
 
-					<div class="Container100 Responsive"> 
+					<div class="Container100 Responsive">
 						<div class="ContainerIndent">
 							<p:panel id="pnlPregunta" header="PREGUNTA">
-								
+
 								<p:outputLabel escape="false"
 									value="#{tomarPruebaView.preguntaActual.preguntaDTO.descripcionPregunta}" />
-								
+
 							</p:panel>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			
+
+
 			<div class="Container100">
 				<div class="ContainerIndent">
 					<div class="EmptyBox20"></div>
 
-					<div class="Container100 Responsive"> 
+					<div class="Container100 Responsive">
 						<div class="ContainerIndent">
 							<p:panel id="pnlRespuestas" header="OPCIONES DE RESPUESTA">
-								
-								<p:dataTable value="#{tomarPruebaView.preguntaActual.respuestasDTO}"
+
+								<p:dataTable
+									value="#{tomarPruebaView.preguntaActual.respuestasDTO}"
 									var="respuesta" selectionMode="single"
 									selection="#{tomarPruebaView.preguntaActual.respuestaSeleccionada}"
 									rowKey="#{respuesta.idRespuesta}">
-				
-									<p:ajax event="rowSelect" listener="#{tomarPruebaView.onRowSelect}" 
-										update=":frmPrueba:progreso"/>
-				
+
+									<p:ajax event="rowSelect"
+										listener="#{tomarPruebaView.onRowSelect}"
+										update=":frmPrueba:progreso" />
+
 									<p:column>
 										<p:outputLabel value="#{respuesta.descripcionRespuesta}"
 											escape="false" />
@@ -106,15 +123,15 @@
 				</div>
 			</div>
 
-			
+
 			<div class="Container100">
 				<div class="ContainerIndent">
 					<div class="EmptyBox20"></div>
 
-					<div class="Container100 Responsive"> 
+					<div class="Container100 Responsive">
 						<div class="ContainerIndent">
 							<p:panel>
-								
+
 								<div align="center">
 
 									<p:commandLink
@@ -124,7 +141,7 @@
 											url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/left.png"
 											style="width: 32px; height: 32px;" />
 									</p:commandLink>
-					
+
 									<p:commandLink
 										actionListener="#{tomarPruebaView.action_siguientePregunta}"
 										update="pnlPregunta,pnlRespuestas,cmbModulo">
@@ -132,23 +149,22 @@
 											url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/right.png"
 											style="width: 32px; height: 32px;" />
 									</p:commandLink>
-								<div align="right" >
-									<p:commandButton value="Finalizar prueba" 
-									action="#{tomarPruebaView.finalizarPrueba()}"
-									update="pnlPregunta,pnlRespuestas, :frmPrueba"
-									/>
+									<div align="right">
+										<p:commandButton value="Finalizar prueba"
+											action="#{tomarPruebaView.finalizarPrueba()}"
+											update="pnlPregunta,pnlRespuestas, :frmPrueba" />
+									</div>
+
 								</div>
-									
-								</div>
-								
-								
-								
+
+
+
 							</p:panel>
 						</div>
 					</div>
 				</div>
 			</div>
-			
+
 
 		</h:form>
 	</ui:define>

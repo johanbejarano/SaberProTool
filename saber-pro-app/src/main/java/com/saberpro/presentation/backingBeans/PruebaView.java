@@ -24,11 +24,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -65,8 +67,37 @@ public class PruebaView implements Serializable {
 	public PruebaView() {
 		super();
 	}
+	
+	@PostConstruct
+	public void verificar() {
+		getData();
+		try {
+			for (PruebaProgramaUsuario pruebaProgramaUsuario : data) {
+				Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());				
+				if(prueba.getTipoPrueba().getIdTipoPrueba()==Constantes.PRUEBA_TYPE_SIMULACRO) {
+					if(pruebaProgramaUsuario.getEstadoPrueba().getIdEstadoPrueba()==Constantes.PRUEBA_ESTADO_PENDIENTE) {						
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(prueba.getFechaFinal()); 
+						calendar.add(Calendar.DAY_OF_YEAR,1);						
+						Date cierre = calendar.getTime();
+						Date actual = new Date();		
+						
+						if(actual.getTime()>=cierre.getTime()) {
+							pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_FINALIZADA));							
+							businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("Error verificando",e);
+		}
+		
+	}
 
 	/* Controles de la vista */
+	
+	
 
 	public void verPrueba(long idPruebaUsuarioPrograma) {
 		try {
@@ -74,8 +105,31 @@ public class PruebaView implements Serializable {
 			EstadoPrueba estadoPrueba = businessDelegatorView.getEstadoPrueba(pruebaProgramaUsuario.getEstadoPrueba().getIdEstadoPrueba());
 			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
 			
+			
 			if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_INICIADO || estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_PENDIENTE) {
-//				FacesContext.getCurrentInstance().getExternalContext().redirect("respuestaPruebaProgramaUsuarioPregunta.xhtml?id=" + idPruebaUsuarioPrograma);
+				if(estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_PENDIENTE) {
+					
+					if(prueba.getTipoPrueba().getIdTipoPrueba()==Constantes.PRUEBA_TYPE_SIMULACRO) {
+						
+						Date fecha = new Date();
+						
+						if(fecha.getTime()>=prueba.getFechaInicial().getTime()) {
+							
+							pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_INICIADO));
+							pruebaProgramaUsuario.setFechaModificacion(new Date());
+							pruebaProgramaUsuario.setUsuModificador(VariablesSession.usuario.getIdUsuario());
+							
+							businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+						}
+						
+						else {
+							throw new Exception("No puede acceder a esta prueba debido a que aun no esta abierta");
+						}
+						
+					}
+					
+					
+				}
 				FacesContext.getCurrentInstance().getExternalContext().redirect("tomarPrueba.xhtml?id=" + idPruebaUsuarioPrograma);
 			} else if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_FINALIZADA) {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id=" + idPruebaUsuarioPrograma);
@@ -83,10 +137,24 @@ public class PruebaView implements Serializable {
 
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			FacesUtils.addErrorMessage(e.getMessage());
 		}
 	}
 	
 	// Control ver resultado en detalle
+	
+	public String fechaRangoFechas(long idPrueba) {
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat(Constantes.FORMATO_FECHA_SIMPLE);
+			Prueba prueba = businessDelegatorView.getPrueba(idPrueba);
+			return format.format(prueba.getFechaInicial())+" - "+format.format(prueba.getFechaFinal());
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return "";
+		}
+	}	
+
 	
 	public void verResultado(long idPruebaUsuarioPrograma){
 		try {

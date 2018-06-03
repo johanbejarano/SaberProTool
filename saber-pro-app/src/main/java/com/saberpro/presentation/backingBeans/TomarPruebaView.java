@@ -57,7 +57,9 @@ public class TomarPruebaView implements Serializable {
 //    private List<RespuestaPruebaProgramaUsuarioPregunta> respuestas = new ArrayList<>();
     private ModeloPruebaDTO modeloPruebaDTO = null;
     private Long idModuloSeleccionado;
-    private Integer porcentajeAvance = 0;
+    private Integer porcentajeAvance = 0;    
+    
+    private Long tiempo;  
     
     private boolean esSimulacro;
     
@@ -198,9 +200,15 @@ public class TomarPruebaView implements Serializable {
     					+ "y la pregunta " + idPregunta);
     		}
     		
-    		//Se actualiza el porcentaje de avance
-    		log.info("la respuesta selecionada es "+preguntaActual.getRespuestaSeleccionada().getIdRespuesta());
-    		if(modeloPruebaDTO.getCantidadTotalDePreguntas()!=modeloPruebaDTO.getCantidadTotalDePreguntasContestadas() || preguntaActual.getRespuestaSeleccionada()==null)
+    		Object[] variablesRespuesta = {"pruebaProgramaUsuarioPregunta.idPruebaProgramaUsuarioPregunta", false,lista.get(0).getIdPruebaProgramaUsuarioPregunta(), "="};
+    		
+    		List<RespuestaPruebaProgramaUsuarioPregunta> listRespuesta = businessDelegatorView.findByCriteriaInRespuestaPruebaProgramaUsuarioPregunta(variablesRespuesta,null,null);
+    		if (listRespuesta==null || listRespuesta.size()==0) {
+    			throw new Exception("No existe la respuesta prueba programa usuario pregunta para la prueba programa usuario " + lista.get(0).getIdPruebaProgramaUsuarioPregunta() + " "
+    					+ "y la pregunta " + idPregunta);
+    		}    		
+    		//Se actualiza el porcentaje de avance     		
+    		if(modeloPruebaDTO.getCantidadTotalDePreguntas()!=modeloPruebaDTO.getCantidadTotalDePreguntasContestadas() && listRespuesta.get(0).getRespuesta()==null)
     			modeloPruebaDTO.setCantidadTotalDePreguntasContestadas(modeloPruebaDTO.getCantidadTotalDePreguntasContestadas()+1);
     		Integer contadorPreguntasTotales = modeloPruebaDTO.getCantidadTotalDePreguntas();
     		Integer contadorPreguntasContestadas = modeloPruebaDTO.getCantidadTotalDePreguntasContestadas();
@@ -216,6 +224,7 @@ public class TomarPruebaView implements Serializable {
     		
 		} catch (Exception e) {
 			FacesUtils.addErrorMessage(e.getMessage());
+			log.error("Error guardado respuesta ",e);
 		}
     }
     
@@ -272,6 +281,28 @@ public class TomarPruebaView implements Serializable {
 			log.error("Error de "+e.getMessage(),e);
 		}
 	}
+    
+    public void verificarTime() {
+    	if(tiempo<=0) {
+    		try {
+    			Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");  			
+    			
+    			if(usuario!=null) {
+    				PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(this.pruebaProgramaUsuario.getIdPruebaProgramaUsuario());
+    				pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_FINALIZADA));
+    				pruebaProgramaUsuario.setFechaModificacion(new Date());
+    				pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
+    				
+    				businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+    				
+    				FacesContext.getCurrentInstance().getExternalContext().redirect("pruebaResultado.xhtml?id="+this.pruebaProgramaUsuario.getIdPruebaProgramaUsuario());	
+    			}
+    			
+    		} catch (Exception e) {    			
+    			log.error("Error de "+e.getMessage(),e);
+    		}
+    	}
+    }
     
     public boolean isEsSimulacro() {
     	Long idPruebaProgramaUsuario = this.pruebaProgramaUsuario.getIdPruebaProgramaUsuario();
@@ -360,6 +391,57 @@ public class TomarPruebaView implements Serializable {
 
 	public void setPorcentajeAvance(Integer porcentajeAvance) {
 		this.porcentajeAvance = porcentajeAvance;
+	}
+	
+	private Long getTimeRestante() {
+		try {
+			PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(pruebaProgramaUsuarioId);
+			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
+			
+			Date vieja = pruebaProgramaUsuario.getFechaCreacion();
+			Date nueva = new Date();
+			
+			long timeVieja = (vieja.getTime()/1000)+prueba.getTiempo();
+			long timeNueva = (nueva.getTime()/1000);
+			
+			return timeVieja-timeNueva;
+		} catch (Exception e) {
+			return 0L;
+		}
+	}
+
+	public Long getTiempo() {
+try {
+			
+			
+			tiempo = getTimeRestante();
+			
+			if(tiempo<0) {
+				Usuario usuario = (Usuario) FacesUtils.getfromSession("usuario");
+				if(usuario!=null) {
+					PruebaProgramaUsuario pruebaProgramaUsuario = businessDelegatorView.getPruebaProgramaUsuario(pruebaProgramaUsuarioId);
+					pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_FINALIZADA));
+					pruebaProgramaUsuario.setFechaModificacion(new Date());
+					pruebaProgramaUsuario.setUsuModificador(usuario.getIdUsuario());
+					
+					businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+					
+					FacesContext.getCurrentInstance().getExternalContext().redirect("prueba.xhtml");
+					
+					return 0L;
+				}
+				
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tiempo;
+	}
+
+	public void setTiempo(Long tiempo) {
+		this.tiempo = tiempo;
 	}
 	
 }
