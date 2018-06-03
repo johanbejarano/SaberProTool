@@ -420,7 +420,7 @@ public class TomarPruebaView implements Serializable {
 					.getPruebaProgramaUsuario(pruebaProgramaUsuarioId);
 			Prueba prueba = businessDelegatorView.getPrueba(pruebaProgramaUsuario.getPrueba().getIdPrueba());
 
-			Date vieja = pruebaProgramaUsuario.getFechaCreacion();
+			Date vieja = pruebaProgramaUsuario.getFechaModificacion();
 			Date nueva = new Date();
 
 			long timeVieja = (vieja.getTime() / 1000) + prueba.getTiempo();
