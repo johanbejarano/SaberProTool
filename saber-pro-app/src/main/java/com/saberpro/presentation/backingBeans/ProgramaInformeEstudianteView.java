@@ -105,7 +105,7 @@ public class ProgramaInformeEstudianteView implements Serializable {
 			return archivo;
 
 		} catch (Exception e) {
-			FacesUtils.addErrorMessage("Error generando el reporte");
+			FacesUtils.addErrorMessage("NO se pudo generar el reporte por falta de informacion");
 			e.printStackTrace();
 			return null;
 		}

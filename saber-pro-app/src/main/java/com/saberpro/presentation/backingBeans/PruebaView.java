@@ -89,6 +89,8 @@ public class PruebaView implements Serializable {
 					}
 				}
 			}
+			
+			data = null;
 		} catch (Exception e) {
 			log.error("Error verificando",e);
 		}
@@ -165,7 +167,7 @@ public class PruebaView implements Serializable {
 			if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_INICIADO || estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_PENDIENTE) {
 				FacesUtils.addInfoMessage("La prueba debe estar finalizada para ver los resultados en detalle");
 			} else if (estadoPrueba.getIdEstadoPrueba() == Constantes.PRUEBA_ESTADO_FINALIZADA) {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("tomarPrueba.xhtml?id=" + idPruebaUsuarioPrograma);
+				FacesContext.getCurrentInstance().getExternalContext().redirect("revisarPrueba.xhtml?id=" + idPruebaUsuarioPrograma);
 			}
 			
 		} catch (Exception e) {

@@ -158,6 +158,7 @@ public class ProgramaSimulacroView implements Serializable {
 						ProgramaUsuario programaUsuario = businessDelegatorView.findByCriteriaInProgramaUsuario(variablePrograma, null, null).get(0);
 						if(programaUsuario.getIdProgramaUsuario()==pruebaProgramaUsuario.getProgramaUsuario().getIdProgramaUsuario()) {
 							pruebaProgramaUsuario.setActivo(Constantes.ESTADO_ACTIVO);
+							pruebaProgramaUsuario.setEstadoPrueba(businessDelegatorView.getEstadoPrueba(Constantes.PRUEBA_ESTADO_PENDIENTE));
 							businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
 							
 							usuarioTiene.add(estudiantesNuevos);
