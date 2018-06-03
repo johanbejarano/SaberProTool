@@ -88,7 +88,7 @@ public class UsuarioDAO extends JpaDaoImpl<Usuario, Long> implements IUsuarioDAO
 				"  pru.idPrueba=ppu.prueba.idPrueba AND" + 
 				"  ppu.programaUsuario.idProgramaUsuario = pu.idProgramaUsuario AND" + 
 				"  pu.usuario.idUsuario = usu.idUsuario AND "+
-				"  pru.idPrueba=:idPrueba" + 
+				"  pru.idPrueba=:idPrueba " + 
 				"";
 		return entityManager.createQuery(sql).setParameter("idPrueba",idPrueba).getResultList();
 	}	

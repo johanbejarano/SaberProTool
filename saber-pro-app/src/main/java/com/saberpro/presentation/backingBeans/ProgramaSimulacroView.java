@@ -138,20 +138,38 @@ public class ProgramaSimulacroView implements Serializable {
 				
 				businessDelegatorView.updatePrueba(entity);
 
-				List<Usuario> listUsuario = businessDelegatorView.findByUsuarioInPruebaUsuario(entity.getIdPrueba());
+				//List<Usuario> listUsuario = businessDelegatorView.findByUsuarioInPruebaUsuario(entity.getIdPrueba());
 				List<Usuario> listTarget = usuarios.getTarget();
 				
 				Object[] variablePPU = { "prueba.idPrueba", true,entity.getIdPrueba(), "="};
 				
 				List<PruebaProgramaUsuario> lasPruebaProgramaUsuario = businessDelegatorView.findByCriteriaInPruebaProgramaUsuario(variablePPU, null,null);
 				if(lasPruebaProgramaUsuario.size()==0)
-					throw new Exception("No se encontraro pruebas previas");					
+					throw new Exception("No se encontraro pruebas previas");
+				
+				List<Usuario> usuarioTiene = new ArrayList<>();
+				
+				for (PruebaProgramaUsuario pruebaProgramaUsuario : lasPruebaProgramaUsuario) {
+					pruebaProgramaUsuario.setActivo(Constantes.ESTADO_INACTIVO);
+					businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+					
+					for (Usuario estudiantesNuevos : listTarget) {
+						Object[] variablePrograma = { "usuario.idUsuario", true,estudiantesNuevos.getIdUsuario(), "="};
+						ProgramaUsuario programaUsuario = businessDelegatorView.findByCriteriaInProgramaUsuario(variablePrograma, null, null).get(0);
+						if(programaUsuario.getIdProgramaUsuario()==pruebaProgramaUsuario.getProgramaUsuario().getIdProgramaUsuario()) {
+							pruebaProgramaUsuario.setActivo(Constantes.ESTADO_ACTIVO);
+							businessDelegatorView.updatePruebaProgramaUsuario(pruebaProgramaUsuario);
+							
+							usuarioTiene.add(estudiantesNuevos);
+						}
+					}
+				}
 				
 				List<Pregunta> lasPreguntas = businessDelegatorView.findByPruebaProgramaUsuarioPregunta(lasPruebaProgramaUsuario.get(0).getIdPruebaProgramaUsuario());
 				
-				for(int j=0;j<listUsuario.size();j++) {
+				for(int j=0;j<usuarioTiene.size();j++) {
 		        	for(int i=0;i<listTarget.size();i++) {
-		        		if(listTarget.get(i).getIdUsuario().equals(listUsuario.get(j).getIdUsuario())) {
+		        		if(listTarget.get(i).getIdUsuario().equals(usuarioTiene.get(j).getIdUsuario())) {
 		        			listTarget.remove(i);
 		        			
 		        		}
@@ -200,6 +218,11 @@ public class ProgramaSimulacroView implements Serializable {
 					}
 
 				}
+				
+				
+				
+				
+				
 				
 				data = null;
 				entity = null;

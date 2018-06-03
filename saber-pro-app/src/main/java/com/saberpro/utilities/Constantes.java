@@ -49,5 +49,8 @@ public class Constantes {
 	 
 	//Parametros
 	 public static final long TIME_PRUEBA = 3600L;
-	 public static final long PARAMETRO_REPORTES = 10L;
+	 public static final long PARAMETRO_WEB_RUTA = 1L;
+	 public static final long PARAMETRO_WEB_PREGUNTA = 2L;
+	 public static final long PARAMETRO_WEB_RESPUESTA = 3L;
+	 public static final long PARAMETRO_REPORTES = 4L;
 }

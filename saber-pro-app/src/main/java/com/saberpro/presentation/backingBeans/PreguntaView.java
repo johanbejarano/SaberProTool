@@ -380,13 +380,13 @@ public class PreguntaView implements Serializable {
     			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     			
     			String ruta= (String) servletContext.getRealPath("/")+"pregunta/"+choosePregunta.getFileName();
-    			String httpRuta = "http://localhost:8080/saber-pro-app/pregunta/"+choosePregunta.getFileName();
+    			String httpRuta = businessDelegatorView.getParametro(Constantes.PARAMETRO_WEB_PREGUNTA).getValor()+choosePregunta.getFileName();
     			
     			businessDelegatorView.subirFilePregunta(choosePregunta.getInputstream(),ruta);
     			
     			   			
     			
-    			content = content +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
+    			content = content +"<p><img width=\"300px\"   alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
     			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
@@ -402,13 +402,13 @@ public class PreguntaView implements Serializable {
     			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     			
     			String ruta= (String) servletContext.getRealPath("/")+"respuesta/"+chooseRespuesta1.getFileName();
-    			String httpRuta = "http://localhost:8080/saber-pro-app/respuesta/"+chooseRespuesta1.getFileName();
+    			String httpRuta = businessDelegatorView.getParametro(Constantes.PARAMETRO_WEB_RESPUESTA).getValor()+chooseRespuesta1.getFileName();
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta1.getInputstream(),ruta);
     			
     						
     			
-    			contentRespuesta1 = contentRespuesta1 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
+    			contentRespuesta1 = contentRespuesta1 +"<p><img width=\"300px\" alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
     			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
@@ -424,13 +424,13 @@ public class PreguntaView implements Serializable {
     			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     			
     			String ruta= (String) servletContext.getRealPath("/")+"respuesta/"+chooseRespuesta2.getFileName();
-    			String httpRuta = "http://localhost:8080/saber-pro-app/respuesta/"+chooseRespuesta2.getFileName();
+    			String httpRuta = businessDelegatorView.getParametro(Constantes.PARAMETRO_WEB_RESPUESTA).getValor()+chooseRespuesta2.getFileName();
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta2.getInputstream(),ruta);
     			
     			  			
     			
-    			contentRespuesta2 = contentRespuesta2 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
+    			contentRespuesta2 = contentRespuesta2 +"<p><img width=\"300px\" alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
     			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
@@ -446,12 +446,12 @@ public class PreguntaView implements Serializable {
     			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     			
     			String ruta= (String) servletContext.getRealPath("/")+"respuesta/"+chooseRespuesta3.getFileName();
-    			String httpRuta = "http://localhost:8080/saber-pro-app/respuesta/"+chooseRespuesta3.getFileName();
+    			String httpRuta = businessDelegatorView.getParametro(Constantes.PARAMETRO_WEB_RESPUESTA).getValor()+chooseRespuesta3.getFileName();
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta3.getInputstream(),ruta);
     			
     		
-    			contentRespuesta3 = contentRespuesta3 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
+    			contentRespuesta3 = contentRespuesta3 +"<p><img  width=\"300px\" alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
     			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
@@ -467,13 +467,13 @@ public class PreguntaView implements Serializable {
     			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     			
     			String ruta= (String) servletContext.getRealPath("/")+"respuesta/"+chooseRespuesta4.getFileName();
-    			String httpRuta = "http://localhost:8080/saber-pro-app/respuesta/"+chooseRespuesta4.getFileName();
+    			String httpRuta = businessDelegatorView.getParametro(Constantes.PARAMETRO_WEB_RESPUESTA).getValor()+chooseRespuesta4.getFileName();
     			
     			businessDelegatorView.subirFilePregunta(chooseRespuesta4.getInputstream(),ruta);
     			
     						
     			
-    			contentRespuesta4 = contentRespuesta4 +"<p><img alt=\"\" src=\""+httpRuta+"\"/></p>"; 
+    			contentRespuesta4 = contentRespuesta4 +"<p><img width=\"300px\" alt=\"\" src=\""+httpRuta+"\"/></p>"; 
     			
     			FacesUtils.addInfoMessage("Se subió el archivo correctamente");
     		}
