@@ -80,6 +80,8 @@ public interface IUsuarioLogic {
     
     public List<Usuario> findByUsuarioInPrueba(long idPrueba)throws Exception;
     
+    public List<Usuario> findByUsuarioInPruebaActivo(long idPrueba)throws Exception;
+    
     public void asignarDecano(Usuario decano,Usuario despedido,long user,long idFacultad)throws Exception;
     
 }

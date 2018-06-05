@@ -86,9 +86,9 @@ public class ProgramaSimulacroView implements Serializable {
 			fechaFinal = entity.getFechaFinal();		
 			tiempo = new Date(0,0,0,hor, min);
 			
-			List<Usuario> listUsuario = businessDelegatorView.findByUsuarioInPruebaUsuario(idPrueba);
+			List<Usuario> listUsuario = businessDelegatorView.findByUsuarioInPruebaActivoUsuario(idPrueba);
 			List<Usuario> listSource = usuarios.getSource();
-					
+			
 			
 			for(int j=0;j<listUsuario.size();j++) {
 	        	for(int i=0;i<listSource.size();i++) {

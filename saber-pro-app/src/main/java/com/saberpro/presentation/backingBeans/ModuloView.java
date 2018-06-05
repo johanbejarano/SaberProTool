@@ -280,7 +280,7 @@ public class ModuloView implements Serializable {
     public List<ModuloDTO> getData() {
         try {
             if (data == null) {
-                data = businessDelegatorView.getDataModulo(Constantes.ESTADO_ACTIVO);
+                data = businessDelegatorView.getDataModulo();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -350,7 +350,7 @@ public class ModuloView implements Serializable {
 		if(lasTipoModuloSelectItem==null) {
 			lasTipoModuloSelectItem = new ArrayList<>();
 			try {
-				for (TipoModulo tipoModulo:businessDelegatorView.getTipoModulo(Constantes.ESTADO_ACTIVO)) {
+				for (TipoModulo tipoModulo:businessDelegatorView.getTipoModulo()) {
 					lasTipoModuloSelectItem.add(new SelectItem(tipoModulo.getIdTipoModulo(), tipoModulo.getNombre()));
 				}
 			} catch (Exception e) {

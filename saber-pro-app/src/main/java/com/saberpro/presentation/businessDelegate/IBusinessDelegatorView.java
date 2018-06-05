@@ -810,4 +810,6 @@ public interface IBusinessDelegatorView {
 	 public List<Pregunta> findByPruebaProgramaUsuarioPregunta(long idPruebaProgramaUsuario)throws Exception;
 	 
 	 public List<ResultadosPreguntaDTO> findByTopPregunta(long idModulo)throws Exception;
+	 
+	 public List<Usuario> findByUsuarioInPruebaActivoUsuario(long idPrueba) throws Exception;
 }

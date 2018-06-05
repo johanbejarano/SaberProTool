@@ -271,7 +271,7 @@ public class ProgramaView implements Serializable {
 	public List<ProgramaDTO> getData() {
 		try {
 			if (data == null) {
-				data = businessDelegatorView.getDataPrograma(Constantes.ESTADO_ACTIVO);
+				data = businessDelegatorView.getDataPrograma();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -356,7 +356,7 @@ public class ProgramaView implements Serializable {
 		if (lasFacultadSelectItem == null) {
 			lasFacultadSelectItem = new ArrayList<>();
 			try {
-				List<FacultadDTO> lasFacultad = businessDelegatorView.getDataFacultad(Constantes.ESTADO_ACTIVO);
+				List<FacultadDTO> lasFacultad = businessDelegatorView.getDataFacultad();
 				for (FacultadDTO facultadDTO : lasFacultad) {
 					lasFacultadSelectItem.add(new SelectItem(facultadDTO.getIdFacultad(), facultadDTO.getNombre()));
 				}

@@ -93,6 +93,23 @@ public class UsuarioDAO extends JpaDaoImpl<Usuario, Long> implements IUsuarioDAO
 		return entityManager.createQuery(sql).setParameter("idPrueba",idPrueba).getResultList();
 	}	
 	
+	@Override
+	public List<Usuario> findByUsuarioInPruebaActivo(long idPrueba) {
+		String sql = "SELECT usu " + 
+				"FROM " + 
+				"  Prueba pru," + 
+				"  PruebaProgramaUsuario ppu," + 
+				"  ProgramaUsuario pu," + 
+				"  Usuario usu" + 
+				" WHERE \n" + 
+				"  pru.idPrueba=ppu.prueba.idPrueba AND" + 
+				"  ppu.programaUsuario.idProgramaUsuario = pu.idProgramaUsuario AND" + 
+				"  pu.usuario.idUsuario = usu.idUsuario AND "+
+				"  pru.idPrueba=:idPrueba AND ppu.activo='S'" + 
+				"";
+		return entityManager.createQuery(sql).setParameter("idPrueba",idPrueba).getResultList();
+	}	
+	
 	
     
 }
