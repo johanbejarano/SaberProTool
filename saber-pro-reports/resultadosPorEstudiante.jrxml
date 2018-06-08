@@ -349,6 +349,25 @@ group by
 			<rectangle radius="5">
 				<reportElement style="ColoredField" x="420" y="2" width="10" height="10" uuid="2fdef573-a9fc-4313-8c06-24e2ecdb6ef3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=131 && $F{puntos_acierto}.doubleValue() <= 199]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement style="ColoredField" x="400" y="2" width="10" height="10" uuid="fc9c1e01-390a-4919-a310-99541826e79c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=0 && $F{puntos_acierto}.doubleValue() <= 130]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement style="ColoredField" x="441" y="2" width="10" height="10" uuid="e536d04a-f3c0-4eb8-81f8-31916f2fcf1b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=200]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
