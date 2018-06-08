@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultadosPorEstudiante" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9402b0d5-1611-4172-86af-7252611de900">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgresql Adapter"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SaberProTool Dataadapter"/>
 	<style name="ColoredField">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=0 && $F{puntos_acierto}.doubleValue() <= 130]]></conditionExpression>
@@ -19,7 +19,7 @@
 	</style>
 	<parameter name="P_ID_PRUEBA_PROGRAMA_USUARIO" class="java.lang.Long"/>
 	<parameter name="P_RUTA_RECURSOS" class="java.lang.String">
-		<defaultValueExpression><![CDATA["/home/jhony/git/SaberProTool/saber-pro-reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/Users/johan/JaspersoftWorkspace/saber-pro-reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select
@@ -305,7 +305,7 @@ group by
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[PUNTAJE]]></text>
+				<text><![CDATA[PUNTAJE.]]></text>
 			</staticText>
 			<ellipse>
 				<reportElement mode="Opaque" x="400" y="2" width="10" height="10" backcolor="#00FF00" uuid="c56d8c42-743b-4a51-a315-c2d5b7424013"/>
@@ -356,7 +356,7 @@ group by
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="5">
-				<reportElement style="ColoredField" x="400" y="2" width="10" height="10" uuid="fc9c1e01-390a-4919-a310-99541826e79c">
+				<reportElement style="ColoredField" x="440" y="2" width="10" height="10" uuid="fc9c1e01-390a-4919-a310-99541826e79c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=0 && $F{puntos_acierto}.doubleValue() <= 130]]></printWhenExpression>
 				</reportElement>
@@ -365,7 +365,7 @@ group by
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="5">
-				<reportElement style="ColoredField" x="441" y="2" width="10" height="10" uuid="e536d04a-f3c0-4eb8-81f8-31916f2fcf1b">
+				<reportElement style="ColoredField" x="400" y="2" width="10" height="10" uuid="e536d04a-f3c0-4eb8-81f8-31916f2fcf1b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=200]]></printWhenExpression>
 				</reportElement>
