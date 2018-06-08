@@ -9,11 +9,11 @@
 			<style mode="Opaque" backcolor="#FF0000"/>
 		</conditionalStyle>
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=131 && $F{puntos_acierto}.doubleValue() <= 199]]></conditionExpression>
+			<conditionExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=131 && $F{puntos_acierto}.doubleValue() <= 175]]></conditionExpression>
 			<style mode="Opaque" backcolor="#FFFF00" radius="20"/>
 		</conditionalStyle>
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=200]]></conditionExpression>
+			<conditionExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=176]]></conditionExpression>
 			<style mode="Opaque" backcolor="#00FF00"/>
 		</conditionalStyle>
 	</style>
@@ -187,7 +187,7 @@ group by
 				<text><![CDATA[TIPO PRUEBA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="110" width="380" height="15" uuid="a2c345b9-3f1d-4ec1-b341-291d2c39bb2b"/>
+				<reportElement x="0" y="110" width="470" height="15" uuid="a2c345b9-3f1d-4ec1-b341-291d2c39bb2b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -278,7 +278,7 @@ group by
 	<columnHeader>
 		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement x="90" y="0" width="180" height="15" uuid="07559023-1d6d-492b-a6c6-6ca897ae6f5d">
+				<reportElement x="0" y="0" width="270" height="15" uuid="07559023-1d6d-492b-a6c6-6ca897ae6f5d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35671698-910d-45c3-a6a4-72200e818c26"/>
 				</reportElement>
 				<box>
@@ -320,8 +320,8 @@ group by
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<textField>
-				<reportElement x="90" y="0" width="180" height="15" uuid="2d794df3-d2a4-4455-84d9-7b8b3ab0061e">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="270" height="15" uuid="2d794df3-d2a4-4455-84d9-7b8b3ab0061e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35671698-910d-45c3-a6a4-72200e818c26"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
@@ -333,8 +333,8 @@ group by
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###">
-				<reportElement x="270" y="0" width="100" height="15" uuid="592891a2-9783-4132-ab7c-610420a3732f">
+			<textField isStretchWithOverflow="true" pattern="###">
+				<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="100" height="15" uuid="592891a2-9783-4132-ab7c-610420a3732f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b764acfb-3f28-43f3-891f-60f4739f9cac"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
@@ -349,7 +349,7 @@ group by
 			<rectangle radius="5">
 				<reportElement style="ColoredField" x="420" y="2" width="10" height="10" uuid="2fdef573-a9fc-4313-8c06-24e2ecdb6ef3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=131 && $F{puntos_acierto}.doubleValue() <= 199]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=131 && $F{puntos_acierto}.doubleValue() <= 175]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
@@ -367,7 +367,7 @@ group by
 			<rectangle radius="5">
 				<reportElement style="ColoredField" x="400" y="2" width="10" height="10" uuid="e536d04a-f3c0-4eb8-81f8-31916f2fcf1b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=200]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{puntos_acierto}.doubleValue() >=176]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
@@ -399,7 +399,7 @@ group by
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[131 - 199 pts]]></text>
+				<text><![CDATA[131 - 175 pts]]></text>
 			</staticText>
 			<ellipse>
 				<reportElement positionType="Float" mode="Opaque" x="90" y="52" width="10" height="10" backcolor="#FFFF00" uuid="a4161a6a-5f83-4f94-a60f-ea121fa8ee17"/>
@@ -409,7 +409,7 @@ group by
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[200 - 300 pts]]></text>
+				<text><![CDATA[176 - 300 pts]]></text>
 			</staticText>
 			<ellipse>
 				<reportElement positionType="Float" mode="Opaque" x="90" y="67" width="10" height="10" backcolor="#00FF00" uuid="ea6eff4b-6056-484a-8b6a-7256b252579b"/>
