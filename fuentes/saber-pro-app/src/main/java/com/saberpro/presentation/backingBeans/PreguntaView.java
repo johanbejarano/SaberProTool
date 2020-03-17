@@ -486,13 +486,14 @@ public class PreguntaView implements Serializable {
     public List<Pregunta> getData() {
         try {
             if (data == null) {
-            	if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DIRECTOR || VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_ADMIN )
-                data = businessDelegatorView.getPregunta();
+            	if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DIRECTOR || VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_ADMIN ) {
+            		data = businessDelegatorView.getPregunta();
+            	}else if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DOCENTE) {
+                	Object[] variable = {"usuCreador",true,VariablesSession.usuario.getIdUsuario(),"="};
+                	data = businessDelegatorView.findByCriteriaInPregunta(variable, null, null);
+                }
             }
-            else if(VariablesSession.tipoUsuario.getIdTipoUsuario()==Constantes.USER_TYPE_DOCENTE) {
-            	Object[] variable = {"usuCreador",true,VariablesSession.usuario.getIdUsuario(),"="};
-            	data = businessDelegatorView.findByCriteriaInPregunta(variable, null, null);
-            }
+            
         } catch (Exception e) {
         	log.error("Error de "+e.getMessage(),e);
             e.printStackTrace();

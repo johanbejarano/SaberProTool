@@ -197,20 +197,32 @@ ello la calidad de la educación prestada.',100,now(),0,'S',4);
 /* Usuario */
 
 ALTER SEQUENCE usuario_id_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ADMIN','ADMINISTRADOR','M',9999999,9999999999,9999999999,'jhonypk18@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',5);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1148248,1133567234,3125466543,'jhonypk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','LOPEZ SERNA','M',1156248,1154567234,3105466543,'camilopk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ANDRES','SALAZAR ZAPATA','M',1160248,1160567234,3185466543,'andrespk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('BEATRIZ','GOMEZ SALAZAR','M',1178248,1183567234,3025466543,'beatrizpk24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',3);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO JULIAN','GOMEZ CARVAGAL','M',1198248,1193567234,3125766543,'mariok24@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',4);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO ANDRES','GOMEZ CARVAGAL','M',1198246,1193567288,3125766156,'mariok2458@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO LOPEZ','GOMEZ CARVAGAL','M',3338246,3333567288,3335766156,'mario31k2458@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',2);
-/* Usuarios para pruebas */
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','SARRIA REVELO','M',1148217,1133567217,3125466517,'jhonypk2417@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JOHAN','SARRIA REVELO','M',1148218,1133567218,3125466518,'jhonypk2418@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CARLOS','SARRIA REVELO','M',1148219,1133567219,3125466519,'jhonypk2419@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('WILSON','SARRIA REVELO','M',1148220,1133567220,3125466520,'jhonypk2420@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
-insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('STIWAR','SARRIA REVELO','M',1148221,1133567221,3125466521,'jhonypk2421@gmail.com','0f58a4a53a053ec2daf30b1593cfde03fbed1594852845bd88c2cb111355b185f72813cf8ebffaa5',now(),0,'S',1);
+
+--Admin
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ADMIN','ADMINISTRADOR','M',0,0,0,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',5);
+
+--Estudiantes
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JHONY','SARRIA REVELO','M',1,1133567234,3125466543,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','LOPEZ SERNA','M',2,1154567234,3105466543,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CAMILO','SARRIA REVELO','M',3,1133567217,3125466517,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JOHAN','SARRIA REVELO','M',4,1133567218,3125466518,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('CARLOS','SARRIA REVELO','M',5,1133567219,3125466519,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('WILSON','SARRIA REVELO','M',6,1133567220,3125466520,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('STIWAR','SARRIA REVELO','M',7,1133567221,3125466521,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',1);
+
+--Docentes
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('JOHAN','BEJARANO','M',983695,16935984,0,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',2);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('ROCIO','SEGOVIA','F',983696,1193567288,0,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',2);
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('WALTER','MAGANA','M',983697,3333567288,0,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',2);
+
+--Director
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('BEATRIZ','GRASS','F',983698,34568825,0,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',3);
+
+--Decano
+insert into usuario(nombre,apellido,genero,codigo,identificacion,celular,correo,password,fecha_creacion,usu_creador,activo,id_tipo_usuario) values('MARIO JULIAN','MORA','M',983698,0,0,'jbejarano@vortexbird.com','f03d5c87e2b6f7ce3677b961bc87d23b54657b14c7d6409db3df40c8adedade25b8577f52a54d9a2',now(),0,'S',4);
+
+
+
 /* Programa usuario */
 
 ALTER SEQUENCE programa_usuario_id_programa_usuario_seq MINVALUE 1 START WITH 1 RESTART WITH 1;
