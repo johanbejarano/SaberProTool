@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PreguntaComponent } from './pregunta/pregunta.component';
-import { PreguntaListComponent } from './pregunta/pregunta-list/pregunta-list.component';
 import { CrearPreguntaComponent } from './pregunta/crear-pregunta/crear-pregunta.component';
 
 

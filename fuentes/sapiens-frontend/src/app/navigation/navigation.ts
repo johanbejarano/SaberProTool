@@ -2,25 +2,29 @@ import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
     {
-        id       : 'applications',
-        title    : 'Applications',
+        id       : 'navigationProfesor',
+        title    : 'Preguntas',
         translate: 'NAV.APPLICATIONS',
         type     : 'group',
         children : [
             {
-                id       : 'sample',
-                title    : 'Sample',
-                translate: 'NAV.SAMPLE.TITLE',
+                id       : 'mnuPreguntas',
+                title    : 'Preguntas',
+                translate: 'NAV.PROFESOR.PREGUNTAS',
                 type     : 'item',
-                icon     : 'home',
+                icon     : 'device_unknown',
                 url      : '/gestionPreguntas',
-                badge    : {
-                    title    : '25',
-                    translate: 'NAV.SAMPLE.BADGE',
-                    bg       : '#F44336',
-                    fg       : '#FFFFFF'
-                }
-            }
+            },
+            {
+                id       : 'mnuSimulacion',
+                title    : 'Simulacion',
+                translate: 'NAV.PROFESOR.SIMULACION',
+                type     : 'item',
+                icon     : 'playlist_add_check',
+                url      : '/gestionSimulacro',
+            },
+            
+            
         ]
     }
 ];
@@ -45,8 +49,8 @@ export const navigationProfesor: FuseNavigation[] = [
                 title    : 'Simulacion',
                 translate: 'NAV.PROFESOR.SIMULACION',
                 type     : 'item',
-                icon     : 'device_unknown',
-                url      : '/gestionPreguntas/registrarPregunta',
+                icon     : 'playlist_add_check',
+                url      : '/gestionSimulacro',
             },
             
             
