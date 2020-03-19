@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+	xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+	version="2.0">
+
+	<entity
+		class="com.vortexbird.sapiens.domain.Usuario">
+		<named-native-query
+			name="Usuario.getUsuariosPorTipo"
+			result-set-mapping="UsuarioDTO">
+			<query>
+	        <![CDATA[
+	        	SELECT usua_id usuaId, nombre nombre, apellido apellido, genero genero, codigo codigo, 
+	        	identificacion identificacion, celular celular, correo correo, "password" "password", 
+	        	fecha_creacion fechaCreacion, fecha_modificacion fechaModificacion, 
+	        	usu_creador usuCreador, usu_modificador usuModificador, estado_registro estadoRegistro, 
+	        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
+				FROM usuario
+				WHERE tius_id = :pTiusId 
+					  AND (UPPER(codigo) LIKE :pFiltro OR identificacion||'' LIKE :pFiltro OR UPPER(nombre) LIKE :pFiltro 
+					  OR UPPER(apellido) LIKE :pFiltro OR UPPER(correo) LIKE :pFiltro)					
+	        ]]>
+	        </query>
+		</named-native-query>
+
+		<named-native-query
+			name="Usuario.getUsuariosPorTipo.count"
+			result-set-mapping="UsuarioDTOCount">
+			<query>
+	        <![CDATA[
+	        	SELECT COUNT(*) total FROM 
+	        	(
+		        	SELECT usua_id usuaId, nombre nombre, apellido apellido, genero genero, codigo codigo, 
+		        	identificacion identificacion, celular celular, correo correo, "password" "password", 
+		        	fecha_creacion fechaCreacion, fecha_modificacion fechaModificacion, 
+		        	usu_creador usuCreador, usu_modificador usuModificador, estado_registro estadoRegistro, 
+		        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
+					FROM usuario
+					WHERE tius_id = :pTiusId 
+						  AND (UPPER(codigo) LIKE :pFiltro OR identificacion||'' LIKE :pFiltro OR UPPER(nombre) LIKE :pFiltro 
+						  OR UPPER(apellido) LIKE :pFiltro OR UPPER(correo) LIKE :pFiltro)			
+				) Q		
+	        ]]>
+	        </query>
+		</named-native-query>
+	</entity>
+
+	
+
+</entity-mappings>

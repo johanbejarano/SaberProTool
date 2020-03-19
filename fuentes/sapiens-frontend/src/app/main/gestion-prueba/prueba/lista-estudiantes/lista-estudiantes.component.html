@@ -1,0 +1,69 @@
+
+
+
+    <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+
+        <mat-table #table [dataSource]="datasource"
+                [@animateStagger]="{value:'50'}"
+                fxFlex="100">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="checkbox">
+                <mat-header-cell *matHeaderCellDef fxFlex="5" fxFlex.xs="5"></mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="5" fxFlex.xs="5">
+                    <mat-checkbox [(ngModel)]="checkboxes[usuario.usuaId]" (ngModelChange)="toogleSelectedUsuario(usuario.usuaId)"
+                                (click)="$event.stopPropagation()">
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+
+            <!-- CODIGGO -->
+            <ng-container matColumnDef="codigo">
+                <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">Código</mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="15" fxFlex.xs="15">
+                    <p class="text-truncate font-weight-600">{{usuario.codigo}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- CODIGGO -->
+
+            <!-- IDENTIFICACION -->
+            <ng-container matColumnDef="identificacion">
+                <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">Identificación</mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="15" fxFlex.xs="15">
+                    <p class="text-truncate font-weight-600">{{usuario.identificacion}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- IDENTIFICACION -->
+
+            <!-- NOMBRE -->
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.xs="25">Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="25" fxFlex.xs="25">
+                    <p class="text-truncate font-weight-600">{{usuario.apellido | uppercase}}, {{usuario.nombre | titlecase}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- NOMBRE -->
+
+            <!-- EMAIL -->
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.xs="25">e-Mail</mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="25" fxFlex.xs="25">
+                    <p class="text-truncate font-weight-600">{{usuario.correo | lowercase}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- EMAIL -->
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let usuario; columns: displayedColumns;"
+                    class="contact"
+                    [ngClass]="{'accent-50':checkboxes[usuario.usuaId]}"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+            </mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons
+            [length]="total" [pageIndex]="pageNumber"
+            [pageSize]="pageSize" (page)="loadPage($event)"></mat-paginator>
+
+    </div>

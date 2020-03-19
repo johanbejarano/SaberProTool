@@ -7,6 +7,8 @@ import java.math.*;
 
 import java.util.*;
 
+import org.springframework.data.domain.Page;
+
 
 /**
 * @author Zathura Code Generator http://zathuracode.org/
@@ -16,4 +18,6 @@ import java.util.*;
 public interface UsuarioService extends GenericService<Usuario, Integer> {
 
 	UsuarioDTO login(String codigo, String password) throws Exception;
+
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize) throws Exception;
 }

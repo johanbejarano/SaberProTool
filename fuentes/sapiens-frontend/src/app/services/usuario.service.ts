@@ -39,4 +39,8 @@ export class UsuarioService {
     return this.httpClient.post(this.url + 'eliminar/', usuario);
   }
 
+  public getUsuariosPorTipo(tiusId: number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
+    return this.httpClient.get(this.url + 'getUsuariosPorTipo/'+tiusId+"/"+filtro+"/"+pageNumber+"/"+pageSize);
+  }
+
 }

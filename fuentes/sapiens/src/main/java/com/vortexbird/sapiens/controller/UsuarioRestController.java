@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -140,5 +140,27 @@ public class UsuarioRestController {
 	@GetMapping(value = "/md5/{string}")
 	public ResponseEntity<?> findById(@PathVariable("string") String string) {
 		return ResponseEntity.ok().body(PasswordGenerator.hashPassword(string));
+	}
+	
+	@GetMapping(value = "/getUsuariosPorTipo/{tiusId}/{filtro}/{pageNumber}/{pageSize}")
+	public ResponseEntity<?> getUsuariosPorTipo(
+			@PathVariable("tiusId") Integer tiusId,
+			@PathVariable("filtro") String filtro,
+			@PathVariable("pageNumber") int pageNumber,
+			@PathVariable("pageSize") int pageSize
+			) {
+		
+		log.debug("Request to getUsuariosPorTipo()");
+
+		try {
+			
+			Page<UsuarioDTO> usuarios = usuarioService.getUsuariosPorTipo(tiusId, filtro, pageNumber, pageSize);
+			
+			return ResponseEntity.ok().body(usuarios);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }

@@ -8,12 +8,17 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.vortexbird.sapiens.exception.*;
 import com.vortexbird.sapiens.mapper.UsuarioMapper;
 import com.vortexbird.sapiens.repository.*;
+import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.PasswordGenerator;
 import com.vortexbird.sapiens.utility.Utilities;
 
@@ -42,6 +47,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Autowired
 	private UsuarioMapper usuarioMapper;
+	
+	@Autowired
+	private TipoUsuarioService tipoUsuarioService;
 
 	@Override
 	public void validate(Usuario usuario) throws Exception {
@@ -87,9 +95,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 			validate(entity);
 
-			if (usuarioRepository.findById(entity.getUsuaId()).isPresent()) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
+//			if (usuarioRepository.findById(entity.getUsuaId()).isPresent()) {
+//				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+//			}
 
 			return usuarioRepository.save(entity);
 
@@ -204,6 +212,23 @@ public class UsuarioServiceImpl implements UsuarioService {
 			
 		} catch (Exception e) {
 			log.error("Error en login", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize) throws Exception {
+		try {
+			
+			Pageable pageable = PageRequest.of(pageNumber, pageSize);
+			filtro = "%" + filtro + "%";
+			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, filtro, pageable);
+			
+			return usuarios;
+			
+		} catch (Exception e) {
+			log.error("Error en getUsuariosPorTipo", e);
 			throw e;
 		}
 	}

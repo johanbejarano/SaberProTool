@@ -8,16 +8,33 @@ import javax.persistence.*;
 
 import javax.validation.constraints.*;
 
+import com.vortexbird.sapiens.dto.UsuarioDTO;
+
 
 /**
 * @author Zathura Code Generator http://zathuracode.org/
 * www.zathuracode.org
 *
 */
+
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo", query = "", resultSetMapping = "UsuarioDTO"),
+	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo.count", query = "", resultSetMapping = "UsuarioDTOCount") })
+@SqlResultSetMappings({
+	@SqlResultSetMapping(name = "UsuarioDTO", classes = {
+			@ConstructorResult(targetClass = UsuarioDTO.class, columns = {
+					@ColumnResult(name = "usuaId", type = Integer.class),
+					@ColumnResult(name = "codigo", type = String.class),
+					@ColumnResult(name = "identificacion", type = Long.class),
+					@ColumnResult(name = "nombre", type = String.class),
+					@ColumnResult(name = "apellido", type = String.class),
+					@ColumnResult(name = "correo", type = String.class), }) }),
+	@SqlResultSetMapping(name = "UsuarioDTOCount", columns = {
+			@ColumnResult(name = "total", type = Integer.class) }), })
 @Entity
 @Table(name = "usuario", schema = "public")
 public class Usuario implements java.io.Serializable {
-    @NotNull
+//    @NotNull
     private Integer usuaId;
     @NotNull
     private Programa programa;
@@ -92,6 +109,7 @@ public class Usuario implements java.io.Serializable {
 
     @Id
     @Column(name = "usua_id", unique = true, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getUsuaId() {
         return this.usuaId;
     }

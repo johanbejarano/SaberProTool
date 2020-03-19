@@ -5,6 +5,8 @@ import com.vortexbird.sapiens.dto.PruebaDTO;
 import com.vortexbird.sapiens.mapper.PruebaMapper;
 import com.vortexbird.sapiens.service.PruebaService;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,5 +124,23 @@ public class PruebaRestController {
     @GetMapping(value = "/count")
     public ResponseEntity<?> count() {
         return ResponseEntity.ok().body(pruebaService.count());
+    }
+    
+    @GetMapping(value = "/getPruebasDeUsuarioCreador/{usuCreador}")
+    public ResponseEntity<?> getPruebasDeUsuarioCreador(@PathVariable("usuCreador")
+    	Long usuCreador) {
+    	
+    	try {
+			
+    		List<PruebaDTO> pruebas = pruebaService.getPruebasDeUsuarioCreador(usuCreador);
+        	return ResponseEntity.ok()
+                    .body(pruebas);
+    		
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+		}
+    	
     }
 }

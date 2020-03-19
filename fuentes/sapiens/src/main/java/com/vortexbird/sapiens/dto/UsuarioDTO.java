@@ -13,6 +13,8 @@ import java.sql.*;
 
 import java.util.Date;
 
+import javax.persistence.ColumnResult;
+
 
 /**
 * @author Zathura Code Generator http://zathuracode.org/
@@ -44,7 +46,52 @@ public class UsuarioDTO implements Serializable {
     private Integer progId;
     private String nombrePrograma;
 
-    public String getApellido() {
+    
+    
+    public UsuarioDTO() {
+		super();
+	}
+    
+	public UsuarioDTO(String apellido, String celular, String codigo, String correo, String estadoRegistro,
+			Date fechaCreacion, Date fechaModificacion, String genero, Long identificacion, String nombre,
+			String password, Long usuCreador, Long usuModificador, Integer usuaId, Integer progId_Programa,
+			Integer tiusId_TipoUsuario, Integer facuId, String nombreFacultad, Integer progId, String nombrePrograma) {
+		super();
+		this.apellido = apellido;
+		this.celular = celular;
+		this.codigo = codigo;
+		this.correo = correo;
+		this.estadoRegistro = estadoRegistro;
+		this.fechaCreacion = fechaCreacion;
+		this.fechaModificacion = fechaModificacion;
+		this.genero = genero;
+		this.identificacion = identificacion;
+		this.nombre = nombre;
+		this.password = password;
+		this.usuCreador = usuCreador;
+		this.usuModificador = usuModificador;
+		this.usuaId = usuaId;
+		this.progId_Programa = progId_Programa;
+		this.tiusId_TipoUsuario = tiusId_TipoUsuario;
+		this.facuId = facuId;
+		this.nombreFacultad = nombreFacultad;
+		this.progId = progId;
+		this.nombrePrograma = nombrePrograma;
+	}
+
+	
+	public UsuarioDTO(Integer usuaId, String codigo, Long identificacion, String nombre, String apellido, String correo) {
+		super();
+		
+		this.apellido = apellido;
+		this.codigo = codigo;
+		this.correo = correo;
+		this.identificacion = identificacion;
+		this.nombre = nombre;
+		this.usuaId = usuaId;
+	}
+
+	public String getApellido() {
         return apellido;
     }
 
