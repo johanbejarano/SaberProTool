@@ -13,8 +13,7 @@ import { Prueba } from 'app/domain/prueba';
 export class CrearPruebaComponent implements OnInit {
 
   form: FormGroup;
-  frmPoblacion: FormGroup;
-
+  
   prueba: Prueba;
 
   autoTicks = false;
@@ -63,9 +62,7 @@ export class CrearPruebaComponent implements OnInit {
       
     });
 
-    this.frmPoblacion = this._formBuilder.group({
-      busqueda: [this.strBusqueda],
-    });
+    
   }
 
   getSliderTickInterval(): number | 'auto' {

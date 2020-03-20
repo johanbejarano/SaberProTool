@@ -40,6 +40,9 @@ export class UsuarioService {
   }
 
   public getUsuariosPorTipo(tiusId: number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
+    if (!filtro || filtro.length==0 || filtro === '%'){
+      filtro = "*";
+    }
     return this.httpClient.get(this.url + 'getUsuariosPorTipo/'+tiusId+"/"+filtro+"/"+pageNumber+"/"+pageSize);
   }
 

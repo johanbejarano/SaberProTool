@@ -222,6 +222,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try {
 			
 			Pageable pageable = PageRequest.of(pageNumber, pageSize);
+			if (filtro!=null && filtro.equals("*")) {
+				filtro = "";
+			}
 			filtro = "%" + filtro + "%";
 			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, filtro, pageable);
 			

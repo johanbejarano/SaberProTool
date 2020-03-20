@@ -52,6 +52,8 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     this.pageNumber=0;
     this.pageSize = 10;
     
+    this.actualizarFomulario();
+
     this.getData();
   }
 
@@ -68,7 +70,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    this.subscription = this.usuarioService.getUsuariosPorTipo(2, "9", this.pageNumber, this.pageSize) 
+    this.subscription = this.usuarioService.getUsuariosPorTipo(2, this.strBusqueda, this.pageNumber, this.pageSize) 
       .subscribe((page: Page) => {
         
         this.data = page.content;
@@ -100,14 +102,14 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
 
       if (idx !== -1){
         this.usuariosSeleccionados.splice(idx, 1);
-        
+        //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
         return;
       }
     }
 
     //Si el usuario no estaba seleccionado, se mete en la lista
     this.usuariosSeleccionados.push(usuaId);
-    
+    //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
   }
 
   loadPage(event) {
