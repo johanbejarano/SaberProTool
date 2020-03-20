@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { Page } from 'app/utils/pagination/page';
+import { global } from 'app/utils/global';
 
 @Component({
   selector: 'app-lista-estudiantes',
@@ -23,6 +24,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
   formListaEstudiantes: FormGroup;
   subscription: Subscription;
   usuario: Usuario;
+  
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   pageNumber: number;
@@ -70,7 +72,12 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    this.subscription = this.usuarioService.getUsuariosPorTipo(2, this.strBusqueda, this.pageNumber, this.pageSize) 
+    
+    this.subscription = this.usuarioService.getUsuariosPorTipo(
+      global.VARIABLES.TIPO_USUARIO_ESTUDIANTE, 
+      this.formListaEstudiantes.controls.busqueda.value, 
+      this.pageNumber, 
+      this.pageSize) 
       .subscribe((page: Page) => {
         
         this.data = page.content;
@@ -102,14 +109,14 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
 
       if (idx !== -1){
         this.usuariosSeleccionados.splice(idx, 1);
-        //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+        // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
         return;
       }
     }
 
     //Si el usuario no estaba seleccionado, se mete en la lista
     this.usuariosSeleccionados.push(usuaId);
-    //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+    // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
   }
 
   loadPage(event) {
@@ -119,6 +126,13 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     if (this.pageSize != event.pageSize) {
       this.pageSize = event.pageSize;
     }
+    this.getData();
+  }
+
+  cambioFiltro(){
+    this.pageNumber=0;
+    this.pageSize = 10;
+    
     this.getData();
   }
 

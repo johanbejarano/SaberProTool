@@ -19,8 +19,8 @@
 	        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
 				FROM usuario
 				WHERE tius_id = :pTiusId 
-					  AND (UPPER(codigo) LIKE :pFiltro OR identificacion||'' LIKE :pFiltro OR UPPER(nombre) LIKE :pFiltro 
-					  OR UPPER(apellido) LIKE :pFiltro OR UPPER(correo) LIKE :pFiltro)					
+					  AND (UPPER(codigo) LIKE UPPER(:pFiltro) OR identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(nombre) LIKE UPPER(:pFiltro) 
+					  OR UPPER(apellido) LIKE UPPER(:pFiltro) OR UPPER(correo) LIKE UPPER(:pFiltro))					
 	        ]]>
 	        </query>
 		</named-native-query>
@@ -39,8 +39,8 @@
 		        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
 					FROM usuario
 					WHERE tius_id = :pTiusId 
-						  AND (UPPER(codigo) LIKE :pFiltro OR identificacion||'' LIKE :pFiltro OR UPPER(nombre) LIKE :pFiltro 
-						  OR UPPER(apellido) LIKE :pFiltro OR UPPER(correo) LIKE :pFiltro)			
+						AND (UPPER(codigo) LIKE UPPER(:pFiltro) OR identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(nombre) LIKE UPPER(:pFiltro) 
+					  	OR UPPER(apellido) LIKE UPPER(:pFiltro) OR UPPER(correo) LIKE UPPER(:pFiltro))			
 				) Q		
 	        ]]>
 	        </query>
