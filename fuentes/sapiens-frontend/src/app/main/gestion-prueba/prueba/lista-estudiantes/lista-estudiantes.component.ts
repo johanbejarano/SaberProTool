@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -33,7 +33,8 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
   strBusqueda: string;
   
   data: Usuario[] = [];
-  usuariosSeleccionados: number[] = [];
+
+  @Input() usuariosSeleccionados;
   checkboxes: {};
 
   datasource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
@@ -109,14 +110,14 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
 
       if (idx !== -1){
         this.usuariosSeleccionados.splice(idx, 1);
-        // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+        this.localStorage.putInLocal('x', this.usuariosSeleccionados);
         return;
       }
     }
 
     //Si el usuario no estaba seleccionado, se mete en la lista
     this.usuariosSeleccionados.push(usuaId);
-    // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+    this.localStorage.putInLocal('x', this.usuariosSeleccionados);
   }
 
   loadPage(event) {

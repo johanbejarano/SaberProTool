@@ -22,7 +22,7 @@ const routes: Routes = [
     {path: '', redirectTo: '/auth/login', pathMatch: 'full'},
     {path: 'auth', loadChildren: () => import('./main/auth/auth.module').then(mod => mod.AuthModule)},
     {path: 'gestionPreguntas', loadChildren: () => import('./main/gestion-pregunta/gestion-pregunta.module').then(mod => mod.GestionPreguntaModule)},
-    {path: 'gestionPruebas', loadChildren: () => import('./main/gestion-prueba/gestion-prueba.module').then(mod => mod.GestionPruebaModule)},
+    {path: 'gestionSimulacro', loadChildren: () => import('./main/gestion-prueba/gestion-prueba.module').then(mod => mod.GestionPruebaModule)},
     {path: '**', redirectTo: '/gestionPreguntas', pathMatch: 'full'},
 ];
 

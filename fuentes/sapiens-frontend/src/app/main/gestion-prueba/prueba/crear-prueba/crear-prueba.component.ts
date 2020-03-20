@@ -29,6 +29,8 @@ export class CrearPruebaComponent implements OnInit {
   tickInterval = 1;
 
   strBusqueda: string;
+
+  usuariosSeleccionados: number[] = [];
   
   constructor(
     private _formBuilder: FormBuilder,
