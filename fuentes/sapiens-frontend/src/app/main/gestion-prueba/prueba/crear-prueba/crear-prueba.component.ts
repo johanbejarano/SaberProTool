@@ -136,6 +136,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
     if (!this.usuariosSeleccionados || this.usuariosSeleccionados.length==0){
       this.snackBar.open('Debe seleccionar la población objetivo de la prueba', 'x', {verticalPosition: 'top', duration: 10000});
+      return;
     }
 
     this.prueba = new Prueba();
@@ -147,16 +148,35 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.prueba.tiempo = this.form.controls.duracion.value;
     this.prueba.usuCreador = this.usuario.usuaId;
 
-    // this.localStorage.putInLocal('x', this.prueba);
+    let idPrueba = this.localStorage.getFromLocal('idPrueba'); 
 
-    this.subscription = this.pruebaService.guardarPrueba(this.prueba)
-        .subscribe((prueba: Prueba) => {
-          this.snackBar.open('Se ha almacenado correctamente la prueba ' + prueba.prueId, 'x', {verticalPosition: 'top', duration: 10000});
-          this.router.navigate(["/gestionPruebas"]);
-        },
-        error => {
-          this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
-        });
-  }
+    this.localStorage.putInLocal('x', this.prueba);
+
+    if (!idPrueba){
+    
+      this.subscription = this.pruebaService.guardarPrueba(this.prueba)
+          .subscribe((prueba: Prueba) => {
+            this.snackBar.open('Se ha almacenado correctamente la prueba ' + prueba.prueId, 'x', {verticalPosition: 'top', duration: 10000});
+            this.router.navigate(["/gestionPruebas"]);
+          },
+          error => {
+            this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
+          });
+
+      }else{
+
+        this.prueba.prueId = idPrueba;
+
+        this.subscription = this.pruebaService.modificarPrueba(this.prueba)
+          .subscribe((prueba: Prueba) => {
+            this.snackBar.open('Se ha modificado correctamente la prueba ' + prueba.prueId, 'x', {verticalPosition: 'top', duration: 10000});
+            this.router.navigate(["/gestionPruebas"]);
+          },
+          error => {
+            this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
+          });
+
+      }
+    }
 
 }

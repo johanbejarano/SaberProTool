@@ -164,6 +164,23 @@ public class PruebaRestController {
         }
     }
     
+    @PutMapping(value = "/modificarPrueba")
+    public ResponseEntity<?> modificarPrueba(@RequestBody
+    PruebaDTO pruebaDTO) {
+        log.debug("Request to modificarPrueba", pruebaDTO);
+
+        try {
+            pruebaDTO = pruebaService.modificarPrueba(pruebaDTO);
+
+            return ResponseEntity.ok()
+                                 .body(pruebaDTO);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
     @GetMapping(value = "/getPrueba/{prueId}")
     public ResponseEntity<?> getPrueba(@PathVariable("prueId")
     Integer prueId) {

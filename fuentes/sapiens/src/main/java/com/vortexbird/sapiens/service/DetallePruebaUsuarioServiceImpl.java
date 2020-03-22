@@ -162,4 +162,30 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	public List<DetallePruebaUsuario> findByPregunta(Pregunta pregunta){
 		return detallePruebaUsuarioRepository.findByPregunta(pregunta);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Integer getCantidadDeEjecucionesPorModulo(Integer moduId) throws Exception {
+		try {
+			
+			return detallePruebaUsuarioRepository.cantidadEjecucionesPorModulo(moduId);
+			
+		} catch (Exception e) {
+			log.error("Error en getCantidadDeEjecucionesPorModulo", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Integer getCantidadDeEjecucionesPorUsuario(Integer usuaId) throws Exception {
+		try {
+			
+			return detallePruebaUsuarioRepository.cantidadEjecucionesPorUsuario(usuaId);
+			
+		} catch (Exception e) {
+			log.error("Error en getCantidadDeEjecucionesPorUsuario", e);
+			throw e;
+		}
+	}
 }

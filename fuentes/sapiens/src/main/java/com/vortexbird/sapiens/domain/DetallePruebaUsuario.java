@@ -6,12 +6,21 @@ import javax.persistence.*;
 
 import javax.validation.constraints.*;
 
+import com.vortexbird.sapiens.dto.UsuarioDTO;
+
 
 /**
 * @author Zathura Code Generator http://zathuracode.org/
 * www.zathuracode.org
 *
 */
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "DetallePruebaUsuario.cantidadEjecucionesPorModulo", query = "", resultSetMapping = "DetallePruebaUsuarioCount"),
+	@NamedNativeQuery(name = "DetallePruebaUsuario.cantidadEjecucionesPorUsuario", query = "", resultSetMapping = "DetallePruebaUsuarioCount"),
+})
+@SqlResultSetMappings({
+	@SqlResultSetMapping(name = "DetallePruebaUsuarioCount", columns = {
+			@ColumnResult(name = "total", type = Integer.class) }), })
 @Entity
 @Table(name = "detalle_prueba_usuario", schema = "public")
 public class DetallePruebaUsuario implements java.io.Serializable {

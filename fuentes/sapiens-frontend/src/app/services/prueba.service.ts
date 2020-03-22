@@ -26,4 +26,8 @@ export class PruebaService {
   public guardarPrueba(prueba: Prueba): Observable<any> {
     return this.httpClient.post(this.url + 'guardarPrueba/', prueba);
   }
+
+  public modificarPrueba(prueba: Prueba): Observable<any> {
+    return this.httpClient.put(this.url + 'modificarPrueba/', prueba);
+  }
 }

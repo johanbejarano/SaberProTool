@@ -19,7 +19,7 @@ import java.util.List;
 * based on a convention over configuration approach.
 */
 @Mapper
-public interface RespuestaMapper { 
+public interface RespuestaMapper {
     @Mapping(source = "pregunta.pregId", target = "pregId_Pregunta")
     public RespuestaDTO respuestaToRespuestaDTO(Respuesta respuesta)
         throws Exception;

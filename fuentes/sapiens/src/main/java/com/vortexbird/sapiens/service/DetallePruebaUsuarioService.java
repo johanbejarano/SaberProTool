@@ -16,4 +16,8 @@ import java.util.*;
 public interface DetallePruebaUsuarioService extends GenericService<DetallePruebaUsuario, Integer> {
 
 	public List<DetallePruebaUsuario> findByPregunta(Pregunta pregunta);
+
+	Integer getCantidadDeEjecucionesPorModulo(Integer moduId) throws Exception;
+
+	Integer getCantidadDeEjecucionesPorUsuario(Integer usuaId) throws Exception;
 }

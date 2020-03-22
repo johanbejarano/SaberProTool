@@ -60,6 +60,9 @@ public class PruebaServiceImpl implements PruebaService {
 	@Autowired
 	private EstadoPruebaService estadoPruebaService;
 	
+	@Autowired
+	private DetallePruebaUsuarioService detallePruebaUsuarioService;
+	
 	@Override
 	public void validate(Prueba prueba) throws Exception {
 		try {
@@ -258,6 +261,17 @@ public class PruebaServiceImpl implements PruebaService {
 				pruebaDTO.setNombrePropietario(usuarioService.getNombreUsuario(pruebaDTO.getUsuCreador().intValue()));
 			}
 			
+			//Se ordenan las pruebas por fecha de inicio
+			pruebas.sort(new Comparator<PruebaDTO>() {
+				@Override
+				public int compare(PruebaDTO prueba1, PruebaDTO prueba2) {
+					if (prueba1==null || prueba2==null) {
+						return 0;
+					}
+					return prueba1.getFechaInicial().compareTo(prueba2.getFechaInicial());
+				}
+			});
+			
 			return pruebas;
 			
 		} catch (Exception e) {
@@ -310,7 +324,7 @@ public class PruebaServiceImpl implements PruebaService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public PruebaDTO guardarPrueba(PruebaDTO pruebaDTO) throws Exception {
 		try {
 			
@@ -417,6 +431,223 @@ public class PruebaServiceImpl implements PruebaService {
 				pruebaUsuarioService.save(pruebaUsuario);
 				
 			}
+			
+			pruebaDTO.setPrueId(prueba.getPrueId());
+			
+			return pruebaDTO;
+		} catch (Exception e) {
+			log.error("Error en getPruebasDeUsuarioCreador", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public PruebaDTO modificarPrueba(PruebaDTO pruebaDTO) throws Exception {
+		try {
+			
+			//Se validan los datos de la prueba
+			if (pruebaDTO==null) {
+				throw new Exception("La prueba es obligatoria"); 
+			}
+			
+			if (pruebaDTO.getPrueId()==null) {
+				throw new Exception("El id de la prueba a modificar, es obligatorio");
+			}
+			
+			if (pruebaDTO.getTiprId_TipoPrueba()==null) {
+				throw new Exception("El tipo prueba es obligatorio");
+			}
+			
+			if (pruebaDTO.getFechaInicial() == null) {
+				throw new Exception("La fecha inicial es obligatoria");
+			}
+			
+			if (pruebaDTO.getFechaFinal() == null) {
+				throw new Exception("La fecha final es obligatoria");
+			}
+			
+			if (pruebaDTO.getFechaFinal().before(pruebaDTO.getFechaInicial())) {
+				throw new Exception("La fecha final debe ser posterior a la fecha inicial");
+			}
+			
+			if (pruebaDTO.getTiempo()==null || pruebaDTO.getTiempo().longValue()==0L) {
+				throw new Exception("La duarción es obligatoria");
+			}
+			
+			if (pruebaDTO.getIdUsuarios()==null || pruebaDTO.getIdUsuarios().isEmpty()) {
+				throw new Exception("Debe establecer la población de la prueba");
+			}
+			
+			//Se consulta el tipo de prueba
+			Optional<TipoPrueba> tipoPrueba = tipoPruebaService.findById(pruebaDTO.getTiprId_TipoPrueba());
+			if (!tipoPrueba.isPresent()) {
+				throw new Exception("No existe el tipo de prueba: " + pruebaDTO.getTiprId_TipoPrueba());
+			}
+			
+			//Se consulta la prueba
+			Optional<Prueba> optPrueba = findById(pruebaDTO.getPrueId());
+			
+			if (!optPrueba.isPresent()) {
+				throw new Exception("No se encontró la prueba " + pruebaDTO.getPrueId());
+			}
+			
+			//Se actualiza la prueba 
+			Prueba prueba = optPrueba.get();
+			
+			prueba.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+			prueba.setFechaModificacion(new Date());
+			prueba.setFechaFinal(pruebaDTO.getFechaFinal());
+			prueba.setFechaInicial(pruebaDTO.getFechaInicial());
+			prueba.setTiempo(pruebaDTO.getTiempo());
+			prueba.setTipoPrueba(tipoPrueba.get());
+			prueba.setUsuModificador(pruebaDTO.getUsuCreador());
+			
+			update(prueba);
+			
+			//Se consultan los módulos que actualmente tiene la prueba
+			List<PruebaModulo> pruebasModulo = prueba.getPruebaModulos();
+			List<PruebaUsuario> pruebasUsuario = prueba.getPruebaUsuarios();
+			
+			List<Modulo> modulosActuales = new ArrayList<Modulo>();
+			List<Usuario> usuariosActuales = new ArrayList<Usuario>();
+			
+			Map<Integer, PruebaModulo> pruebasModuloMapa = new HashMap<Integer, PruebaModulo>();
+			Map<Integer, PruebaUsuario> pruebasUsuarioMapa = new HashMap<Integer, PruebaUsuario>();
+			
+			pruebasModulo.forEach(pruebaModulo -> {
+				modulosActuales.add(pruebaModulo.getModulo());
+				pruebasModuloMapa.put(pruebaModulo.getModulo().getModuId(), pruebaModulo);
+			});
+			
+			pruebasUsuario.forEach(pruebaUsuaurio -> {
+				usuariosActuales.add(pruebaUsuaurio.getUsuario());
+				pruebasUsuarioMapa.put(pruebaUsuaurio.getUsuario().getUsuaId(), pruebaUsuaurio);
+			});
+			
+			//Módulos
+			
+			//Se calculan los módulos a asignar
+			for (Integer moduId : pruebaDTO.getIdModulos()) {
+				boolean encontrado = false;
+				for(Modulo moduloActual : modulosActuales) {
+					if (moduloActual.getModuId().equals(moduId)) {
+						encontrado = true;
+						break;
+					}
+				}
+				
+				if (!encontrado) {
+					//Se asigna el modulo
+					Optional<Modulo> modulo = moduloService.findById(moduId);
+					if(!modulo.isPresent()) {
+						throw new Exception("No existe el módulo: " + moduId);
+					}
+					
+					//Se crea el modulo prueba
+					PruebaModulo pruebaModulo = new PruebaModulo();
+					
+					pruebaModulo.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					pruebaModulo.setFechaCreacion(new Date());
+					pruebaModulo.setModulo(modulo.get());
+					pruebaModulo.setPrueba(prueba);
+					pruebaModulo.setUsuCreador(pruebaDTO.getUsuCreador());
+					
+					pruebaModuloService.save(pruebaModulo);
+				}
+			}
+			
+			//Se calculan los módulos a desasignar
+			for(Modulo moduloActual : modulosActuales) {
+				boolean encontrado = false;
+				for (Integer moduId : pruebaDTO.getIdModulos()) {
+					if (moduloActual.getModuId().equals(moduId)) {
+						encontrado = true;
+						break;
+					}
+				}
+				
+				//Si no encontró el modulo en la nueva asignación, se valida que no tenga ejecución de pruebas 
+				if (!encontrado) {
+					PruebaModulo pruebaModulo = pruebasModuloMapa.get(moduloActual.getModuId());
+					
+					Integer cantidadEjecuciones = detallePruebaUsuarioService.getCantidadDeEjecucionesPorModulo(moduloActual.getModuId());
+					if (cantidadEjecuciones > 0) {
+						throw new Exception("No se puede desasignar el módulo ("+moduloActual.getModuId()+") \"" + 
+								moduloActual.getNombre() + "\". Tiene respuestas de estudiantes");
+					}
+					
+					pruebaModuloService.delete(pruebaModulo);
+				}
+			}
+			
+			//Usuarios
+			
+			//Se calculan los usuarios a asignar
+			for (Integer usuaId : pruebaDTO.getIdUsuarios()) {
+				boolean encontrado = false;
+				for(Usuario usuarioActual : usuariosActuales) {
+					if (usuarioActual.getUsuaId().equals(usuaId)) {
+						encontrado = true;
+						break;
+					}
+				}
+				
+				if (!encontrado) {
+					//Se asigna el usuario
+					Optional<Usuario> usuario = usuarioService.findById(usuaId);
+					if(!usuario.isPresent()) {
+						throw new Exception("No existe el usuario: " + usuaId);
+					}
+					
+					//Se consulta el estado de prueba "iniciada"
+					Optional<EstadoPrueba> estadoPrueba = estadoPruebaService.findById(Constantes.ESTADO_PRUEBA_SIN_INICIAR);
+					
+					if(!estadoPrueba.isPresent()) {
+						throw new Exception("No existe el estado prueba: " + Constantes.ESTADO_PRUEBA_SIN_INICIAR);
+					}
+					
+					//Se crea la prueba usuario
+					PruebaUsuario pruebaUsuario = new PruebaUsuario();
+					
+					pruebaUsuario.setEstadoPrueba(estadoPrueba.get());
+					pruebaUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					pruebaUsuario.setFechaCreacion(new Date());
+					pruebaUsuario.setPrueba(prueba);
+					pruebaUsuario.setUsuario(usuario.get());
+					pruebaUsuario.setUsuCreador(pruebaDTO.getUsuCreador());
+
+					pruebaUsuarioService.save(pruebaUsuario);
+				}
+			}
+			
+			//Se calculan los usuarios a desasignar
+			for(Usuario usuarioActual : usuariosActuales) {
+				boolean encontrado = false;
+				for (Integer usuaId : pruebaDTO.getIdUsuarios()) {
+					if (usuarioActual.getUsuaId().equals(usuaId)) {
+						encontrado = true;
+						break;
+					}
+				}
+				
+				//Si no encontró el usuario en la nueva asignación, se valida que no tenga ejecución de pruebas
+				if (!encontrado) {
+					PruebaUsuario pruebaUsuario = pruebasUsuarioMapa.get(usuarioActual.getUsuaId());
+					
+					Integer cantidadEjecuciones = detallePruebaUsuarioService.getCantidadDeEjecucionesPorUsuario(usuarioActual.getUsuaId());
+					if (cantidadEjecuciones > 0) {
+						
+						String nombreUsuario = usuarioService.getNombreUsuario(usuarioActual.getUsuaId());
+						
+						throw new Exception("No se puede desasignar el usuario (Código: "+usuarioActual.getCodigo()+") \"" + 
+								nombreUsuario + "\". Tiene respuestas ejecutadas");
+					}
+					
+					pruebaUsuarioService.delete(pruebaUsuario);
+				}
+			}
+			
 			
 			pruebaDTO.setPrueId(prueba.getPrueId());
 			

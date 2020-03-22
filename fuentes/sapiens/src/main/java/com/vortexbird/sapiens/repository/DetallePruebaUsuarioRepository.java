@@ -4,6 +4,8 @@ import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
 import com.vortexbird.sapiens.domain.Pregunta;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,6 +18,12 @@ public interface DetallePruebaUsuarioRepository extends JpaRepository<DetallePru
 	
 	public List<DetallePruebaUsuario> findByPregunta(Pregunta pregunta);
 	
+	@Query(nativeQuery = true)
+	public Integer cantidadEjecucionesPorModulo(
+			@Param("pModuId") Integer moduId);
 	
+	@Query(nativeQuery = true)
+	public Integer cantidadEjecucionesPorUsuario(
+			@Param("pUsuaId") Integer moduId);
 }
 

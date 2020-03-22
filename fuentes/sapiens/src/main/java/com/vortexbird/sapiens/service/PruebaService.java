@@ -20,4 +20,6 @@ public interface PruebaService extends GenericService<Prueba, Integer> {
 	PruebaDTO guardarPrueba(PruebaDTO pruebaDTO) throws Exception;
 
 	PruebaDTO getPrueba(Integer prueId) throws Exception;
+
+	PruebaDTO modificarPrueba(PruebaDTO pruebaDTO) throws Exception;
 }

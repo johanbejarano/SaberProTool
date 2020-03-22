@@ -7,6 +7,7 @@
 
 	<entity
 		class="com.vortexbird.sapiens.domain.Usuario">
+		
 		<named-native-query
 			name="Usuario.getUsuariosPorTipo"
 			result-set-mapping="UsuarioDTO">
@@ -47,6 +48,38 @@
 		</named-native-query>
 	</entity>
 
-	
+	<entity class="com.vortexbird.sapiens.domain.DetallePruebaUsuario">
+		<named-native-query
+			name="DetallePruebaUsuario.cantidadEjecucionesPorModulo"
+			result-set-mapping="DetallePruebaUsuarioCount">
+			<query>
+	        <![CDATA[
+	        	select 	count(dpru.*) total
+				from 	modulo modu 
+				inner	join pregunta preg on preg.modu_id = modu.modu_id 
+				inner   join respuesta resp on resp.preg_id = preg.preg_id 
+				inner   join detalle_prueba_usuario dpru on dpru.resp_id = resp.resp_id 
+				where   modu.modu_id = :pModuId					
+	        ]]>
+	        </query>
+		</named-native-query>
+		
+		<named-native-query
+			name="DetallePruebaUsuario.cantidadEjecucionesPorUsuario"
+			result-set-mapping="DetallePruebaUsuarioCount">
+			<query>
+	        <![CDATA[
+	        	select 	count(dpru.*) total
+				from 	modulo modu 
+				inner	join pregunta preg on preg.modu_id = modu.modu_id 
+				inner   join respuesta resp on resp.preg_id = preg.preg_id 
+				inner   join detalle_prueba_usuario dpru on dpru.resp_id = resp.resp_id 
+				inner   join prueba_usuario prus on prus.prus_id  = dpru .prus_id 
+				where   prus.usua_id = :pUsuaId
+					        	
+	        ]]>
+	        </query>
+		</named-native-query>
+	</entity>
 
 </entity-mappings>
