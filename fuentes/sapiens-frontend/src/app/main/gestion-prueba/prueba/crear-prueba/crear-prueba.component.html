@@ -36,13 +36,13 @@
                 <!--FECHAS INICIAL Y FINAL-->
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
-                    <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-form-field appearance="outline" fxFlex="20">
                         <mat-label>Tipo de prueba</mat-label>
                         <mat-select formControlName="tipoPrueba" required>
-                            <mat-option [value]="0">
+                            <mat-option [value]="1">
                                 Entrenamiento
                             </mat-option>
-                            <mat-option [value]="1">
+                            <mat-option [value]="2">
                                 Simulacro
                             </mat-option>
                         </mat-select>
@@ -50,21 +50,21 @@
                         <mat-error>El tipo de prueba es obligatorio!</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="20">
                         <mat-label>Fecha inicial</mat-label>
                         <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fechaInicial">
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #startDatePicker></mat-datepicker>
+                        <mat-error>La fecha inicial es obligatoria!</mat-error>
                     </mat-form-field>
     
-                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="20">
                         <mat-label>Fecha final</mat-label>
                         <input matInput [matDatepicker]="endDatePicker" name="end" formControlName="fechaFinal">
                         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #endDatePicker></mat-datepicker>
+                        <mat-error>La fecha final es obligatoria!</mat-error>
                     </mat-form-field>
-
-                    
 
                 </div>
                 <!--FECHAS INICIAL Y FINAL-->
@@ -86,8 +86,24 @@
                         </mat-slider>
                         {{form.controls.duracion.value / 60 | number}} Horas
                     </div>
+
+                    
                 </div>
                 <!--DURACION DE LA PRUEBA-->
+
+                <!--MODULOS-->
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    
+                    <mat-form-field fxFlex="40">
+                        <mat-label>Módulos</mat-label>
+                        <mat-select formControlName="modulos" multiple>
+                            <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.moduId">{{modulo.nombre}}</mat-option>
+                        </mat-select>
+                        <mat-error>Debe seleccionar por lo menos un módulo!</mat-error>
+                    </mat-form-field>
+
+                </div>
+                <!--MODULOS-->
 
             </form>
             <!-- REACTIVE FORM  -->
@@ -98,6 +114,11 @@
 
         <app-lista-estudiantes [usuariosSeleccionados]="usuariosSeleccionados"></app-lista-estudiantes>
 
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-raised-button type="button" color="accent" (click)="guardarPrueba()">
+                Guardar
+            </button>
+        </div>
 
 
     </div>

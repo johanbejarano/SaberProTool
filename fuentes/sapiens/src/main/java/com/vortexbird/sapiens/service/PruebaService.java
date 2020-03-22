@@ -16,4 +16,6 @@ import java.util.*;
 public interface PruebaService extends GenericService<Prueba, Integer> {
 
 	List<PruebaDTO> getPruebasDeUsuarioCreador(Long usuCreador) throws Exception;
+
+	PruebaDTO guardarPrueba(PruebaDTO pruebaDTO) throws Exception;
 }

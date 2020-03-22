@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "prueba_modulo", schema = "public")
 public class PruebaModulo implements java.io.Serializable {
-    @NotNull
+//    @NotNull
     private Integer prmoId;
     @NotNull
     private Modulo modulo;
@@ -50,6 +50,7 @@ public class PruebaModulo implements java.io.Serializable {
 
     @Id
     @Column(name = "prmo_id", unique = true, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getPrmoId() {
         return this.prmoId;
     }

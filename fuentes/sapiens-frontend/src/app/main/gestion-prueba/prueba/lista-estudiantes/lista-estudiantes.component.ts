@@ -12,6 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { Page } from 'app/utils/pagination/page';
 import { global } from 'app/utils/global';
+import { listenerCount } from 'cluster';
 
 @Component({
   selector: 'app-lista-estudiantes',
@@ -36,6 +37,8 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
 
   @Input() usuariosSeleccionados;
   checkboxes: {};
+
+  checkedAll: boolean;
 
   datasource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
   public displayedColumns = ['checkbox', 'codigo', 'identificacion', 'nombre', 'email'];
@@ -110,17 +113,18 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
 
       if (idx !== -1){
         this.usuariosSeleccionados.splice(idx, 1);
-        this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+        //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
         return;
       }
     }
 
     //Si el usuario no estaba seleccionado, se mete en la lista
     this.usuariosSeleccionados.push(usuaId);
-    this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+    // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
   }
 
   loadPage(event) {
+    this.checkedAll = false;
     if (this.pageNumber !== event.pageIndex) {
       this.pageNumber = event.pageIndex;
     }
@@ -135,6 +139,37 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     this.pageSize = 10;
     
     this.getData();
+  }
+
+  selectAll(){
+    
+    let checked = !this.checkedAll;
+    
+    this.data.map(usuario => {
+        
+        this.checkboxes[usuario.usuaId] = checked;
+
+        //Si el usuario ya estaba seleccionado
+        if (this.usuariosSeleccionados.length >0 ){
+          const idx = this.usuariosSeleccionados.indexOf(usuario.usuaId);
+
+          if (idx !== -1){
+            
+            if (!checked){
+              this.usuariosSeleccionados.splice(idx, 1);
+            }else{
+              //this.usuariosSeleccionados.push(usuario.usuaId);
+            }
+            //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+            return;
+          }
+        }
+
+        this.usuariosSeleccionados.push(usuario.usuaId);
+        // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
+    });
+
+
   }
 
 }

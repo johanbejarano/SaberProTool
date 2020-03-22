@@ -84,9 +84,9 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService{
 		
 		validate(entity);	
 	
-		if(pruebaUsuarioRepository.findById(entity.getPrusId()).isPresent()){
-           throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-        }    
+//		if(pruebaUsuarioRepository.findById(entity.getPrusId()).isPresent()){
+//           throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+//        }    
 	
 	    return pruebaUsuarioRepository.save(entity);
 	    

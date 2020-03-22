@@ -44,7 +44,22 @@ public class PruebaServiceImpl implements PruebaService {
 	
 	@Autowired
 	private PruebaMapper pruebaMapper;
+	
+	@Autowired
+	private TipoPruebaService tipoPruebaService;
+	
+	@Autowired
+	private PruebaModuloService pruebaModuloService;
+	
+	@Autowired
+	private ModuloService moduloService;
+	
+	@Autowired
+	private PruebaUsuarioService pruebaUsuarioService;
 
+	@Autowired
+	private EstadoPruebaService estadoPruebaService;
+	
 	@Override
 	public void validate(Prueba prueba) throws Exception {
 		try {
@@ -89,9 +104,9 @@ public class PruebaServiceImpl implements PruebaService {
 
 			validate(entity);
 
-			if (pruebaRepository.findById(entity.getPrueId()).isPresent()) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
+//			if (pruebaRepository.findById(entity.getPrueId()).isPresent()) {
+//				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+//			}
 
 			return pruebaRepository.save(entity);
 
@@ -240,6 +255,124 @@ public class PruebaServiceImpl implements PruebaService {
 			
 			return pruebas;
 			
+		} catch (Exception e) {
+			log.error("Error en getPruebasDeUsuarioCreador", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public PruebaDTO guardarPrueba(PruebaDTO pruebaDTO) throws Exception {
+		try {
+			
+			//Se validan los datos de la prueba
+			if (pruebaDTO==null) {
+				throw new Exception("La prueba es obligatoria"); 
+			}
+			
+			if (pruebaDTO.getTiprId_TipoPrueba()==null) {
+				throw new Exception("El tipo prueba es obligatorio");
+			}
+			
+			if (pruebaDTO.getFechaInicial() == null) {
+				throw new Exception("La fecha inicial es obligatoria");
+			}
+			
+			if (pruebaDTO.getFechaFinal() == null) {
+				throw new Exception("La fecha final es obligatoria");
+			}
+			
+			if (pruebaDTO.getFechaFinal().before(pruebaDTO.getFechaInicial())) {
+				throw new Exception("La fecha final debe ser posterior a la fecha inicial");
+			}
+			
+			if (pruebaDTO.getTiempo()==null || pruebaDTO.getTiempo().longValue()==0L) {
+				throw new Exception("La duarción es obligatoria");
+			}
+			
+			if (pruebaDTO.getIdUsuarios()==null || pruebaDTO.getIdUsuarios().isEmpty()) {
+				throw new Exception("Debe establecer la población de la prueba");
+			}
+			
+			//Se consulta el tipo de prueba
+			Optional<TipoPrueba> tipoPrueba = tipoPruebaService.findById(pruebaDTO.getTiprId_TipoPrueba());
+			if (!tipoPrueba.isPresent()) {
+				throw new Exception("No existe el tipo de prueba: " + pruebaDTO.getTiprId_TipoPrueba());
+			}
+			
+			//Se guarda la prueba
+			Prueba prueba = new Prueba();
+			
+			prueba.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+			prueba.setFechaCreacion(new Date());
+			prueba.setFechaFinal(pruebaDTO.getFechaFinal());
+			prueba.setFechaInicial(pruebaDTO.getFechaInicial());
+			prueba.setTiempo(pruebaDTO.getTiempo());
+			prueba.setTipoPrueba(tipoPrueba.get());
+			prueba.setUsuCreador(pruebaDTO.getUsuCreador());
+			
+			save(prueba);
+			
+			//Se guardan los modulos de la prueba
+			for(Integer moduId : pruebaDTO.getIdModulos()) {
+				
+				//Se consulta el modulo
+				Optional<Modulo> modulo = moduloService.findById(moduId);
+				if(!modulo.isPresent()) {
+					throw new Exception("No existe el módulo: " + moduId);
+				}
+				
+				//Se crea el modulo prueba
+				PruebaModulo pruebaModulo = new PruebaModulo();
+				
+				pruebaModulo.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+				pruebaModulo.setFechaCreacion(new Date());
+				pruebaModulo.setModulo(modulo.get());
+				pruebaModulo.setPrueba(prueba);
+				pruebaModulo.setUsuCreador(pruebaDTO.getUsuCreador());
+				
+				pruebaModuloService.save(pruebaModulo);
+				
+			}
+			
+			//Se guarda la población
+			for(Integer usuaId : pruebaDTO.getIdUsuarios()) {
+				
+				//Se consulta el usuario
+				Optional<Usuario> usuario = usuarioService.findById(usuaId);
+				if (!usuario.isPresent()) {
+					throw new Exception("El usuario no existe: " + usuaId);
+				}
+				if (!usuario.get().getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
+					throw new Exception("El usuario no se encuentra activo. Código: " + usuario.get().getCodigo() + " "
+							+ usuario.get().getApellido() + ", " + usuario.get().getNombre());
+				}
+
+				//Se consulta el estado de prueba "iniciada"
+				Optional<EstadoPrueba> estadoPrueba = estadoPruebaService.findById(Constantes.ESTADO_PRUEBA_SIN_INICIAR);
+				
+				if(!estadoPrueba.isPresent()) {
+					throw new Exception("No existe el estado prueba: " + Constantes.ESTADO_PRUEBA_SIN_INICIAR);
+				}
+				
+				//Se crea el registro de prueba usuario
+				PruebaUsuario pruebaUsuario = new PruebaUsuario();
+				
+				pruebaUsuario.setEstadoPrueba(estadoPrueba.get());
+				pruebaUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+				pruebaUsuario.setFechaCreacion(new Date());
+				pruebaUsuario.setPrueba(prueba);
+				pruebaUsuario.setUsuario(usuario.get());
+				pruebaUsuario.setUsuCreador(pruebaDTO.getUsuCreador());
+
+				pruebaUsuarioService.save(pruebaUsuario);
+				
+			}
+			
+			pruebaDTO.setPrueId(prueba.getPrueId());
+			
+			return pruebaDTO;
 		} catch (Exception e) {
 			log.error("Error en getPruebasDeUsuarioCreador", e);
 			throw e;

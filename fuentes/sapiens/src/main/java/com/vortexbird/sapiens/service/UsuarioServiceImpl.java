@@ -227,8 +227,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 			filtro = "%" + filtro + "%";
 			
-			log.info(filtro);
-			
 			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, filtro, pageable);
 			
 			return usuarios;

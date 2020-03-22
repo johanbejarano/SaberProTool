@@ -88,9 +88,9 @@ public class PruebaModuloServiceImpl implements PruebaModuloService {
 
             validate(entity);
 
-            if (pruebaModuloRepository.findById(entity.getPrmoId()).isPresent()) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+//            if (pruebaModuloRepository.findById(entity.getPrmoId()).isPresent()) {
+//                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+//            }
 
             return pruebaModuloRepository.save(entity);
         } catch (Exception e) {

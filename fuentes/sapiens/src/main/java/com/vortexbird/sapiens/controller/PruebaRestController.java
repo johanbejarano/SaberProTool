@@ -143,4 +143,24 @@ public class PruebaRestController {
 		}
     	
     }
+    
+    @PostMapping(value = "/guardarPrueba")
+    public ResponseEntity<?> guardarPrueba(@RequestBody
+    		PruebaDTO pruebaDTO) {
+    	
+        log.debug("Request to guardarPrueba:", pruebaDTO);
+
+        try {
+            
+        	pruebaDTO = pruebaService.guardarPrueba(pruebaDTO);
+        	
+            return ResponseEntity.ok()
+                                 .body(pruebaDTO);
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

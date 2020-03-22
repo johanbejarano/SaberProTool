@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.sql.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -32,6 +33,9 @@ public class PruebaDTO implements Serializable {
     private Long usuCreador;
     private Long usuModificador;
     private Integer tiprId_TipoPrueba;
+    
+    private List<Integer> idModulos;
+    private List<Integer> idUsuarios;
 
     public String getEstadoRegistro() {
         return estadoRegistro;
@@ -112,6 +116,22 @@ public class PruebaDTO implements Serializable {
     public void setTiprId_TipoPrueba(Integer tiprId_TipoPrueba) {
         this.tiprId_TipoPrueba = tiprId_TipoPrueba;
     }
+    
+    public List<Integer> getIdModulos() {
+		return idModulos;
+	}
+
+	public void setIdModulos(List<Integer> idModulos) {
+		this.idModulos = idModulos;
+	}
+
+	public List<Integer> getIdUsuarios() {
+		return idUsuarios;
+	}
+
+	public void setIdUsuarios(List<Integer> idUsuarios) {
+		this.idUsuarios = idUsuarios;
+	}
 
     @Override
     public String toString() {
@@ -126,4 +146,5 @@ public class PruebaDTO implements Serializable {
             return super.toString();
         }
     }
+	
 }

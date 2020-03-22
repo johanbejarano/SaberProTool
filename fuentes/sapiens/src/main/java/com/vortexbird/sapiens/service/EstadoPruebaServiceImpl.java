@@ -84,9 +84,9 @@ public class EstadoPruebaServiceImpl implements EstadoPruebaService{
 		
 		validate(entity);	
 	
-		if(estadoPruebaRepository.findById(entity.getEsprId()).isPresent()){
-           throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-        }    
+//		if(estadoPruebaRepository.findById(entity.getEsprId()).isPresent()){
+//           throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+//        }    
 	
 	    return estadoPruebaRepository.save(entity);
 	    

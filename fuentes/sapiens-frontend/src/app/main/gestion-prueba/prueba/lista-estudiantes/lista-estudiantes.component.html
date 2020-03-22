@@ -35,7 +35,11 @@
                 
                         <!-- Checkbox Column -->
                         <ng-container matColumnDef="checkbox">
-                            <mat-header-cell *matHeaderCellDef fxFlex="5" fxFlex.xs="5"></mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef fxFlex="5" fxFlex.xs="5">
+                                
+                                <mat-checkbox  [(ngModel)]="checkedAll" (click)="selectAll()" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+
+                            </mat-header-cell>
                             <mat-cell *matCellDef="let usuario" fxFlex="5" fxFlex.xs="5">
                                 <mat-checkbox [(ngModel)]="checkboxes[usuario.usuaId]"
                                     [ngModelOptions]="{standalone: true}"
