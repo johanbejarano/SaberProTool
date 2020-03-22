@@ -21,7 +21,7 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.PROFESOR.SIMULACION',
                 type     : 'item',
                 icon     : 'playlist_add_check',
-                url      : '/gestionSimulacro',
+                url      : '/gestionPruebas',
             },
             
             
@@ -50,7 +50,7 @@ export const navigationProfesor: FuseNavigation[] = [
                 translate: 'NAV.PROFESOR.SIMULACION',
                 type     : 'item',
                 icon     : 'playlist_add_check',
-                url      : '/gestionSimulacro',
+                url      : '/gestionPruebas',
             },
             
             

@@ -137,7 +137,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.subscription = this.pruebaService.guardarPrueba(this.prueba)
         .subscribe((prueba: Prueba) => {
           this.snackBar.open('Se ha almacenado correctamente la prueba ' + prueba.prueId, 'x', {verticalPosition: 'top', duration: 10000});
-          this.router.navigate(["/gestionSimulacro"]);
+          this.router.navigate(["/gestionPruebas"]);
         },
         error => {
           this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
