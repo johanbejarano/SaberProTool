@@ -34,6 +34,9 @@ public class PruebaDTO implements Serializable {
     private Long usuModificador;
     private Integer tiprId_TipoPrueba;
     
+    private String nombreTipoPrueba;
+    private String nombrePropietario;
+    
     private List<Integer> idModulos;
     private List<Integer> idUsuarios;
 
@@ -146,5 +149,21 @@ public class PruebaDTO implements Serializable {
             return super.toString();
         }
     }
+
+	public String getNombreTipoPrueba() {
+		return nombreTipoPrueba;
+	}
+
+	public void setNombreTipoPrueba(String nombreTipoPrueba) {
+		this.nombreTipoPrueba = nombreTipoPrueba;
+	}
+
+	public String getNombrePropietario() {
+		return nombrePropietario;
+	}
+
+	public void setNombrePropietario(String nombrePropietario) {
+		this.nombrePropietario = nombrePropietario;
+	}
 	
 }

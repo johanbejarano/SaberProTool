@@ -18,6 +18,10 @@ export class PruebaService {
   public getPruebasDeUsuarioCreador(usuCreador: number): Observable<any> {
     return this.httpClient.get(this.url + 'getPruebasDeUsuarioCreador/' + usuCreador);
   }
+
+  public getPrueba(prueId: number): Observable<any> {
+    return this.httpClient.get(this.url + 'getPrueba/' + prueId);
+  }
   
   public guardarPrueba(prueba: Prueba): Observable<any> {
     return this.httpClient.post(this.url + 'guardarPrueba/', prueba);

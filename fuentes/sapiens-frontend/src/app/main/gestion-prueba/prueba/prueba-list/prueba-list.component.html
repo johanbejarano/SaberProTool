@@ -31,17 +31,82 @@
                     <mat-table #table [dataSource]="datasource" fxFlex="100">
                         
                         <!--COLUMNA ID-->
-                        <ng-container matColumnDef="tipoPrueba">
-                            <mat-header-cell *matHeaderCellDef fxFlex="100" fxFlex.xs="100">
+                        <ng-container matColumnDef="prueId">
+                            <mat-header-cell *matHeaderCellDef fxFlex="5" fxFlex.xs="5">
                                 <div class="px-4 h3">#</div>
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let item" fxFlex="100" fxFlex.xs="100">
+                            <mat-cell *matCellDef="let item" fxFlex="5" fxFlex.xs="5" (click)="seleccionar(item)">
                                 <div class="px-4" fxFlex="100">
-                                    <span class="referencia">{{item.tiprId_TipoPrueba}}</span>
+                                    <span class="referencia">{{item.prueId}}</span>
                                 </div>
                             </mat-cell>
                         </ng-container>
                         <!--COLUMNA ID-->
+
+                        <!--COLUMNA TIPO PRUEBA-->
+                        <ng-container matColumnDef="nombreTipoPrueba">
+                            <mat-header-cell *matHeaderCellDef fxFlex="20" fxFlex.xs="20">
+                                <div class="px-4 h3">Tipo prueba</div>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let item" fxFlex="20" fxFlex.xs="20" (click)="seleccionar(item)">
+                                <div class="px-4" fxFlex="100">
+                                    <span class="referencia">{{item.nombreTipoPrueba}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <!--COLUMNA TIPO PRUEBA-->
+
+                        <!--COLUMNA FECHA INICIAL-->
+                        <ng-container matColumnDef="fechaInicial">
+                            <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">
+                                <div class="px-4 h3">Fecha inicial</div>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let item" fxFlex="15" fxFlex.xs="15" (click)="seleccionar(item)">
+                                <div class="px-4" fxFlex="100">
+                                    <span class="referencia">{{item.fechaInicial | date: 'dd/MMM/yyyy'}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <!--COLUMNA FECHA INICIAL-->
+
+                        <!--COLUMNA FECHA FINAL-->
+                        <ng-container matColumnDef="fechaFinal">
+                            <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">
+                                <div class="px-4 h3">Fecha final</div>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let item" fxFlex="15" fxFlex.xs="15" (click)="seleccionar(item)">
+                                <div class="px-4" fxFlex="100">
+                                    <span class="referencia">{{item.fechaFinal | date: 'dd/MMM/yyyy'}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <!--COLUMNA FECHA FINAL-->
+
+                        <!--COLUMNA DURACION-->
+                        <ng-container matColumnDef="duracion">
+                            <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">
+                                <div class="px-4 h3">Duración (Mins)</div>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let item" fxFlex="15" fxFlex.xs="15" (click)="seleccionar(item)">
+                                <div class="px-4" fxFlex="100">
+                                    <span class="referencia">{{item.tiempo}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <!--COLUMNA DURACION-->
+
+                        <!--COLUMNA PROPIETARIO-->
+                        <ng-container matColumnDef="propietario">
+                            <mat-header-cell *matHeaderCellDef fxFlex="30" fxFlex.xs="30">
+                                <div class="px-4 h3">Propietario</div>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let item" fxFlex="30" fxFlex.xs="30" (click)="seleccionar(item)">
+                                <div class="px-4" fxFlex="100">
+                                    <span class="referencia">{{item.nombrePropietario}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <!--COLUMNA PROPIETARIO-->
             
                         <!--DEFINICION DE COLUMNAS-->
                         <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>

@@ -28,7 +28,7 @@ export class PruebaListComponent implements OnInit, OnDestroy {
   datasource: MatTableDataSource<Prueba> = new MatTableDataSource<Prueba>();
 
   // public displayedColumns = ['tipoPrueba', 'modulos', 'fechaInicial', 'fechaFinal', 'duracion'];
-  public displayedColumns = ['tipoPrueba'];
+  public displayedColumns = ['prueId', 'nombreTipoPrueba', 'fechaInicial', 'fechaFinal', 'duracion', 'propietario'];
   
   constructor(
     private formBuilder: FormBuilder,
@@ -68,6 +68,13 @@ export class PruebaListComponent implements OnInit, OnDestroy {
       error => {
         this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
       });
+  }
+
+  seleccionar(item: Prueba) {
+    this.localStorage.putInLocal('idPrueba', item.prueId);
+
+    this.router.navigate(["/gestionPruebas/registrarPrueba"]);
+
   }
 
 }

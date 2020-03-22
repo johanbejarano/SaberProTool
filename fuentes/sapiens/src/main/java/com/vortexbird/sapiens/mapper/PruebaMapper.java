@@ -21,6 +21,7 @@ import java.util.List;
 @Mapper
 public interface PruebaMapper {
     @Mapping(source = "tipoPrueba.tiprId", target = "tiprId_TipoPrueba")
+    @Mapping(source = "tipoPrueba.nombre", target = "nombreTipoPrueba")
     public PruebaDTO pruebaToPruebaDTO(Prueba prueba) throws Exception;
 
     @Mapping(source = "tiprId_TipoPrueba", target = "tipoPrueba.tiprId")

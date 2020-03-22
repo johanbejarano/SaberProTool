@@ -59,15 +59,28 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    
-
     this.prueba = new Prueba();
-    let idPrueba = this.localStorage.getFromLocal('prueId');
+    let idPrueba = this.localStorage.getFromLocal('idPrueba');
 
     if (idPrueba){
+      
       //Se consulta la prueba
-    }else{
+      this.pruebaService.getPrueba(idPrueba)
+        .subscribe((prueba: Prueba) => {
+          this.prueba = prueba;
+          this.modulosSeleccionados = prueba.idModulos;
+          this.usuariosSeleccionados = prueba.idUsuarios;
 
+          this.actualizarFomulario();
+
+          this.localStorage.putInLocal('x', this.prueba);
+        },
+        error => {
+          this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
+        });
+
+    }else{
+      this.actualizarFomulario();
     }
 
     this.getModulos();
@@ -79,6 +92,8 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     if (this.subscription !== null && this.subscription !== undefined){
       this.subscription.unsubscribe();
     }
+
+    this.localStorage.removeFromLocal('idPrueba');
 
   }
 
@@ -132,7 +147,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.prueba.tiempo = this.form.controls.duracion.value;
     this.prueba.usuCreador = this.usuario.usuaId;
 
-    this.localStorage.putInLocal('x', this.prueba);
+    // this.localStorage.putInLocal('x', this.prueba);
 
     this.subscription = this.pruebaService.guardarPrueba(this.prueba)
         .subscribe((prueba: Prueba) => {

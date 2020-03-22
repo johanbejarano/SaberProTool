@@ -18,4 +18,6 @@ public interface PruebaService extends GenericService<Prueba, Integer> {
 	List<PruebaDTO> getPruebasDeUsuarioCreador(Long usuCreador) throws Exception;
 
 	PruebaDTO guardarPrueba(PruebaDTO pruebaDTO) throws Exception;
+
+	PruebaDTO getPrueba(Integer prueId) throws Exception;
 }

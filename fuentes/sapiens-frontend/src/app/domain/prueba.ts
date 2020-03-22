@@ -12,6 +12,7 @@ export class Prueba {
 
     nombreTipoPrueba: string;
     nombresModulos: string[];
+    nombrePropietario: string;
 
     idModulos: number[];
     idUsuarios: number[];

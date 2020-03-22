@@ -253,10 +253,58 @@ public class PruebaServiceImpl implements PruebaService {
 				}
 			}
 			
+			//Se calculan los nombres de los usuarios creadores de cada prueba
+			for (PruebaDTO pruebaDTO : pruebas) {
+				pruebaDTO.setNombrePropietario(usuarioService.getNombreUsuario(pruebaDTO.getUsuCreador().intValue()));
+			}
+			
 			return pruebas;
 			
 		} catch (Exception e) {
 			log.error("Error en getPruebasDeUsuarioCreador", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public PruebaDTO getPrueba(Integer prueId) throws Exception {
+		try {
+			
+			Optional<Prueba> prueba = findById(prueId);
+			
+			if (!prueba.isPresent()) {
+				throw new Exception("No existe la prueba");
+			}
+			
+			PruebaDTO pruebaDTO = pruebaMapper.pruebaToPruebaDTO(prueba.get());
+			
+			//Se consultan los módulos de la prueba
+			pruebaDTO.setIdModulos(new ArrayList<Integer>());
+			
+			List<PruebaModulo> pruebasModulo = prueba.get().getPruebaModulos();
+			for (PruebaModulo pruebaModulo : pruebasModulo) {
+				Modulo modulo = pruebaModulo.getModulo();
+				
+				pruebaDTO.getIdModulos().add(modulo.getModuId());
+			}
+			
+			//Se consultan los usuarios de la prueba
+			pruebaDTO.setIdUsuarios(new ArrayList<Integer>());
+			
+			List<PruebaUsuario> pruebasUsuario = prueba.get().getPruebaUsuarios();
+			for (PruebaUsuario pruebaUsuario : pruebasUsuario) {
+				Usuario usuario = pruebaUsuario.getUsuario();
+				
+				pruebaDTO.getIdUsuarios().add(usuario.getUsuaId());
+			}
+			
+			pruebaDTO.setNombrePropietario(usuarioService.getNombreUsuario(pruebaDTO.getUsuCreador().intValue()));
+			
+			return pruebaDTO;
+			
+		} catch (Exception e) {
+			log.error("Error en getPrueba", e);
 			throw e;
 		}
 	}

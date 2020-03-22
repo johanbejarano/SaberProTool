@@ -163,4 +163,21 @@ public class PruebaRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @GetMapping(value = "/getPrueba/{prueId}")
+    public ResponseEntity<?> getPrueba(@PathVariable("prueId")
+    Integer prueId) {
+        log.debug("Request to getPrueba()");
+
+        try {
+            PruebaDTO pruebaDTO = pruebaService.getPrueba(prueId);
+
+            return ResponseEntity.ok()
+                                 .body(pruebaDTO);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

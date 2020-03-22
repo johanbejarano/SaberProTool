@@ -238,4 +238,23 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 	
 
+	@Override
+	@Transactional(readOnly = true)
+	public String getNombreUsuario(Integer usuaId) throws Exception{
+		try {
+			
+			//Se consulta el usuario
+			Optional<Usuario> usuario = findById(usuaId);
+			
+			if (!usuario.isPresent()) {
+				return null;
+			}else {
+				return usuario.get().getApellido().toUpperCase() + ", " + Utilities.capitalize(usuario.get().getNombre().toLowerCase());
+			}
+			
+		} catch (Exception e) {
+			log.error("Error en getNombreUsuario", e);
+			throw e;
+		}
+	}
 }
