@@ -4,7 +4,7 @@ export const locale = {
         'NAV': {
             'PROFESOR': {
                 'PREGUNTAS': 'Preguntas',
-                'SIMULACION': 'Simulación',
+                'SIMULACION': 'Pruebas',
             },
             'APPLICATIONS': 'Questions',
             'SAMPLE'        : {

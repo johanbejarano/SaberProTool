@@ -17,7 +17,7 @@ export const navigation: FuseNavigation[] = [
             },
             {
                 id       : 'mnuSimulacion',
-                title    : 'Simulacion',
+                title    : 'Pruebas',
                 translate: 'NAV.PROFESOR.SIMULACION',
                 type     : 'item',
                 icon     : 'playlist_add_check',
@@ -46,7 +46,7 @@ export const navigationProfesor: FuseNavigation[] = [
             },
             {
                 id       : 'mnuSimulacion',
-                title    : 'Simulacion',
+                title    : 'Pruebas',
                 translate: 'NAV.PROFESOR.SIMULACION',
                 type     : 'item',
                 icon     : 'playlist_add_check',

@@ -436,6 +436,13 @@ public class PreguntaServiceImpl implements PreguntaService {
 				
 			}
 			
+			preguntasDTO.sort(new Comparator<PreguntaDTO>() {
+				@Override
+				public int compare(PreguntaDTO p1, PreguntaDTO p2) {
+					return p2.getPregId().compareTo(p1.getPregId());
+				}
+			});
+			
 			return preguntasDTO;
 			
 			
