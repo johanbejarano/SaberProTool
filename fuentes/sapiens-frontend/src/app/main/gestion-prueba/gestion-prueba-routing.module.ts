@@ -6,7 +6,7 @@ import { CrearPruebaComponent } from './prueba/crear-prueba/crear-prueba.compone
 
 const routes: Routes = [
   {path: '', component: PruebaComponent},
-  {path: 'registrarPrueba', component: CrearPruebaComponent}
+  {path: 'registrarPrueba', component: CrearPruebaComponent},
 ];
 
 @NgModule({
