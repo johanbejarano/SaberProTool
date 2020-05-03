@@ -1,18 +1,15 @@
 package com.vortexbird.sapiens.dto;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
-
-import java.sql.*;
-
-import java.util.Date;
-import java.util.List;
 
 
 /**

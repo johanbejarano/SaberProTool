@@ -3,10 +3,6 @@ package com.vortexbird.sapiens.service;
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 
-import java.math.*;
-
-import java.util.*;
-
 import org.springframework.data.domain.Page;
 
 

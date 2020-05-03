@@ -1,11 +1,9 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.Prueba;
 import com.vortexbird.sapiens.dto.PruebaDTO;
-
-import java.math.*;
-
-import java.util.*;
 
 
 /**

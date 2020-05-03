@@ -1,10 +1,10 @@
 package com.vortexbird.sapiens.repository;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.Pregunta;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.math.BigDecimal;
 
 
 /**
@@ -12,4 +12,6 @@ import java.math.BigDecimal;
 *
 */
 public interface PreguntaRepository extends JpaRepository<Pregunta, Integer> {
+
+	List<Pregunta> findByModulo_moduIdAndEstadoRegistro(Integer moduId, String estado);
 }

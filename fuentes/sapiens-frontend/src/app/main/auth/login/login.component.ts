@@ -1,21 +1,20 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { global } from '../../../utils/global';
-import { FuseConfigService } from '@fuse/services/config.service';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { locale as espanol } from '../i18n/es';
-import { Subscription } from 'rxjs';
-import { Usuario } from 'app/domain/usuario';
-import { LocalStorageService } from 'app/services/local-storage.service';
-import { Router } from '@angular/router';
-import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-import { UsuarioService } from 'app/services/usuario.service';
-import { Opcion } from 'app/domain/opcion';
-import { FuseNavigation, FuseNavigationItem } from '@fuse/types';
-import { navigation } from 'app/navigation/navigation';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { FuseConfigService } from '@fuse/services/config.service';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { FuseNavigation } from '@fuse/types';
+import { Usuario } from 'app/domain/usuario';
+import { navigation } from 'app/navigation/navigation';
+import { LocalStorageService } from 'app/services/local-storage.service';
+import { UsuarioService } from 'app/services/usuario.service';
+import { Subscription } from 'rxjs';
+import { global } from '../../../utils/global';
+import { locale as espanol } from '../i18n/es';
+
 
 @Component({
     selector: 'login',
@@ -81,12 +80,14 @@ export class LoginComponent implements OnInit {
             parametro.password = this.loginForm.controls.password.value;
 
             this.subscription = this.usuarioService.login(parametro).subscribe((usuario: Usuario) => {
-                
-                if(usuario.tiusId_TipoUsuario == 1){
-                    
+                console.log(usuario.tiusId_TipoUsuario);
+                if (usuario.tiusId_TipoUsuario == 1) {
                     this.router.navigate(['/gestionPreguntas']);
                     this._fuseNavigationService.setCurrentNavigation('profesor');
-                }else{
+                } else if (usuario.tiusId_TipoUsuario == 3) {
+                    this.router.navigate(['/estudiante']);
+                    this._fuseNavigationService.setCurrentNavigation('estudiante');
+                } else {
                     this.router.navigate(['/init']);
                     this._fuseNavigationService.setCurrentNavigation('estudiante');
                 }
@@ -94,7 +95,7 @@ export class LoginComponent implements OnInit {
                 this.localStorage.putInLocal(global.SESSION_ITEMS.USUARIO, usuario);
                 this.bloquear = false;
             }, error => {
-                this.snackBar.open('No se encuentra el usuario. Intente de nuevo', 'x', {verticalPosition: 'top', duration: 10000});
+                this.snackBar.open('No se encuentra el usuario. Intente de nuevo', 'x', { verticalPosition: 'top', duration: 10000 });
                 this.bloquear = false;
             });
         }

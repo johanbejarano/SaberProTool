@@ -1,10 +1,13 @@
 package com.vortexbird.sapiens.repository;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.PruebaUsuario;
+import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.math.BigDecimal;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 /**
@@ -12,4 +15,6 @@ import java.math.BigDecimal;
 *
 */
 public interface PruebaUsuarioRepository extends JpaRepository<PruebaUsuario, Integer> {
+    @Query(nativeQuery = true)
+    List<PruebaUsuarioDTO> findByUsuario(@Param("pUsuaId") Integer usuaId, @Param("pEstado") String estado);
 }

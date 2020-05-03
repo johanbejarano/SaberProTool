@@ -1,11 +1,10 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
 import com.vortexbird.sapiens.domain.Pregunta;
-
-import java.math.*;
-
-import java.util.*;
+import com.vortexbird.sapiens.dto.DetallePruebaUsuarioDTO;
 
 
 /**
@@ -20,4 +19,12 @@ public interface DetallePruebaUsuarioService extends GenericService<DetallePrueb
 	Integer getCantidadDeEjecucionesPorModulo(Integer moduId) throws Exception;
 
 	Integer getCantidadDeEjecucionesPorUsuario(Integer usuaId) throws Exception;
+
+	void responder(Integer prusId, Integer respId, Long usuaId) throws Exception;
+
+	List<DetallePruebaUsuario> getPreguntasByPruebaUsuario(Integer prusId) throws Exception;
+
+	List<DetallePruebaUsuario> getRespuestasCorrectas(Integer prusId) throws Exception;
+
+	List<DetallePruebaUsuarioDTO> getPreguntasByPruebaUsuarioDTO(Integer prusId) throws Exception;
 }

@@ -1,12 +1,12 @@
 package com.vortexbird.sapiens.mapper;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
 import com.vortexbird.sapiens.dto.DetallePruebaUsuarioDTO;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 
 /**
@@ -20,15 +20,15 @@ import java.util.List;
 */
 @Mapper
 public interface DetallePruebaUsuarioMapper {
-    @Mapping(source = "pruebaUsuario.prusId", target = "prusId_PruebaUsuario")
-    @Mapping(source = "respuesta.respId", target = "respId_Respuesta")
-    @Mapping(source = "pregunta.pregId", target = "pregId_Pregunta")
+    @Mapping(source = "pruebaUsuario.prusId", target = "prusId")
+    @Mapping(source = "respuesta.respId", target = "respId")
+    @Mapping(source = "pregunta.pregId", target = "pregId")
     public DetallePruebaUsuarioDTO detallePruebaUsuarioToDetallePruebaUsuarioDTO(
         DetallePruebaUsuario detallePruebaUsuario) throws Exception;
 
-    @Mapping(source = "prusId_PruebaUsuario", target = "pruebaUsuario.prusId")
-    @Mapping(source = "respId_Respuesta", target = "respuesta.respId")
-    @Mapping(source = "pregId_Pregunta", target = "pregunta.pregId")
+    @Mapping(source = "prusId", target = "pruebaUsuario.prusId")
+    @Mapping(source = "respId", target = "respuesta.respId")
+    @Mapping(source = "pregId", target = "pregunta.pregId")
     public DetallePruebaUsuario detallePruebaUsuarioDTOToDetallePruebaUsuario(
         DetallePruebaUsuarioDTO detallePruebaUsuarioDTO)
         throws Exception;

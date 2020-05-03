@@ -4,8 +4,6 @@ import com.vortexbird.sapiens.domain.TipoUsuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.math.BigDecimal;
-
 
 /**
 * Interface for   TipoUsuarioRepository.

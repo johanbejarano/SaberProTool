@@ -1,10 +1,8 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.Respuesta;
-
-import java.math.*;
-
-import java.util.*;
 
 
 /**

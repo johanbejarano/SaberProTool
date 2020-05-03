@@ -1,32 +1,32 @@
 package com.vortexbird.sapiens.service;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import com.vortexbird.sapiens.domain.Programa;
+import com.vortexbird.sapiens.domain.PruebaUsuario;
+import com.vortexbird.sapiens.domain.Usuario;
+import com.vortexbird.sapiens.dto.UsuarioDTO;
+import com.vortexbird.sapiens.exception.ZMessManager;
+import com.vortexbird.sapiens.mapper.UsuarioMapper;
+import com.vortexbird.sapiens.repository.UsuarioRepository;
+import com.vortexbird.sapiens.utility.PasswordGenerator;
+import com.vortexbird.sapiens.utility.Utilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.vortexbird.sapiens.exception.*;
-import com.vortexbird.sapiens.mapper.UsuarioMapper;
-import com.vortexbird.sapiens.repository.*;
-import com.vortexbird.sapiens.utility.Constantes;
-import com.vortexbird.sapiens.utility.PasswordGenerator;
-import com.vortexbird.sapiens.utility.Utilities;
-
-import com.vortexbird.sapiens.domain.*;
-import com.vortexbird.sapiens.dto.UsuarioDTO;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org

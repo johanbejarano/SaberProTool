@@ -1,25 +1,31 @@
 package com.vortexbird.sapiens.service;
 
-import com.vortexbird.sapiens.domain.*;
-import com.vortexbird.sapiens.exception.*;
-import com.vortexbird.sapiens.repository.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.annotation.Scope;
-
-import org.springframework.stereotype.Service;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+
+import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
+import com.vortexbird.sapiens.domain.Pregunta;
+import com.vortexbird.sapiens.domain.PruebaUsuario;
+import com.vortexbird.sapiens.domain.Respuesta;
+import com.vortexbird.sapiens.dto.DetallePruebaUsuarioDTO;
+import com.vortexbird.sapiens.dto.RespuestaDTO;
+import com.vortexbird.sapiens.exception.ZMessManager;
+import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRepository;
+import com.vortexbird.sapiens.utility.Constantes;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
@@ -33,6 +39,8 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	private DetallePruebaUsuarioRepository detallePruebaUsuarioRepository;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private RespuestaService respuestaService;
 
 	@Override
 	public void validate(DetallePruebaUsuario detallePruebaUsuario) throws Exception {
@@ -82,10 +90,6 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			}
 
 			validate(entity);
-
-			if (detallePruebaUsuarioRepository.findById(entity.getDpruId()).isPresent()) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
 
 			return detallePruebaUsuarioRepository.save(entity);
 		} catch (Exception e) {
@@ -156,36 +160,167 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 		return detallePruebaUsuarioRepository.findById(dpruId);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public List<DetallePruebaUsuario> findByPregunta(Pregunta pregunta){
+	public List<DetallePruebaUsuario> findByPregunta(Pregunta pregunta) {
 		return detallePruebaUsuarioRepository.findByPregunta(pregunta);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getCantidadDeEjecucionesPorModulo(Integer moduId) throws Exception {
 		try {
-			
+
 			return detallePruebaUsuarioRepository.cantidadEjecucionesPorModulo(moduId);
-			
+
 		} catch (Exception e) {
 			log.error("Error en getCantidadDeEjecucionesPorModulo", e);
 			throw e;
 		}
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getCantidadDeEjecucionesPorUsuario(Integer usuaId) throws Exception {
 		try {
-			
+
 			return detallePruebaUsuarioRepository.cantidadEjecucionesPorUsuario(usuaId);
-			
+
 		} catch (Exception e) {
 			log.error("Error en getCantidadDeEjecucionesPorUsuario", e);
 			throw e;
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void responder(Integer dpruId, Integer respId, Long usuario) throws Exception {
+		try {
+			// Valido que lleguen los datos
+			if (dpruId == null) {
+				throw new Exception("No se ingresó la pregunta");
+			}
+			if (respId == null) {
+				throw new Exception("No se ingresó la respuesta");
+			}
+			if (usuario == null) {
+				throw new Exception("No se ingresó el usuario");
+			}
+			// Valido que la información exista
+			Optional<DetallePruebaUsuario> detallePruebaUsuarioOpt = findById(dpruId);
+			if (!detallePruebaUsuarioOpt.isPresent()
+					|| detallePruebaUsuarioOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+				throw new Exception("No se encontró el detalle de la prueba o no se encuentra activo");
+			}
+
+			Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
+			if (!respuestaOpt.isPresent()
+					|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+				throw new Exception("No se encontró la respuesta o no se encuentra activa");
+			}
+
+			DetallePruebaUsuario detallePruebaUsuario = detallePruebaUsuarioOpt.get();
+			Respuesta respuesta = respuestaOpt.get();
+			// Valido que la respuesta sea de la pregunta dada
+			if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
+				throw new Exception("La respuesta no es de la pregunta dada");
+			}
+
+			PruebaUsuario pruebaUsuario = detallePruebaUsuario.getPruebaUsuario();
+			if (pruebaUsuario.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)
+					|| !pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_INICIADA)) {
+				throw new Exception("La prueba no existe o no ha sido iniciada");
+			}
+
+			Date fecha = new Date();
+			Long tiempoDisponible = pruebaUsuario.getTiempoDisponible();
+			Long milliseconds = fecha.getTime() - pruebaUsuario.getFechaInicio().getTime();
+			int minutes = (int) ((milliseconds / (1000 * 60)) % 60) + 1;
+			tiempoDisponible -= minutes;
+			if (tiempoDisponible < 0L) {
+				throw new Exception("Se terminó el tiempo de la prueba");
+			}
+			if (pruebaUsuario.getPrueba().getFechaFinal().before(fecha)) {
+				throw new Exception("Se terminó el tiempo de la prueba");
+			}
+
+			detallePruebaUsuario.setRespuesta(respuesta);
+			detallePruebaUsuario.setFechaModificacion(fecha);
+			detallePruebaUsuario.setUsuModificador(usuario);
+			update(detallePruebaUsuario);
+
+		} catch (Exception e) {
+			log.error("Error en responder", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<DetallePruebaUsuario> getPreguntasByPruebaUsuario(Integer prusId) throws Exception {
+		try {
+			return detallePruebaUsuarioRepository.findByPruebaUsuario_prusIdAndEstadoRegistro(prusId,
+					Constantes.ESTADO_ACTIVO);
+		} catch (Exception e) {
+			log.error("Error en getRespuestasCorrectas", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<DetallePruebaUsuario> getRespuestasCorrectas(Integer prusId) throws Exception {
+		try {
+			List<DetallePruebaUsuario> respuestasCorrectas = new ArrayList<DetallePruebaUsuario>();
+			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
+			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
+				if (detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
+					respuestasCorrectas.add(detallePruebaUsuario);
+				}
+			}
+			return respuestasCorrectas;
+		} catch (Exception e) {
+			log.error("Error en getRespuestasCorrectas", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<DetallePruebaUsuarioDTO> getPreguntasByPruebaUsuarioDTO(Integer prusId) throws Exception {
+		try {
+			List<DetallePruebaUsuarioDTO> preguntasDTO = new ArrayList<DetallePruebaUsuarioDTO>();
+			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
+			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
+				DetallePruebaUsuarioDTO detallePruebaUsuarioDTO = new DetallePruebaUsuarioDTO();
+
+				detallePruebaUsuarioDTO.setPregId(detallePruebaUsuario.getPregunta().getPregId());
+				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
+				detallePruebaUsuarioDTO.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
+
+				List<RespuestaDTO> respuestas = getRespuestas(detallePruebaUsuario);
+
+				detallePruebaUsuarioDTO.setRespuestas(respuestas);
+				preguntasDTO.add(detallePruebaUsuarioDTO);
+			}
+			return preguntasDTO;
+		} catch (Exception e) {
+			log.error("Error en getRespuestasCorrectas", e);
+			throw e;
+		}
+	}
+
+	@Transactional(readOnly = true)
+	private List<RespuestaDTO> getRespuestas(DetallePruebaUsuario detallePruebaUsuario) {
+		List<RespuestaDTO> respuestasDTO = new ArrayList<RespuestaDTO>();
+		List<Respuesta> respuestas = detallePruebaUsuario.getPregunta().getRespuestas();
+		for (Respuesta respuesta : respuestas) {
+			RespuestaDTO respuestaDTO = new RespuestaDTO();
+			respuestaDTO.setDescripcion(respuesta.getDescripcion());
+			respuestaDTO.setRetroalimentacion(respuesta.getRetroalimentacion());
+			respuestasDTO.add(respuestaDTO);
+		}
+		return respuestasDTO;
 	}
 }

@@ -1,28 +1,23 @@
 package com.vortexbird.sapiens.service;
 
-import com.vortexbird.sapiens.domain.*;
-import com.vortexbird.sapiens.exception.*;
-import com.vortexbird.sapiens.repository.*;
-import com.vortexbird.sapiens.utility.Utilities;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.annotation.Scope;
-
-import org.springframework.stereotype.Service;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.*;
-
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+
+import com.vortexbird.sapiens.domain.ProgramaModulo;
+import com.vortexbird.sapiens.exception.ZMessManager;
+import com.vortexbird.sapiens.repository.ProgramaModuloRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**

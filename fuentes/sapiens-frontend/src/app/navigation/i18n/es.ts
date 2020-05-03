@@ -6,11 +6,10 @@ export const locale = {
                 'PREGUNTAS': 'Preguntas',
                 'SIMULACION': 'Pruebas',
             },
+            'ESTUDIANTE': {
+                'MISPRUEBAS': 'Mis pruebas',
+            },
             'APPLICATIONS': 'Questions',
-            'SAMPLE'        : {
-                'TITLE': 'Preguntas',
-                'BADGE': '25'
-            }
         }
     }
 };

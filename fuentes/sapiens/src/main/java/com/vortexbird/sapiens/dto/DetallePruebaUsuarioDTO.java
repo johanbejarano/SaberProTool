@@ -1,17 +1,15 @@
 package com.vortexbird.sapiens.dto;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
-
-import java.sql.*;
-
-import java.util.Date;
 
 
 /**
@@ -28,9 +26,12 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private Date fechaModificacion;
     private Long usuCreador;
     private Long usuModificador;
-    private Integer pregId_Pregunta;
-    private Integer prusId_PruebaUsuario;
-    private Integer respId_Respuesta;
+    private Integer pregId;
+    private Integer prusId;
+    private Integer respId;
+    private String descripcionPregunta;
+    private String retroalimentacionPregunta;
+    private List<RespuestaDTO> respuestas;
 
     public Integer getDpruId() {
         return dpruId;
@@ -80,28 +81,52 @@ public class DetallePruebaUsuarioDTO implements Serializable {
         this.usuModificador = usuModificador;
     }
 
-    public Integer getPregId_Pregunta() {
-        return pregId_Pregunta;
+    public Integer getPregId() {
+        return pregId;
     }
 
-    public void setPregId_Pregunta(Integer pregId_Pregunta) {
-        this.pregId_Pregunta = pregId_Pregunta;
+    public void setPregId(Integer pregId) {
+        this.pregId = pregId;
     }
 
-    public Integer getPrusId_PruebaUsuario() {
-        return prusId_PruebaUsuario;
+    public Integer getPrusId() {
+        return prusId;
     }
 
-    public void setPrusId_PruebaUsuario(Integer prusId_PruebaUsuario) {
-        this.prusId_PruebaUsuario = prusId_PruebaUsuario;
+    public void setPrusId(Integer prusId) {
+        this.prusId = prusId;
     }
 
-    public Integer getRespId_Respuesta() {
-        return respId_Respuesta;
+    public Integer getRespId() {
+        return respId;
     }
 
-    public void setRespId_Respuesta(Integer respId_Respuesta) {
-        this.respId_Respuesta = respId_Respuesta;
+    public void setRespId(Integer respId) {
+        this.respId = respId;
+    }
+
+    public String getDescripcionPregunta() {
+        return descripcionPregunta;
+    }
+
+    public void setDescripcionPregunta(String descripcionPregunta) {
+        this.descripcionPregunta = descripcionPregunta;
+    }
+
+    public String getRetroalimentacionPregunta() {
+        return retroalimentacionPregunta;
+    }
+
+    public void setRetroalimentacionPregunta(String retroalimentacionPregunta) {
+        this.retroalimentacionPregunta = retroalimentacionPregunta;
+    }
+
+    public List<RespuestaDTO> getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(List<RespuestaDTO> respuestas) {
+        this.respuestas = respuestas;
     }
 
     @Override

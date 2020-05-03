@@ -1,17 +1,16 @@
 package com.vortexbird.sapiens.controller;
 
-import com.vortexbird.sapiens.domain.*;
+import java.util.List;
+
+import com.vortexbird.sapiens.domain.PruebaUsuario;
 import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
 import com.vortexbird.sapiens.mapper.PruebaUsuarioMapper;
 import com.vortexbird.sapiens.service.PruebaUsuarioService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequestMapping("/api/pruebaUsuario")
@@ -34,17 +32,13 @@ public class PruebaUsuarioRestController {
     private PruebaUsuarioMapper pruebaUsuarioMapper;
 
     @GetMapping(value = "/findById/{prusId}")
-    public ResponseEntity<?> findById(@PathVariable("prusId")
-    Integer prusId) {
+    public ResponseEntity<?> findById(@PathVariable("prusId") Integer prusId) {
         log.debug("Request to findById() PruebaUsuario");
 
         try {
-            PruebaUsuario pruebaUsuario = pruebaUsuarioService.findById(prusId)
-                                                              .get();
+            PruebaUsuario pruebaUsuario = pruebaUsuarioService.findById(prusId).get();
 
-            return ResponseEntity.ok()
-                                 .body(pruebaUsuarioMapper.pruebaUsuarioToPruebaUsuarioDTO(
-                    pruebaUsuario));
+            return ResponseEntity.ok().body(pruebaUsuarioMapper.pruebaUsuarioToPruebaUsuarioDTO(pruebaUsuario));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -58,8 +52,7 @@ public class PruebaUsuarioRestController {
 
         try {
             return ResponseEntity.ok()
-                                 .body(pruebaUsuarioMapper.listPruebaUsuarioToListPruebaUsuarioDTO(
-                    pruebaUsuarioService.findAll()));
+                    .body(pruebaUsuarioMapper.listPruebaUsuarioToListPruebaUsuarioDTO(pruebaUsuarioService.findAll()));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -68,17 +61,14 @@ public class PruebaUsuarioRestController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<?> save(@RequestBody
-    PruebaUsuarioDTO pruebaUsuarioDTO) {
+    public ResponseEntity<?> save(@RequestBody PruebaUsuarioDTO pruebaUsuarioDTO) {
         log.debug("Request to save PruebaUsuario: {}", pruebaUsuarioDTO);
 
         try {
             PruebaUsuario pruebaUsuario = pruebaUsuarioMapper.pruebaUsuarioDTOToPruebaUsuario(pruebaUsuarioDTO);
             pruebaUsuario = pruebaUsuarioService.save(pruebaUsuario);
 
-            return ResponseEntity.ok()
-                                 .body(pruebaUsuarioMapper.pruebaUsuarioToPruebaUsuarioDTO(
-                    pruebaUsuario));
+            return ResponseEntity.ok().body(pruebaUsuarioMapper.pruebaUsuarioToPruebaUsuarioDTO(pruebaUsuario));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -87,18 +77,14 @@ public class PruebaUsuarioRestController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<?> update(
-        @RequestBody
-    PruebaUsuarioDTO pruebaUsuarioDTO) {
+    public ResponseEntity<?> update(@RequestBody PruebaUsuarioDTO pruebaUsuarioDTO) {
         log.debug("Request to update PruebaUsuario: {}", pruebaUsuarioDTO);
 
         try {
             PruebaUsuario pruebaUsuario = pruebaUsuarioMapper.pruebaUsuarioDTOToPruebaUsuario(pruebaUsuarioDTO);
             pruebaUsuario = pruebaUsuarioService.update(pruebaUsuario);
 
-            return ResponseEntity.ok()
-                                 .body(pruebaUsuarioMapper.pruebaUsuarioToPruebaUsuarioDTO(
-                    pruebaUsuario));
+            return ResponseEntity.ok().body(pruebaUsuarioMapper.pruebaUsuarioToPruebaUsuarioDTO(pruebaUsuario));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -107,13 +93,11 @@ public class PruebaUsuarioRestController {
     }
 
     @DeleteMapping(value = "/delete/{prusId}")
-    public ResponseEntity<?> delete(@PathVariable("prusId")
-    Integer prusId) throws Exception {
+    public ResponseEntity<?> delete(@PathVariable("prusId") Integer prusId) throws Exception {
         log.debug("Request to delete PruebaUsuario");
 
         try {
-            PruebaUsuario pruebaUsuario = pruebaUsuarioService.findById(prusId)
-                                                              .get();
+            PruebaUsuario pruebaUsuario = pruebaUsuarioService.findById(prusId).get();
 
             pruebaUsuarioService.delete(pruebaUsuario);
 
@@ -128,5 +112,50 @@ public class PruebaUsuarioRestController {
     @GetMapping(value = "/count")
     public ResponseEntity<?> count() {
         return ResponseEntity.ok().body(pruebaUsuarioService.count());
+    }
+
+    @GetMapping(value = "/getPruebas/{usuaId}")
+    public ResponseEntity<?> getPruebas(@PathVariable("usuaId") Long usuaId) {
+        try {
+            List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioService.getPruebas(usuaId);
+            return ResponseEntity.ok().body(pruebasUsuario);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
+    @PostMapping(value = "/iniciarPrueba")
+    public ResponseEntity<?> iniciarPrueba(@RequestBody PruebaUsuarioDTO pruebaUsuarioDTO) {
+        try {
+            pruebaUsuarioService.iniciarPrueba(pruebaUsuarioDTO.getPrusId(), pruebaUsuarioDTO.getUsuCreador());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/pausarPrueba")
+    public ResponseEntity<?> pausarPrueba(@RequestBody PruebaUsuarioDTO pruebaUsuarioDTO) {
+        try {
+            pruebaUsuarioService.pausarPrueba(pruebaUsuarioDTO.getPrusId(), pruebaUsuarioDTO.getUsuCreador());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/finalizarPrueba")
+    public ResponseEntity<?> finalizarPrueba(@RequestBody PruebaUsuarioDTO pruebaUsuarioDTO) {
+        try {
+            pruebaUsuarioService.finalizarPrueba(pruebaUsuarioDTO.getPrusId(), pruebaUsuarioDTO.getUsuCreador());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

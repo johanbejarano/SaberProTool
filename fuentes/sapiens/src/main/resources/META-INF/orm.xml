@@ -82,4 +82,25 @@
 		</named-native-query>
 	</entity>
 
+	<entity class="com.vortexbird.sapiens.domain.PruebaUsuario">
+		<named-native-query
+			name="PruebaUsuario.findByUsuario"
+			result-set-mapping="PruebaUsuarioDTO">
+			<query>
+	        <![CDATA[
+				select prus.prus_id prusId, prue.prue_id prueId, tipr.descripcion tipoPrueba, prue.fecha_inicial fechaInicial, prue.fecha_final fechaFinal, 
+					prus.tiempo_disponible tiempoDisponible, UPPER(usua.apellido) || ', ' || LOWER(usua.nombre) propietario, espr.descripcion nombreEstadoPrueba
+				from prueba_usuario prus
+				inner join prueba prue on prue.prue_id = prus.prue_id
+				inner join estado_prueba espr on espr.espr_id = prus.espr_id
+				inner join usuario usua on usua.usua_id = prue.usu_creador
+				inner join tipo_prueba tipr on tipr.tipr_id = prue.tipr_id
+				where prus.usua_id = :pUsuaId
+					and prus.estado_registro = :pEstado
+					and prue.estado_registro = :pEstado
+	        ]]>
+	        </query>
+		</named-native-query>
+	</entity>
+
 </entity-mappings>

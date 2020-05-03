@@ -1,12 +1,11 @@
 package com.vortexbird.sapiens.mapper;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.EstadoPrueba;
 import com.vortexbird.sapiens.dto.EstadoPruebaDTO;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
-import java.util.List;
 
 
 /**

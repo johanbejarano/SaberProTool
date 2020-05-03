@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Prueba } from 'app/domain/prueba';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { Prueba } from 'app/domain/prueba';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +29,9 @@ export class PruebaService {
 
   public modificarPrueba(prueba: Prueba): Observable<any> {
     return this.httpClient.put(this.url + 'modificarPrueba/', prueba);
+  }
+
+  public getPruebasEstudiante(usuaId: number): Observable<any> {
+    return this.httpClient.get(this.url + 'getPruebasEstudiante/' + usuaId);
   }
 }

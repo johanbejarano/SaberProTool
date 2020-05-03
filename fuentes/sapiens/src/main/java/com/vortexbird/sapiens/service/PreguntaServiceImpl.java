@@ -1,28 +1,39 @@
 package com.vortexbird.sapiens.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
+import com.vortexbird.sapiens.domain.Modulo;
+import com.vortexbird.sapiens.domain.Pregunta;
+import com.vortexbird.sapiens.domain.Programa;
+import com.vortexbird.sapiens.domain.ProgramaModulo;
+import com.vortexbird.sapiens.domain.Respuesta;
+import com.vortexbird.sapiens.domain.TipoPregunta;
+import com.vortexbird.sapiens.domain.Usuario;
+import com.vortexbird.sapiens.dto.GuardarPreguntaDTO;
+import com.vortexbird.sapiens.dto.PreguntaDTO;
+import com.vortexbird.sapiens.dto.RespuestaDTO;
+import com.vortexbird.sapiens.exception.ZMessManager;
+import com.vortexbird.sapiens.mapper.PreguntaMapper;
+import com.vortexbird.sapiens.repository.PreguntaRepository;
+import com.vortexbird.sapiens.utility.Constantes;
+import com.vortexbird.sapiens.utility.Utilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.vortexbird.sapiens.exception.*;
-import com.vortexbird.sapiens.mapper.PreguntaMapper;
-import com.vortexbird.sapiens.repository.*;
-import com.vortexbird.sapiens.utility.Constantes;
-import com.vortexbird.sapiens.utility.Utilities;
-
-import com.vortexbird.sapiens.domain.*;
-import com.vortexbird.sapiens.dto.GuardarPreguntaDTO;
-import com.vortexbird.sapiens.dto.PreguntaDTO;
-import com.vortexbird.sapiens.dto.RespuestaDTO;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
@@ -451,6 +462,12 @@ public class PreguntaServiceImpl implements PreguntaService {
 
 			throw e;
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Pregunta> getPreguntasPorModulo(Integer moduId) throws Exception {
+		return preguntaRepository.findByModulo_moduIdAndEstadoRegistro(moduId, Constantes.ESTADO_ACTIVO);
 	}
 
 }

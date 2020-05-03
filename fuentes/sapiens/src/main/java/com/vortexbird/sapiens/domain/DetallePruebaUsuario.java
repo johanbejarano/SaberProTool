@@ -2,11 +2,23 @@ package com.vortexbird.sapiens.domain;
 
 import java.util.Date;
 
-import javax.persistence.*;
-
-import javax.validation.constraints.*;
-
-import com.vortexbird.sapiens.dto.UsuarioDTO;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -24,13 +36,13 @@ import com.vortexbird.sapiens.dto.UsuarioDTO;
 @Entity
 @Table(name = "detalle_prueba_usuario", schema = "public")
 public class DetallePruebaUsuario implements java.io.Serializable {
-    @NotNull
+    //@NotNull
     private Integer dpruId;
     @NotNull
     private Pregunta pregunta;
     @NotNull
     private PruebaUsuario pruebaUsuario;
-    @NotNull
+    //@NotNull
     private Respuesta respuesta;
     @NotNull
     @NotEmpty
@@ -62,6 +74,7 @@ public class DetallePruebaUsuario implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "dpru_id", unique = true, nullable = false)
     public Integer getDpruId() {
         return this.dpruId;

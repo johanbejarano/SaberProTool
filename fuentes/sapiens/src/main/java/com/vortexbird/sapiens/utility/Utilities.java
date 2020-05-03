@@ -15,17 +15,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author Zathura Code Generator http://zathuracode.org/
  * www.zathuracode.org
  * 
  */
 public class Utilities {
-
-	private static final Logger log = LoggerFactory.getLogger(Utilities.class);
 
 	public static boolean isNumeric(String word) {
 		boolean ret = false;
