@@ -19,6 +19,8 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { RespuestaService } from 'app/services/respuesta.service';
+import { UsuarioService } from 'app/services/usuario.service';
+import { Usuario } from 'app/domain/usuario';
 
 
 @Component({
@@ -81,6 +83,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     private moduloService: ModuloService,
     private preguntaService: PreguntaService,
     private respuestaService: RespuestaService,
+    private usuarioService: UsuarioService,
     private matDialog: MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -130,11 +133,14 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
   actualizarFormulario(){
 
+    //Se consulta el programa al que pertenece el usuario
+    let usuario : Usuario = this.usuarioService.getUsuario();
+
     // Reactive Form
     this.form = this._formBuilder.group({
       
-      facultad: [{ value: 'Facultad de Ingeniería', disabled: true }],
-      programa: [{ value: 'Programa de Ingeniería de sistemas', disabled: true }],
+      facultad: [{ value: usuario.nombreFacultad, disabled: true }],
+      programa: [{ value: usuario.nombrePrograma, disabled: true }],
       'tipoModulo': [this.pregunta.timoId, Validators.required],
       modulo: [this.pregunta.moduId_Modulo, Validators.required],
 
