@@ -3,7 +3,6 @@ package com.vortexbird.sapiens.controller;
 import java.util.List;
 
 import com.vortexbird.sapiens.dto.DetallePruebaUsuarioDTO;
-import com.vortexbird.sapiens.mapper.DetallePruebaUsuarioMapper;
 import com.vortexbird.sapiens.service.DetallePruebaUsuarioService;
 import com.vortexbird.sapiens.service.PruebaUsuarioService;
 
@@ -27,14 +26,12 @@ public class DetallePruebaUsuarioRestController {
     @Autowired
     private DetallePruebaUsuarioService detallePruebaUsuarioService;
     @Autowired
-    private DetallePruebaUsuarioMapper detallePruebaUsuarioMapper;
-    @Autowired
     private PruebaUsuarioService pruebaUsuarioService;
 
     @PostMapping(value = "/responder")
     public ResponseEntity<?> responder(@RequestBody DetallePruebaUsuarioDTO detallePruebaUsuarioDTO) {
         try {
-            detallePruebaUsuarioService.responder(detallePruebaUsuarioDTO.getPrusId(),
+            detallePruebaUsuarioService.responder(detallePruebaUsuarioDTO.getDpruId(),
                     detallePruebaUsuarioDTO.getRespId(), detallePruebaUsuarioDTO.getUsuCreador());
             return ResponseEntity.ok().build();
         } catch (Exception e) {

@@ -9,4 +9,5 @@ export class Respuesta {
     usuCreador: number;
     usuModificador: number;
     pregId_Pregunta: number;
+    esCorrecta: boolean;
 }

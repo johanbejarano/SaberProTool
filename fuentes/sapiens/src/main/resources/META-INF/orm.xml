@@ -89,7 +89,8 @@
 			<query>
 	        <![CDATA[
 				select prus.prus_id prusId, prue.prue_id prueId, tipr.descripcion tipoPrueba, prue.fecha_inicial fechaInicial, prue.fecha_final fechaFinal, 
-					prus.tiempo_disponible tiempoDisponible, UPPER(usua.apellido) || ', ' || LOWER(usua.nombre) propietario, espr.descripcion nombreEstadoPrueba
+					prus.fecha_inicio fechaInicio, prus.tiempo_disponible tiempoDisponible, UPPER(usua.apellido) || ', ' || LOWER(usua.nombre) propietario, 
+					espr.descripcion nombreEstadoPrueba, prus.total_preguntas totalPreguntas, prus.total_respuestas_correctas totalRespuestasCorrectas
 				from prueba_usuario prus
 				inner join prueba prue on prue.prue_id = prus.prue_id
 				inner join estado_prueba espr on espr.espr_id = prus.espr_id

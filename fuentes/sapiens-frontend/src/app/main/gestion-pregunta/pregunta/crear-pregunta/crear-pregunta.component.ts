@@ -1,24 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { TipoModulo } from 'app/domain/tipo-modulo';
-import { TipoModuloService } from 'app/services/tipo-modulo.service';
-import { ModuloService } from 'app/services/modulo.service';
-import { Pregunta } from 'app/domain/pregunta';
-import { locale as espanol } from '../../i18n/es';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Modulo } from 'app/domain/modulo';
+import { Pregunta } from 'app/domain/pregunta';
+import { Respuesta } from 'app/domain/respuesta';
+import { TipoModulo } from 'app/domain/tipo-modulo';
+import { LocalStorageService } from 'app/services/local-storage.service';
+import { ModuloService } from 'app/services/modulo.service';
+import { PreguntaService } from 'app/services/pregunta.service';
+import { RespuestaService } from 'app/services/respuesta.service';
+import { TipoModuloService } from 'app/services/tipo-modulo.service';
+import { Subscription } from 'rxjs';
 import { environment } from '../../../../../../src/environments/environment.js';
 import * as ClassicEditor from '../../../../../assets/ckeditor.js';
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import { Respuesta } from 'app/domain/respuesta';
-import { PreguntaService } from 'app/services/pregunta.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { LocalStorageService } from 'app/services/local-storage.service';
-import { RespuestaService } from 'app/services/respuesta.service';
 
 
 @Component({

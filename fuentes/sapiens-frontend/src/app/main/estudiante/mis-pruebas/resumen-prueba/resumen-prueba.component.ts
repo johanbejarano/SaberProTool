@@ -70,7 +70,6 @@ export class ResumenPruebaComponent implements OnInit {
   getModulos() {
     this.subscription = this.moduloService.find()
       .subscribe((modulos: Modulo[]) => {
-        modulos;
         this.listaModulos = [];
         for (let i = 0; i < modulos.length; i++) {
           if (this.modulosSeleccionados.indexOf(modulos[i].moduId) !== -1) {
@@ -93,12 +92,15 @@ export class ResumenPruebaComponent implements OnInit {
     request.prusId = this.pruebaUsuario.prusId;
     request.usuCreador = this.usuarioService.getUsuario().usuaId;
     this.subscription = this.pruebaUsuarioService.iniciarPrueba(request).subscribe(() => {
+      this.pruebaUsuario.fechaInicio = new Date();
+      this.pruebaUsuario.nombreEstadoPrueba = 'INICIADA';
+      this.localStorage.putInLocal('pruebaUsuario', this.pruebaUsuario);
       this.irAPrueba();
     });
   }
 
   irAPrueba() {
-    this.router.navigate(['/estudiante/prueba']);
+    this.router.navigate(['/estudiante/prueba/']);
   }
 
 }

@@ -35,9 +35,12 @@ import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
                 @ColumnResult(name = "tipoPrueba", type = String.class),
                 @ColumnResult(name = "fechaInicial", type = Date.class),
                 @ColumnResult(name = "fechaFinal", type = Date.class),
+                @ColumnResult(name = "fechaInicio", type = Date.class),
                 @ColumnResult(name = "tiempoDisponible", type = Long.class),
                 @ColumnResult(name = "propietario", type = String.class),
-                @ColumnResult(name = "nombreEstadoPrueba", type = String.class), }) }), })
+                @ColumnResult(name = "nombreEstadoPrueba", type = String.class),
+                @ColumnResult(name = "totalPreguntas", type = Long.class),
+                @ColumnResult(name = "totalRespuestasCorrectas", type = Long.class), }) }), })
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
  *

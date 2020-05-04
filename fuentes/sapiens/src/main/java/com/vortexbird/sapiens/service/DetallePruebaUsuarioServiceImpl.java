@@ -1,6 +1,7 @@
 package com.vortexbird.sapiens.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,8 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	private Validator validator;
 	@Autowired
 	private RespuestaService respuestaService;
+	@Autowired
+	private PruebaUsuarioService pruebaUsuarioService;
 
 	@Override
 	public void validate(DetallePruebaUsuario detallePruebaUsuario) throws Exception {
@@ -290,16 +293,40 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	@Transactional(readOnly = true)
 	public List<DetallePruebaUsuarioDTO> getPreguntasByPruebaUsuarioDTO(Integer prusId) throws Exception {
 		try {
+			Optional<PruebaUsuario> pruebaUsuario = pruebaUsuarioService.findById(prusId);
+			if (!pruebaUsuario.isPresent()
+					|| pruebaUsuario.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+				throw new Exception("No se encontró la prueba");
+			}
+
+			boolean mostrarCorrecto = false;
+			boolean mostrarRetroalimentacion = false;
+			// Valido si la prueba ya finalizó para mostrar las respuestas
+			if (pruebaUsuario.get().getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_TERMINADA)) {
+				mostrarCorrecto = true;
+			}
+			Date fecha = new Date();
+			if (pruebaUsuario.get().getPrueba().getFechaInicial().before(fecha)) {
+				mostrarRetroalimentacion = true;
+			}
+			// Valido si la prueba ya terminó el periodo para mostrar la retroalimentación
+
 			List<DetallePruebaUsuarioDTO> preguntasDTO = new ArrayList<DetallePruebaUsuarioDTO>();
 			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
 			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
 				DetallePruebaUsuarioDTO detallePruebaUsuarioDTO = new DetallePruebaUsuarioDTO();
-
+				detallePruebaUsuarioDTO.setDpruId(detallePruebaUsuario.getDpruId());
 				detallePruebaUsuarioDTO.setPregId(detallePruebaUsuario.getPregunta().getPregId());
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
-				detallePruebaUsuarioDTO.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
-
-				List<RespuestaDTO> respuestas = getRespuestas(detallePruebaUsuario);
+				if (mostrarRetroalimentacion) {
+					detallePruebaUsuarioDTO
+							.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
+				}
+				detallePruebaUsuarioDTO.setRespId(
+						detallePruebaUsuario.getRespuesta() != null ? detallePruebaUsuario.getRespuesta().getRespId()
+								: null);
+				List<RespuestaDTO> respuestas = getRespuestas(detallePruebaUsuario, mostrarCorrecto,
+						mostrarRetroalimentacion);
 
 				detallePruebaUsuarioDTO.setRespuestas(respuestas);
 				preguntasDTO.add(detallePruebaUsuarioDTO);
@@ -312,15 +339,27 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	}
 
 	@Transactional(readOnly = true)
-	private List<RespuestaDTO> getRespuestas(DetallePruebaUsuario detallePruebaUsuario) {
+	private List<RespuestaDTO> getRespuestas(DetallePruebaUsuario detallePruebaUsuario, boolean mostrarCorrecto,
+			boolean mostrarRetroalimentacion) {
 		List<RespuestaDTO> respuestasDTO = new ArrayList<RespuestaDTO>();
 		List<Respuesta> respuestas = detallePruebaUsuario.getPregunta().getRespuestas();
 		for (Respuesta respuesta : respuestas) {
 			RespuestaDTO respuestaDTO = new RespuestaDTO();
+			respuestaDTO.setRespId(respuesta.getRespId());
 			respuestaDTO.setDescripcion(respuesta.getDescripcion());
 			respuestaDTO.setRetroalimentacion(respuesta.getRetroalimentacion());
+			respuestaDTO.setEsCorrecta(false);
+			if (mostrarCorrecto) {
+				if (detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
+					respuestaDTO.setEsCorrecta(respuesta.getCorrecta().equals(Constantes.RESPUESTA_CORRECTA));
+				}
+			}
+			if (mostrarRetroalimentacion) {
+				respuestaDTO.setCorrecta(respuesta.getCorrecta());
+			}
 			respuestasDTO.add(respuestaDTO);
 		}
+		Collections.shuffle(respuestasDTO);
 		return respuestasDTO;
 	}
 }

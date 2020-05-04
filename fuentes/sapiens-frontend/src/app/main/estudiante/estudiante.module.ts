@@ -14,6 +14,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FuseConfirmDialogModule, FuseWidgetModule } from '@fuse/components';
@@ -25,8 +26,6 @@ import { MisPruebasComponent } from './mis-pruebas/mis-pruebas.component';
 import { PruebaListComponent } from './mis-pruebas/prueba-list/prueba-list.component';
 import { PruebaComponent } from './mis-pruebas/prueba/prueba.component';
 import { ResumenPruebaComponent } from './mis-pruebas/resumen-prueba/resumen-prueba.component';
-
-
 
 @NgModule({
   declarations: [MisPruebasComponent, PruebaListComponent, ResumenPruebaComponent, PruebaComponent],
@@ -53,6 +52,7 @@ import { ResumenPruebaComponent } from './mis-pruebas/resumen-prueba/resumen-pru
     MatCheckboxModule,
     MatSliderModule,
     FooterModule,
+    MatStepperModule,
 
     FuseSharedModule,
     FuseWidgetModule,

@@ -5,7 +5,9 @@ export const global = {
     //TIPOS DE VALIDACIONES DE PERMISOS PARA ACCEDER A RUTAS
     GUARDS: {
         NO_AUTH: 'NO_AUTH',
-        AUTH: 'AUTH'
+        AUTH: 'AUTH',
+        ESTUDIANTE: 'ESTUDIANTE',
+        PROFESOR: 'PROFESOR'
     },
 
     SESSION_ITEMS: {

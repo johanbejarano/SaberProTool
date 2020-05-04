@@ -61,11 +61,10 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                     <div>
                         <div class="h3 mb-24">Tiempo disponible:</div>
-                        <mat-slider class="example-margin" formControlName="duracion" [min]="0" [max]="prueba.tiempo"></mat-slider>
+                        <mat-slider class="example-margin" formControlName="duracion" [min]="0" [max]="prueba.tiempo">
+                        </mat-slider>
                         {{form.controls.duracion.value | number}} Minutos
                     </div>
-
-
                 </div>
                 <!--DURACION DE LA PRUEBA-->
 
@@ -74,8 +73,9 @@
 
                     <mat-form-field fxFlex="40">
                         <mat-label>Módulos</mat-label>
-                        <mat-select >
-                            <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.moduId" disabled>{{modulo.nombre}}
+                        <mat-select>
+                            <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.moduId" disabled>
+                                {{modulo.nombre}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -90,17 +90,21 @@
 
 
         <div fxLayout="row" fxLayoutAlign="center center">
-            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'PENDIENTE'" mat-raised-button type="button" color="accent" (click)="iniciarPrueba()">
+            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'PENDIENTE'" mat-raised-button type="button"
+                color="accent" (click)="iniciarPrueba()">
                 Iniciar prueba
             </button>
-            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'INICIADA'" mat-raised-button type="button" color="accent" (click)="irAPrueba()">
+            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'INICIADA'" mat-raised-button type="button"
+                color="accent" (click)="irAPrueba()">
                 Continuar prueba
             </button>
-            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'PAUSADA'" mat-raised-button type="button" color="accent" (click)="iniciarPrueba()">
+            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'PAUSADA'" mat-raised-button type="button" color="accent"
+                (click)="iniciarPrueba()">
                 Continuar prueba
             </button>
 
-            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'FINALIZADA'" mat-raised-button type="button" color="accent" (click)="irAPrueba()">
+            <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'FINALIZADA'" mat-raised-button type="button"
+                color="accent" (click)="irAPrueba()">
                 Ver prueba
             </button>
         </div>

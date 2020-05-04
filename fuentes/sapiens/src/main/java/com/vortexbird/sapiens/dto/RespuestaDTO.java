@@ -29,6 +29,7 @@ public class RespuestaDTO implements Serializable {
     private Long usuCreador;
     private Long usuModificador;
     private Integer pregId_Pregunta;
+    private Boolean esCorrecta;
 
     public Long getCorrecta() {
         return correcta;
@@ -108,6 +109,14 @@ public class RespuestaDTO implements Serializable {
 
     public void setPregId_Pregunta(Integer pregId_Pregunta) {
         this.pregId_Pregunta = pregId_Pregunta;
+    }
+
+    public Boolean getEsCorrecta() {
+        return esCorrecta;
+    }
+
+    public void setEsCorrecta(Boolean esCorrecta) {
+        this.esCorrecta = esCorrecta;
     }
 
     @Override

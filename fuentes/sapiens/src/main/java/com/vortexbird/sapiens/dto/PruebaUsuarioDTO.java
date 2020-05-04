@@ -27,26 +27,34 @@ public class PruebaUsuarioDTO implements Serializable {
     private Integer prueId;
     private Integer usuaId_Usuario;
 
+    private Long totalPreguntas;
+    private Long totalRespuestasCorrectas;
+
     private String tipoPrueba;
     private Date fechaInicial;
     private Date fechaFinal;
+    private Date fechaInicio;
     private Long tiempoDisponible;
     private String propietario;
     private String nombreEstadoPrueba;
 
-    public PruebaUsuarioDTO(){
+    public PruebaUsuarioDTO() {
         super();
     }
 
-    public PruebaUsuarioDTO(Integer prusId, Integer prueId, String tipoPrueba, Date fechaInicial, Date fechaFinal, Long tiempoDisponible, String propietario, String nombreEstadoPrueba){
+    public PruebaUsuarioDTO(Integer prusId, Integer prueId, String tipoPrueba, Date fechaInicial, Date fechaFinal,
+            Date fechaInicio, Long tiempoDisponible, String propietario, String nombreEstadoPrueba, Long totalPreguntas, Long totalRespuestasCorrectas) {
         this.prusId = prusId;
         this.prueId = prueId;
         this.tipoPrueba = tipoPrueba;
         this.fechaInicial = fechaInicial;
         this.fechaFinal = fechaFinal;
+        this.fechaInicio = fechaInicio;
         this.tiempoDisponible = tiempoDisponible;
         this.propietario = propietario;
         this.nombreEstadoPrueba = nombreEstadoPrueba;
+        this.totalPreguntas = totalPreguntas;
+        this.totalRespuestasCorrectas = totalRespuestasCorrectas;
     }
 
     public String getEstadoRegistro() {
@@ -145,6 +153,14 @@ public class PruebaUsuarioDTO implements Serializable {
         this.fechaFinal = fechaFinal;
     }
 
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
     public Long getTiempoDisponible() {
         return tiempoDisponible;
     }
@@ -167,6 +183,22 @@ public class PruebaUsuarioDTO implements Serializable {
 
     public void setNombreEstadoPrueba(String nombreEstadoPrueba) {
         this.nombreEstadoPrueba = nombreEstadoPrueba;
+    }
+
+    public Long getTotalPreguntas() {
+        return this.totalPreguntas;
+    }
+
+    public void setTotalPreguntas(Long totalPreguntas) {
+        this.totalPreguntas = totalPreguntas;
+    }
+
+    public Long getTotalRespuestasCorrectas() {
+        return this.totalRespuestasCorrectas;
+    }
+
+    public void setTotalRespuestasCorrectas(Long totalRespuestasCorrectas) {
+        this.totalRespuestasCorrectas = totalRespuestasCorrectas;
     }
 
     @Override

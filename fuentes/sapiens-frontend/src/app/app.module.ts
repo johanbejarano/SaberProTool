@@ -1,11 +1,12 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Routes } from '@angular/router';
 import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -15,19 +16,15 @@ import { fuseConfig } from 'app/fuse-config';
 import { LayoutModule } from 'app/layout/layout.module';
 import 'hammerjs';
 import { routing } from './app.routing';
-
-const appRoutes: Routes = [
-    {
-        path      : '**',
-        redirectTo: 'sample'
-    }
-];
+import { AppInterceptor } from './utils/app-interceptor';
+import { AuthGuard } from './utils/guards/auth.guard';
+import { getSpanishPaginatorIntl } from './utils/spanish-paginator-intl';
 
 @NgModule({
     declarations: [
         AppComponent
     ],
-    imports     : [
+    imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
@@ -41,6 +38,7 @@ const appRoutes: Routes = [
         // Material
         MatButtonModule,
         MatIconModule,
+        MatSnackBarModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -52,10 +50,14 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
     ],
-    bootstrap   : [
+    bootstrap: [
         AppComponent
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
+        { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
+        AuthGuard
     ]
 })
-export class AppModule
-{
+export class AppModule {
 }

@@ -3,3 +3,36 @@
 
 // Import app.theme.scss
 @import "app/app.theme";
+
+.reloj{
+    font-size: 50px;
+    font-weight: bold; 
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
+.encabezadoReloj{
+    font-size: 30px;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.displayBlock{
+    display: block;
+}
+
+.respuestaCorrecta label{
+    border: solid green 2px;
+    width: 100%;
+}
+
+.respuestaIncorrecta label{
+    border: solid red 2px;
+    width: 100%;
+}
+
+.mat-checkbox-inner-container{
+    margin-left: 8px !important;
+}

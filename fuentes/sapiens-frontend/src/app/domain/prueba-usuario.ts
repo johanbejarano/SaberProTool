@@ -6,6 +6,7 @@ export class PruebaUsuario {
     tipoPrueba: string;
     fechaInicial: Date;
     fechaFinal: Date;
+    fechaInicio: Date;
     tiempoDisponible: number;
     propietario: string;
     nombreEstadoPrueba: string;

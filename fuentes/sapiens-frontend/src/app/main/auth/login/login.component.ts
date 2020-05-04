@@ -95,6 +95,8 @@ export class LoginComponent implements OnInit {
                 this.localStorage.putInLocal(global.SESSION_ITEMS.USUARIO, usuario);
                 this.bloquear = false;
             }, error => {
+                console.log(error);
+                
                 this.snackBar.open('No se encuentra el usuario. Intente de nuevo', 'x', { verticalPosition: 'top', duration: 10000 });
                 this.bloquear = false;
             });
