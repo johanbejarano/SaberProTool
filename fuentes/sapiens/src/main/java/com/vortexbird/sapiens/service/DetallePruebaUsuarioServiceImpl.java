@@ -2,6 +2,7 @@ package com.vortexbird.sapiens.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -317,6 +318,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				DetallePruebaUsuarioDTO detallePruebaUsuarioDTO = new DetallePruebaUsuarioDTO();
 				detallePruebaUsuarioDTO.setDpruId(detallePruebaUsuario.getDpruId());
 				detallePruebaUsuarioDTO.setPregId(detallePruebaUsuario.getPregunta().getPregId());
+				detallePruebaUsuarioDTO.setNombreModulo(detallePruebaUsuario.getPregunta().getModulo().getNombre());
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
 				if (mostrarRetroalimentacion) {
 					detallePruebaUsuarioDTO
@@ -331,6 +333,14 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				detallePruebaUsuarioDTO.setRespuestas(respuestas);
 				preguntasDTO.add(detallePruebaUsuarioDTO);
 			}
+
+			preguntasDTO.sort(new Comparator<DetallePruebaUsuarioDTO>() {
+				@Override
+				public int compare(DetallePruebaUsuarioDTO p1, DetallePruebaUsuarioDTO p2) {
+					return p2.getNombreModulo().compareTo(p1.getNombreModulo());
+				}
+			});
+
 			return preguntasDTO;
 		} catch (Exception e) {
 			log.error("Error en getRespuestasCorrectas", e);

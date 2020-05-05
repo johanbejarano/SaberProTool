@@ -6,6 +6,7 @@ export class DetallePruebaUsuario {
     respId: number;
     usuCreador: number;
 
+    nombreModulo: string;
     descripcionPregunta: string;
     retroalimentacionPregunta: Date;
     respuestas: Respuesta[];

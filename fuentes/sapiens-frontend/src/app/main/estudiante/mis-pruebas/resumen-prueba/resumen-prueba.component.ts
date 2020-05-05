@@ -84,7 +84,7 @@ export class ResumenPruebaComponent implements OnInit {
     let fechaInicial = new Date(this.prueba.fechaInicial);
     let fechaFinal = new Date(this.prueba.fechaFinal);
     
-    if(fecha.getTime() < fechaInicial.getTime() || fecha.getTime() > fechaFinal.getTime()){
+    if(fecha.getTime() < fechaInicial.getTime()){
       this.snackBar.open('La prueba no se encuentra en tiempos para iniciar', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }

@@ -29,6 +29,7 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private Integer pregId;
     private Integer prusId;
     private Integer respId;
+    private String nombreModulo;
     private String descripcionPregunta;
     private String retroalimentacionPregunta;
     private List<RespuestaDTO> respuestas;
@@ -119,6 +120,14 @@ public class DetallePruebaUsuarioDTO implements Serializable {
 
     public void setRetroalimentacionPregunta(String retroalimentacionPregunta) {
         this.retroalimentacionPregunta = retroalimentacionPregunta;
+    }
+
+    public String getNombreModulo() {
+        return nombreModulo;
+    }
+
+    public void setNombreModulo(String nombreModulo) {
+        this.nombreModulo = nombreModulo;
     }
 
     public List<RespuestaDTO> getRespuestas() {

@@ -15,8 +15,8 @@ export class PruebaUsuarioService {
     this.url = environment.URL + 'pruebaUsuario/';
   }
 
-  public getPruebas(usuaId: number): Observable<any> {
-    return this.httpClient.get(this.url + 'getPruebas/' + usuaId);
+  public getPruebas(usuaId: number, prusId: number): Observable<any> {
+    return this.httpClient.get(this.url + 'getPruebas/' + usuaId + '/' + prusId);
   }
 
   public iniciarPrueba(pruebaUsuario: PruebaUsuario): Observable<any> {

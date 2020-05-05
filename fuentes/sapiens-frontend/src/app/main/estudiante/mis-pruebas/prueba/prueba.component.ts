@@ -68,9 +68,15 @@ export class PruebaComponent implements OnInit {
         request.prusId = this.pruebaUsuario.prusId;
         request.usuCreador = this.usuario.usuaId;
         this.pruebaUsuarioService.finalizarPrueba(request).subscribe(() => {
-          this.pruebaUsuario.nombreEstadoPrueba = 'FINALIZADA';
-          this.localStorage.putInLocal('pruebaUsuario', this.pruebaUsuario);
-          this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 })
+          this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, -1).subscribe((pruebas: PruebaUsuario[]) => {
+            let prueba = pruebas[0];
+            this.pruebaUsuario = prueba;
+            this.localStorage.putInLocal('pruebaUsuario', prueba);
+            this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 });
+            this.getPreguntas();
+          }, error => {
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+          });
         });
       }
       this.horas = 0;
@@ -122,9 +128,38 @@ export class PruebaComponent implements OnInit {
           request.prusId = this.pruebaUsuario.prusId;
           request.usuCreador = this.usuario.usuaId;
           this.pruebaUsuarioService.finalizarPrueba(request).subscribe(() => {
-            this.pruebaUsuario.nombreEstadoPrueba = 'FINALIZADA';
-            this.localStorage.putInLocal('pruebaUsuario', this.pruebaUsuario);
-            this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 })
+            this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, -1).subscribe((pruebas: PruebaUsuario[]) => {
+              let prueba = pruebas[0];
+              this.pruebaUsuario = prueba;
+              this.localStorage.putInLocal('pruebaUsuario', prueba);
+              this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 });
+              this.getPreguntas();
+            }, error => {
+              this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+            });
+          });
+        }
+        confirmDialogRef = null;
+      });
+    }
+  }
+
+  pausarPrueba() {
+    if (this.preguntas) {
+      let confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+        disableClose: false
+      });
+
+      confirmDialogRef.componentInstance.confirmMessage = '¿Está seguro de pausar la prueba?';
+
+      confirmDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          let request: PruebaUsuario = new PruebaUsuario();
+          request.prusId = this.pruebaUsuario.prusId;
+          request.usuCreador = this.usuario.usuaId;
+          this.pruebaUsuarioService.pausarPrueba(request).subscribe(() => {
+            this.snackBar.open('Se ha pausado la prueba', 'x', { verticalPosition: 'top', duration: 100000 })
+            this.router.navigate(['/estudiante']);
           });
         }
         confirmDialogRef = null;

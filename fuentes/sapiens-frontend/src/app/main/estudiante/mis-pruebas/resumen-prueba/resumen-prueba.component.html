@@ -30,11 +30,15 @@
                         <input matInput formControlName="fechaFinal">
                     </mat-form-field>
 
-                    <div fxFlex="100" class="px-8">
+                    <div fxFlex="50" class="px-8">
                         <div class="h3 mb-24">Tiempo disponible:</div>
                         <mat-slider class="example-margin" formControlName="duracion" [min]="0" [max]="prueba.tiempo">
                         </mat-slider>
                         {{form.controls.duracion.value | number}} Minutos
+                    </div>
+
+                    <div fxFlex="50" class="px-8">
+                        <span class="encabezadoReloj" *ngIf="pruebaUsuario.totalRespuestasCorrectas !== undefined && pruebaUsuario.totalRespuestasCorrectas !== null">Resultado: {{pruebaUsuario.totalRespuestasCorrectas + '/' + pruebaUsuario.totalPreguntas}}</span>
                     </div>
                     <!--DURACION DE LA PRUEBA-->
 

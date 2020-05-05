@@ -193,7 +193,7 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<PruebaUsuarioDTO> getPruebas(Long usuaId) throws Exception {
+	public List<PruebaUsuarioDTO> getPruebas(Long usuaId, Long prusId) throws Exception {
 		try {
 			// Se consulta el usuario
 			Optional<Usuario> usuario = usuarioService.findById(usuaId.intValue());
@@ -201,7 +201,11 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 				throw new Exception("No se encontró el usuario o no se encuentra activo");
 			}
 
-			List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioRepository.findByUsuario(usuario.get().getUsuaId(), Constantes.ESTADO_ACTIVO);
+			if(prusId == null){
+				prusId = -1L;
+			}
+
+			List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioRepository.findByUsuario(usuario.get().getUsuaId(), prusId.intValue(), Constantes.ESTADO_ACTIVO);
 			return pruebasUsuario;
 		} catch (Exception e) {
 			log.error("Error en getPruebas", e);
@@ -239,8 +243,11 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			if (prueba.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
 				throw new Exception("La prueba ha sido cancelada");
 			}
-			if (prueba.getFechaInicial().after(fecha) || prueba.getFechaFinal().before(fecha)) {
+			if (prueba.getFechaInicial().after(fecha)){
 				throw new Exception("La prueba no se encuentra disponible para comenzar");
+			}
+			if (prueba.getFechaFinal().before(fecha)){
+				throw new Exception("Se terminó el tiempo de la prueba");
 			}
 
 			// Si la prueba apenas se va a iniciar, se construye el cuestionario

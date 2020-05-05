@@ -16,6 +16,9 @@
                                     <span class="encabezadoReloj">Tiempo restante:</span>
                                     <span class="reloj">{{horas | number : '2.0'}} - {{minutos | number : '2.0'}} -
                                         {{segundos | number : '2.0'}}</span>
+                                    <span class="encabezadoReloj"
+                                        *ngIf="pruebaUsuario.totalRespuestasCorrectas !== undefined && pruebaUsuario.totalRespuestasCorrectas !== null">Resultado:
+                                        {{pruebaUsuario.totalRespuestasCorrectas + '/' + pruebaUsuario.totalPreguntas}}</span>
                                 </div>
                             </div>
 
@@ -25,6 +28,9 @@
 
                                     <mat-step *ngFor="let pregunta of preguntas">
                                         <div fxFlex="1 0 auto" fxLayout="column">
+                                            <div class="h3">Modulo: <span
+                                                    class="h4 color1">{{pregunta.nombreModulo}}</span></div>
+                                            <mat-divider></mat-divider>
                                             <div [innerHTML]="pregunta.descripcionPregunta"></div>
                                         </div>
                                         <mat-divider></mat-divider>
@@ -41,12 +47,22 @@
 
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100"
                                 fxLayoutAlign="end center">
-                                <div fxFlex="50" fxFlex.xs="0"></div>
-                                <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'INICIADA'" fxFlex="50"
-                                    fxFlex.xs="100" mat-stroked-button type="button" class="btnPrimario"
-                                    (click)="finalizarPrueba()">
-                                    Finalizar prueba
-                                </button>
+                                <div fxFlex="50">
+                                    <button
+                                        *ngIf="pruebaUsuario.nombreEstadoPrueba == 'INICIADA' && pruebaUsuario.tipoPrueba == 'ENTRENAMIENTO'"
+                                        fxFlex="100" mat-stroked-button type="button" class="btnPrimario mx-8"
+                                        (click)="pausarPrueba()">
+                                        Pausar prueba
+                                    </button>
+
+                                </div>
+                                <div fxFlex="50">
+                                    <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'INICIADA'" fxFlex="100"
+                                        mat-stroked-button type="button" class="btnPrimario mx-8"
+                                        (click)="finalizarPrueba()">
+                                        Finalizar prueba
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </fuse-widget>

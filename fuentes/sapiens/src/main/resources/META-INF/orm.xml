@@ -96,7 +96,8 @@
 				inner join estado_prueba espr on espr.espr_id = prus.espr_id
 				inner join usuario usua on usua.usua_id = prue.usu_creador
 				inner join tipo_prueba tipr on tipr.tipr_id = prue.tipr_id
-				where prus.usua_id = :pUsuaId
+				where ((:pPrusId != -1 AND prus.prus_id = :pPrusId) OR :pPrusId = -1)
+					and prus.usua_id = :pUsuaId
 					and prus.estado_registro = :pEstado
 					and prue.estado_registro = :pEstado
 	        ]]>

@@ -19,5 +19,5 @@ public interface PruebaUsuarioService extends GenericService<PruebaUsuario, Inte
     
 	void finalizarPrueba(Integer prusId, Long usuario) throws Exception;
 
-	List<PruebaUsuarioDTO> getPruebas(Long usuaId) throws Exception;
+	List<PruebaUsuarioDTO> getPruebas(Long usuaId, Long prusId) throws Exception;
 }

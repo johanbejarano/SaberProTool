@@ -70,7 +70,7 @@ public class PruebaUsuarioServiceTest {
     @Test
     @DisplayName("findByUsuario")
     public void findByUsuario() throws Exception {
-        List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioService.getPruebas(2L);
+        List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioService.getPruebas(2L, -1L);
         for (PruebaUsuarioDTO pruebaUsuario : pruebasUsuario) {
             log.info("" + pruebaUsuario.getPrusId());
         }

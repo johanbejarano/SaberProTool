@@ -114,10 +114,10 @@ public class PruebaUsuarioRestController {
         return ResponseEntity.ok().body(pruebaUsuarioService.count());
     }
 
-    @GetMapping(value = "/getPruebas/{usuaId}")
-    public ResponseEntity<?> getPruebas(@PathVariable("usuaId") Long usuaId) {
+    @GetMapping(value = "/getPruebas/{usuaId}/{prusId}")
+    public ResponseEntity<?> getPruebas(@PathVariable("usuaId") Long usuaId, @PathVariable("prusId") Long prusId) {
         try {
-            List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioService.getPruebas(usuaId);
+            List<PruebaUsuarioDTO> pruebasUsuario = pruebaUsuarioService.getPruebas(usuaId, prusId);
             return ResponseEntity.ok().body(pruebasUsuario);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -132,6 +132,14 @@ public class PruebaUsuarioRestController {
             pruebaUsuarioService.iniciarPrueba(pruebaUsuarioDTO.getPrusId(), pruebaUsuarioDTO.getUsuCreador());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            if (e.getMessage().equals("Se terminó el tiempo de la prueba")) {
+                try {
+                    pruebaUsuarioService.finalizarPrueba(pruebaUsuarioDTO.getPrusId(),
+                            pruebaUsuarioDTO.getUsuCreador());
+                } catch (Exception ex) {
+                    return ResponseEntity.badRequest().body(ex.getMessage());
+                }
+            }
             log.error(e.getMessage(), e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }

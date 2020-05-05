@@ -16,5 +16,5 @@ import org.springframework.data.repository.query.Param;
 */
 public interface PruebaUsuarioRepository extends JpaRepository<PruebaUsuario, Integer> {
     @Query(nativeQuery = true)
-    List<PruebaUsuarioDTO> findByUsuario(@Param("pUsuaId") Integer usuaId, @Param("pEstado") String estado);
+    List<PruebaUsuarioDTO> findByUsuario(@Param("pUsuaId") Integer usuaId, @Param("pPrusId") Integer prusId, @Param("pEstado") String estado);
 }
