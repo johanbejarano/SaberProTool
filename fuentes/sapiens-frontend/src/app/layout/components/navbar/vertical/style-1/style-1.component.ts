@@ -7,7 +7,11 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-
+import { LocalStorageService } from 'app/services/local-storage.service';
+import { Usuario } from 'app/domain/usuario';
+import { UsuarioService } from 'app/services/usuario.service';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { locale as espanol} from '../../i18n/es';
 @Component({
     selector     : 'navbar-vertical-style-1',
     templateUrl  : './style-1.component.html',
@@ -18,6 +22,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
+
+    usuario: Usuario;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -35,9 +41,14 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseSidebarService: FuseSidebarService,
-        private _router: Router
+        private _router: Router,
+        private localStorage: LocalStorageService,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        private usuarioService: UsuarioService
     )
     {
+        this._fuseTranslationLoaderService.loadTranslations(espanol);
+        this.usuario = this.usuarioService.getUsuario();
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -149,5 +160,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     toggleSidebarFolded(): void
     {
         this._fuseSidebarService.getSidebar('navbar').toggleFold();
+    }
+
+    logout(){
+        this.localStorage.clearLocal();
+        this._router.navigate(["/auth/login"]);
     }
 }

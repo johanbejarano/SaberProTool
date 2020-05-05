@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-b
     styleUrls    : ['./progress-bar.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FuseProgressBarComponent implements OnInit, OnDestroy
+export class FuseProgressBarComponent implements AfterViewChecked, OnDestroy
 {
     bufferValue: number;
     mode: 'determinate' | 'indeterminate' | 'buffer' | 'query';
@@ -26,7 +26,8 @@ export class FuseProgressBarComponent implements OnInit, OnDestroy
      * @param {FuseProgressBarService} _fuseProgressBarService
      */
     constructor(
-        private _fuseProgressBarService: FuseProgressBarService
+        private _fuseProgressBarService: FuseProgressBarService,
+        private cdRef: ChangeDetectorRef
     )
     {
         // Set the defaults
@@ -42,7 +43,7 @@ export class FuseProgressBarComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
+    ngAfterViewChecked(): void
     {
         // Subscribe to the progress bar service properties
 
@@ -72,6 +73,7 @@ export class FuseProgressBarComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((visible) => {
                 this.visible = visible;
+                this.cdRef.detectChanges();
             });
 
     }

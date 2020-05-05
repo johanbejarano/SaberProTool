@@ -1,42 +1,51 @@
 <div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
 
     <div class="logo">
-        <img class="logo-icon" src="assets/images/logos/fuse.svg">
-        <span class="logo-text secondary-text">FUSE</span>
+        <img class="logo-text" src="assets/images/logos/Logo_tg_header.png">
+        <img class="logo-icon" src="assets/images/logos/Logo.icon.png">
     </div>
 
     <div class="buttons">
 
-        <button mat-icon-button class="toggle-sidebar-folded"
-                (click)="toggleSidebarFolded()" fxHide.lt-lg>
+        <button mat-icon-button class="toggle-sidebar-folded" (click)="toggleSidebarFolded()" fxHide.lt-lg>
             <mat-icon class="secondary-text">menu</mat-icon>
         </button>
 
-        <button mat-icon-button class="toggle-sidebar-opened"
-                (click)="toggleSidebarOpened()" fxHide.gt-md>
+        <button mat-icon-button class="toggle-sidebar-opened" (click)="toggleSidebarOpened()" fxHide.gt-md>
             <mat-icon class="secondary-text">arrow_back</mat-icon>
         </button>
-
     </div>
-
 </div>
 
 
-<div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
-     fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+<div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground" fusePerfectScrollbar
+    [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
 
     <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
 
-        <div class="h3 username">Charlie Adams</div>
-        <div class="h5 email hint-text mt-8">adams.charlie@mail.com</div>
-        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
-            <img class="avatar" src="assets/images/avatars/Velazquez.jpg">
+        <div class="h3 username" *ngIf="usuario">{{usuario.nombre + ' ' + usuario.apellido}}</div>
+        <div class="avatar-container">
+            <img class="avatar" src="assets/images/logos/iconoperson.png">
         </div>
 
     </div>
 
-    <div class="navbar-content">
-        <fuse-navigation class="material2" layout="vertical"></fuse-navigation>
+    <div class="navbar-content" fxLayout="column">
+        <fuse-navigation fxLayout="column" class="material2" layout="vertical"></fuse-navigation>
+
+        <div fxLayoutAlign="end center" fxLayout="column" fxFlex="100" class="py-20">
+            <button mat-raised-button class="btn-color" class="submit-button btnlogin mb-8" aria-label="LOG IN"
+                (click)="logout()">
+                <mat-icon class="s-30 secondary-text">exit_to_app</mat-icon>
+                <div class="btn-text">{{'lbl.logout' | translate}}</div>
+            </button>
+            <mat-divider></mat-divider>
+            <div class="logo-vortexbird pt-12">
+                <a href="https://www.vortexbird.com">
+                    <img src="assets/images/logos/Vortexbird.png">
+                </a>
+            </div>
+        </div>
     </div>
 
 </div>

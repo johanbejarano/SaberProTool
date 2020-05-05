@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from './local-storage.service';
-import { global } from 'app/utils/global';
 import { Usuario } from 'app/domain/usuario';
+import { global } from 'app/utils/global';
 import { environment } from 'environments/environment';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +45,4 @@ export class UsuarioService {
     }
     return this.httpClient.get(this.url + 'getUsuariosPorTipo/'+tiusId+"/"+filtro+"/"+pageNumber+"/"+pageSize);
   }
-
 }

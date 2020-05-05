@@ -6,14 +6,15 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { FuseNavigation } from '@fuse/types';
 import { TranslateService } from '@ngx-translate/core';
-import { locale as navigationEnglish } from 'app/navigation/i18n/en';
-import { locale as navigationSpanish } from 'app/navigation/i18n/es';
-import { navigation, navigationEstudiante, navigationProfesor } from 'app/navigation/navigation';
+import { locale as espanol } from 'app/navigation/i18n/es';
+import { navigation, navigationDirector, navigationEstudiante, navigationProfesor } from 'app/navigation/navigation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Usuario } from './domain/usuario';
 import { UsuarioService } from './services/usuario.service';
+import { global } from './utils/global';
 
 
 
@@ -24,7 +25,7 @@ import { UsuarioService } from './services/usuario.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
     fuseConfig: any;
-    navigation: any;
+    navigation: FuseNavigation[];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private _platform: Platform,
-        private _usuarioService: UsuarioService
+        private usuarioService: UsuarioService
     ) {
         // Get default navigation
         this.navigation = navigation;
@@ -58,11 +59,18 @@ export class AppComponent implements OnInit, OnDestroy {
         // Register the navigation to the service
         this._fuseNavigationService.register('main', this.navigation);
         this._fuseNavigationService.register('profesor', navigationProfesor);
+        this._fuseNavigationService.register('director', navigationDirector);
         this._fuseNavigationService.register('estudiante', navigationEstudiante);
 
         // Set the main navigation as our current navigation
         this._fuseNavigationService.setCurrentNavigation('main');
 
+        /*         // Register the navigation to the service
+                this._fuseNavigationService.register('main', this.navigation);
+        
+                // Set the main navigation as our current navigation
+                this._fuseNavigationService.setCurrentNavigation('main');
+         */
         // Add languages
         this._translateService.addLangs(['es']);
 
@@ -70,10 +78,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this._translateService.setDefaultLang('es');
 
         // Set the navigation translations
-        this._fuseTranslationLoaderService.loadTranslations(navigationSpanish, navigationEnglish);
+        this._fuseTranslationLoaderService.loadTranslations(espanol);
 
         // Use a language
-        this._translateService.use('en');
+        this._translateService.use('es');
 
         /**
          * ----------------------------------------------------------------------------------------------------
@@ -152,12 +160,16 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
 
-        const usuario: Usuario = this._usuarioService.getUsuario();
+        const usuario: Usuario = this.usuarioService.getUsuario();
         if (usuario) {
-            if(usuario.tiusId_TipoUsuario == 1){
+            if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
                 this._fuseNavigationService.setCurrentNavigation('profesor');
-            }else if(usuario.tiusId_TipoUsuario == 3){
+            } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.DIRECTOR) {
+                this._fuseNavigationService.setCurrentNavigation('director');
+            } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ESTUDIANTE) {
                 this._fuseNavigationService.setCurrentNavigation('estudiante');
+            } else {
+                this._fuseNavigationService.setCurrentNavigation('main');
             }
         }
     }

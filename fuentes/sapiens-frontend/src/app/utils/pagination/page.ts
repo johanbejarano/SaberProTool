@@ -13,12 +13,12 @@ export class Page {
     public content: Array<any>;
     public pageable: Pageable;
     public last: Boolean;
-    public totalPages: number;
-    public totalElements: number;
-    public size: number;
-    public number: number;
+    public totalPages: Number;
+    public totalElements: Number;
+    public size: Number;
+    public number: Number;
     public sort: Sort;
     public first: Boolean;
-    public numberOfElements: number;
+    public numberOfElements: Number;
     public empty: Boolean;
 }

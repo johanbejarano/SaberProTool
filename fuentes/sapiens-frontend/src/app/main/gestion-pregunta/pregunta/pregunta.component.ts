@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import {locale as espanol} from '../i18n/es';
-import { PreguntaDialogComponent } from './pregunta-dialog/pregunta-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { LocalStorageService } from 'app/services/local-storage.service';
+import { locale as espanol } from '../i18n/es';
 
 
 @Component({
@@ -15,7 +15,8 @@ export class PreguntaComponent implements OnInit {
   actualizar: boolean = true;
 
   constructor(private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-    private dialog: MatDialog) {
+    private localStorage: LocalStorageService,
+    private router: Router) {
     this._fuseTranslationLoaderService.loadTranslations(espanol);
   }
 
@@ -23,12 +24,8 @@ export class PreguntaComponent implements OnInit {
   }
 
   crear(){
-    let dialogRef = this.dialog.open(PreguntaDialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.actualizar = !this.actualizar;
-      }
-    });
+    this.localStorage.removeFromLocal('idPregunta');
+    this.router.navigate(["/gestionPreguntas/registrarPregunta"]);
   }
 
 }

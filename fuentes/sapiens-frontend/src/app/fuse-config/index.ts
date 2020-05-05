@@ -32,11 +32,11 @@ export const fuseConfig: FuseConfig = {
         footer   : {
             customBackgroundColor: true,
             background           : 'fuse-navy-900',
-            hidden               : true,
+            hidden               : false,
             position             : 'below-fixed'
         },
         sidepanel: {
-            hidden  : true,
+            hidden  : false,
             position: 'right'
         }
     }

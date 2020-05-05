@@ -4,6 +4,180 @@
 // Import app.theme.scss
 @import "app/app.theme";
 
+.logo-vortexbird {
+    text-align: center;
+
+    img{
+        width: 150px;
+    }
+}
+
+
+//Tabs
+.mat-tab-label {
+    height: 75px !important; 
+    color: #474747 !important;
+    opacity: 1 !important;
+}
+
+.mat-tab-label-active{
+    color: #474747 !important;
+    background-color: #F2F2F2 !important;
+}
+
+.mat-ink-bar{
+    background-color: #474747 !important;
+}
+
+.color1{
+    color: #F66D02 !important;
+}
+
+.color2{
+    color: #474747 !important;
+}
+
+.mat-expansion-panel-header-description{
+    text-align: end;
+    display: block !important;
+}
+
+.centrarTabla{
+    display: block !important;
+    min-height: initial !important;
+    text-align: center !important;
+}
+
+.fuse-widget-front{
+    display: block !important;
+}
+
+.widget{
+    display: block !important;
+}
+
+.mat-stroked-button{
+    .mat-button-wrapper{
+        white-space: normal;
+        word-wrap: break-word;
+    }
+}
+
+.btnCrear{
+    position: fixed !important;
+    right: 30px;
+    bottom: 40px;
+    z-index: 10;
+}
+
+.btnPrimario{
+    background-color: #474747 !important;
+    color: white !important;
+}
+
+.btnSecundario{
+    background-color: #F66D02 !important;
+    color: white !important;
+}
+
+.mat-dialog-container{
+    padding: 0px !important;
+}
+
+//Titulos de las tarjetas
+.titlecard{
+    background: #474747;
+    color: WHITE;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+//Título principal de pantallas
+.tituloPrincipal{
+    background: #f2f2f2;
+    color: #474747;
+    text-align: center;
+    font-size: 26px;
+    padding: 12px 0;
+}
+
+.btnBusqueda{
+    color: #474747 !important;
+    background: transparent !important;
+    border: 0px !important;
+}
+
+.pagina-principal{
+    > .center {
+        flex: 1;
+            display: block !important;
+        > .content {
+            flex: 1;
+            display: block !important;
+            margin-bottom: 50px;
+        }
+    }
+}
+
+.centrarTabla{
+    display: block !important;
+    min-height: initial !important;
+    text-align: center;
+}
+
+.derechaTabla{
+    display: block !important;
+    min-height: initial !important;
+    text-align: right;
+}
+
+navbar navbar-vertical-style-1 .navbar-top {
+    background: #F7F7F8 !important;
+}
+
+.fuse-navy-900{
+    background-color: #474747 !important;
+}
+
+
+navbar navbar-vertical-style-1 .navbar-scroll-container .navbar-content{
+    background: #F7F7F8;
+}
+
+body.theme-default .accent{
+    background-color: #474747 !important;
+}
+
+navbar navbar-vertical-style-1 .navbar-scroll-container .navbar-content{
+    color: #474747 !important;
+}
+
+toolbar .mat-toolbar{
+    background: #F66D02 !important;
+}
+
+.text{
+    display: block !important;
+}
+.mat-select{
+    padding: 10px 0;
+}
+
+body.theme-default .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #474747 !important;
+}
+.ocultar{
+    display: none !important;
+}
+
+body.theme-default .accent-50{
+    background-color: #F66D02 !important;
+    
+    > .mat-cell{
+        color: white !important;
+    }
+}
+
 .reloj{
     font-size: 50px;
     font-weight: bold; 
@@ -35,4 +209,10 @@
 
 .mat-checkbox-inner-container{
     margin-left: 8px !important;
+}
+
+.mat-checkbox-checked{
+    .mat-checkbox-background{
+        background: #F66D02;
+    }
 }

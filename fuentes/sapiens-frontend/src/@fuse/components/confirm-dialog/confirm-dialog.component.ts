@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-
+import { MatDialogRef } from '@angular/material';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { locale as espanol } from './i18n/es';
 @Component({
     selector   : 'fuse-confirm-dialog',
     templateUrl: './confirm-dialog.component.html',
@@ -9,6 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class FuseConfirmDialogComponent
 {
     public confirmMessage: string;
+    public aceptarCancelar: boolean = true;
 
     /**
      * Constructor
@@ -16,9 +18,10 @@ export class FuseConfirmDialogComponent
      * @param {MatDialogRef<FuseConfirmDialogComponent>} dialogRef
      */
     constructor(
-        public dialogRef: MatDialogRef<FuseConfirmDialogComponent>
-    )
-    {
+        public dialogRef: MatDialogRef<FuseConfirmDialogComponent>,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+    ){
+        this._fuseTranslationLoaderService.loadTranslations(espanol);
     }
 
 }

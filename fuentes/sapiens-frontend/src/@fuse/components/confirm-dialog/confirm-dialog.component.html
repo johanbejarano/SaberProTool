@@ -1,6 +1,22 @@
-<h1 matDialogTitle>Confirm</h1>
-<div mat-dialog-content>{{confirmMessage}}</div>
-<div mat-dialog-actions class="pt-24">
-    <button mat-raised-button class="mat-accent mr-16" (click)="dialogRef.close(true)">Confirm</button>
-    <button mat-button (click)="dialogRef.close(false)">Cancel</button>
+<div id="confirm-dialog" class="dialog-content-wrapper" fxLayout="row wrap" fxFlex="100">
+    <div class="px-16 py-12 titlecard" fxFlex="100">
+        <div class="h3">{{'lbl.confirmar' | translate}}</div>
+    </div>
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+        <div class="px-8" fxFlex="100">
+            {{confirmMessage}}
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100">
+        <div fxFlex="50" class="px-8">
+            <button fxFlex="100" mat-stroked-button (click)="dialogRef.close(false)" class="btnSecundario">
+                {{(aceptarCancelar ? 'lbl.cancelar' : 'lbl.no') | translate}}
+            </button>
+        </div>
+        <div fxFlex="50" class="px-8">
+            <button fxFlex="100" mat-stroked-button (click)="dialogRef.close(true)" class="btnPrimario">
+                {{(aceptarCancelar ? 'lbl.aceptar' : 'lbl.si') | translate}}
+            </button>
+        </div>
+    </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
     autenticar(): void {
         if (this.loginForm.valid) {
             this.bloquear = true;
+
             let parametro = new Usuario();
 
             parametro.codigo = this.loginForm.controls.username.value;
@@ -81,15 +82,18 @@ export class LoginComponent implements OnInit {
 
             this.subscription = this.usuarioService.login(parametro).subscribe((usuario: Usuario) => {
                 console.log(usuario.tiusId_TipoUsuario);
-                if (usuario.tiusId_TipoUsuario == 1) {
+                if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
                     this.router.navigate(['/gestionPreguntas']);
                     this._fuseNavigationService.setCurrentNavigation('profesor');
-                } else if (usuario.tiusId_TipoUsuario == 3) {
+                } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.DIRECTOR) {
+                    this.router.navigate(['/director']);
+                    this._fuseNavigationService.setCurrentNavigation('director');
+                } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ESTUDIANTE) {
                     this.router.navigate(['/estudiante']);
                     this._fuseNavigationService.setCurrentNavigation('estudiante');
                 } else {
                     this.router.navigate(['/init']);
-                    this._fuseNavigationService.setCurrentNavigation('estudiante');
+                    this._fuseNavigationService.setCurrentNavigation('main');
                 }
 
                 this.localStorage.putInLocal(global.SESSION_ITEMS.USUARIO, usuario);

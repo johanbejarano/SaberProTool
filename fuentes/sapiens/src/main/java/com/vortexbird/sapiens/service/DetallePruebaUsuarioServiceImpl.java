@@ -348,7 +348,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			respuestaDTO.setRespId(respuesta.getRespId());
 			respuestaDTO.setDescripcion(respuesta.getDescripcion());
 			respuestaDTO.setRetroalimentacion(respuesta.getRetroalimentacion());
-			respuestaDTO.setEsCorrecta(false);
+			respuestaDTO.setEsCorrecta(null);
 			if (mostrarCorrecto) {
 				if (detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
 					respuestaDTO.setEsCorrecta(respuesta.getCorrecta().equals(Constantes.RESPUESTA_CORRECTA));

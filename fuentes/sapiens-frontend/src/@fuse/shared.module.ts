@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
+import { MatDividerModule, MatIconModule, MatSnackBarModule } from '@angular/material';
 
 @NgModule({
     imports  : [
@@ -22,6 +23,10 @@ import { FusePipesModule } from '@fuse/pipes/pipes.module';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        
+        MatDividerModule,
+        MatIconModule,
+        MatSnackBarModule,
 
         FlexLayoutModule,
 

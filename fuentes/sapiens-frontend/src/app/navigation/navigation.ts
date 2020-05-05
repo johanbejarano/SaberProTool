@@ -14,7 +14,7 @@ export const navigationProfesor: FuseNavigation[] = [
                 title: 'Preguntas',
                 translate: 'NAV.PROFESOR.PREGUNTAS',
                 type: 'item',
-                icon: 'device_unknown',
+                icon: 'question_answer',
                 url: '/gestionPreguntas',
             },
             {
@@ -22,7 +22,52 @@ export const navigationProfesor: FuseNavigation[] = [
                 title: 'Pruebas',
                 translate: 'NAV.PROFESOR.SIMULACION',
                 type: 'item',
-                icon: 'playlist_add_check',
+                icon: 'assignment',
+                url: '/gestionPruebas',
+            },
+
+
+        ]
+    }
+];
+
+export const navigationDirector: FuseNavigation[] = [
+    {
+        id: 'navigationDirector',
+        title: 'Preguntas',
+        translate: 'NAV.APPLICATIONS',
+        type: 'group',
+        children: [
+            {
+                id: 'mnuPreguntas',
+                title: 'Preguntas',
+                translate: 'NAV.DIRECTOR.PREGUNTAS',
+                type: 'item',
+                icon: 'question_answer',
+                url: '/gestionPreguntas',
+            },
+            {
+                id: 'gestionUsuarios',
+                title: 'gestionUsuarios',
+                translate: 'NAV.DIRECTOR.USUARIOS',
+                type: 'item',
+                icon: 'people',
+                url: '/gestionUsuarios',
+            },
+            {
+                id: 'gestionModulos',
+                title: 'gestionModulos',
+                translate: 'NAV.DIRECTOR.MODULOS',
+                type: 'item',
+                icon: 'library_books',
+                url: '/gestionPreguntas',
+            },
+            {
+                id: 'descargarInformes',
+                title: 'descargarInformes',
+                translate: 'NAV.DIRECTOR.INFORMES',
+                type: 'item',
+                icon: 'picture_as_pdf',
                 url: '/gestionPruebas',
             },
 

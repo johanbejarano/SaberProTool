@@ -1,10 +1,10 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Injectable, EventEmitter } from '@angular/core';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {

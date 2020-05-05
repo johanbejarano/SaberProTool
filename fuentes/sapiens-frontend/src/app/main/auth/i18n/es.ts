@@ -2,7 +2,7 @@ export const locale = {
     lang: 'es',
     data: {
         'lbl' : {
-            'username': 'Código',
+            'username': 'Usuario',
             'password': 'Contraseña',
             'login': 'Iniciar Sesión'
         },

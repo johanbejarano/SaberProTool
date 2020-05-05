@@ -4,13 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSnackBarModule, MatProgressBarModule } from '@angular/material';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({

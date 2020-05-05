@@ -1,0 +1,63 @@
+<div fxLayout="row wrap" fxFlex="100">
+    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+        <div class="fuse-widget-front" fxFlex="100">
+            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3">{{'lbl.usuarios' | translate}}</div>
+            </div>
+            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                <form [formGroup]="form" fxFlex="100" (ngSubmit)="applyFilter()">
+                    <mat-form-field class="px-16" fxFlex="100" appearance="outline">
+                        <mat-label>{{'lbl.filtrar' | translate}}</mat-label>
+                        <input matInput fxFlex="90" formControlName="filtro">
+
+                        <button matSuffix class="btnBusqueda" type="submit">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </form>
+                <mat-table #table [dataSource]="datasource" fxFlex="100">
+
+                    <ng-container matColumnDef="usuario">
+                        <mat-header-cell *matHeaderCellDef fxFlex="35" fxFlex.xs="100">
+                            <div class="px-4 h3">{{'lbl.usuario' | translate}}</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="35" fxFlex.xs="100" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia"> {{item.usuario}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="perfil">
+                        <mat-header-cell *matHeaderCellDef fxFlex="55" fxFlex.xs="100">
+                            <div class="px-4 h3">{{'lbl.perfil' | translate}}</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="55" fxFlex.xs="100" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">{{item.perfil}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accion">
+                        <mat-header-cell *matHeaderCellDef fxFlex="10" fxFlex.xs="100">
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="10" fxFlex.xs="100">
+                            <div class="px-4" fxFlex="100">
+                                <button mat-icon-button (click)="onEliminar(item)">
+                                    <mat-icon class="color2">delete</mat-icon>
+                                </button>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                    <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+        </div>
+    </fuse-widget>
+</div>

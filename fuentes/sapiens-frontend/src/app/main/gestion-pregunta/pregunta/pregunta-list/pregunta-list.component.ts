@@ -1,19 +1,18 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { Pregunta } from 'app/domain/pregunta';
 import { Usuario } from 'app/domain/usuario';
+import { LocalStorageService } from 'app/services/local-storage.service';
 import { PreguntaService } from 'app/services/pregunta.service';
 import { UsuarioService } from 'app/services/usuario.service';
-import { locale as espanol } from '../../i18n/es'; 
-import { PreguntaDialogComponent } from '../pregunta-dialog/pregunta-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { LocalStorageService } from 'app/services/local-storage.service';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
+import { locale as espanol } from '../../i18n/es';
 
 @Component({
   selector: 'app-pregunta-list',
@@ -85,16 +84,6 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   }
 
   seleccionar(item: Pregunta) {
-    // let dialogRef = this.dialog.open(PreguntaDialogComponent, {
-    //   data: item
-    // })
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     this.getData();
-    //   }
-    // });
-
     this.localStorage.putInLocal('idPregunta', item.pregId);
 
     this.router.navigate(["/gestionPreguntas/registrarPregunta"]);

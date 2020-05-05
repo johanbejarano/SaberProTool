@@ -6,27 +6,20 @@ export const global = {
     GUARDS: {
         NO_AUTH: 'NO_AUTH',
         AUTH: 'AUTH',
+        PROFESOR: 'PROFESOR',
+        DIRECTOR: 'DIRECTOR',
         ESTUDIANTE: 'ESTUDIANTE',
-        PROFESOR: 'PROFESOR'
     },
 
     SESSION_ITEMS: {
         USUARIO: 'USUARIO'
     },
 
-    VARIABLES: {
+    EXTENSIONES: ["xlsx", "xls"],
 
-        TIPO_USUARIO_PROFESOR: 1,
-        TIPO_USUARIO_ESTUDIANTE: 2,
-
-        ROI: 'ROI',
-        CALIDAD_ROI : 'CARO',
-        PAIS_ORIGEN : 'PAOR',
-        CALIDAD_DATA : 'CADA',
-        EVALUACION_CLIENTE : 'EVCL',
-        CONOCIMIENTO_CLIENTE : 'COCL',
-        CONTACTABILIDAD : 'CONT',
-    },
-
-    EXTENSIONES: ["xlsx", "xls"]
+    TIPOS_USUARIO: {
+        PROFESOR: 1,
+        DIRECTOR: 2,
+        ESTUDIANTE: 3,
+    }
 }

@@ -1,113 +1,59 @@
-<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
-
-    <!-- HEADER -->
-    <div class="header accent p-24 h-80" fxLayout="row" fxLayoutAlign="start center">
-        <div fxLayout="column" fxLayoutAlign="center start">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="secondary-text s-18">home</mat-icon>
-                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                <span class="secondary-text">{{'lbl.preguntas' | translate}}</span>
+<div fxLayout="row wrap" fxFlex="100">
+    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+        <div class="fuse-widget-front" fxFlex="100">
+            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3">Preguntas</div>
             </div>
-            
+            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                <mat-table #table [dataSource]="datasource" fxFlex="100">
+
+                    <!--COLUMNA ID-->
+                    <ng-container matColumnDef="idPregunta">
+                        <mat-header-cell *matHeaderCellDef fxFlex="10">
+                            <div class="px-4 h3">#</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="10" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">{{item.pregId}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!--COLUMNA ID-->
+
+                    <!--COLUMNA MODULO-->
+                    <ng-container matColumnDef="modulo">
+                        <mat-header-cell *matHeaderCellDef fxFlex="20">
+                            <div class="px-4 h3">Módulo</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="20" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">{{item.nombreModulo}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!--COLUMNA MODULO-->
+
+                    <!--COLUMNA DESCRIPCION-->
+                    <ng-container matColumnDef="descripcion">
+                        <mat-header-cell *matHeaderCellDef fxFlex="70">
+                            <div class="px-4 h3">Descripción pregunta</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="70" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">
+                                    {{item.descripcion.length>200?((item.descripcion | slice:0:200)+"..."):item.descripcion}}'</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!--COLUMNA DESCRIPCION-->
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                    <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
         </div>
-    </div>
-    <!-- / HEADER -->
-
-    <!-- CONTENT -->
-    <div class="content p-24">
-
-
-        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
-
-            <!-- REACTIVE FORM -->
-            <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
-                  fxFlex="1 0 auto" name="form" [formGroup]="form">
-                
-                <div class="h2 mb-24">FACULTAD: {{usuario.nombreFacultad}}, PROGRAMA: {{usuario.nombrePrograma}}</div>
-                
-                <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-        
-                    <!--TABLA PREGUNTAS-->
-                    <mat-table #table [dataSource]="datasource" fxFlex="100">
-                        
-                        <!--COLUMNA ID-->
-                        <ng-container matColumnDef="idPregunta">
-                            <mat-header-cell *matHeaderCellDef fxFlex="5" fxFlex.xs="5">
-                                <div class="px-4 h3">#</div>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let item" fxFlex="5" fxFlex.xs="5" (click)="seleccionar(item)">
-                                <div class="px-4" fxFlex="100">
-                                    <span class="referencia">{{item.pregId}}</span>
-                                </div>
-                            </mat-cell>
-                        </ng-container>
-                        <!--COLUMNA ID-->
-
-                        <!--COLUMNA MODULO-->
-                        <ng-container matColumnDef="modulo">
-                            <mat-header-cell *matHeaderCellDef fxFlex="10" fxFlex.xs="10">
-                                <div class="px-4 h3">Módulo</div>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let item" fxFlex="10" fxFlex.xs="10" (click)="seleccionar(item)">
-                                <div class="px-4" fxFlex="100">
-                                    <span class="referencia">{{item.nombreModulo}}</span>
-                                </div>
-                            </mat-cell>
-                        </ng-container>
-                        <!--COLUMNA MODULO-->
-
-                        <!--COLUMNA DESCRIPCION-->
-                        <ng-container matColumnDef="descripcion">
-                            <mat-header-cell *matHeaderCellDef fxFlex="40" fxFlex.xs="40">
-                                <div class="px-4 h3">{{'lbl.pregunta' | translate}}</div>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let item" fxFlex="40" fxFlex.xs="40" (click)="seleccionar(item)">
-                                <div class="px-4" fxFlex="100">
-                                    <span class="referencia"> {{item.descripcion.length>200?((item.descripcion | slice:0:200)+"..."):item.descripcion}}'</span>
-                                    
-                                </div>
-                            </mat-cell>
-                        </ng-container>
-                        <!--COLUMNA DESCRIPCION-->
-                        
-            
-                        <!--COLUMNA DE ACCIONES-->
-                        <!-- <ng-container matColumnDef="accion">
-                            <mat-header-cell *matHeaderCellDef fxFlex="45" fxFlex.xs="45">
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let item" fxFlex="45" fxFlex.xs="45">
-                                <div class="px-4" fxFlex="100">
-                                    <button mat-icon-button (click)="onEliminar(item)">
-                                        <mat-icon class="color2">delete</mat-icon>
-                                    </button>
-                                </div>
-                            </mat-cell>
-                        </ng-container> -->
-                        <!--COLUMNA DE ACCIONES-->
-            
-                        <!--DEFINICION DE COLUMNAS-->
-                        <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
-                        <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
-                        <!--DEFINICION DE COLUMNAS-->
-
-                    </mat-table>
-                    <!--TABLA PREGUNTAS-->
-            
-                    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
-            
-                </div>
-
-            </form>
-            <!-- REACTIVE FORM -->
-
-        </div>
-
-
-    </div>
-
-    
-    <!-- / CONTENT -->
-
+    </fuse-widget>
 </div>
-
-

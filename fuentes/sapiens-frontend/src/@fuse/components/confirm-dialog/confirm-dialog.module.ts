@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule, MatDialogModule } from '@angular/material';
 
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -10,7 +11,9 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
     ],
     imports: [
         MatDialogModule,
-        MatButtonModule
+        MatButtonModule,
+        TranslateModule,
+        FlexModule
     ],
     entryComponents: [
         FuseConfirmDialogComponent

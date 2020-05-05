@@ -41,8 +41,8 @@ export class PruebaComponent implements OnInit {
     this.pruebaUsuario = this.localStorage.getFromLocal('pruebaUsuario');
     this.getPreguntas();
     this.fechaLimite = new Date(new Date(this.pruebaUsuario.fechaInicio).getTime() + (this.pruebaUsuario.tiempoDisponible * 60 * 1000));
-    this.actualizarTiempo();
     this.usuario = this.usuarioService.getUsuario();
+    this.actualizarTiempo();
   }
 
   getPreguntas() {
@@ -65,7 +65,7 @@ export class PruebaComponent implements OnInit {
     const segundos = Math.floor((utc2 - utc1) / 1000);
     const minutos = Math.floor((utc2 - utc1) / (1000 * 60));
     const horas = Math.floor((utc2 - utc1) / (1000 * 60 * 60));
-    if (segundos > 0) {
+    if (segundos > 0 && this.pruebaUsuario.nombreEstadoPrueba !== 'FINALIZADA') {
       this.horas = horas;
       this.minutos = minutos - (horas * 60);
       this.segundos = segundos - (minutos * 60);

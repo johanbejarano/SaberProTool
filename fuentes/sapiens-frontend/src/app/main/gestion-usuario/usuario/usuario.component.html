@@ -1,0 +1,15 @@
+<div id="usuario" class="page-layout simple right-sidebar" fxLayout="row">
+  <div class="center" fusePerfectScrollbar>
+    <div class="tituloPrincipal" fxFlex="100">
+      {{'lbl.administracionUsuario' | translate}}
+    </div>
+    <div class="content">
+      <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
+        <usuario-list [actualizar]="actualizar" fxFlex="100"></usuario-list>
+      </div>
+      <button mat-fab class="btnCrear accent" (click)="crear()">
+        <mat-icon class="icon">add</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

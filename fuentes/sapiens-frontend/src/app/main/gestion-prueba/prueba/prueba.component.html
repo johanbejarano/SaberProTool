@@ -1,19 +1,15 @@
-<div id="usuario" class="page-layout simple right-sidebar" fxLayout="row">
-    <div class="center" fusePerfectScrollbar>
-      
-      <div class="content">
-        <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
-            <app-prueba-list fxFlex="100"></app-prueba-list>
-        </div>
-
-        <!-- <button mat-fab class="btnCrear accent" (click)="crear()">
-          <mat-icon class="icon">add</mat-icon>
-        </button> -->
-
-        <button mat-fab class="btnCrear accent" routerLink="/gestionPruebas/registrarPrueba">
-          <mat-icon class="icon">add</mat-icon>
-        </button>
-
+<div id="usuario" class="pagina-principal page-layout simple right-sidebar" fxLayout="row">
+  <div class="center" fusePerfectScrollbar>
+    <div class="tituloPrincipal" fxFlex="100">
+      Pruebas
+    </div>
+    <div class="content">
+      <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
+        <app-prueba-list fxFlex="100"></app-prueba-list>
       </div>
+      <button mat-fab class="btnCrear accent" (click)="crear()">
+        <mat-icon class="icon">add</mat-icon>
+      </button>
     </div>
   </div>
+</div>

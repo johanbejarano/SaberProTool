@@ -16,12 +16,14 @@ fuse-sidebar {
                         justify-content: center;
 
                         .buttons {
+                            color: rgba(0, 0, 0, 0.54) !important;
                             display: none;
                         }
 
                         .logo {
 
                             .logo-icon {
+                                display: flex;
                                 width: 32px;
                                 height: 32px;
                             }
@@ -46,6 +48,7 @@ fuse-sidebar {
                                 padding: 0;
                                 transform: translateX(0);
                                 left: auto;
+                                background-color: white;
 
                                 .avatar {
                                     width: 40px;
@@ -61,6 +64,10 @@ fuse-sidebar {
 
                         .navbar-content {
                             padding-top: 0;
+
+                            .btn-text{
+                                display: none;
+                            }
 
                             // Material 2 specific style
                             .material2 {
@@ -129,23 +136,20 @@ navbar {
                 display: flex;
                 align-items: center;
 
-                .logo-icon {
-                    width: 24px;
-                    height: 24px;
-                }
-
                 .logo-text {
-                    margin-left: 12px;
-                    font-size: 16px;
-                    font-weight: 300;
-                    letter-spacing: 0.4px;
-                    line-height: normal;
+                    width: 80%;
+                }
+                .logo-icon {
+                    display: none;
                 }
             }
 
             .buttons {
                 display: flex;
                 align-items: center;
+                .mat-icon{
+                    color: #474747 !important;
+                }
             }
         }
 
@@ -173,6 +177,7 @@ navbar {
                 min-height: 136px;
                 max-height: 136px;
                 padding: 24px 0 64px 0;
+                color: white !important;
 
                 .avatar-container {
                     position: absolute;
@@ -181,6 +186,7 @@ navbar {
                     padding: 8px;
                     transform: translateX(-50%);
                     left: 50%;
+                    background-color: #F7F7F8;
 
                     .avatar {
                         width: 72px;
@@ -193,6 +199,10 @@ navbar {
             .navbar-content {
                 flex: 1 1 auto;
                 padding-top: 32px;
+
+                .btn-text{
+                    display: inline;
+                }
             }
         }
     }

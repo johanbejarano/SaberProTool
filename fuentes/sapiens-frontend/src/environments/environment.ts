@@ -7,9 +7,8 @@ export const environment = {
     hmr       : false,
 
     URL: 'http://localhost:9090/api/',
-    URL_SEG: 'http://localhost:8080/security-system-service/api/',
-
     URL_CKEDITOR_UPLOAD: 'http://localhost:9090/api/public/upload'
+
 };
 
 /*
