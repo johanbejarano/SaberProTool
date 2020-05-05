@@ -81,7 +81,6 @@ export class LoginComponent implements OnInit {
             parametro.password = this.loginForm.controls.password.value;
 
             this.subscription = this.usuarioService.login(parametro).subscribe((usuario: Usuario) => {
-                console.log(usuario.tiusId_TipoUsuario);
                 if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
                     this.router.navigate(['/gestionPreguntas']);
                     this._fuseNavigationService.setCurrentNavigation('profesor');
@@ -99,8 +98,6 @@ export class LoginComponent implements OnInit {
                 this.localStorage.putInLocal(global.SESSION_ITEMS.USUARIO, usuario);
                 this.bloquear = false;
             }, error => {
-                console.log(error);
-                
                 this.snackBar.open('No se encuentra el usuario. Intente de nuevo', 'x', { verticalPosition: 'top', duration: 10000 });
                 this.bloquear = false;
             });

@@ -19,7 +19,7 @@
 	        	usu_creador usuCreador, usu_modificador usuModificador, estado_registro estadoRegistro, 
 	        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
 				FROM usuario
-				WHERE tius_id = :pTiusId 
+				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 					  AND (UPPER(codigo) LIKE UPPER(:pFiltro) OR identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(nombre) LIKE UPPER(:pFiltro) 
 					  OR UPPER(apellido) LIKE UPPER(:pFiltro) OR UPPER(correo) LIKE UPPER(:pFiltro))					
 	        ]]>
@@ -39,7 +39,7 @@
 		        	usu_creador usuCreador, usu_modificador usuModificador, estado_registro estadoRegistro, 
 		        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
 					FROM usuario
-					WHERE tius_id = :pTiusId 
+					WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 						AND (UPPER(codigo) LIKE UPPER(:pFiltro) OR identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(nombre) LIKE UPPER(:pFiltro) 
 					  	OR UPPER(apellido) LIKE UPPER(:pFiltro) OR UPPER(correo) LIKE UPPER(:pFiltro))			
 				) Q		

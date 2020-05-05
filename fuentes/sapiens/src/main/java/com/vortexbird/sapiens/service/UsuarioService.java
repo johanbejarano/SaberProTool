@@ -18,4 +18,6 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize) throws Exception;
 
 	String getNombreUsuario(Integer usuaId) throws Exception;
+
+	void guardar(UsuarioDTO usuarioDTO) throws Exception;
 }

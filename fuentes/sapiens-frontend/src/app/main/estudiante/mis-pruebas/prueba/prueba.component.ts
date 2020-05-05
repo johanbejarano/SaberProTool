@@ -48,14 +48,6 @@ export class PruebaComponent implements OnInit {
   getPreguntas() {
     this.detallePruebaUsuarioService.getPreguntasByPruebaUsuario(this.pruebaUsuario.prusId).subscribe((preguntas: DetallePruebaUsuario[]) => {
       this.preguntas = preguntas;
-      this.preguntas.forEach(pregunta => {
-        console.log(pregunta.respId);
-        pregunta.respuestas.forEach(respuesta => {
-            
-          console.log(respuesta.respId + ' ' + respuesta.esCorrecta);
-        })
-        
-      })
     })
   }
 

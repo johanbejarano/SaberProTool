@@ -23,20 +23,16 @@ export class UsuarioService {
     return usuario;
   }
 
+  public findById(usuaId: number): Observable<any> {
+    return this.httpClient.get(this.url + 'findById/' + usuaId);
+  }
+
   public login(usuario: Usuario): Observable<any> {
     return this.httpClient.post(this.url + 'login/', usuario);
   }
 
-  public find(): Observable<any> {
-    return this.httpClient.get(this.url + 'find/');
-  }
-
   public guardar(usuario: Usuario): Observable<any> {
     return this.httpClient.post(this.url + 'guardar/', usuario);
-  }
-
-  public eliminar(usuario: Usuario): Observable<any> {
-    return this.httpClient.post(this.url + 'eliminar/', usuario);
   }
 
   public getUsuariosPorTipo(tiusId: number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {

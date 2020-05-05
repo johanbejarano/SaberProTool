@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { Programa } from 'app/domain/programa';
 import { Usuario } from 'app/domain/usuario';
+import { ProgramaService } from 'app/services/programa.service';
 import { UsuarioService } from 'app/services/usuario.service';
 import { Subscription } from 'rxjs';
 import { locale as espanol } from '../../i18n/es';
@@ -20,12 +22,15 @@ export class UsuarioDialogComponent implements OnInit {
 
   usuarioDialog: Usuario;
 
+  programas: Programa[];
+
   constructor(@Inject(MAT_DIALOG_DATA) data: any,
     private dialogRef: MatDialogRef<UsuarioDialogComponent>,
     private formBuilder: FormBuilder,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     private snackBar: MatSnackBar,
-    private usuarioService: UsuarioService) {
+    private usuarioService: UsuarioService,
+    private programaService: ProgramaService) {
     this._fuseTranslationLoaderService.loadTranslations(espanol);
     this.usuario = this.usuarioService.getUsuario();
     if (data) {
@@ -36,10 +41,23 @@ export class UsuarioDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    //const perfil: string = this.usuarioDialog.rolId ? this.usuarioDialog.rolId + '' : null;
+    if (this.usuarioDialog.usuaId) {
+      this.loadUsuario();
+    }
+    this.getProgramas();
+
     this.form = this.formBuilder.group({
-      //'usuario': [this.usuarioDialog.usuario, Validators.compose([Validators.required, Validators.maxLength(80)])],
-      //'perfil': [perfil, Validators.compose([Validators.required])],
+      'nombres': [this.usuarioDialog.nombre, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      'apellidos': [this.usuarioDialog.apellido, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      'genero': [this.usuarioDialog.genero, Validators.required],
+      'codigo': [this.usuarioDialog.codigo, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      'identificacion': [this.usuarioDialog.identificacion, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      'celular': [this.usuarioDialog.celular, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      'correo': [this.usuarioDialog.correo, Validators.compose([Validators.required, Validators.maxLength(80)])],
+      'password': ['', Validators.maxLength(80)],
+      'estado': [this.usuarioDialog.estadoRegistro, Validators.required],
+      'programa': [this.usuarioDialog.progId_Programa, Validators.required],
+      'tipoUsuario': [this.usuarioDialog.tiusId_TipoUsuario, Validators.required],
     });
   }
 
@@ -54,11 +72,54 @@ export class UsuarioDialogComponent implements OnInit {
       request.usuaId = this.usuarioDialog.usuaId;
       request.usuCreador = this.usuario.usuaId;
 
+      request.nombre = this.form.controls.nombres.value;
+      request.apellido = this.form.controls.apellidos.value;
+      request.genero = this.form.controls.genero.value;
+      request.codigo = this.form.controls.codigo.value;
+      request.identificacion = this.form.controls.identificacion.value;
+      request.celular = this.form.controls.celular.value;
+      request.correo = this.form.controls.correo.value;
+      request.estadoRegistro = this.form.controls.estado.value;
+      request.progId_Programa = this.form.controls.programa.value;
+      request.tiusId_TipoUsuario = this.form.controls.tipoUsuario.value;
+
+      if (this.form.controls.password.value) {
+        request.password = this.form.controls.password.value;
+      }else if(!request.usuaId){
+        this.snackBar.open('Se debe ingresar una contraseña al crear el usuario', '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+        return;
+      }
+
       this.usuarioService.guardar(request).subscribe(() => {
         this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
         this.dialogRef.close(true);
       });
     }
+  }
+
+  loadUsuario() {
+    this.usuarioService.findById(this.usuarioDialog.usuaId).subscribe((usuario: Usuario) => {
+
+      this.form = this.formBuilder.group({
+        'nombres': [usuario.nombre, Validators.compose([Validators.required, Validators.maxLength(80)])],
+        'apellidos': [usuario.apellido, Validators.compose([Validators.required, Validators.maxLength(80)])],
+        'genero': [usuario.genero, Validators.required],
+        'codigo': [usuario.codigo, Validators.compose([Validators.required, Validators.maxLength(80)])],
+        'identificacion': [usuario.identificacion, Validators.compose([Validators.required, Validators.maxLength(80)])],
+        'celular': [usuario.celular, Validators.compose([Validators.required, Validators.maxLength(80)])],
+        'correo': [usuario.correo, Validators.compose([Validators.required, Validators.maxLength(80)])],
+        'password': ['', Validators.maxLength(80)],
+        'estado': [usuario.estadoRegistro, Validators.required],
+        'programa': ['' + usuario.progId_Programa, Validators.required],
+        'tipoUsuario': [usuario.tiusId_TipoUsuario, Validators.required],
+      });
+    });
+  }
+
+  getProgramas() {
+    this.programaService.getAll().subscribe((programas: Programa[]) => {
+      this.programas = programas;
+    });
   }
 
 }

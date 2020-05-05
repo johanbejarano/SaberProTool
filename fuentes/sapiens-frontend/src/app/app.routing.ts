@@ -12,6 +12,7 @@ const routes: Routes = [
     {path: 'gestionPruebas', loadChildren: () => import('./main/gestion-prueba/gestion-prueba.module').then(mod => mod.GestionPruebaModule), canActivate: [AuthGuard], data: {guards: global.GUARDS.PROFESOR}},
     {path: 'estudiante', loadChildren: () => import('./main/estudiante/estudiante.module').then(mod => mod.EstudianteModule), canActivate: [AuthGuard], data: {guards: global.GUARDS.ESTUDIANTE}},
     {path: 'gestionUsuarios', loadChildren: () => import('./main/gestion-usuario/gestion-usuario.module').then(mod => mod.GestionUsuarioModule), canActivate: [AuthGuard], data: {guards: global.GUARDS.DIRECTOR}},
+    {path: 'gestionModulos', loadChildren: () => import('./main/gestion-modulo/gestion-modulo.module').then(mod => mod.GestionModuloModule), canActivate: [AuthGuard], data: {guards: global.GUARDS.DIRECTOR}},
     {path: '**', redirectTo: '/init', pathMatch: 'full'}
 ];
 

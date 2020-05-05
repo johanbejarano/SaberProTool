@@ -5,7 +5,7 @@ export class Usuario {
     celular: string;
     codigo: string;
     correo: string;
-    estadoRegisttro: string;
+    estadoRegistro: string;
     fechaCreacion: Date;
     fechaModificacion: Date;
     genero: string;

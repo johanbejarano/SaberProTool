@@ -1,6 +1,6 @@
 package com.vortexbird.sapiens.controller;
 
-import com.vortexbird.sapiens.domain.*;
+import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.mapper.UsuarioMapper;
 import com.vortexbird.sapiens.service.UsuarioService;
@@ -8,11 +8,9 @@ import com.vortexbird.sapiens.utility.PasswordGenerator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -122,44 +120,52 @@ public class UsuarioRestController {
 		try {
 
 			usuarioDTO = usuarioService.login(usuarioDTO.getCodigo(), usuarioDTO.getPassword());
-			
-			if (usuarioDTO !=null) {
-				
+
+			if (usuarioDTO != null) {
+
 				return ResponseEntity.ok().body(usuarioDTO);
-			}else {
+			} else {
 				throw new Exception("No se encontró el usuario");
 			}
-			
+
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping(value = "/md5/{string}")
 	public ResponseEntity<?> findById(@PathVariable("string") String string) {
 		return ResponseEntity.ok().body(PasswordGenerator.hashPassword(string));
 	}
-	
+
 	@GetMapping(value = "/getUsuariosPorTipo/{tiusId}/{filtro}/{pageNumber}/{pageSize}")
-	public ResponseEntity<?> getUsuariosPorTipo(
-			@PathVariable("tiusId") Integer tiusId,
-			@PathVariable("filtro") String filtro,
-			@PathVariable("pageNumber") int pageNumber,
-			@PathVariable("pageSize") int pageSize
-			) {
-		
+	public ResponseEntity<?> getUsuariosPorTipo(@PathVariable("tiusId") Integer tiusId,
+			@PathVariable("filtro") String filtro, @PathVariable("pageNumber") int pageNumber,
+			@PathVariable("pageSize") int pageSize) {
+
 		log.debug("Request to getUsuariosPorTipo()");
 
 		try {
-			
+
 			Page<UsuarioDTO> usuarios = usuarioService.getUsuariosPorTipo(tiusId, filtro, pageNumber, pageSize);
-			
+
 			return ResponseEntity.ok().body(usuarios);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PostMapping(value = "/guardar")
+	public ResponseEntity<?> guardar(@RequestBody UsuarioDTO usuarioDTO) {
+		try {
+			usuarioService.guardar(usuarioDTO);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

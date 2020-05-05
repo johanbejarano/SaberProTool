@@ -1,0 +1,35 @@
+<div fxLayout="row wrap" fxFlex="100">
+    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+        <div class="fuse-widget-front" fxFlex="100">
+            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3">{{'lbl.modulos' | translate}}</div>
+            </div>
+            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                <form [formGroup]="form" fxFlex="100" (ngSubmit)="applyFilter()">
+                    <mat-form-field class="px-16" fxFlex="100" appearance="outline">
+                        <mat-label>{{'lbl.filtrar' | translate}}</mat-label>
+                        <input matInput fxFlex="90" formControlName="filtro">
+
+                        <button matSuffix class="btnBusqueda" type="submit">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </form>
+                <mat-table #table [dataSource]="datasource" fxFlex="100">
+                    <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef fxFlex="100">Nombre</mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="100">
+                            <p class="text-truncate font-weight-600">{{item.nombre}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                    <mat-row *matRowDef="let item; columns: displayedColumns" (click)="seleccionar(item)"></mat-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+        </div>
+    </fuse-widget>
+</div>

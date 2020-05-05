@@ -1,0 +1,64 @@
+<div class="dialog-content-wrapper" fxLayout="row wrap" fxFlex="100">
+    <div class="px-16 py-12 titlecard" fxFlex="100">
+        <div class="h3">{{'lbl.usuario' | translate}}</div>
+    </div>
+    <form [formGroup]="form" fxLayout="row wrap" fxFlex="100" (ngSubmit)="onFormSubmit()">
+        <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Nombre" formControlName="nombre">
+                <mat-error *ngIf="form.controls.nombre.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="100">
+                <input matInput placeholder="Descripcion" formControlName="descripcion">
+                <mat-error *ngIf="form.controls.descripcion.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Cantidad de preguntas" formControlName="cantidadPreguntas" type="number">
+                <mat-error *ngIf="form.controls.cantidadPreguntas.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Prioridad" formControlName="prioridad" type="number">
+                <mat-error *ngIf="form.controls.prioridad.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <mat-label>Tipo de módulo</mat-label>
+                <mat-select formControlName="tipoModulo">
+                    <mat-option *ngFor="let tipoModulo of tiposModulo" value="{{'' + tipoModulo.timoId}}">
+                        {{tipoModulo.nombre}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls.tipoModulo.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <div fxFlex="50" fxLayout="row wrap">
+                <mat-radio-group formControlName="estado" fxLayout="row" class="mat-checkbox-group">
+                    <mat-radio-button value="A" class="py-8" fxFlex="50">
+                        <span class="mat-h4 m-0">Activo</span>
+                    </mat-radio-button>
+                    <mat-radio-button value="I" class="py-8" fxFlex="50">
+                        <span class="mat-h4 m-0">Inactivo</span>
+                    </mat-radio-button>
+                </mat-radio-group>
+                <mat-error fxFlex="100" *ngIf="form.controls.estado.errors?.required">
+                    {{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </div>
+
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end center">
+            <div fxFlex="50" fxFlex.xs="0"></div>
+            <button fxFlex="50" fxFlex.xs="100" mat-stroked-button type="submit" class="btnPrimario">
+                {{(this.moduloDialog.moduId ? 'lbl.modificar' : 'lbl.crear') | translate}}
+            </button>
+        </div>
+    </form>
+</div>

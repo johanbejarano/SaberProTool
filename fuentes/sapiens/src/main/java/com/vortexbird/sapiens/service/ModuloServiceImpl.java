@@ -1,5 +1,6 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -11,6 +12,7 @@ import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.ProgramaModulo;
 import com.vortexbird.sapiens.domain.PruebaModulo;
+import com.vortexbird.sapiens.dto.ModuloDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.repository.ModuloRepository;
 import com.vortexbird.sapiens.utility.Utilities;
@@ -39,6 +41,9 @@ public class ModuloServiceImpl implements ModuloService {
 
 	@Autowired
 	private Validator validator;
+
+	@Autowired
+	private TipoModuloService tipoModuloService;
 
 	@Override
 	public void validate(Modulo modulo) throws Exception {
@@ -83,10 +88,6 @@ public class ModuloServiceImpl implements ModuloService {
 			}
 
 			validate(entity);
-
-			if (moduloRepository.findById(entity.getModuId()).isPresent()) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
 
 			return moduloRepository.save(entity);
 
@@ -187,6 +188,41 @@ public class ModuloServiceImpl implements ModuloService {
 			return moduloRepository.findByTipoModulo_timoId(timoId);
 		} catch (Exception e) {
 			log.error("Error findByTipoModulo", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void guardar(ModuloDTO moduloDTO) throws Exception{
+		try {
+			Modulo modulo; 
+			//Si no trae ID lo creo
+			if(moduloDTO.getModuId() == null){
+				modulo = new Modulo();
+			}else{
+				modulo = findById(moduloDTO.getModuId()).get();
+			}
+
+			modulo.setNombre(moduloDTO.getNombre());
+			modulo.setDescripcion(moduloDTO.getDescripcion());
+			modulo.setCantidadPreguntas(moduloDTO.getCantidadPreguntas());
+			modulo.setPrioridad(moduloDTO.getPrioridad());
+			modulo.setTipoModulo(tipoModuloService.findById(moduloDTO.getTimoId_TipoModulo()).get());
+			modulo.setEstadoRegistro(moduloDTO.getEstadoRegistro());
+
+			if(moduloDTO.getModuId() == null){
+				modulo.setUsuCreador(moduloDTO.getUsuCreador());
+				modulo.setFechaCreacion(new Date());
+				save(modulo);
+			}else{
+				modulo.setUsuModificador(moduloDTO.getUsuCreador());
+				modulo.setFechaModificacion(new Date());
+				update(modulo);
+			}
+			
+		} catch (Exception e) {
+			log.error("Error en guardar", e);
 			throw e;
 		}
 	}

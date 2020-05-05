@@ -1,11 +1,11 @@
-<div id="usuario" class="pagina-principal page-layout simple right-sidebar" fxLayout="row">
+<div id="modulo" class="page-layout simple right-sidebar" fxLayout="row">
   <div class="center" fusePerfectScrollbar>
     <div class="tituloPrincipal" fxFlex="100">
-      Pruebas
+      {{'lbl.administracionModulo' | translate}}
     </div>
     <div class="content">
       <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
-        <app-prueba-list fxFlex="100"></app-prueba-list>
+        <modulo-list [actualizar]="actualizar" fxFlex="100"></modulo-list>
       </div>
       <button mat-fab class="btnCrear btnSecundario" (click)="crear()">
         <mat-icon class="icon">add</mat-icon>

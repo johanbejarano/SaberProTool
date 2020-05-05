@@ -1,5 +1,6 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -50,6 +51,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Autowired
 	private TipoUsuarioService tipoUsuarioService;
+
+	@Autowired
+	private ProgramaService programaService;
 
 	@Override
 	public void validate(Usuario usuario) throws Exception {
@@ -254,6 +258,51 @@ public class UsuarioServiceImpl implements UsuarioService {
 			
 		} catch (Exception e) {
 			log.error("Error en getNombreUsuario", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void guardar(UsuarioDTO usuarioDTO) throws Exception{
+		try {
+			Usuario usuario; 
+			//Si no trae ID lo creo
+			if(usuarioDTO.getUsuaId() == null){
+				usuario = new Usuario();
+			}else{
+				usuario = findById(usuarioDTO.getUsuaId()).get();
+			}
+
+			usuario.setNombre(usuarioDTO.getNombre());
+			usuario.setApellido(usuarioDTO.getApellido());
+			usuario.setCodigo(usuarioDTO.getCodigo());
+			usuario.setIdentificacion(usuarioDTO.getIdentificacion());
+			usuario.setCorreo(usuarioDTO.getCorreo());
+			usuario.setGenero(usuarioDTO.getGenero());
+			usuario.setCelular(usuarioDTO.getCelular());
+			usuario.setPrograma(programaService.findById(usuarioDTO.getProgId_Programa()).get());
+			usuario.setTipoUsuario(tipoUsuarioService.findById(usuarioDTO.getTiusId_TipoUsuario()).get());
+			usuario.setEstadoRegistro(usuarioDTO.getEstadoRegistro());
+
+			if(usuarioDTO.getPassword() != null && !usuarioDTO.getPassword().trim().isEmpty()){
+				//Actualizo la contraseña
+				String newPassword = PasswordGenerator.hashPassword(usuarioDTO.getPassword().trim()).get();
+				usuario.setPassword(newPassword);
+			}
+
+			if(usuarioDTO.getUsuaId() == null){
+				usuario.setUsuCreador(usuarioDTO.getUsuCreador());
+				usuario.setFechaCreacion(new Date());
+				save(usuario);
+			}else{
+				usuario.setUsuModificador(usuarioDTO.getUsuCreador());
+				usuario.setFechaModificacion(new Date());
+				update(usuario);
+			}
+			
+		} catch (Exception e) {
+			log.error("Error en guardar", e);
 			throw e;
 		}
 	}

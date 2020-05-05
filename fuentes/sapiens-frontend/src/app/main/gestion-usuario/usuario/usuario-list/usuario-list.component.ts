@@ -1,11 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { Usuario } from 'app/domain/usuario';
 import { UsuarioService } from 'app/services/usuario.service';
+import { Page } from 'app/utils/pagination/page';
 import { Subscription } from 'rxjs';
-import { locale as espanol } from '../../i18n/es';
 import { UsuarioDialogComponent } from '../usuario-dialog/usuario-dialog.component';
 
 @Component({
@@ -18,9 +17,12 @@ export class UsuarioListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @Input() actualizar: boolean;
 
-  data: Usuario[] = [];
+  pageNumber: number;
+  pageSize: number;
+  total: Number;
+
   datasource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
-  public displayedColumns = ['usuario', 'perfil', 'accion'];
+  public displayedColumns = ['codigo', 'identificacion', 'nombre', 'email', 'tipoUsuario'];
 
   form: FormGroup;
   subscription: Subscription;
@@ -29,14 +31,16 @@ export class UsuarioListComponent implements OnInit {
   constructor(private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService) {
-      this.usuario = usuarioService.getUsuario();
-    }
+    this.usuario = usuarioService.getUsuario();
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       'filtro': ''
     });
 
+    this.pageNumber = 0;
+    this.pageSize = 10;
     this.getData();
   }
 
@@ -44,18 +48,20 @@ export class UsuarioListComponent implements OnInit {
     if (this.subscription !== null && this.subscription !== undefined)
       this.subscription.unsubscribe();
   }
-  
+
   ngOnChanges() {
     this.getData();
   }
 
   getData() {
-    this.subscription = this.usuarioService.find()
-      .subscribe((roles: Usuario[]) => {
-        this.data = roles;
-        this.datasource = new MatTableDataSource<Usuario>(this.data);
-        this.datasource.paginator = this.paginator;
-      });
+    if (this.form && this.form.valid) {
+      this.subscription = this.usuarioService.getUsuariosPorTipo(-1, this.form.controls.filtro.value, this.pageNumber, this.pageSize)
+        .subscribe((page: Page) => {
+          let data = page.content;
+          this.total = page.totalElements;
+          this.datasource = new MatTableDataSource<Usuario>(data);
+        });
+    }
   }
 
   seleccionar(item: Usuario) {
@@ -70,35 +76,21 @@ export class UsuarioListComponent implements OnInit {
     });
   }
 
-  applyFilter() {
-    let filtro: string = this.form.controls.filtro.value;
-    if (!filtro) {
-      filtro = '';
-    } else {
-      filtro = filtro.trim().toUpperCase();
+  loadPage(event) {
+    if (this.pageNumber !== event.pageIndex) {
+      this.pageNumber = event.pageIndex;
     }
-    this.datasource.data = this.data.filter(item => (item.nombre + ' ' + item.apellido).toUpperCase().search(filtro) != -1 || item.perfil.toUpperCase().search(filtro) != -1);
-    this.paginator.firstPage();
+    if (this.pageSize != event.pageSize) {
+      this.pageSize = event.pageSize;
+    }
+    this.getData();
   }
 
-  onEliminar(usuario: Usuario) {
-    let confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
-      disableClose: false
-    });
+  applyFilter() {
+    this.pageNumber = 0;
+    this.paginator.pageIndex = 0;
 
-    confirmDialogRef.componentInstance.confirmMessage = espanol.data.msg.confirmacionEliminarPerfil;
-
-    confirmDialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        let request : Usuario = new Usuario();
-        request.usuaId = usuario.usuaId;
-        request.usuCreador = this.usuario.usuaId;
-        this.usuarioService.eliminar(request).subscribe(()=>{
-          this.getData();
-        });
-      }
-      confirmDialogRef = null;
-    });
+    this.getData();
   }
 
 }

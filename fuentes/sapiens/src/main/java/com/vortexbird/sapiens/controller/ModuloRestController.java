@@ -1,19 +1,16 @@
 package com.vortexbird.sapiens.controller;
 
-import com.vortexbird.sapiens.domain.*;
+import java.util.List;
+
+import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.dto.ModuloDTO;
 import com.vortexbird.sapiens.mapper.ModuloMapper;
 import com.vortexbird.sapiens.service.ModuloService;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -142,4 +139,15 @@ public class ModuloRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping(value = "/guardar")
+	public ResponseEntity<?> guardar(@RequestBody ModuloDTO moduloDTO) {
+		try {
+			moduloService.guardar(moduloDTO);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }

@@ -17,45 +17,61 @@
                 </form>
                 <mat-table #table [dataSource]="datasource" fxFlex="100">
 
-                    <ng-container matColumnDef="usuario">
-                        <mat-header-cell *matHeaderCellDef fxFlex="35" fxFlex.xs="100">
-                            <div class="px-4 h3">{{'lbl.usuario' | translate}}</div>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let item" fxFlex="35" fxFlex.xs="100" (click)="seleccionar(item)">
-                            <div class="px-4" fxFlex="100">
-                                <span class="referencia"> {{item.usuario}}</span>
-                            </div>
+                    <!-- CODIGGO -->
+                    <ng-container matColumnDef="codigo">
+                        <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">Código</mat-header-cell>
+                        <mat-cell *matCellDef="let usuario" fxFlex="15" fxFlex.xs="15">
+                            <p class="text-truncate font-weight-600">{{usuario.codigo}}</p>
                         </mat-cell>
                     </ng-container>
+                    <!-- CODIGGO -->
 
-                    <ng-container matColumnDef="perfil">
-                        <mat-header-cell *matHeaderCellDef fxFlex="55" fxFlex.xs="100">
-                            <div class="px-4 h3">{{'lbl.perfil' | translate}}</div>
+                    <!-- IDENTIFICACION -->
+                    <ng-container matColumnDef="identificacion">
+                        <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">Identificación
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let item" fxFlex="55" fxFlex.xs="100" (click)="seleccionar(item)">
-                            <div class="px-4" fxFlex="100">
-                                <span class="referencia">{{item.perfil}}</span>
-                            </div>
+                        <mat-cell *matCellDef="let usuario" fxFlex="15" fxFlex.xs="15">
+                            <p class="text-truncate font-weight-600">{{usuario.identificacion}}</p>
                         </mat-cell>
                     </ng-container>
+                    <!-- IDENTIFICACION -->
 
-                    <ng-container matColumnDef="accion">
-                        <mat-header-cell *matHeaderCellDef fxFlex="10" fxFlex.xs="100">
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let item" fxFlex="10" fxFlex.xs="100">
-                            <div class="px-4" fxFlex="100">
-                                <button mat-icon-button (click)="onEliminar(item)">
-                                    <mat-icon class="color2">delete</mat-icon>
-                                </button>
-                            </div>
+                    <!-- NOMBRE -->
+                    <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.xs="25">Nombre</mat-header-cell>
+                        <mat-cell *matCellDef="let usuario" fxFlex="25" fxFlex.xs="25">
+                            <p class="text-truncate font-weight-600">{{usuario.apellido | uppercase}},
+                                {{usuario.nombre | titlecase}}</p>
                         </mat-cell>
                     </ng-container>
+                    <!-- NOMBRE -->
+
+                    <!-- EMAIL -->
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.xs="25">e-Mail</mat-header-cell>
+                        <mat-cell *matCellDef="let usuario" fxFlex="25" fxFlex.xs="25">
+                            <p class="text-truncate font-weight-600">{{usuario.correo | lowercase}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- EMAIL -->
+
+                    <!-- TIPO USUARIO -->
+                    <ng-container matColumnDef="tipoUsuario">
+                        <mat-header-cell *matHeaderCellDef fxFlex="20">Tipo de usuario</mat-header-cell>
+                        <mat-cell *matCellDef="let usuario" fxFlex="20">
+                            <p class="text-truncate font-weight-600">
+                                {{usuario.tiusId_TipoUsuario == 1 ? 'Profesor' : usuario.tiusId_TipoUsuario == 2 ? 'Director' : usuario.tiusId_TipoUsuario == 3 ? 'Estudiante' : ''}}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- EMAIL -->
 
                     <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
-                    <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+                    <mat-row *matRowDef="let item; columns: displayedColumns" (click)="seleccionar(item)"></mat-row>
                 </mat-table>
 
-                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons [length]="total"
+                    [pageIndex]="pageNumber" [pageSize]="pageSize" (page)="loadPage($event)"></mat-paginator>
 
             </div>
         </div>

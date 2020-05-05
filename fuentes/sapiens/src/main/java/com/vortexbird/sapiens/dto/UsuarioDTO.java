@@ -40,8 +40,6 @@ public class UsuarioDTO implements Serializable {
     private String nombreFacultad;
     private Integer progId;
     private String nombrePrograma;
-
-    
     
     public UsuarioDTO() {
 		super();
@@ -75,7 +73,7 @@ public class UsuarioDTO implements Serializable {
 	}
 
 	
-	public UsuarioDTO(Integer usuaId, String codigo, Long identificacion, String nombre, String apellido, String correo) {
+	public UsuarioDTO(Integer usuaId, String codigo, Long identificacion, String nombre, String apellido, String correo, Integer tiusId_TipoUsuario) {
 		super();
 		
 		this.apellido = apellido;
@@ -83,7 +81,8 @@ public class UsuarioDTO implements Serializable {
 		this.correo = correo;
 		this.identificacion = identificacion;
 		this.nombre = nombre;
-		this.usuaId = usuaId;
+        this.usuaId = usuaId;
+        this.tiusId_TipoUsuario = tiusId_TipoUsuario;
 	}
 
 	public String getApellido() {

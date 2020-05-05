@@ -4,24 +4,118 @@
     </div>
     <form [formGroup]="form" fxLayout="row wrap" fxFlex="100" (ngSubmit)="onFormSubmit()">
         <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-
-            <mat-form-field class="px-8" fxFlex="100">
-                <input matInput placeholder="{{'lbl.usuario' | translate}}" formControlName="usuario" maxlength="80" type="text" pattern="[a-zA-Z .]+" ng-pattern-restrict>
-                <mat-error *ngIf="form.controls.usuario.errors?.required">{{'msg.campoRequerido' | translate}}
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Nombres" formControlName="nombres">
+                <mat-error *ngIf="form.controls.nombres.errors?.required">{{'msg.campoRequerido' | translate}}
                 </mat-error>
-                <mat-error *ngIf="form.controls.usuario.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}</mat-error>
-                <mat-error *ngIf="form.controls.usuario.hasError('pattern')">{{'msg.soloTexto' | translate}}</mat-error>
+                <mat-error *ngIf="form.controls.nombres.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
             </mat-form-field>
 
-            <mat-radio-group formControlName="perfil" fxLayout="row" class="mat-checkbox-group">
-                <mat-radio-button *ngFor="let rol of roles" value="{{rol.rolId}}" class="py-8" fxFlex="50">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="mat-h4 m-0">{{rol.nombre}}</span>
-                    </div>
-                </mat-radio-button>
-            </mat-radio-group>
-            <mat-error fxFlex="100" *ngIf="form.controls.perfil.errors?.required">{{'msg.campoRequerido' | translate}}
-            </mat-error>
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Apellidos" formControlName="apellidos">
+                <mat-error *ngIf="form.controls.apellidos.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+                <mat-error *ngIf="form.controls.apellidos.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Codigo" formControlName="codigo">
+                <mat-error *ngIf="form.controls.codigo.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+                <mat-error *ngIf="form.controls.codigo.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Identificación" formControlName="identificacion">
+                <mat-error *ngIf="form.controls.identificacion.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+                <mat-error *ngIf="form.controls.identificacion.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Celular" formControlName="celular">
+                <mat-error *ngIf="form.controls.celular.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+                <mat-error *ngIf="form.controls.celular.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Correo" formControlName="correo">
+                <mat-error *ngIf="form.controls.correo.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+                <mat-error *ngIf="form.controls.correo.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <mat-label>Programa</mat-label>
+                <mat-select formControlName="programa">
+                    <mat-option *ngFor="let programa of programas" value="{{programa.progId}}">
+                        {{programa.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls.programa.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <mat-label>Tipo de usuario</mat-label>
+                <mat-select formControlName="tipoUsuario">
+                    <mat-option [value]="1">
+                        Profesor
+                    </mat-option>
+                    <mat-option [value]="2">
+                        Director
+                    </mat-option>
+                    <mat-option [value]="3">
+                        Estudiante
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls.tipoUsuario.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <mat-label>Género</mat-label>
+                <mat-select formControlName="genero">
+                    <mat-option [value]="'M'">
+                        Masculino
+                    </mat-option>
+                    <mat-option [value]="'F'">
+                        Femenino
+                    </mat-option>
+                    <mat-option [value]="'O'">
+                        Otro
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls.genero.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <div fxFlex="50" fxLayout="row wrap">
+                <mat-radio-group formControlName="estado" fxLayout="row" class="mat-checkbox-group">
+                    <mat-radio-button value="A" class="py-8" fxFlex="50">
+                        <span class="mat-h4 m-0">Activo</span>
+                    </mat-radio-button>
+                    <mat-radio-button value="I" class="py-8" fxFlex="50">
+                        <span class="mat-h4 m-0">Inactivo</span>
+                    </mat-radio-button>
+                </mat-radio-group>
+                <mat-error fxFlex="100" *ngIf="form.controls.estado.errors?.required">
+                    {{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </div>
+
+            <mat-form-field class="px-8" fxFlex="100">
+                <input matInput placeholder="Actualizar contraseña" formControlName="password">
+                <mat-error *ngIf="form.controls.password.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
+                </mat-error>
+            </mat-form-field>
 
         </div>
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end center">

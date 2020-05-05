@@ -44,7 +44,8 @@ import com.vortexbird.sapiens.dto.UsuarioDTO;
 					@ColumnResult(name = "identificacion", type = Long.class),
 					@ColumnResult(name = "nombre", type = String.class),
 					@ColumnResult(name = "apellido", type = String.class),
-					@ColumnResult(name = "correo", type = String.class), }) }),
+                    @ColumnResult(name = "correo", type = String.class),
+                    @ColumnResult(name = "tiusId_TipoUsuario", type = Integer.class)}) }),
 	@SqlResultSetMapping(name = "UsuarioDTOCount", columns = {
 			@ColumnResult(name = "total", type = Integer.class) }), })
 @Entity

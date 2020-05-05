@@ -60,7 +60,7 @@ export const navigationDirector: FuseNavigation[] = [
                 translate: 'NAV.DIRECTOR.MODULOS',
                 type: 'item',
                 icon: 'library_books',
-                url: '/gestionPreguntas',
+                url: '/gestionModulos',
             },
             {
                 id: 'descargarInformes',

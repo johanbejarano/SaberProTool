@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,7 +27,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "modulo", schema = "public")
 public class Modulo implements java.io.Serializable {
-    @NotNull
     private Integer moduId;
     @NotNull
     private TipoModulo tipoModulo;
@@ -77,6 +78,7 @@ public class Modulo implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "modu_id", unique = true, nullable = false)
     public Integer getModuId() {
         return this.moduId;

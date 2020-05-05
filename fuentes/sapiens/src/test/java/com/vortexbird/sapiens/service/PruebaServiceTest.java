@@ -1,6 +1,5 @@
 package com.vortexbird.sapiens.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +25,7 @@ public class PruebaServiceTest {
     @DisplayName("consultarReporteResultados")
     public void consultarReporteResultados() {
     	try {
-    		String base64 = pruebaService.consultarReporteResultados(null, null, 17, null, null, null, null, null, null, null);
+    		String base64 = pruebaService.consultarReporteResultados(null, null, 2, null, null, null, null, null, null, null);
     		System.out.println("\n\n" + base64 + "\n\n");
 		} catch (Exception e) {
 			fail(e);
