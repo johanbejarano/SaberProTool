@@ -17,7 +17,7 @@ export const global = {
     VARIABLES: {
 
         TIPO_USUARIO_PROFESOR: 1,
-        TIPO_USUARIO_ESTUDIANTE: 2,
+        TIPO_USUARIO_ESTUDIANTE: 3,
 
         ROI: 'ROI',
         CALIDAD_ROI : 'CARO',

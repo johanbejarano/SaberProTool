@@ -1,5 +1,10 @@
 package com.vortexbird.sapiens.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -10,8 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.sql.DataSource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.xml.bind.DatatypeConverter;
 
 import com.vortexbird.sapiens.domain.EstadoPrueba;
 import com.vortexbird.sapiens.domain.Modulo;
@@ -28,7 +35,15 @@ import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.mapper.PruebaMapper;
 import com.vortexbird.sapiens.repository.PruebaRepository;
 import com.vortexbird.sapiens.utility.Constantes;
+import com.vortexbird.sapiens.utility.GlobalProperties;
 import com.vortexbird.sapiens.utility.Utilities;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +93,12 @@ public class PruebaServiceImpl implements PruebaService {
 
 	@Autowired
 	private DetallePruebaUsuarioService detallePruebaUsuarioService;
+	
+	@Autowired
+	private GlobalProperties globalProperties;
+	
+	@Autowired
+    protected DataSource dataSource;
 
 	@Override
 	public void validate(Prueba prueba) throws Exception {
@@ -678,6 +699,89 @@ public class PruebaServiceImpl implements PruebaService {
 		} catch (Exception e) {
 			log.error("Error en getPruebasDeUsuarioCreador", e);
 			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public String consultarReporteResultados(Integer facuId, Integer progId, Integer usuaId, Integer tiusId, Integer prueId,
+			Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId) throws Exception {
+		
+		
+		InputStream inputStream = null;
+		ByteArrayOutputStream bos = null;
+		Connection connection = null;
+		
+		try {
+			
+			//Debe venir por lo menos 1 parametro
+			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null && 
+					pregId == null && respId == null && respOk == null && moduId == null) {
+				throw new Exception("Debe ingresar por lo menos un parámetro para generar el reporte de resultados");
+			}
+			
+			// SE CONSULTA LA RUTA BASE DE REPORTES
+			String rutaBaseReportes = globalProperties.getSUBREPORT_DIR();
+			
+			// Se valida si la ruta existe
+			File fRutaBaseReportes = new File(rutaBaseReportes);
+			if (!fRutaBaseReportes.exists() || !fRutaBaseReportes.isDirectory() || !fRutaBaseReportes.canRead()) {
+				throw new Exception(
+						"No existe la ruta base de reportes, no es un directorio o no se tiene acceso de lectura al directorio: "
+								+ fRutaBaseReportes.getPath());
+			}
+
+			// Se valida la ruta del reporte
+			File fReporte = new File(fRutaBaseReportes, "/reporteResultados.jasper");
+			if (!fReporte.exists() || !fReporte.isFile() || !fReporte.canRead()) {
+				throw new Exception(
+						"No existe la ruta del reporte, no es un archivo o no se tiene acceso de lectura al mismo: "
+								+ fReporte.getPath());
+			}
+			
+			// Crea la conexión a la base de datos
+			connection = dataSource.getConnection();
+			
+			// Se abre el reporte
+			inputStream = new FileInputStream(fReporte);
+
+			// Crea la variable de parametros
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			// Asigna los parametros enviados
+			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
+					: (fRutaBaseReportes.getPath() + "/")));
+			
+			bos = new ByteArrayOutputStream();
+			// Se rellena el reporte
+			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
+			
+			// Se exporta el reporte a pdf
+			JRPdfExporter jrPdfExporter = new JRPdfExporter();
+
+			jrPdfExporter.setExporterInput(new SimpleExporterInput(print));
+			jrPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(bos));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			jrPdfExporter.setConfiguration(configuration);
+
+			jrPdfExporter.exportReport();
+
+			byte[] bytes = bos.toByteArray();
+
+			String base64 = DatatypeConverter.printBase64Binary(bytes);
+			return base64;
+			
+		} catch (Exception e) {
+			log.error("Error consultando el reporte de resultados", e);
+			throw e;
+		}finally {
+			if (inputStream != null)
+				inputStream.close();
+			if (bos != null)
+				bos.close();
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
 		}
 	}
 }
