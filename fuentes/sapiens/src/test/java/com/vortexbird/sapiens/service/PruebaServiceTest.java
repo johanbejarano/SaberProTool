@@ -27,7 +27,18 @@ public class PruebaServiceTest {
     public void consultarReporteResultados() {
     	try {
     		String base64 = pruebaService.consultarReporteResultados(null, null, 17, null, null, null, null, null, null, null);
-    		System.out.println(base64);
+    		System.out.println("\n\n" + base64 + "\n\n");
+		} catch (Exception e) {
+			fail(e);
+		}
+    }
+    
+    @Test
+    @DisplayName("consultarReporteResumenEstudiantes")
+    public void consultarReporteResumenEstudiantes() {
+    	try {
+    		String base64 = pruebaService.consultarReporteResumenEstudiantes(null, null, 17, null, null, null, null, null, null, null);
+    		System.out.println("\n\n" + base64 + "\n\n");
 		} catch (Exception e) {
 			fail(e);
 		}

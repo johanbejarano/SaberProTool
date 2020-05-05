@@ -752,6 +752,111 @@ public class PruebaServiceImpl implements PruebaService {
 			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
 					: (fRutaBaseReportes.getPath() + "/")));
 			
+			params.put("pFacuId", facuId);
+			params.put("pProgId", progId);
+			params.put("pUsuaId", usuaId);
+			params.put("pTiusId", tiusId);
+			params.put("pPrueId", prueId);
+			params.put("pEsprId", esprId);
+			params.put("pPregId", pregId);
+			params.put("pRespId", respId);
+			params.put("pRespOk", respOk);
+			params.put("pModuId", moduId);
+			
+			bos = new ByteArrayOutputStream();
+			// Se rellena el reporte
+			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
+			
+			// Se exporta el reporte a pdf
+			JRPdfExporter jrPdfExporter = new JRPdfExporter();
+
+			jrPdfExporter.setExporterInput(new SimpleExporterInput(print));
+			jrPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(bos));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			jrPdfExporter.setConfiguration(configuration);
+
+			jrPdfExporter.exportReport();
+
+			byte[] bytes = bos.toByteArray();
+
+			String base64 = DatatypeConverter.printBase64Binary(bytes);
+			return base64;
+			
+		} catch (Exception e) {
+			log.error("Error consultando el reporte de resultados", e);
+			throw e;
+		}finally {
+			if (inputStream != null)
+				inputStream.close();
+			if (bos != null)
+				bos.close();
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public String consultarReporteResumenEstudiantes(Integer facuId, Integer progId, Integer usuaId, Integer tiusId, Integer prueId,
+			Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId) throws Exception {
+		
+		
+		InputStream inputStream = null;
+		ByteArrayOutputStream bos = null;
+		Connection connection = null;
+		
+		try {
+			
+			//Debe venir por lo menos 1 parametro
+			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null && 
+					pregId == null && respId == null && respOk == null && moduId == null) {
+				throw new Exception("Debe ingresar por lo menos un parámetro para generar el reporte de resultados");
+			}
+			
+			// SE CONSULTA LA RUTA BASE DE REPORTES
+			String rutaBaseReportes = globalProperties.getSUBREPORT_DIR();
+			
+			// Se valida si la ruta existe
+			File fRutaBaseReportes = new File(rutaBaseReportes);
+			if (!fRutaBaseReportes.exists() || !fRutaBaseReportes.isDirectory() || !fRutaBaseReportes.canRead()) {
+				throw new Exception(
+						"No existe la ruta base de reportes, no es un directorio o no se tiene acceso de lectura al directorio: "
+								+ fRutaBaseReportes.getPath());
+			}
+
+			// Se valida la ruta del reporte
+			File fReporte = new File(fRutaBaseReportes, "/resumenEstudiantes.jasper");
+			if (!fReporte.exists() || !fReporte.isFile() || !fReporte.canRead()) {
+				throw new Exception(
+						"No existe la ruta del reporte, no es un archivo o no se tiene acceso de lectura al mismo: "
+								+ fReporte.getPath());
+			}
+			
+			// Crea la conexión a la base de datos
+			connection = dataSource.getConnection();
+			
+			// Se abre el reporte
+			inputStream = new FileInputStream(fReporte);
+
+			// Crea la variable de parametros
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			// Asigna los parametros enviados
+			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
+					: (fRutaBaseReportes.getPath() + "/")));
+			
+			params.put("pFacuId", facuId);
+			params.put("pProgId", progId);
+			params.put("pUsuaId", usuaId);
+			params.put("pTiusId", tiusId);
+			params.put("pPrueId", prueId);
+			params.put("pEsprId", esprId);
+			params.put("pPregId", pregId);
+			params.put("pRespId", respId);
+			params.put("pRespOk", respOk);
+			params.put("pModuId", moduId);
+			
 			bos = new ByteArrayOutputStream();
 			// Se rellena el reporte
 			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
