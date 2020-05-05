@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteResultados" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="839477af-3770-4b10-abd5-c8b28e85698f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sapiens"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="558"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="432"/>
+	<style name="ESTILO_RESPUESTA_CORRECTA" mode="Transparent" backcolor="#FFFFFF">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[($F{correcta}.equals($F{respuesta_que_era}) && $F{correcta}.intValue()==1) ||
+(!$F{correcta}.equals($F{respuesta_que_era}) && $F{correcta}.intValue()==0 && $F{respuesta_que_era}.intValue()==1)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#83F7A8"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{correcta}.intValue()==0 && $F{resp_id_pregunta}.equals($F{resp_id_seleccionada})]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FF4F4D"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="pFacuId" class="java.lang.Integer"/>
+	<parameter name="pProgId" class="java.lang.Integer"/>
+	<parameter name="pUsuaId" class="java.lang.Integer"/>
+	<parameter name="pTiusId" class="java.lang.Integer"/>
+	<parameter name="pPrueId" class="java.lang.Integer"/>
+	<parameter name="pEsprId" class="java.lang.Integer"/>
+	<parameter name="pPregId" class="java.lang.Integer"/>
+	<parameter name="pRespId" class="java.lang.Integer"/>
+	<parameter name="pRespOk" class="java.lang.Integer"/>
+	<parameter name="pModuId" class="java.lang.Integer"/>
+	<parameter name="pSubreportDir" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/johan/Workspaces/Saberpro/fuentes/Sapiens-reports"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select	facu.facu_id,
+		facu.nombre nombre_facultad,
+		prog.prog_id,
+		prog.nombre nombre_programa,
+		usua.usua_id,
+		usua.codigo,
+		usua.identificacion,
+		usua.nombre,
+		usua.apellido,
+		usua.genero,
+		usua.celular,
+		usua.correo,
+		tipr.tipr_id,
+		tipr.descripcion tipo_prueba,
+		prus.prus_id,
+		prue.prue_id,
+		prue.fecha_inicial,
+		prue.fecha_final,
+		prue.tiempo,
+		dpru.dpru_id,
+		modu.modu_id,
+		modu.nombre nombre_modulo,
+		preg.preg_id,
+		preg.descripcion descripcion_pregunta,
+		preg.retroalimentacion,
+		respuestas_pregunta.resp_id resp_id_pregunta,
+		respuestas_pregunta.descripcion descripcion_respuesta_pregunta,
+		respuesta_seleccionada.resp_id resp_id_seleccionada,
+		respuesta_seleccionada.descripcion descripcion_respuesta_seleccionada,
+		respuesta_seleccionada.correcta,
+		respuestas_pregunta.correcta respuesta_que_era
+from 	usuario usua
+inner	join programa prog on prog.prog_id = usua.prog_id 
+inner 	join facultad facu on facu.facu_id = prog.prog_id 
+inner 	join prueba_usuario prus on prus.usua_id = usua.usua_id 
+inner	join estado_prueba espr on espr.espr_id = prus.espr_id 
+inner 	join prueba prue on prue.prue_id = prus.prue_id 
+inner 	join tipo_prueba tipr on tipr.tipr_id  = prue.tipr_id 
+inner	join detalle_prueba_usuario dpru on dpru.prus_id = prus.prus_id 
+inner	join pregunta preg on preg.preg_id = dpru.preg_id 
+inner	join respuesta respuesta_seleccionada on respuesta_seleccionada.resp_id = dpru.resp_id 
+inner	join respuesta respuestas_pregunta on respuestas_pregunta.preg_id = preg.preg_id 
+inner	join modulo  modu on modu.modu_id = preg.modu_id 
+where	1=1
+and		case when $P{pFacuId} is null then 1 else facu.facu_id end = coalesce($P{pFacuId}, 1)
+and		case when $P{pProgId} is null then 1 else prog.prog_id end = coalesce($P{pProgId}, 1)
+and		case when $P{pUsuaId} is null then 1 else usua.usua_id end = coalesce($P{pUsuaId}, 1)
+and		case when $P{pTiusId} is null then 1 else usua.tius_id end = coalesce($P{pTiusId}, 1)
+and		case when $P{pPrueId} is null then 1 else prue.prue_id end = coalesce($P{pPrueId}, 1)
+and		case when $P{pEsprId} is null then 1 else espr.espr_id end = coalesce($P{pEsprId}, 1)
+and		case when $P{pPregId} is null then 1 else preg.preg_id end = coalesce($P{pPregId}, 1)
+and		case when $P{pRespOk} is null then 1 else respuesta_seleccionada.correcta end = coalesce($P{pRespOk}, 1)
+and		case when $P{pModuId} is null then 1 else modu.modu_id end = coalesce($P{pModuId}, 1)
+order	by facu.facu_id, prog.prog_id, usua.codigo, prue.prue_id , modu.modu_id, preg.preg_id, respuestas_pregunta.resp_id, respuesta_seleccionada.resp_id]]>
+	</queryString>
+	<field name="facu_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="facu_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="facultad"/>
+	</field>
+	<field name="nombre_facultad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_facultad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="facultad"/>
+	</field>
+	<field name="prog_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="prog_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="programa"/>
+	</field>
+	<field name="nombre_programa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_programa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="programa"/>
+	</field>
+	<field name="usua_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="usua_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="identificacion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="apellido" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="apellido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="genero" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="genero"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="celular" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="celular"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="correo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="correo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="tipr_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tipr_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_prueba"/>
+	</field>
+	<field name="tipo_prueba" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_prueba"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_prueba"/>
+	</field>
+	<field name="prus_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="prus_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prueba_usuario"/>
+	</field>
+	<field name="prue_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="prue_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prueba"/>
+	</field>
+	<field name="fecha_inicial" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_inicial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prueba"/>
+	</field>
+	<field name="fecha_final" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_final"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prueba"/>
+	</field>
+	<field name="tiempo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tiempo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prueba"/>
+	</field>
+	<field name="dpru_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dpru_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_prueba_usuario"/>
+	</field>
+	<field name="modu_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="modu_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="modulo"/>
+	</field>
+	<field name="nombre_modulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_modulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="modulo"/>
+	</field>
+	<field name="preg_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="preg_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pregunta"/>
+	</field>
+	<field name="descripcion_pregunta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion_pregunta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pregunta"/>
+	</field>
+	<field name="retroalimentacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="retroalimentacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pregunta"/>
+	</field>
+	<field name="resp_id_pregunta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="resp_id_pregunta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="respuesta"/>
+	</field>
+	<field name="descripcion_respuesta_pregunta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion_respuesta_pregunta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="respuesta"/>
+	</field>
+	<field name="resp_id_seleccionada" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="resp_id_seleccionada"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="respuesta"/>
+	</field>
+	<field name="descripcion_respuesta_seleccionada" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion_respuesta_seleccionada"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="respuesta"/>
+	</field>
+	<field name="correcta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="correcta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="respuesta"/>
+	</field>
+	<field name="respuesta_que_era" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="respuesta_que_era"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="respuesta"/>
+	</field>
+	<group name="G_FACU_ID">
+		<groupExpression><![CDATA[$F{facu_id}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<staticText>
+					<reportElement x="0" y="0" width="80" height="15" uuid="1330c5fb-bd06-4950-b45e-90189a8f85a6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Facultad:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="80" y="0" width="490" height="15" uuid="46f807e5-a5d4-4dcc-9fa0-5ca084728a8d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre_facultad}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="G_PROG_ID" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{prog_id}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField>
+					<reportElement x="80" y="0" width="490" height="15" uuid="9dc0241e-e6dd-4b97-b39b-dc194cec5c06">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre_programa}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="80" height="15" uuid="880e235f-ffc2-4597-9576-cfe9e21abbd6"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Programa:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="G_USUA_ID" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{usua_id}]]></groupExpression>
+		<groupHeader>
+			<band height="45">
+				<textField>
+					<reportElement x="80" y="15" width="490" height="15" uuid="6b7c898c-5c25-43fb-a1d0-f012452468cd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="15" width="80" height="15" uuid="72317641-46e2-42b9-96e1-c99f2631cd54"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="80" y="30" width="490" height="15" uuid="6c2162f2-4e61-4ec7-a0ec-e428dbd88806">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{apellido} + ", " + $F{nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="30" width="80" height="15" uuid="848ac0b4-721f-42b8-9de7-4b1f19c7ee77"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="570" height="15" backcolor="#B5B5B5" uuid="880dcf99-d074-4c50-8b19-42a4946d907a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[INFORMACIÓN DEL ESTUDIANTE]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="G_PRUE_ID">
+		<groupExpression><![CDATA[$F{prue_id}]]></groupExpression>
+		<groupHeader>
+			<band height="45">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="570" height="15" backcolor="#B5B5B5" uuid="9d6ac584-08ba-4c98-9687-cdef10fa1d9a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[INFORMACIÓN DE LA PRUEBA]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="80" y="15" width="490" height="15" uuid="9b2d1d38-e38d-4ab0-bc61-e73f828e9778">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tipo_prueba}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="15" width="80" height="15" uuid="8eb3ddc1-c4ba-49b7-8738-ac4d88119f43"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo prueba:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="30" width="80" height="15" uuid="33853ca2-9f20-4122-b32b-15cae633f7fb"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha Inicio:]]></text>
+				</staticText>
+				<textField pattern="MMM d, yyyy">
+					<reportElement x="80" y="30" width="490" height="15" uuid="fe32b362-4f00-4edd-89ed-5b5ee51a4593">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_inicial}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="G_MODU_ID">
+		<groupExpression><![CDATA[$F{modu_id}]]></groupExpression>
+		<groupHeader>
+			<band height="46">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="16" width="570" height="15" backcolor="#B5B5B5" uuid="65263b70-8edc-4e76-b741-a072363dfba9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[INFORMACIÓN DEL MÓDULO]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="1" y="31" width="570" height="15" uuid="cc5982bc-8c84-4d34-8065-840aeed4dbf2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre_modulo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="G_PREG_ID">
+		<groupExpression><![CDATA[$F{preg_id}]]></groupExpression>
+		<groupHeader>
+			<band height="35">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="0" y="20" width="570" height="15" uuid="d5e37e7a-092c-4f4b-84d5-e74834a01654">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22a0feb0-91e5-4adc-893f-b0e77dfb8dd8"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle" markup="html">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion_pregunta}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="5" width="80" height="15" uuid="a795bf35-0e62-4971-9af9-610964e8393c">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Pregunta:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<staticText>
+					<reportElement x="1" y="0" width="570" height="15" uuid="a86d058b-2c09-403f-a2db-cb0a433d6072">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box leftPadding="10" rightPadding="0"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Retroalimentación/explicación:]]></text>
+				</staticText>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="0" y="15" width="570" height="15" uuid="9ca54c51-4375-482c-bf4b-b9b3e8cc41bc">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22a0feb0-91e5-4adc-893f-b0e77dfb8dd8"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box leftPadding="10"/>
+					<textElement verticalAlignment="Middle" markup="html">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{retroalimentacion}!=null?("<li/>"+$F{retroalimentacion}):null]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="G_RESP_ID_PREGUNTA">
+		<groupExpression><![CDATA[$F{resp_id_pregunta}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="ESTILO_RESPUESTA_CORRECTA" x="0" y="0" width="570" height="15" uuid="e59ece50-cf51-48ff-b67f-7b57f498b0f6">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22a0feb0-91e5-4adc-893f-b0e77dfb8dd8"/>
+					</reportElement>
+					<box leftPadding="0" rightPadding="0">
+						<topPen lineWidth="0.25" lineStyle="Dotted"/>
+						<leftPen lineWidth="0.25" lineStyle="Dotted"/>
+						<bottomPen lineWidth="0.25" lineStyle="Dotted"/>
+						<rightPen lineWidth="0.25" lineStyle="Dotted"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="html">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion_respuesta_pregunta}==null?$F{descripcion_respuesta_pregunta}:("<li/>"+$F{descripcion_respuesta_pregunta})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="50" height="50" uuid="bd700264-fb64-47dc-808c-e1ef89516480">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{pSubreportDir}+"/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="0" width="570" height="20" uuid="de1635dd-5d6d-4d88-851b-0a9246816685">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Universidad de San Buenaventura Cali]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="570" height="15" uuid="7a558208-ceee-4053-bc31-a220f4a83409">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Resultados pruebas Sapiens - Saper Pro]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

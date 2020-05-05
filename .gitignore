@@ -3,3 +3,5 @@ sapiens.log
 /fuentes/saber-pro-app/target/
 /fuentes/sapiens2/
 .project
+org.eclipse.core.resources.prefs
+.classpath
