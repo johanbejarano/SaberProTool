@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Prueba } from 'app/domain/prueba';
+import { Reporte } from 'app/domain/reporte';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -19,6 +20,10 @@ export class PruebaService {
     return this.httpClient.get(this.url + 'getPruebasDeUsuarioCreador/' + usuCreador);
   }
 
+  public find(filtro: string): Observable<any> {
+    return this.httpClient.get(this.url + 'find/' + filtro);
+  }
+
   public getPrueba(prueId: number): Observable<any> {
     return this.httpClient.get(this.url + 'getPrueba/' + prueId);
   }
@@ -33,5 +38,13 @@ export class PruebaService {
 
   public getPruebasEstudiante(usuaId: number): Observable<any> {
     return this.httpClient.get(this.url + 'getPruebasEstudiante/' + usuaId);
+  }
+
+  public consultarReporteResultados(reporte: Reporte): Observable<any> {
+    return this.httpClient.post(this.url + 'consultarReporteResultados/', reporte);
+  }
+
+  public consultarReporteResumenEstudiantes(reporte: Reporte): Observable<any> {
+    return this.httpClient.post(this.url + 'consultarReporteResumenEstudiantes/', reporte);
   }
 }

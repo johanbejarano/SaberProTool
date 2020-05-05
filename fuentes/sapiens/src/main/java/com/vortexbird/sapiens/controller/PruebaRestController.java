@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vortexbird.sapiens.domain.Prueba;
 import com.vortexbird.sapiens.dto.PruebaDTO;
+import com.vortexbird.sapiens.dto.ReporteDTO;
 import com.vortexbird.sapiens.mapper.PruebaMapper;
 import com.vortexbird.sapiens.service.PruebaService;
 
@@ -170,6 +171,43 @@ public class PruebaRestController {
             PruebaDTO pruebaDTO = pruebaService.getPrueba(prueId);
 
             return ResponseEntity.ok().body(pruebaDTO);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/consultarReporteResultados")
+    public ResponseEntity<?> consultarReporteResultados(@RequestBody ReporteDTO reporteDTO) {
+        try {
+            String reporte = pruebaService.consultarReporteResultados(reporteDTO.getFacuId(), reporteDTO.getProgId(),
+                    reporteDTO.getUsuaId(), reporteDTO.getTiusId(), reporteDTO.getPrueId(), reporteDTO.getEsprId(),
+                    reporteDTO.getPregId(), reporteDTO.getRespId(), reporteDTO.getRespOk(), reporteDTO.getModuId());
+
+            ReporteDTO respuesta = new ReporteDTO();
+            respuesta.setPdf(reporte);
+
+            return ResponseEntity.ok().body(respuesta);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/consultarReporteResumenEstudiantes")
+    public ResponseEntity<?> consultarReporteResumenEstudiantes(@RequestBody ReporteDTO reporteDTO) {
+        try {
+            String reporte = pruebaService.consultarReporteResumenEstudiantes(reporteDTO.getFacuId(),
+                    reporteDTO.getProgId(), reporteDTO.getUsuaId(), reporteDTO.getTiusId(), reporteDTO.getPrueId(),
+                    reporteDTO.getEsprId(), reporteDTO.getPregId(), reporteDTO.getRespId(), reporteDTO.getRespOk(),
+                    reporteDTO.getModuId());
+
+            ReporteDTO respuesta = new ReporteDTO();
+            respuesta.setPdf(reporte);
+            
+            return ResponseEntity.ok().body(respuesta);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 

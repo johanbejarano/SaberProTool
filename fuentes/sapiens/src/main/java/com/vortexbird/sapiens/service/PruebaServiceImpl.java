@@ -38,13 +38,6 @@ import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.GlobalProperties;
 import com.vortexbird.sapiens.utility.Utilities;
 
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +45,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
@@ -811,7 +811,7 @@ public class PruebaServiceImpl implements PruebaService {
 			//Debe venir por lo menos 1 parametro
 			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null && 
 					pregId == null && respId == null && respOk == null && moduId == null) {
-				throw new Exception("Debe ingresar por lo menos un parámetro para generar el reporte de resultados");
+				throw new Exception("Debe ingresar por lo menos un parámetro para generar el reporte de resumen de estudiantes");
 			}
 			
 			// SE CONSULTA LA RUTA BASE DE REPORTES

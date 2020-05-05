@@ -68,7 +68,7 @@ export const navigationDirector: FuseNavigation[] = [
                 translate: 'NAV.DIRECTOR.INFORMES',
                 type: 'item',
                 icon: 'picture_as_pdf',
-                url: '/gestionPruebas',
+                url: '/reportes',
             },
 
 

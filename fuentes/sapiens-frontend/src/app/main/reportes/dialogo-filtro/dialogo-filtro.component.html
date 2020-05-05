@@ -1,0 +1,81 @@
+<div class="dialog-content-wrapper" fxLayout="row wrap" fxFlex="100">
+    <div class="px-16 py-12 titlecard" fxFlex="100">
+        <div class="h3">Busqueda de {{tipo}}</div>
+    </div>
+    <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+        <form [formGroup]="form" fxFlex="100" (ngSubmit)="cambioFiltro()">
+            <mat-form-field class="px-16" fxFlex="100" appearance="outline">
+                <mat-label>Filtrar</mat-label>
+                <input matInput fxFlex="90" formControlName="filtro">
+
+                <button matSuffix class="btnBusqueda" type="submit">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+        </form>
+        <mat-table #table [dataSource]="datasource" fxFlex="100">
+
+            <!-- Usuario -->
+            <ng-container matColumnDef="usuarioCodigo">
+                <mat-header-cell *matHeaderCellDef fxFlex="20">Código</mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="20">
+                    <p class="text-truncate font-weight-600">{{usuario.codigo}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="usuarioIdentificacion">
+                <mat-header-cell *matHeaderCellDef fxFlex="20">Identificación
+                </mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="20">
+                    <p class="text-truncate font-weight-600">{{usuario.identificacion}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="usuarioNombre">
+                <mat-header-cell *matHeaderCellDef fxFlex="60" fxFlex.xs="60">Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let usuario" fxFlex="60" fxFlex.xs="60">
+                    <p class="text-truncate font-weight-600">{{usuario.apellido | uppercase}},
+                        {{usuario.nombre | titlecase}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- Usuario -->
+
+            <!-- Prueba -->
+            <ng-container matColumnDef="pruebaId">
+                <mat-header-cell *matHeaderCellDef fxFlex="20">#</mat-header-cell>
+                <mat-cell *matCellDef="let prueba" fxFlex="20">
+                    <p class="text-truncate font-weight-600">{{prueba.prueId}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="pruebaPropietario">
+                <mat-header-cell *matHeaderCellDef fxFlex="60">Propietario
+                </mat-header-cell>
+                <mat-cell *matCellDef="let prueba" fxFlex="60">
+                    <p class="text-truncate font-weight-600">{{prueba.nombrePropietario}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="pruebaFecha">
+                <mat-header-cell *matHeaderCellDef fxFlex="20">Fecha de inicio
+                </mat-header-cell>
+                <mat-cell *matCellDef="let prueba" fxFlex="20">
+                    <p class="text-truncate font-weight-600">{{prueba.fechaInicial | date: 'dd/MM/yyyy'}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- Prueba -->
+
+            <!-- Modulo -->
+            <ng-container matColumnDef="moduloNombre">
+                <mat-header-cell *matHeaderCellDef fxFlex="100">Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let modulo" fxFlex="100">
+                    <p class="text-truncate font-weight-600">{{modulo.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- Modulo -->
+
+            <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+            <mat-row *matRowDef="let item; columns: displayedColumns;" (click)="seleccionar(item)">
+            </mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons [length]="total" [pageIndex]="pageNumber"
+            [pageSize]="pageSize" (page)="loadPage($event)"></mat-paginator>
+    </div>
+</div>

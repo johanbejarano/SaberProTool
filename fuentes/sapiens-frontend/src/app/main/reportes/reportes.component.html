@@ -1,0 +1,13 @@
+<div id="usuario" class="pagina-principal page-layout simple right-sidebar" fxLayout="row">
+    <div class="center" fusePerfectScrollbar>
+      <div class="tituloPrincipal" fxFlex="100">
+        Reportes
+      </div>
+      <div class="content">
+        <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
+            <reporte-con-filtros fxFlex="100" [tipo]="1"></reporte-con-filtros>
+            <reporte-con-filtros fxFlex="100" [tipo]="2"></reporte-con-filtros>
+        </div>
+      </div>
+    </div>
+  </div>

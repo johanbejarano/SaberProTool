@@ -1,0 +1,36 @@
+<div fxLayout="row wrap" fxFlex="100">
+    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+        <div class="fuse-widget-front" fxFlex="100">
+            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3">{{nombre}}</div>
+            </div>
+            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                <form [formGroup]="form" fxFlex="100">
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8">
+                        <mat-label>Usuario</mat-label>
+                        <input matInput formControlName="nombreUsuario" readonly="true"
+                            (click)="abrirDialogo('usuario')">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8">
+                        <mat-label>Prueba</mat-label>
+                        <input matInput formControlName="nombrePrueba" readonly="true"
+                            (click)="abrirDialogo('prueba')">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8">
+                        <mat-label>Modulo</mat-label>
+                        <input matInput formControlName="nombreModulo" readonly="true"
+                            (click)="abrirDialogo('modulo')">
+                    </mat-form-field>
+                </form>
+
+                <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end center">
+                    <div fxFlex="50" fxFlex.xs="0"></div>
+                    <button fxFlex="50" fxFlex.xs="100" mat-stroked-button type="button" class="btnPrimario"
+                        (click)="descargarInforme()">
+                        Descargar informe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </fuse-widget>
+</div>
