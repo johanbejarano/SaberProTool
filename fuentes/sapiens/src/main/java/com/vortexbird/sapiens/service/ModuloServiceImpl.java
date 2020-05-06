@@ -12,9 +12,11 @@ import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.ProgramaModulo;
 import com.vortexbird.sapiens.domain.PruebaModulo;
+import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.ModuloDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.repository.ModuloRepository;
+import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.Utilities;
 
 import org.slf4j.Logger;
@@ -44,6 +46,12 @@ public class ModuloServiceImpl implements ModuloService {
 
 	@Autowired
 	private TipoModuloService tipoModuloService;
+
+	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
+	private ProgramaModuloService programaModuloService;
 
 	@Override
 	public void validate(Modulo modulo) throws Exception {
@@ -215,6 +223,16 @@ public class ModuloServiceImpl implements ModuloService {
 				modulo.setUsuCreador(moduloDTO.getUsuCreador());
 				modulo.setFechaCreacion(new Date());
 				save(modulo);
+
+				//Cuando se crea un módulo se le agrega al programa del usuario
+				Usuario usuario = usuarioService.findById(moduloDTO.getUsuCreador().intValue()).get();
+				ProgramaModulo programaModulo = new ProgramaModulo();
+				programaModulo.setModulo(modulo);
+				programaModulo.setPrograma(usuario.getPrograma());
+				programaModulo.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+				programaModulo.setUsuCreador(moduloDTO.getUsuCreador());
+				programaModulo.setFechaCreacion(new Date());
+				programaModuloService.save(programaModulo);
 			}else{
 				modulo.setUsuModificador(moduloDTO.getUsuCreador());
 				modulo.setFechaModificacion(new Date());

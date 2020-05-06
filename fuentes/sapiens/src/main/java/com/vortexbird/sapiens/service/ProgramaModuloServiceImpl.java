@@ -19,12 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
-* @author Zathura Code Generator http://zathuracode.org/
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
+ *
+ */
 @Scope("singleton")
 @Service
 public class ProgramaModuloServiceImpl implements ProgramaModuloService {
@@ -35,8 +33,7 @@ public class ProgramaModuloServiceImpl implements ProgramaModuloService {
     private Validator validator;
 
     @Override
-    public void validate(ProgramaModulo programaModulo)
-        throws Exception {
+    public void validate(ProgramaModulo programaModulo) throws Exception {
         try {
             Set<ConstraintViolation<ProgramaModulo>> constraintViolations = validator.validate(programaModulo);
 
@@ -44,8 +41,7 @@ public class ProgramaModuloServiceImpl implements ProgramaModuloService {
                 StringBuilder strMessage = new StringBuilder();
 
                 for (ConstraintViolation<ProgramaModulo> constraintViolation : constraintViolations) {
-                    strMessage.append(constraintViolation.getPropertyPath()
-                                                         .toString());
+                    strMessage.append(constraintViolation.getPropertyPath().toString());
                     strMessage.append(" - ");
                     strMessage.append(constraintViolation.getMessage());
                     strMessage.append(". \n");
@@ -79,15 +75,10 @@ public class ProgramaModuloServiceImpl implements ProgramaModuloService {
 
         try {
             if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion(
-                    "ProgramaModulo");
+                throw new ZMessManager().new NullEntityExcepcion("ProgramaModulo");
             }
 
             validate(entity);
-
-            if (programaModuloRepository.findById(entity.getPrmoId()).isPresent()) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             return programaModuloRepository.save(entity);
         } catch (Exception e) {
@@ -134,14 +125,12 @@ public class ProgramaModuloServiceImpl implements ProgramaModuloService {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public ProgramaModulo update(ProgramaModulo entity)
-        throws Exception {
+    public ProgramaModulo update(ProgramaModulo entity) throws Exception {
         log.debug("updating ProgramaModulo instance");
 
         try {
             if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion(
-                    "ProgramaModulo");
+                throw new ZMessManager().new NullEntityExcepcion("ProgramaModulo");
             }
 
             validate(entity);
@@ -155,8 +144,7 @@ public class ProgramaModuloServiceImpl implements ProgramaModuloService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProgramaModulo> findById(Integer prmoId)
-        throws Exception {
+    public Optional<ProgramaModulo> findById(Integer prmoId) throws Exception {
         log.debug("getting ProgramaModulo instance");
 
         return programaModuloRepository.findById(prmoId);

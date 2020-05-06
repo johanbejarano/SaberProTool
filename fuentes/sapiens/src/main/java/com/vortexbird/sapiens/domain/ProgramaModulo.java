@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,7 +24,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "programa_modulo", schema = "public")
 public class ProgramaModulo implements java.io.Serializable {
-    @NotNull
     private Integer prmoId;
     @NotNull
     private Modulo modulo;
@@ -56,6 +57,7 @@ public class ProgramaModulo implements java.io.Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "prmo_id", unique = true, nullable = false)
     public Integer getPrmoId() {
         return this.prmoId;
