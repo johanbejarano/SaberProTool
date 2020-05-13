@@ -279,7 +279,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			List<DetallePruebaUsuario> respuestasCorrectas = new ArrayList<DetallePruebaUsuario>();
 			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
 			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
-				if (detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
+				
+				
+				if (detallePruebaUsuario.getRespuesta() != null &&detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
 					respuestasCorrectas.add(detallePruebaUsuario);
 				}
 			}
@@ -360,7 +362,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			respuestaDTO.setRetroalimentacion(respuesta.getRetroalimentacion());
 			respuestaDTO.setEsCorrecta(null);
 			if (mostrarCorrecto) {
-				if (detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
+				if (detallePruebaUsuario.getRespuesta()!=null && detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
 					respuestaDTO.setEsCorrecta(respuesta.getCorrecta().equals(Constantes.RESPUESTA_CORRECTA));
 				}
 			}
