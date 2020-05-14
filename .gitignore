@@ -1,6 +1,7 @@
 sapiens.log
 */.metadata/
 /fuentes/saber-pro-app/target/
+/fuentes/saber-pro-app/.metadata/
 /fuentes/sapiens2/
 .project
 org.eclipse.core.resources.prefs
