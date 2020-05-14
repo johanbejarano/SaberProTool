@@ -274,6 +274,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 				usuario = findById(usuarioDTO.getUsuaId()).get();
 			}
 
+			//Valido que el código no se repita ni la identificación
+			List<Usuario> usuarioTmp = usuarioRepository.findByCodigo(usuarioDTO.getCodigo());
+			if(!usuarioTmp.isEmpty()){
+				if(usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())){
+					throw new Exception("Ya se encuentra un usuario con el código ingresado");
+				}
+			}
+			usuarioTmp = usuarioRepository.findByIdentificacion(usuarioDTO.getIdentificacion());
+			if(!usuarioTmp.isEmpty()){
+				if(usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())){
+					throw new Exception("Ya se encuentra un usuario con la identificacion ingresado");
+				}
+			}
 			usuario.setNombre(usuarioDTO.getNombre());
 			usuario.setApellido(usuarioDTO.getApellido());
 			usuario.setCodigo(usuarioDTO.getCodigo());

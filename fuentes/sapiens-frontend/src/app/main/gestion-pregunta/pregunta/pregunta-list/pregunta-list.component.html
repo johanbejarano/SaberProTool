@@ -5,6 +5,17 @@
                 <div class="h3">Preguntas</div>
             </div>
             <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                <form [formGroup]="form" fxFlex="100">
+                    <mat-form-field class="px-16" fxFlex="100" appearance="outline">
+                        <mat-label>Módulo</mat-label>
+                        <mat-select formControlName="modulo" (selectionChange)="applyFilter()">
+                            <mat-option [value]="">Seleccionar modulo</mat-option>
+                            <mat-option *ngFor="let modulo of modulos" [value]="modulo.moduId">
+                                {{modulo.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
                 <mat-table #table [dataSource]="datasource" fxFlex="100">
 
                     <!--COLUMNA ID-->

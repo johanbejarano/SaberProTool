@@ -1,14 +1,16 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { Modulo } from 'app/domain/modulo';
 import { Pregunta } from 'app/domain/pregunta';
 import { Usuario } from 'app/domain/usuario';
 import { LocalStorageService } from 'app/services/local-storage.service';
+import { ModuloService } from 'app/services/modulo.service';
 import { PreguntaService } from 'app/services/pregunta.service';
 import { UsuarioService } from 'app/services/usuario.service';
 import { Subscription } from 'rxjs';
@@ -32,6 +34,8 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   usuario: Usuario;
 
+  modulos: Modulo[] = [];
+
   constructor(
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
@@ -40,7 +44,8 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
     private localStorage: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
-    ) {
+    private moduloService: ModuloService
+  ) {
 
     this.usuario = usuarioService.getUsuario();
 
@@ -51,12 +56,11 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.form = this.formBuilder.group({
-      
-      tipoModulo: [0, Validators.required],
-      modulo: [0, Validators.required],
+      modulo: [''],
     });
 
     this.getData();
+    this.getModulos();
 
   }
 
@@ -72,14 +76,21 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   getData() {
     this.subscription = this.preguntaService.getPreguntasPorUsuario(this.usuario.usuaId)
       .subscribe((preguntas: Pregunta[]) => {
-        
+
         this.data = preguntas;
         this.datasource = new MatTableDataSource<Pregunta>(this.data);
-        
+
         this.datasource.paginator = this.paginator;
-      }, 
-      error => {
-        this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
+      },
+        error => {
+          this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+        });
+  }
+
+  getModulos() {
+    this.subscription = this.moduloService.findByPrograma(this.usuario.progId)
+      .subscribe((modulos: Modulo[]) => {
+        this.modulos = modulos;
       });
   }
 
@@ -99,15 +110,31 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
 
     confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        let request : Pregunta = new Pregunta();
+        let request: Pregunta = new Pregunta();
         request.pregId = pregunta.pregId;
         request.usuCreador = this.usuario.usuaId;
-        this.preguntaService.eliminar(request).subscribe(()=>{
+        this.preguntaService.eliminar(request).subscribe(() => {
           this.getData();
         });
       }
       confirmDialogRef = null;
     });
+  }
+
+  applyFilter() {
+    let dataTmp = this.data;
+
+    let filtro : string = this.form.controls.modulo.value ? this.form.controls.modulo.value : '';
+
+    if(filtro){
+      dataTmp = dataTmp.filter(pregunta => {
+        return pregunta.moduId_Modulo === +filtro
+      })
+    }
+
+
+    this.datasource = new MatTableDataSource<Pregunta>(dataTmp);
+    this.datasource.paginator = this.paginator;
   }
 
 }

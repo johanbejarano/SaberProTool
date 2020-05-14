@@ -26,7 +26,7 @@
                                 <!-- PASOS PARA LA CREACION DE LA PREGUNTA -->
                                 <mat-horizontal-stepper class="mat-elevation-z4" [linear]="false">
 
-                                    <mat-step *ngFor="let pregunta of preguntas">
+                                    <mat-step *ngFor="let pregunta of preguntas;  let i = index">
                                         <div fxFlex="1 0 auto" fxLayout="column">
                                             <div class="h3">Modulo: <span
                                                     class="h4 color1">{{pregunta.nombreModulo}}</span></div>
@@ -36,10 +36,22 @@
                                         <mat-divider></mat-divider>
                                         <div *ngFor="let respuesta of pregunta.respuestas">
                                             <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
-                                                class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': ''}}"
+                                                class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
+                                                respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
                                                 [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
                                                 <div [innerHTML]="respuesta.descripcion"></div>
                                             </mat-checkbox>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                                            <button fxFlex="33" mat-stroked-button type="button" *ngIf="i != 0"
+                                                class="btnSecundario mx-8" matStepperPrevious>
+                                                Anterior pregunta
+                                            </button>
+                                            <button fxFlex="33" mat-stroked-button type="button" *ngIf="i != preguntas.length -1"
+                                                class="btnPrimario mx-8" matStepperNext>
+                                                Siguiente pregunta
+                                            </button>
                                         </div>
                                     </mat-step>
                                 </mat-horizontal-stepper>
@@ -61,6 +73,11 @@
                                         mat-stroked-button type="button" class="btnPrimario mx-8"
                                         (click)="finalizarPrueba()">
                                         Finalizar prueba
+                                    </button>
+                                    <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'FINALIZADA'" fxFlex="100"
+                                        mat-stroked-button type="button" class="btnPrimario mx-8"
+                                        (click)="descargarInforme()">
+                                        Descargar reporte
                                     </button>
                                 </div>
                             </div>
