@@ -279,9 +279,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			List<DetallePruebaUsuario> respuestasCorrectas = new ArrayList<DetallePruebaUsuario>();
 			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
 			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
-				
-				
-				if (detallePruebaUsuario.getRespuesta() != null &&detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
+				if (detallePruebaUsuario.getRespuesta() != null && detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
 					respuestasCorrectas.add(detallePruebaUsuario);
 				}
 			}
@@ -307,10 +305,10 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			// Valido si la prueba ya finalizó para mostrar las respuestas
 			if (pruebaUsuario.get().getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_TERMINADA)) {
 				mostrarCorrecto = true;
+				mostrarRetroalimentacion = true;
 			}
 			Date fecha = new Date();
-			if (pruebaUsuario.get().getPrueba().getFechaInicial().before(fecha)) {
-				mostrarRetroalimentacion = true;
+			if (pruebaUsuario.get().getPrueba().getFechaFinal().before(fecha)) {
 			}
 			// Valido si la prueba ya terminó el periodo para mostrar la retroalimentación
 
@@ -362,7 +360,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			respuestaDTO.setRetroalimentacion(respuesta.getRetroalimentacion());
 			respuestaDTO.setEsCorrecta(null);
 			if (mostrarCorrecto) {
-				if (detallePruebaUsuario.getRespuesta()!=null && detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
+				if (detallePruebaUsuario.getRespuesta() != null && detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
 					respuestaDTO.setEsCorrecta(respuesta.getCorrecta().equals(Constantes.RESPUESTA_CORRECTA));
 				}
 			}

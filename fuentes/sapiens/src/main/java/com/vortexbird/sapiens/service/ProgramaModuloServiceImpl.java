@@ -149,4 +149,10 @@ public class ProgramaModuloServiceImpl implements ProgramaModuloService {
 
         return programaModuloRepository.findById(prmoId);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProgramaModulo> findByPrograma(Integer progId) {
+        return programaModuloRepository.findByPrograma_progId(progId);
+    }
 }

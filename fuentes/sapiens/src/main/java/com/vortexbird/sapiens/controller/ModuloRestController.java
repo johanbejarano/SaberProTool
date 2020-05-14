@@ -140,6 +140,21 @@ public class ModuloRestController {
         }
     }
 
+    @GetMapping(value = "/findByPrograma/{progId}")
+    public ResponseEntity<?> findByPrograma(@PathVariable("progId")
+    Integer progId) {
+        try {
+            List<Modulo> modulos = moduloService.findByPrograma(progId);
+
+            return ResponseEntity.ok()
+                                 .body(moduloMapper.listModuloToListModuloDTO(modulos));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping(value = "/guardar")
 	public ResponseEntity<?> guardar(@RequestBody ModuloDTO moduloDTO) {
 		try {

@@ -1,16 +1,19 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { DetallePruebaUsuario } from 'app/domain/detalle-prueba-usuario';
 import { PruebaUsuario } from 'app/domain/prueba-usuario';
+import { Reporte } from 'app/domain/reporte';
 import { Respuesta } from 'app/domain/respuesta';
 import { Usuario } from 'app/domain/usuario';
 import { DetallePruebaUsuarioService } from 'app/services/detalle-prueba-usuario.service';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { PruebaUsuarioService } from 'app/services/prueba-usuario.service';
+import { PruebaService } from 'app/services/prueba.service';
 import { UsuarioService } from 'app/services/usuario.service';
+import { createAndDownloadBlobFile } from 'app/utils/files';
 
 @Component({
   selector: 'app-prueba',
@@ -34,8 +37,8 @@ export class PruebaComponent implements OnInit {
     private usuarioService: UsuarioService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private cdRef: ChangeDetectorRef,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private pruebaService: PruebaService) { }
 
   ngOnInit(): void {
     this.pruebaUsuario = this.localStorage.getFromLocal('pruebaUsuario');
@@ -165,6 +168,17 @@ export class PruebaComponent implements OnInit {
         confirmDialogRef = null;
       });
     }
+  }
+
+  descargarInforme() {
+    let request = new Reporte();
+    request.usuaId = this.usuario.usuaId;
+    request.prueId = this.pruebaUsuario.prueId;
+
+    this.pruebaService.consultarReporteResultados(request).subscribe((result) => {
+      const arrayBuffer = result.pdf;
+      createAndDownloadBlobFile(arrayBuffer, 'reporteResultados', 'pdf');
+    });
   }
 
 }

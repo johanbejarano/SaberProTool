@@ -18,6 +18,7 @@ import org.springframework.data.repository.query.Param;
 */
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	public List<Usuario> findByCodigo(String codigo);
+	public List<Usuario> findByIdentificacion(Long identificacion);
 	
 	@Query(nativeQuery = true)
 	public Page<UsuarioDTO> getUsuariosPorTipo(

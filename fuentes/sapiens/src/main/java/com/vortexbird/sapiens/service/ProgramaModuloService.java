@@ -1,5 +1,7 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.List;
+
 import com.vortexbird.sapiens.domain.ProgramaModulo;
 
 
@@ -9,4 +11,6 @@ import com.vortexbird.sapiens.domain.ProgramaModulo;
 *
 */
 public interface ProgramaModuloService extends GenericService<ProgramaModulo, Integer> {
+
+	List<ProgramaModulo> findByPrograma(Integer progId);
 }

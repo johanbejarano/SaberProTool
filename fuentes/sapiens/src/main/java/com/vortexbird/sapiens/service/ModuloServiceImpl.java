@@ -1,5 +1,6 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -194,6 +195,22 @@ public class ModuloServiceImpl implements ModuloService {
 	public List<Modulo> findByTipoModulo(Integer timoId) throws Exception {
 		try {
 			return moduloRepository.findByTipoModulo_timoId(timoId);
+		} catch (Exception e) {
+			log.error("Error findByTipoModulo", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Modulo> findByPrograma(Integer progId) throws Exception {
+		try {
+			List<Modulo> modulos = new ArrayList<Modulo>();
+			List<ProgramaModulo> programaModulos = programaModuloService.findByPrograma(progId);
+			for (ProgramaModulo programaModulo : programaModulos) {
+				modulos.add(programaModulo.getModulo());
+			}
+			return modulos;
 		} catch (Exception e) {
 			log.error("Error findByTipoModulo", e);
 			throw e;

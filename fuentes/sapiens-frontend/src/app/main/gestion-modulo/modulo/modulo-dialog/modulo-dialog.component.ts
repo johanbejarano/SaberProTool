@@ -54,8 +54,6 @@ export class ModuloDialogComponent implements OnInit {
       'tipoModulo': [this.moduloDialog.timoId_TipoModulo ? '' + this.moduloDialog.timoId_TipoModulo : null, Validators.required],
       'estado': [this.moduloDialog.estadoRegistro, Validators.required]
     });
-    console.log(this.moduloDialog.timoId_TipoModulo);
-    
   }
 
   ngOnDestroy() {

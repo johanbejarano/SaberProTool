@@ -16,4 +16,6 @@ public interface ModuloService extends GenericService<Modulo, Integer> {
 	List<Modulo> findByTipoModulo(Integer timoId) throws Exception;
 
 	void guardar(ModuloDTO moduloDTO) throws Exception;
+
+	List<Modulo> findByPrograma(Integer progId) throws Exception;
 }

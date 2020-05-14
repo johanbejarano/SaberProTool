@@ -26,4 +26,8 @@ export class ModuloService {
   public guardar(modulo: Modulo): Observable<any> {
     return this.httpClient.post(this.url + 'guardar/', modulo);
   }
+
+  public findByPrograma(progId: number): Observable<any> {
+    return this.httpClient.get(this.url + 'findByPrograma/' + progId);
+  }
 }
