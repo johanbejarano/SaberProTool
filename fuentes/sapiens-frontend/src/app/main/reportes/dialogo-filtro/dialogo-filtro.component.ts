@@ -128,4 +128,30 @@ export class DialogoFiltroComponent implements OnInit {
     }
   }
 
+  filtrar() {
+    const filtro = this.form.controls.filtro.value ? this.form.controls.filtro.value.trim().toLowerCase() : '';
+    if (this.tipo == 'usuario') {
+      this.getUsuarios();
+    } else if (this.tipo == 'prueba') {
+      console.log("entra");
+      
+      let dataTmp = this.data;
+      dataTmp = dataTmp.filter(prueba => {
+        return prueba.prueId.toString().trim().toLowerCase().indexOf(filtro) !== -1 || prueba.nombrePropietario.trim().toLowerCase().indexOf(filtro) !== -1
+      });
+      this.total = dataTmp.length;
+      this.datasource = new MatTableDataSource(dataTmp);
+      this.datasource.paginator = this.paginator;
+    } else if (this.tipo == 'modulo') {
+      let dataTmp = this.data;
+      dataTmp = dataTmp.filter(modulo => {
+        let filter: string = modulo.nombre;
+        return filter.trim().toLowerCase().indexOf(filtro) !== -1
+      });
+      this.total = dataTmp.length;
+      this.datasource = new MatTableDataSource(dataTmp);
+      this.datasource.paginator = this.paginator;
+    }
+  }
+
 }

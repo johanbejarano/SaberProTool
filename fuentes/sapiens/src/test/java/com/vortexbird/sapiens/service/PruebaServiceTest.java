@@ -21,8 +21,8 @@ public class PruebaServiceTest {
     @Autowired
     private PruebaService pruebaService;
     
-    @Test
-    @DisplayName("consultarReporteResultados")
+//    @Test
+//    @DisplayName("consultarReporteResultados")
     public void consultarReporteResultados() {
     	try {
     		String base64 = pruebaService.consultarReporteResultados(null, null, 2, null, null, null, null, null, null, null);
@@ -32,8 +32,8 @@ public class PruebaServiceTest {
 		}
     }
     
-    @Test
-    @DisplayName("consultarReporteResumenEstudiantes")
+//    @Test
+//    @DisplayName("consultarReporteResumenEstudiantes")
     public void consultarReporteResumenEstudiantes() {
     	try {
     		String base64 = pruebaService.consultarReporteResumenEstudiantes(null, null, 17, null, null, null, null, null, null, null);
