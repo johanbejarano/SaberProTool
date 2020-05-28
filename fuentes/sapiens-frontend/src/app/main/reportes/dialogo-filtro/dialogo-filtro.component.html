@@ -3,7 +3,7 @@
         <div class="h3">Busqueda de {{tipo}}</div>
     </div>
     <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-        <form [formGroup]="form" fxFlex="100" (ngSubmit)="cambioFiltro()">
+        <form [formGroup]="form" fxFlex="100" (ngSubmit)="getData()">
             <mat-form-field class="px-16" fxFlex="100" appearance="outline">
                 <mat-label>Filtrar</mat-label>
                 <input matInput fxFlex="90" formControlName="filtro">

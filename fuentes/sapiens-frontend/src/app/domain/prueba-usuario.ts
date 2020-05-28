@@ -10,5 +10,6 @@ export class PruebaUsuario {
     tiempoDisponible: number;
     propietario: string;
     nombreEstadoPrueba: string;
+    totalRespuestasCorrectas: number;
 
 }

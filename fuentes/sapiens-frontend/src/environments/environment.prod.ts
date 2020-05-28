@@ -2,6 +2,6 @@ export const environment = {
     production: true,
     hmr       : false,
 
-    URL: 'http://172.16.16.5:8080/puntos-giros-service/api/',
-    URL_SEG: 'http://172.16.16.5:8080/security-system-service/api/',
+    URL: 'http://192.168.7.6/api/',
+    URL_CKEDITOR_UPLOAD: 'http://192.168.7.6/api/public/upload'
 };
