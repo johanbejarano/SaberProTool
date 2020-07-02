@@ -49,7 +49,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   
   //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
   public editorPreguntaConfig = {
-    placeholder: 'Redacte la pregunta aquí!',
+    //placeholder: 'Redacte la pregunta aquí!',
     
     simpleUpload: {
       // The URL that the images are uploaded to.
@@ -58,7 +58,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   };
 
   public editorRetroalimentacionConfig = {
-    placeholder: 'Redacte la retroalimentación aquí!',
+    //placeholder: 'Redacte la retroalimentación aquí!',
     
     simpleUpload: {
       // The URL that the images are uploaded to.
