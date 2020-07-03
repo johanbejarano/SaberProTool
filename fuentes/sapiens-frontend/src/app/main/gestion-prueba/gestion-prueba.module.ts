@@ -1,32 +1,32 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { GestionPruebaRoutingModule } from './gestion-prueba-routing.module';
-import { PruebaComponent } from './prueba/prueba.component';
-import { PruebaListComponent } from './prueba/prueba-list/prueba-list.component';
-import { CrearPruebaComponent } from './prueba/crear-prueba/crear-prueba.component';
-
-import { TranslateModule } from '@ngx-translate/core';
-import { FooterModule } from 'app/layout/components/footer/footer.module';
-import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseWidgetModule, FuseConfirmDialogModule } from '@fuse/components';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { FuseConfirmDialogModule, FuseWidgetModule } from '@fuse/components';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { FooterModule } from 'app/layout/components/footer/footer.module';
+import { GestionPruebaRoutingModule } from './gestion-prueba-routing.module';
+import { CrearPruebaComponent } from './prueba/crear-prueba/crear-prueba.component';
 import { ListaEstudiantesComponent } from './prueba/lista-estudiantes/lista-estudiantes.component';
+import { PruebaListComponent } from './prueba/prueba-list/prueba-list.component';
+import { PruebaComponent } from './prueba/prueba.component';
+
+
 
 
 

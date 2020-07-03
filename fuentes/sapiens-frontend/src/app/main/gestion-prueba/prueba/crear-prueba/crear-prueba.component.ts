@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LocalStorageService } from 'app/services/local-storage.service';
-import { Prueba } from 'app/domain/prueba';
+import { Router } from '@angular/router';
 import { Modulo } from 'app/domain/modulo';
-import { Subscription } from 'rxjs';
+import { Prueba } from 'app/domain/prueba';
+import { Usuario } from 'app/domain/usuario';
+import { LocalStorageService } from 'app/services/local-storage.service';
 import { ModuloService } from 'app/services/modulo.service';
 import { PruebaService } from 'app/services/prueba.service';
-import { Usuario } from 'app/domain/usuario';
 import { UsuarioService } from 'app/services/usuario.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-crear-prueba',
@@ -102,8 +103,8 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.form = this._formBuilder.group({
       
       tipoPrueba: [this.prueba.tiprId_TipoPrueba, Validators.required],
-      fechaInicial: [this.prueba.fechaInicial, Validators.required],
-      fechaFinal: [this.prueba.fechaFinal, Validators.required],
+      fechaInicial: [this.prueba.fechaInicial ? new DatePipe('en-US').transform(this.prueba.fechaInicial, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
+      fechaFinal: [this.prueba.fechaFinal ? new DatePipe('en-US').transform(this.prueba.fechaFinal, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
       duracion: [this.prueba.tiempo, Validators.required],
       modulos: [this.modulosSeleccionados, Validators.required],
     });
@@ -140,8 +141,8 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     }
 
     this.prueba = new Prueba();
-    this.prueba.fechaInicial = this.form.controls.fechaInicial.value;
-    this.prueba.fechaFinal = this.form.controls.fechaFinal.value;
+    this.prueba.fechaInicial = new Date(this.form.controls.fechaInicial.value);
+    this.prueba.fechaFinal = new Date(this.form.controls.fechaFinal.value);
     this.prueba.idModulos = this.form.controls.modulos.value;
     this.prueba.idUsuarios = this.usuariosSeleccionados;
     this.prueba.tiprId_TipoPrueba = this.form.controls.tipoPrueba.value;
