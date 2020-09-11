@@ -229,10 +229,11 @@ public class ModuloServiceImpl implements ModuloService {
 				modulo = findById(moduloDTO.getModuId()).get();
 			}
 
-			modulo.setNombre(moduloDTO.getNombre());
+			modulo.setNombre(moduloDTO.getNombre().toUpperCase());
 			modulo.setDescripcion(moduloDTO.getDescripcion());
 			modulo.setCantidadPreguntas(moduloDTO.getCantidadPreguntas());
 			modulo.setPrioridad(moduloDTO.getPrioridad());
+			modulo.setIgualValor(moduloDTO.getIgualValor());
 			modulo.setTipoModulo(tipoModuloService.findById(moduloDTO.getTimoId_TipoModulo()).get());
 			modulo.setEstadoRegistro(moduloDTO.getEstadoRegistro());
 

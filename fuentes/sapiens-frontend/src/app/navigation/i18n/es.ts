@@ -16,6 +16,7 @@ export const locale = {
                 'INFORMES': 'Reportes',
             },
             'APPLICATIONS': 'Questions',
+            'CAMBIAR_CLAVE': 'Cambiar clave'
         }
     }
 };

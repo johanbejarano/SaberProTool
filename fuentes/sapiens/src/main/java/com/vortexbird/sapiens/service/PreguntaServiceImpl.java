@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -18,9 +20,11 @@ import com.vortexbird.sapiens.domain.ProgramaModulo;
 import com.vortexbird.sapiens.domain.Respuesta;
 import com.vortexbird.sapiens.domain.TipoPregunta;
 import com.vortexbird.sapiens.domain.Usuario;
+import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.GuardarPreguntaDTO;
 import com.vortexbird.sapiens.dto.PreguntaDTO;
 import com.vortexbird.sapiens.dto.RespuestaDTO;
+import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.mapper.PreguntaMapper;
 import com.vortexbird.sapiens.repository.PreguntaRepository;
@@ -63,10 +67,10 @@ public class PreguntaServiceImpl implements PreguntaService {
 
 	@Autowired
 	private DetallePruebaUsuarioService detallePruebaUsuarioService;
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private PreguntaMapper preguntaMapper;
 
@@ -204,22 +208,22 @@ public class PreguntaServiceImpl implements PreguntaService {
 		log.debug("getting Pregunta instance");
 		return preguntaRepository.findById(pregId);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public PreguntaDTO getPregunta(Integer pregId) throws Exception {
 		log.debug("getPregunta");
-		
+
 		Optional<Pregunta> pregunta = findById(pregId);
 		if (!pregunta.isPresent()) {
 			return null;
 		}
-		
+
 		PreguntaDTO preguntaDTO = preguntaMapper.preguntaToPreguntaDTO(pregunta.get());
-		
-		//Se consulta el modulo de la pregunta
+
+		// Se consulta el modulo de la pregunta
 		preguntaDTO.setNombreModulo(pregunta.get().getModulo().getNombre());
-		
+
 		return preguntaDTO;
 	}
 
@@ -255,44 +259,44 @@ public class PreguntaServiceImpl implements PreguntaService {
 			Pregunta pregunta = new Pregunta();
 
 			pregunta.setDescripcion(guardarPreguntaDTO.getDescripcion());
-			pregunta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+			pregunta.setEstadoRegistro(guardarPreguntaDTO.getEstadoRegistro());
 			pregunta.setFechaCreacion(new Date());
 			pregunta.setModulo(modulo.get());
 			pregunta.setRetroalimentacion(guardarPreguntaDTO.getRetroalimentacion());
 			pregunta.setTipoPregunta(tipoPregunta.get());
 			pregunta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
-
+			pregunta.setComplejidad(guardarPreguntaDTO.getComplejidad());
+			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
+			
 			save(pregunta);
 
-			// Se guardan las respuestas
-			List<RespuestaDTO> respuestas = guardarPreguntaDTO.getRespuestasDTO();
-			if (respuestas == null || respuestas.isEmpty()) {
-				throw new Exception("Las respuestas no pueden estar vacías");
+			if (pregunta.getTipoPregunta().getTprgId() == 1L) {
+				// Se guardan las respuestas
+				List<RespuestaDTO> respuestas = guardarPreguntaDTO.getRespuestasDTO();
+				if (respuestas == null || respuestas.isEmpty()) {
+					throw new Exception("Las respuestas no pueden estar vacías");
+				}
+
+				for (RespuestaDTO respuestaDTO : respuestas) {
+
+					// Se crea la respuesta
+					Respuesta respuesta = new Respuesta();
+
+					respuesta.setCorrecta(respuestaDTO.getCorrecta());
+					respuesta.setDescripcion(respuestaDTO.getDescripcion());
+					respuesta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					respuesta.setFechaCreacion(new Date());
+					respuesta.setPregunta(pregunta);
+					respuesta.setRetroalimentacion(
+							respuesta.getRetroalimentacion() == null ? "-" : respuesta.getRetroalimentacion());
+					respuesta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
+
+					respuestaService.save(respuesta);
+
+				}
 			}
-
-			for (RespuestaDTO respuestaDTO : respuestas) {
-
-				// Se crea la respuesta
-				Respuesta respuesta = new Respuesta();
-
-				respuesta.setCorrecta(respuestaDTO.getCorrecta());
-				respuesta.setDescripcion(respuestaDTO.getDescripcion());
-				respuesta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
-				respuesta.setFechaCreacion(new Date());
-				respuesta.setPregunta(pregunta);
-				respuesta.setRetroalimentacion(respuestaDTO.getRetroalimentacion());
-				respuesta.setRetroalimentacion(
-						respuesta.getRetroalimentacion() == null ? "-" : respuesta.getRetroalimentacion());
-				respuesta.setUsuCreador(respuestaDTO.getUsuCreador());
-
-				respuestaService.save(respuesta);
-
-			}
-
 			log.info("Pregunta guardada");
-
 			return pregunta;
-
 		} catch (Exception e) {
 			log.error("Error guardando pregunta", e);
 
@@ -345,13 +349,15 @@ public class PreguntaServiceImpl implements PreguntaService {
 
 			// Se modifican los datos de la pregunta
 			pregunta.setDescripcion(guardarPreguntaDTO.getDescripcion());
-			pregunta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+			pregunta.setEstadoRegistro(guardarPreguntaDTO.getEstadoRegistro());
 			pregunta.setFechaModificacion(new Date());
 			pregunta.setModulo(modulo.get());
 			pregunta.setRetroalimentacion(guardarPreguntaDTO.getRetroalimentacion());
 			pregunta.setTipoPregunta(tipoPregunta.get());
 			pregunta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
-
+			pregunta.setComplejidad(guardarPreguntaDTO.getComplejidad());
+			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
+			
 			update(pregunta);
 
 			// Se borran las respuestas originales de la pregunta
@@ -360,29 +366,32 @@ public class PreguntaServiceImpl implements PreguntaService {
 				respuestaService.delete(respuesta);
 			}
 
-			// Se crean las nuevas respuestas
-			List<RespuestaDTO> respuestas = guardarPreguntaDTO.getRespuestasDTO();
-			if (respuestas == null || respuestas.isEmpty()) {
-				throw new Exception("Las respuestas no pueden estar vacías");
-			}
+			if (pregunta.getTipoPregunta().getTprgId() == 1L) {
 
-			for (RespuestaDTO respuestaDTO : respuestas) {
+				// Se crean las nuevas respuestas
+				List<RespuestaDTO> respuestas = guardarPreguntaDTO.getRespuestasDTO();
+				if (respuestas == null || respuestas.isEmpty()) {
+					throw new Exception("Las respuestas no pueden estar vacías");
+				}
 
-				// Se crea la respuesta
-				Respuesta respuesta = new Respuesta();
+				for (RespuestaDTO respuestaDTO : respuestas) {
 
-				respuesta.setCorrecta(respuestaDTO.getCorrecta());
-				respuesta.setDescripcion(respuestaDTO.getDescripcion());
-				respuesta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
-				respuesta.setFechaCreacion(new Date());
-				respuesta.setPregunta(pregunta);
-				respuesta.setRetroalimentacion(respuestaDTO.getRetroalimentacion());
-				respuesta.setRetroalimentacion(
-						respuesta.getRetroalimentacion() == null ? "-" : respuesta.getRetroalimentacion());
-				respuesta.setUsuCreador(respuestaDTO.getUsuCreador());
+					// Se crea la respuesta
+					Respuesta respuesta = new Respuesta();
 
-				respuestaService.save(respuesta);
+					respuesta.setCorrecta(respuestaDTO.getCorrecta());
+					respuesta.setDescripcion(respuestaDTO.getDescripcion());
+					respuesta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					respuesta.setFechaCreacion(new Date());
+					respuesta.setPregunta(pregunta);
+					respuesta.setRetroalimentacion(respuestaDTO.getRetroalimentacion());
+					respuesta.setRetroalimentacion(
+							respuesta.getRetroalimentacion() == null ? "-" : respuesta.getRetroalimentacion());
+					respuesta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
 
+					respuestaService.save(respuesta);
+
+				}
 			}
 
 			log.info("Pregunta modificada");
@@ -395,68 +404,79 @@ public class PreguntaServiceImpl implements PreguntaService {
 			throw e;
 		}
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public List<PreguntaDTO> getPreguntasPorUsuario(Integer usuaId) throws Exception { 
+	public List<PreguntaDTO> getPreguntasPorUsuario(Integer usuaId) throws Exception {
 		try {
-			
-			//Se consulta el usuario
+
+			// Se consulta el usuario
 			Optional<Usuario> optUsuario = usuarioService.findById(usuaId);
-			
+
 			if (!optUsuario.isPresent() || !optUsuario.get().getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
 				throw new Exception("No se encontró el usuario, o no se encuentra activo: " + usuaId);
 			}
-			
+
 			Usuario usuario = optUsuario.get();
-			
-			//Se obtiene el programa académico del usuario
+
+			// Se obtiene el programa académico del usuario
 			Programa programa = usuario.getPrograma();
-			
-			//Se valida si el programa no está activo
-			if (programa==null || !programa.getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
+
+			// Se valida si el programa no está activo
+			if (programa == null || !programa.getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
 				throw new Exception("No existe el programa o se encuentra inactivo: " + programa.getProgId());
 			}
-			
-			//Se obtienen todos los módulos que el programa tiene asignados
+
+			// Se obtienen todos los módulos que el programa tiene asignados
 			List<ProgramaModulo> programasModulo = programa.getProgramaModulos();
-			if (programasModulo == null || programasModulo.size()==0) {
-				throw new Exception("El programa (" + programa.getProgId() + ") " + programa.getNombre() +  ", no tiene módulos asignados");
+			if (programasModulo == null || programasModulo.size() == 0) {
+				throw new Exception("El programa (" + programa.getProgId() + ") " + programa.getNombre()
+						+ ", no tiene módulos asignados");
 			}
-			
+
 			List<Pregunta> preguntas = new ArrayList<>();
 			for (ProgramaModulo programaModulo : programasModulo) {
-				
-				Modulo modulo = programaModulo.getModulo();
-				
-				//Se obtienen todas las preguntas de modulo
-				List<Pregunta> preguntasDelModulo = modulo.getPreguntas();
-				
+
+				// Se obtienen todas las preguntas activas del módulo
+				List<Pregunta> preguntasDelModulo = preguntaRepository.findByModulo_moduIdAndEstadoRegistro(
+						programaModulo.getModulo().getModuId(), Constantes.ESTADO_ACTIVO);
+
 				preguntas.addAll(preguntasDelModulo);
 			}
+
+			// Se obtienen todas las preguntas inactivas que sean creadas por el usuario
+			List<Pregunta> preguntasDelUsuario = preguntaRepository.findByEstadoRegistroAndUsuCreador(Constantes.ESTADO_INACTIVO, new Long(usuaId));
+			preguntas.addAll(preguntasDelUsuario);
 			
 			List<PreguntaDTO> preguntasDTO = preguntaMapper.listPreguntaToListPreguntaDTO(preguntas);
-			
-			//A cada pregunta se le calcula su modulo
-			for (int i=0; i<preguntas.size(); i++) {
-				
+
+			// A cada pregunta se le calcula su modulo
+			for (int i = 0; i < preguntas.size(); i++) {
+
 				Pregunta pregunta = preguntas.get(i);
 				Modulo modulo = pregunta.getModulo();
-				
+
 				preguntasDTO.get(i).setNombreModulo(modulo.getNombre());
 				
+				List<Respuesta> respuestas = pregunta.getRespuestas();
+				List<RespuestaDTO> respuestasDTO = new ArrayList<RespuestaDTO>();
+				for (int j = 0; j < respuestas.size(); j++) {
+					RespuestaDTO respuesta = new RespuestaDTO();
+					respuesta.setDescripcion(respuestas.get(j).getDescripcion());
+					respuestasDTO.add(respuesta);
+				}
+				preguntasDTO.get(i).setRespuestasDTO(respuestasDTO);
 			}
-			
+
 			preguntasDTO.sort(new Comparator<PreguntaDTO>() {
 				@Override
 				public int compare(PreguntaDTO p1, PreguntaDTO p2) {
 					return p2.getPregId().compareTo(p1.getPregId());
 				}
 			});
-			
+
 			return preguntasDTO;
-			
-			
+
 		} catch (Exception e) {
 			log.error("Error getPreguntasPorUsuario", e);
 
@@ -468,6 +488,50 @@ public class PreguntaServiceImpl implements PreguntaService {
 	@Transactional(readOnly = true)
 	public List<Pregunta> getPreguntasPorModulo(Integer moduId) throws Exception {
 		return preguntaRepository.findByModulo_moduIdAndEstadoRegistro(moduId, Constantes.ESTADO_ACTIVO);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cargar(CargueMasivoDTO request) throws Exception {
+		try {
+			// Se valida el request
+			if (request == null) {
+				throw new Exception("El request se encuentra vacío");
+			}
+			if (request.getPreguntas() == null || request.getPreguntas().isEmpty()) {
+				throw new Exception("La lista se encuentra vacía");
+			}
+			if (request.getUsuarioCreador() == null) {
+				throw new Exception("El usuario se encuentra vacío");
+			}
+			// Obtengo todos los programas
+			List<Modulo> modulos = moduloService.findAll();
+			Map<String, Modulo> modulosMap = modulos.stream()
+					.collect(Collectors.toMap(Modulo::getNombre, modulo -> modulo));
+			for (PreguntaDTO pregunta : request.getPreguntas()) {
+				if (!modulosMap.containsKey(pregunta.getNombreModulo().trim().toUpperCase())) {
+					throw new Exception(
+							"El módulo " + pregunta.getNombreModulo().trim() + " no existe en el sistema");
+				}
+				GuardarPreguntaDTO preguntaGuardar = new GuardarPreguntaDTO();
+				
+				preguntaGuardar.setModuId_Modulo(modulosMap.get(pregunta.getNombreModulo().trim().toUpperCase()).getModuId());
+				preguntaGuardar.setTprgId_TipoPregunta(pregunta.getTprgId_TipoPregunta());
+				preguntaGuardar.setDescripcion(pregunta.getDescripcion());
+				preguntaGuardar.setRetroalimentacion(pregunta.getRetroalimentacion());
+				preguntaGuardar.setComplejidad(pregunta.getComplejidad());
+				preguntaGuardar.setValorPregunta(pregunta.getValorPregunta());
+				
+				preguntaGuardar.setRespuestasDTO(pregunta.getRespuestasDTO());
+				
+				preguntaGuardar.setUsuCreador(request.getUsuarioCreador());
+				preguntaGuardar.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+				guardarPregunta(preguntaGuardar);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }

@@ -30,6 +30,8 @@ public class ModuloDTO implements Serializable {
     private Long usuCreador;
     private Long usuModificador;
     private Integer timoId_TipoModulo;
+    
+    private String igualValor;
 
     public Long getCantidadPreguntas() {
         return cantidadPreguntas;
@@ -132,4 +134,12 @@ public class ModuloDTO implements Serializable {
             return super.toString();
         }
     }
+
+	public String getIgualValor() {
+		return igualValor;
+	}
+
+	public void setIgualValor(String igualValor) {
+		this.igualValor = igualValor;
+	}
 }

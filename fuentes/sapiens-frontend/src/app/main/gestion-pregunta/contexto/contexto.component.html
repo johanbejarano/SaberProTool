@@ -1,0 +1,17 @@
+<div id="observation-dialog" class="dialog-content-wrapper {{ocultar ? 'ocultar' : ''}}" fxLayout="row wrap" fxFlex="100">
+    <div class="px-16 py-12 titlecard" fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="h3">Seleccionar contexto</div>
+        <button (click)="editar(null)" mat-icon-button class="btnSecundario">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+        <div fxFlex="100" fxLayout="row wrap">
+            <div *ngFor="let contexto of contextos">
+                <div class="h3">{{contexto.nombre}}</div>
+                <mat-divider></mat-divider>
+                <div [innerHTML]="contexto.descripcion"></div>
+            </div>
+        </div>
+    </div>
+</div>

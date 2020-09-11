@@ -9,10 +9,11 @@ import { GestionUsuarioRoutingModule } from './gestion-usuario-routing.module';
 import { UsuarioDialogComponent } from './usuario/usuario-dialog/usuario-dialog.component';
 import { UsuarioListComponent } from './usuario/usuario-list/usuario-list.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+import { CargarArchivoComponent } from './cargar-archivo/cargar-archivo.component';
 
 
 @NgModule({
-  declarations: [UsuarioComponent, UsuarioListComponent, UsuarioDialogComponent],
+  declarations: [UsuarioComponent, UsuarioListComponent, UsuarioDialogComponent, CargarArchivoComponent],
   imports: [
     CommonModule,
     GestionUsuarioRoutingModule,

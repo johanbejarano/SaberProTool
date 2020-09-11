@@ -21,15 +21,17 @@ import { FuseConfirmDialogModule, FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FooterModule } from 'app/layout/components/footer/footer.module';
+import { CargarArchivoComponent } from './cargar-archivo/cargar-archivo.component';
+import { ContextoComponent } from './contexto/contexto.component';
+import { EditarContextoComponent } from './contexto/editar-contexto/editar-contexto.component';
 import { GestionPreguntaRoutingModule } from './gestion-pregunta-routing.module';
 import { CrearPreguntaComponent } from './pregunta/crear-pregunta/crear-pregunta.component';
 import { PreguntaListComponent } from './pregunta/pregunta-list/pregunta-list.component';
 import { PreguntaComponent } from './pregunta/pregunta.component';
-
-
+import { VisualizarPreguntaComponent } from './visualizar-pregunta/visualizar-pregunta.component';
 
 @NgModule({
-  declarations: [PreguntaComponent, PreguntaListComponent, CrearPreguntaComponent],
+  declarations: [PreguntaComponent, PreguntaListComponent, CrearPreguntaComponent, CargarArchivoComponent, VisualizarPreguntaComponent, ContextoComponent, EditarContextoComponent],
   imports: [
     CommonModule,
 
@@ -59,6 +61,10 @@ import { PreguntaComponent } from './pregunta/pregunta.component';
 
     GestionPreguntaRoutingModule,
     CKEditorModule
+  ], entryComponents: [
+    VisualizarPreguntaComponent,
+    ContextoComponent,
+    EditarContextoComponent
   ]
 })
 export class GestionPreguntaModule { }

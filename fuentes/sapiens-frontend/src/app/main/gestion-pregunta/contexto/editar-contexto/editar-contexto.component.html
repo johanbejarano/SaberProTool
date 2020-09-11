@@ -1,0 +1,28 @@
+<div class="dialog-content-wrapper" fxLayout="row wrap" fxFlex="100">
+    <div class="px-16 py-12 titlecard" fxFlex="100">
+        <div class="h3">{{contexto.contId ? 'Modificar ' : 'Crear' }} Contexto</div>
+    </div>
+    <form [formGroup]="form" fxLayout="row wrap" fxFlex="100" (ngSubmit)="onFormSubmit()">
+        <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+            <mat-form-field class="px-8" fxFlex="100">
+                <input matInput placeholder="Nombre" formControlName="nombre">
+                <mat-error *ngIf="form.controls.nombre.errors?.required">Nombre obligatorio
+                </mat-error>
+            </mat-form-field>
+            <div fxflex="100" class="px-8">
+                <div fxFlex="100" fxLayout="row wrap">
+                    <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="descripcion" fxFlex="100">
+                    </ckeditor>
+                    <mat-error *ngIf="form.controls.descripcion.errors?.required">
+                        La descripción del contexto es obligatorio</mat-error>
+                </div>
+            </div>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end center">
+            <div fxFlex="50" fxFlex.xs="0"></div>
+            <button fxFlex="50" fxFlex.xs="100" mat-stroked-button type="submit" class="btnPrimario">
+                {{(contexto.contId ? 'Modificar' : 'Crear')}}
+            </button>
+        </div>
+    </form>
+</div>

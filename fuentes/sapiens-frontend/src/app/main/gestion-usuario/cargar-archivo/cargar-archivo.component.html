@@ -1,0 +1,27 @@
+<div fxLayout="row wrap" fxFlex="100">
+    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+        <div class="fuse-widget-front" fxFlex="100">
+            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3">Cargar archivo</div>
+            </div>
+            <div class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+
+                <input type="file" style="display: none"
+                    accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                    #fileInput (change)="selectFile($event)" />
+                <a style="font-size: 16px;" mat-button (click)="fileInput.click()" fxFlex="30">
+                    Adjuntar
+                    <mat-icon class="mat-icon-sm caret">attachment</mat-icon>
+                </a>
+                <div *ngIf="selectedFiles" fxFlex="30">
+                    <span class="text">{{selectedFiles.name}}</span>
+                </div>
+                <div *ngIf="selectedFiles" fxFlex="30" class="px-8">
+                    <button fxFlex="100" mat-stroked-button (click)="guardar()" class="btnPrimario">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </fuse-widget>
+</div>

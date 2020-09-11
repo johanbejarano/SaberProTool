@@ -45,6 +45,10 @@ public class Modulo implements java.io.Serializable {
     @Size(max = 255)
     private String nombre;
     @NotNull
+    @NotEmpty
+    @Size(max = 1)
+    private String igualValor;
+    @NotNull
     private Long prioridad;
     @NotNull
     private Long usuCreador;
@@ -205,4 +209,14 @@ public class Modulo implements java.io.Serializable {
     public void setPruebaModulos(List<PruebaModulo> pruebaModulos) {
         this.pruebaModulos = pruebaModulos;
     }
+
+	public String getIgualValor() {
+		return igualValor;
+	}
+
+	public void setIgualValor(String igualValor) {
+		this.igualValor = igualValor;
+	}
+    
+    
 }

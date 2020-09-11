@@ -12,6 +12,7 @@ export class Usuario {
     identificacion: number;
     nombre: string;
     password: string;
+    passwordNueva: string;
     usuCreador: number;
     usuModificador: number;
     usuaId: number;

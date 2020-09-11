@@ -11,5 +11,6 @@ export class Modulo {
     usuCreador: number;
     usuModificador: number;
     timoId_TipoModulo: number;
-    
+    igualValor: string;
+
 }

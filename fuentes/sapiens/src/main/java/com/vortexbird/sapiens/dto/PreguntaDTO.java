@@ -36,6 +36,9 @@ public class PreguntaDTO implements Serializable {
     
     private List<RespuestaDTO> respuestasDTO;
 
+    private Long complejidad;
+    private Long valorPregunta;
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -153,6 +156,22 @@ public class PreguntaDTO implements Serializable {
 
 	public void setNombreModulo(String nombreModulo) {
 		this.nombreModulo = nombreModulo;
+	}
+
+	public Long getComplejidad() {
+		return complejidad;
+	}
+
+	public void setComplejidad(Long complejidad) {
+		this.complejidad = complejidad;
+	}
+
+	public Long getValorPregunta() {
+		return valorPregunta;
+	}
+
+	public void setValorPregunta(Long valorPregunta) {
+		this.valorPregunta = valorPregunta;
 	}
 
 	

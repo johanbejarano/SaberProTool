@@ -1,6 +1,7 @@
 package com.vortexbird.sapiens.controller;
 
 import com.vortexbird.sapiens.domain.Usuario;
+import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.mapper.UsuarioMapper;
 import com.vortexbird.sapiens.service.UsuarioService;
@@ -163,6 +164,52 @@ public class UsuarioRestController {
 	public ResponseEntity<?> guardar(@RequestBody UsuarioDTO usuarioDTO) {
 		try {
 			usuarioService.guardar(usuarioDTO);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/solicitarClave/{codigo}")
+	public ResponseEntity<?> solicitarClave(@PathVariable("codigo") String codigo) {
+		try {
+			String correo = usuarioService.solicitarClave(codigo);
+			UsuarioDTO usuario = new UsuarioDTO();
+			usuario.setCorreo(correo);
+			return ResponseEntity.ok().body(usuario);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/recuperarClave/{token}")
+	public ResponseEntity<?> recuperarClave(@PathVariable("token") String token) {
+		try {
+			usuarioService.recuperarClave(token);
+			return ResponseEntity.ok().body("<script>window.close();</script>");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PostMapping(value = "/cambiarClave")
+	public ResponseEntity<?> cambiarClave(@RequestBody UsuarioDTO usuarioDTO) {
+		try {
+			usuarioService.cambiarClave(usuarioDTO);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PostMapping(value = "/cargar")
+	public ResponseEntity<?> cargar(@RequestBody CargueMasivoDTO request) {
+		try {
+			usuarioService.cargar(request);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

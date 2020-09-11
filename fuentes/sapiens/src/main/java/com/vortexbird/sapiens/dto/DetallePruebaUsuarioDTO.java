@@ -30,6 +30,7 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private Integer prusId;
     private Integer respId;
     private String nombreModulo;
+    private Long prioridadModulo;
     private String descripcionPregunta;
     private String retroalimentacionPregunta;
     private List<RespuestaDTO> respuestas;
@@ -151,4 +152,12 @@ public class DetallePruebaUsuarioDTO implements Serializable {
             return super.toString();
         }
     }
+
+	public Long getPrioridadModulo() {
+		return prioridadModulo;
+	}
+
+	public void setPrioridadModulo(Long prioridadModulo) {
+		this.prioridadModulo = prioridadModulo;
+	}
 }

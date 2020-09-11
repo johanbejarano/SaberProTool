@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { CargueMasivo } from 'app/domain/cargue-masivo';
+import { Pregunta } from 'app/domain/pregunta';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { Pregunta } from 'app/domain/pregunta';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,9 @@ export class PreguntaService {
 
   public eliminar(rol: Pregunta): Observable<any> {
     return this.httpClient.post(this.url + 'eliminar/', rol);
+  }
+
+  public cargar(request: CargueMasivo): Observable<any> {
+    return this.httpClient.post(this.url + 'cargar/', request);
   }
 }

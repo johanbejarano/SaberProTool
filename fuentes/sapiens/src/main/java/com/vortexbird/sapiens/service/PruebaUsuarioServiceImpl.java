@@ -265,6 +265,8 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 					preguntas.addAll(preguntasModulo);
 				}
 
+				Long puntaje = 0L;
+				
 				for (Pregunta pregunta : preguntas) {
 					DetallePruebaUsuario detallePruebaUsuario = new DetallePruebaUsuario();
 					detallePruebaUsuario.setPruebaUsuario(pruebaUsuario);
@@ -273,9 +275,9 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 					detallePruebaUsuario.setFechaCreacion(fecha);
 					detallePruebaUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
 					detallePruebaUsuarioService.save(detallePruebaUsuario);
+					puntaje += pregunta.getValorPregunta() == null ? 50L : pregunta.getValorPregunta();
 				}
-
-				pruebaUsuario.setTotalPreguntas(new Long(preguntas.size()));
+				pruebaUsuario.setTotalPreguntas(puntaje);
 			}
 
 			Optional<EstadoPrueba> estadoPrueba = estadoPruebaService.findById(Constantes.ESTADO_PRUEBA_INICIADA);
@@ -373,13 +375,19 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 
 			//Calculos las respuestas correctas obtenidas
 			List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getRespuestasCorrectas(prusId);
+			Long puntaje = 0L;
+			//Sumo el puntaje por pregunta
+			for (int i = 0; i < detallesPruebaUsuario.size(); i++) {
+				DetallePruebaUsuario detalle = detallesPruebaUsuario.get(i);
+				puntaje += detalle.getPregunta().getValorPregunta() == null ? 50L : detalle.getPregunta().getValorPregunta();
+			}
 
 			Optional<EstadoPrueba> estadoPrueba = estadoPruebaService.findById(Constantes.ESTADO_PRUEBA_TERMINADA);
 			pruebaUsuario.setFechaInicio(null);
 			pruebaUsuario.setEstadoPrueba(estadoPrueba.get());
 			pruebaUsuario.setFechaModificacion(new Date());
 			pruebaUsuario.setUsuModificador(usuario);
-			pruebaUsuario.setTotalRespuestasCorrectas(new Long(detallesPruebaUsuario.size()));
+			pruebaUsuario.setTotalRespuestasCorrectas(puntaje);
 
 			update(pruebaUsuario);
 		} catch (Exception e) {

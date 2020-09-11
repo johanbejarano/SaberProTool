@@ -1,6 +1,7 @@
 package com.vortexbird.sapiens.service;
 
 import com.vortexbird.sapiens.domain.Usuario;
+import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +21,12 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 	String getNombreUsuario(Integer usuaId) throws Exception;
 
 	void guardar(UsuarioDTO usuarioDTO) throws Exception;
+
+	String solicitarClave(String codigo) throws Exception;
+
+	void recuperarClave(String token) throws Exception;
+	
+	void cambiarClave(UsuarioDTO usuarioDTO) throws Exception;
+
+	void cargar(CargueMasivoDTO request) throws Exception;
 }

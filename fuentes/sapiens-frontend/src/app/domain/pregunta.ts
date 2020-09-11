@@ -14,6 +14,18 @@ export class Pregunta {
     timoId: number;
 
     nombreModulo: string;
+    tipoPregunta: string;
 
     respuestasDTO: Respuesta[];
+
+    complejidad: number;
+    valorPregunta: number;
+
+    facuId: number;
+    facultad: string;
+    progId: number;
+    programa: string;
+
+    contId: number;
+    contexto: string;
 }

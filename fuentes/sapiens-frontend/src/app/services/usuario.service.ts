@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CargueMasivo } from 'app/domain/cargue-masivo';
 import { Usuario } from 'app/domain/usuario';
 import { global } from 'app/utils/global';
 import { environment } from 'environments/environment';
@@ -36,9 +37,21 @@ export class UsuarioService {
   }
 
   public getUsuariosPorTipo(tiusId: number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
-    if (!filtro || filtro.length==0 || filtro === '%'){
+    if (!filtro || filtro.length == 0 || filtro === '%') {
       filtro = "*";
     }
-    return this.httpClient.get(this.url + 'getUsuariosPorTipo/'+tiusId+"/"+filtro+"/"+pageNumber+"/"+pageSize);
+    return this.httpClient.get(this.url + 'getUsuariosPorTipo/' + tiusId + "/" + filtro + "/" + pageNumber + "/" + pageSize);
+  }
+
+  public solicitarClave(codigo: string): Observable<any> {
+    return this.httpClient.get(this.url + 'solicitarClave/' + codigo);
+  }
+
+  public cambiarClave(request: Usuario): Observable<any> {
+    return this.httpClient.post(this.url + 'cambiarClave/', request);
+  }
+
+  public cargar(request: CargueMasivo): Observable<any> {
+    return this.httpClient.post(this.url + 'cargar/', request);
   }
 }

@@ -54,7 +54,6 @@ export class UsuarioDialogComponent implements OnInit {
       'identificacion': [this.usuarioDialog.identificacion, Validators.compose([Validators.required, Validators.maxLength(80)])],
       'celular': [this.usuarioDialog.celular, Validators.compose([Validators.required, Validators.maxLength(80)])],
       'correo': [this.usuarioDialog.correo, Validators.compose([Validators.required, Validators.maxLength(80)])],
-      'password': ['', Validators.maxLength(80)],
       'estado': [this.usuarioDialog.estadoRegistro, Validators.required],
       'programa': [this.usuarioDialog.progId_Programa, Validators.required],
       'tipoUsuario': [this.usuarioDialog.tiusId_TipoUsuario, Validators.required],
@@ -82,13 +81,6 @@ export class UsuarioDialogComponent implements OnInit {
       request.estadoRegistro = this.form.controls.estado.value;
       request.progId_Programa = this.form.controls.programa.value;
       request.tiusId_TipoUsuario = this.form.controls.tipoUsuario.value;
-
-      if (this.form.controls.password.value) {
-        request.password = this.form.controls.password.value;
-      }else if(!request.usuaId){
-        this.snackBar.open('Se debe ingresar una contraseña al crear el usuario', '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
-        return;
-      }
 
       this.usuarioService.guardar(request).subscribe(() => {
         this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });

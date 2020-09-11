@@ -31,6 +31,8 @@ public class GuardarPreguntaDTO implements Serializable {
     private Long usuModificador;
     private Integer moduId_Modulo;
     private Integer tprgId_TipoPregunta;
+    private Long complejidad;
+    private Long valorPregunta;
     
     private List<RespuestaDTO> respuestasDTO;
 
@@ -135,5 +137,21 @@ public class GuardarPreguntaDTO implements Serializable {
             return super.toString();
         }
     }
+
+	public Long getComplejidad() {
+		return complejidad;
+	}
+
+	public void setComplejidad(Long complejidad) {
+		this.complejidad = complejidad;
+	}
+
+	public Long getValorPregunta() {
+		return valorPregunta;
+	}
+
+	public void setValorPregunta(Long valorPregunta) {
+		this.valorPregunta = valorPregunta;
+	}
 
 }

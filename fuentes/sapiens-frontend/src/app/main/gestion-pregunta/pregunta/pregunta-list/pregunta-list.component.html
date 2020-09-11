@@ -5,7 +5,7 @@
                 <div class="h3">Preguntas</div>
             </div>
             <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-                <form [formGroup]="form" fxFlex="100">
+                <form [formGroup]="form" fxFlex="100" (ngSubmit)="applyFilter()" fxLayout="row wrap">
                     <mat-form-field class="px-16" fxFlex="100" appearance="outline">
                         <mat-label>Módulo</mat-label>
                         <mat-select formControlName="modulo" (selectionChange)="applyFilter()">
@@ -14,6 +14,14 @@
                                 {{modulo.nombre}}
                             </mat-option>
                         </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="px-16" fxFlex="100" appearance="outline">
+                        <mat-label>Filtrar</mat-label>
+                        <input matInput fxFlex="90" formControlName="filtro">
+
+                        <button matSuffix class="btnBusqueda" type="submit">
+                            <mat-icon>search</mat-icon>
+                        </button>
                     </mat-form-field>
                 </form>
                 <mat-table #table [dataSource]="datasource" fxFlex="100">

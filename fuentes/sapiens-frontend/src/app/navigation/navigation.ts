@@ -24,10 +24,16 @@ export const navigationProfesor: FuseNavigation[] = [
                 type: 'item',
                 icon: 'assignment',
                 url: '/gestionPruebas',
-            },
-
-
+            }
         ]
+    },
+    {
+        id: 'cambiarClave',
+        title: 'CambiarClave',
+        translate: 'NAV.CAMBIAR_CLAVE',
+        type: 'item',
+        icon: 'person',
+        url: '/init/cambiarClave',
     }
 ];
 
@@ -70,10 +76,16 @@ export const navigationDirector: FuseNavigation[] = [
                 icon: 'picture_as_pdf',
                 url: '/reportes',
             },
-
-
         ]
-    }
+    },
+    {
+        id: 'cambiarClave',
+        title: 'CambiarClave',
+        translate: 'NAV.CAMBIAR_CLAVE',
+        type: 'item',
+        icon: 'person',
+        url: '/init/cambiarClave',
+    },
 ];
 
 export const navigationEstudiante: FuseNavigation[] = [
@@ -92,5 +104,13 @@ export const navigationEstudiante: FuseNavigation[] = [
                 url: '/estudiante/misPruebas',
             },
         ]
+    },
+    {
+        id: 'cambiarClave',
+        title: 'CambiarClave',
+        translate: 'NAV.CAMBIAR_CLAVE',
+        type: 'item',
+        icon: 'person',
+        url: '/init/cambiarClave',
     }
 ];

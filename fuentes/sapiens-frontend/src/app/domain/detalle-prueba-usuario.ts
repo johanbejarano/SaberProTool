@@ -5,6 +5,7 @@ export class DetallePruebaUsuario {
     prusId: number;
     respId: number;
     usuCreador: number;
+    respuestaAbierta: string;
 
     nombreModulo: string;
     descripcionPregunta: string;

@@ -57,6 +57,7 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
 
     this.form = this.formBuilder.group({
       modulo: [''],
+      filtro: ['']
     });
 
     this.getData();
@@ -124,16 +125,40 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   applyFilter() {
     let dataTmp = this.data;
 
-    let filtro : string = this.form.controls.modulo.value ? this.form.controls.modulo.value : '';
+    let modulo: string = this.form.controls.modulo.value ? this.form.controls.modulo.value : '';
+    let filtro: string = this.form.controls.filtro.value ? this.form.controls.filtro.value.toLowerCase() : '';
 
-    if(filtro){
+    if (modulo) {
       dataTmp = dataTmp.filter(pregunta => {
-        return pregunta.moduId_Modulo === +filtro
-      })
+        return pregunta.moduId_Modulo === +modulo
+      });
     }
 
-
-    this.datasource = new MatTableDataSource<Pregunta>(dataTmp);
+    if (filtro) {
+      let showData = [];
+      for (let i = 0; i < dataTmp.length; i++) {
+        const pregunta = dataTmp[i];
+        let contiene = false;
+        if (pregunta.descripcion.toLowerCase().search(filtro) !== -1) {
+          contiene = true;
+        } else {
+          if (pregunta.respuestasDTO) {
+            for (let j = 0; j < pregunta.respuestasDTO.length; j++) {
+              const respuesta = pregunta.respuestasDTO[j];
+              if (respuesta.descripcion.toLowerCase().search(filtro) !== -1) {
+                contiene = true;
+              }
+            }
+          }
+        }
+        if (contiene) {
+          showData.push(pregunta);
+        }
+      }
+      this.datasource = new MatTableDataSource<Pregunta>(showData);
+    } else {
+      this.datasource = new MatTableDataSource<Pregunta>(dataTmp);
+    }
     this.datasource.paginator = this.paginator;
   }
 

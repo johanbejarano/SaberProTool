@@ -133,7 +133,6 @@ export class DialogoFiltroComponent implements OnInit {
     if (this.tipo == 'usuario') {
       this.getUsuarios();
     } else if (this.tipo == 'prueba') {
-      console.log("entra");
       
       let dataTmp = this.data;
       dataTmp = dataTmp.filter(prueba => {

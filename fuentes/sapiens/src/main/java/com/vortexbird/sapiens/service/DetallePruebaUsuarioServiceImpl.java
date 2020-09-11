@@ -319,6 +319,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				detallePruebaUsuarioDTO.setDpruId(detallePruebaUsuario.getDpruId());
 				detallePruebaUsuarioDTO.setPregId(detallePruebaUsuario.getPregunta().getPregId());
 				detallePruebaUsuarioDTO.setNombreModulo(detallePruebaUsuario.getPregunta().getModulo().getNombre());
+				detallePruebaUsuarioDTO.setPrioridadModulo(detallePruebaUsuario.getPregunta().getModulo().getPrioridad());
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
 				if (mostrarRetroalimentacion) {
 					detallePruebaUsuarioDTO

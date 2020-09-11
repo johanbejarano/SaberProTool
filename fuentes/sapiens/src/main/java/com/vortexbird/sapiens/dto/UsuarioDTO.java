@@ -41,6 +41,8 @@ public class UsuarioDTO implements Serializable {
     private Integer progId;
     private String nombrePrograma;
     
+    private String passwordNueva;
+    
     public UsuarioDTO() {
 		super();
 	}
@@ -258,4 +260,12 @@ public class UsuarioDTO implements Serializable {
             return super.toString();
         }
     }
+
+	public String getPasswordNueva() {
+		return passwordNueva;
+	}
+
+	public void setPasswordNueva(String passwordNueva) {
+		this.passwordNueva = passwordNueva;
+	}
 }

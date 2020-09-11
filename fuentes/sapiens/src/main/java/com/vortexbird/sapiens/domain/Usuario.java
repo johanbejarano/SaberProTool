@@ -95,6 +95,8 @@ public class Usuario implements java.io.Serializable {
     private Long usuCreador;
     private Long usuModificador;
     private List<PruebaUsuario> pruebaUsuarios = new ArrayList<PruebaUsuario>(0);
+    @Size(max = 255)
+    private String token;
 
     public Usuario() {
     }
@@ -279,5 +281,14 @@ public class Usuario implements java.io.Serializable {
 
     public void setPruebaUsuarios(List<PruebaUsuario> pruebaUsuarios) {
         this.pruebaUsuarios = pruebaUsuarios;
+    }
+    
+    @Column(name = "token")
+    public String getToken() {
+        return this.token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

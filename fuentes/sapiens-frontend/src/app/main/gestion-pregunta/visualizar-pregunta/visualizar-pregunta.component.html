@@ -1,0 +1,26 @@
+<div id="observation-dialog" class="dialog-content-wrapper" fxLayout="row wrap" fxFlex="100">
+    <div class="px-16 py-12 titlecard" fxFlex="100">
+        <div class="h3">Visualizar pregunta</div>
+    </div>
+    <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+        <div fxFlex="100" fxLayout="column">
+            <div class="h3">Modulo: <span class="h4 color1">{{pregunta.nombreModulo}}</span></div>
+            <mat-divider></mat-divider>
+            <div [innerHTML]="pregunta.descripcion"></div>
+        </div>
+        <mat-divider></mat-divider>
+        <div *ngFor="let respuesta of pregunta.respuestasDTO" fxFlex="100">
+            <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)" class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
+                    respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
+                [disabled]="pregunta.retroalimentacion ? 'true' : 'false'"
+                [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
+                <div [innerHTML]="respuesta.descripcion"></div>
+            </mat-checkbox>
+        </div>
+        <div fxFlex="100" fxLayout="column" *ngIf="pregunta.retroalimentacion">
+            <div class="h3">Retroalimentación:</div>
+            <mat-divider></mat-divider>
+            <div [innerHTML]="pregunta.retroalimentacion"></div>
+        </div>
+    </div>
+</div>

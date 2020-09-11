@@ -14,4 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PreguntaRepository extends JpaRepository<Pregunta, Integer> {
 
 	List<Pregunta> findByModulo_moduIdAndEstadoRegistro(Integer moduId, String estado);
+	
+	List<Pregunta> findByEstadoRegistroAndUsuCreador(String estado, Long usuario);
 }

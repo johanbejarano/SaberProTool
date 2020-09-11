@@ -111,12 +111,6 @@
                 </mat-error>
             </div>
 
-            <mat-form-field class="px-8" fxFlex="100">
-                <input matInput placeholder="Actualizar contraseña" formControlName="password">
-                <mat-error *ngIf="form.controls.password.hasError('maxlength')">{{'msg.tamanoMaximo' | translate}}
-                </mat-error>
-            </mat-form-field>
-
         </div>
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end center">
             <div fxFlex="50" fxFlex.xs="0"></div>

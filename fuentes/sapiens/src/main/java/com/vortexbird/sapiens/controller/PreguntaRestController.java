@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.Respuesta;
+import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.GuardarPreguntaDTO;
 import com.vortexbird.sapiens.dto.PreguntaDTO;
 import com.vortexbird.sapiens.dto.RespuestaDTO;
@@ -219,6 +220,17 @@ public class PreguntaRestController {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PostMapping(value = "/cargar")
+	public ResponseEntity<?> cargar(@RequestBody CargueMasivoDTO request) {
+		try {
+			preguntaService.cargar(request);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

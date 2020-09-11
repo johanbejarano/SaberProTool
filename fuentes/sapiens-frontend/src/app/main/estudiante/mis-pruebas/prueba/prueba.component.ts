@@ -14,6 +14,8 @@ import { PruebaUsuarioService } from 'app/services/prueba-usuario.service';
 import { PruebaService } from 'app/services/prueba.service';
 import { UsuarioService } from 'app/services/usuario.service';
 import { createAndDownloadBlobFile } from 'app/utils/files';
+import { environment } from 'environments/environment.js';
+import * as ClassicEditor from '../../../../../assets/ckeditor.js';
 
 @Component({
   selector: 'app-prueba',
@@ -30,6 +32,15 @@ export class PruebaComponent implements OnInit {
   segundos: number;
 
   usuario: Usuario;
+
+  //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
+  public editorConfig = {
+    simpleUpload: {
+      uploadUrl: environment.URL_CKEDITOR_UPLOAD,
+    }
+  };
+
+  public Editor = ClassicEditor;
 
   constructor(private detallePruebaUsuarioService: DetallePruebaUsuarioService,
     private pruebaUsuarioService: PruebaUsuarioService,
@@ -179,6 +190,10 @@ export class PruebaComponent implements OnInit {
       const arrayBuffer = result.pdf;
       createAndDownloadBlobFile(arrayBuffer, 'reporteResultados', 'pdf');
     });
+  }
+
+  actualizar(pregunta: DetallePruebaUsuario, valor) {
+    pregunta.respuestaAbierta = valor;
   }
 
 }

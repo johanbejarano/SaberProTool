@@ -1,0 +1,45 @@
+<div id="usuario" class="pagina-principal page-layout simple right-sidebar" fxLayout="row">
+    <div class="center" fusePerfectScrollbar>
+        <div class="tituloPrincipal" fxFlex="100">
+            Cambiar clave
+        </div>
+        <div class="content">
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
+                <div fxLayout="row wrap" fxFlex="100">
+                    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+                        <div class="fuse-widget-front" fxFlex="100">
+                            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="h3">Cambiar clave</div>
+                            </div>
+                        </div>
+                        <form [formGroup]="form" class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap"
+                            fxFlex="100" fxLayoutAlign="center start" (ngSubmit)="onFormSubmit()">
+                            <mat-form-field appearance="outline" fxFlex="50" class="px-8">
+                                <mat-label>Clave actual</mat-label>
+                                <input matInput formControlName="claveActual">
+                                <mat-icon matSuffix class="disabled-text">key</mat-icon>
+
+                                <mat-error>Se debe ingresar una clave valida</mat-error>
+
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50" class="px-8">
+                                <mat-label>Clave nueva</mat-label>
+                                <input matInput formControlName="claveNueva">
+                                <mat-icon matSuffix class="disabled-text">key</mat-icon>
+
+                                <mat-error>Se debe ingresar una clave valida</mat-error>
+
+                            </mat-form-field>
+
+                            <div fxFlex="100" fxLayoutAlign="center center">
+                                <button fxFlex="33" mat-stroked-button type="submit" class="btnPrimario mx-8 mb-8">
+                                    Cambiar clave
+                                </button>
+                            </div>
+                        </form>
+                    </fuse-widget>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

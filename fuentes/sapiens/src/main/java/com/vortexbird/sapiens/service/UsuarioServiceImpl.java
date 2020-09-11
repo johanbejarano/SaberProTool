@@ -2,19 +2,25 @@ package com.vortexbird.sapiens.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.vortexbird.sapiens.domain.Programa;
 import com.vortexbird.sapiens.domain.PruebaUsuario;
+import com.vortexbird.sapiens.domain.TipoUsuario;
 import com.vortexbird.sapiens.domain.Usuario;
+import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.mapper.UsuarioMapper;
 import com.vortexbird.sapiens.repository.UsuarioRepository;
+import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.PasswordGenerator;
 import com.vortexbird.sapiens.utility.Utilities;
 
@@ -45,15 +51,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private Validator validator;
-	
+
 	@Autowired
 	private UsuarioMapper usuarioMapper;
-	
+
 	@Autowired
 	private TipoUsuarioService tipoUsuarioService;
 
 	@Autowired
 	private ProgramaService programaService;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public void validate(Usuario usuario) throws Exception {
@@ -184,78 +193,80 @@ public class UsuarioServiceImpl implements UsuarioService {
 		log.debug("getting Usuario instance");
 		return usuarioRepository.findById(usuaId);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public UsuarioDTO login(String codigo, String password) throws Exception {
 		try {
-			
+
 			List<Usuario> usuariosEncontrados = usuarioRepository.findByCodigo(codigo);
-			if (usuariosEncontrados==null || usuariosEncontrados.isEmpty()) {
+			if (usuariosEncontrados == null || usuariosEncontrados.isEmpty()) {
 				throw new Exception("No se encontró el usuario");
 			}
-			
+
 			Usuario usuario = usuariosEncontrados.get(0);
-			
-			if (usuario.getPassword().equals( PasswordGenerator.hashPassword(password).get() )) {
-				
+
+			if (usuario.getPassword().equals(PasswordGenerator.hashPassword(password).get())) {
+
 				UsuarioDTO usuarioDTO = usuarioMapper.usuarioToUsuarioDTO(usuario);
-				
-				//Se consulta la información de la facultad y el programa al que pertenece el usuario
+
+				// Se consulta la información de la facultad y el programa al que pertenece el
+				// usuario
 				Programa programa = usuario.getPrograma();
 				usuarioDTO.setProgId(programa.getProgId());
 				usuarioDTO.setNombrePrograma(programa.getNombre());
-				
+
 				usuarioDTO.setFacuId(programa.getFacultad().getFacuId());
 				usuarioDTO.setNombreFacultad(programa.getFacultad().getNombre());
-				
+
 				return usuarioDTO;
-			}else {
+			} else {
 				throw new Exception("No se encontró el usuario");
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error en login", e);
 			throw e;
 		}
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize) throws Exception {
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize)
+			throws Exception {
 		try {
-			
+
 			Pageable pageable = PageRequest.of(pageNumber, pageSize);
-			if (filtro!=null && filtro.equals("*")) {
+			if (filtro != null && filtro.equals("*")) {
 				filtro = "";
 			}
 			filtro = "%" + filtro + "%";
-			
+
 			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, filtro, pageable);
-			
+
 			return usuarios;
-			
+
 		} catch (Exception e) {
 			log.error("Error en getUsuariosPorTipo", e);
 			throw e;
 		}
 	}
-	
 
 	@Override
 	@Transactional(readOnly = true)
-	public String getNombreUsuario(Integer usuaId) throws Exception{
+	public String getNombreUsuario(Integer usuaId) throws Exception {
 		try {
-			
-			//Se consulta el usuario
+
+			// Se consulta el usuario
 			Optional<Usuario> usuario = findById(usuaId);
-			
+
 			if (!usuario.isPresent()) {
 				return null;
-			}else {
-				return usuario.get().getApellido().toUpperCase() + ", " + Utilities.capitalize(usuario.get().getNombre().toLowerCase());
+			} else {
+				return usuario.get().getApellido().toUpperCase() + ", "
+						+ Utilities.capitalize(usuario.get().getNombre().toLowerCase());
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error en getNombreUsuario", e);
 			throw e;
@@ -264,26 +275,26 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void guardar(UsuarioDTO usuarioDTO) throws Exception{
+	public void guardar(UsuarioDTO usuarioDTO) throws Exception {
 		try {
-			Usuario usuario; 
-			//Si no trae ID lo creo
-			if(usuarioDTO.getUsuaId() == null){
+			Usuario usuario;
+			// Si no trae ID lo creo
+			if (usuarioDTO.getUsuaId() == null) {
 				usuario = new Usuario();
-			}else{
+			} else {
 				usuario = findById(usuarioDTO.getUsuaId()).get();
 			}
 
-			//Valido que el código no se repita ni la identificación
+			// Valido que el código no se repita ni la identificación
 			List<Usuario> usuarioTmp = usuarioRepository.findByCodigo(usuarioDTO.getCodigo());
-			if(!usuarioTmp.isEmpty()){
-				if(usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())){
+			if (!usuarioTmp.isEmpty()) {
+				if (usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())) {
 					throw new Exception("Ya se encuentra un usuario con el código ingresado");
 				}
 			}
 			usuarioTmp = usuarioRepository.findByIdentificacion(usuarioDTO.getIdentificacion());
-			if(!usuarioTmp.isEmpty()){
-				if(usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())){
+			if (!usuarioTmp.isEmpty()) {
+				if (usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())) {
 					throw new Exception("Ya se encuentra un usuario con la identificacion ingresado");
 				}
 			}
@@ -298,24 +309,143 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuario.setTipoUsuario(tipoUsuarioService.findById(usuarioDTO.getTiusId_TipoUsuario()).get());
 			usuario.setEstadoRegistro(usuarioDTO.getEstadoRegistro());
 
-			if(usuarioDTO.getPassword() != null && !usuarioDTO.getPassword().trim().isEmpty()){
-				//Actualizo la contraseña
-				String newPassword = PasswordGenerator.hashPassword(usuarioDTO.getPassword().trim()).get();
-				usuario.setPassword(newPassword);
-			}
+//			if (usuarioDTO.getPassword() != null && !usuarioDTO.getPassword().trim().isEmpty()) {
+//				// Actualizo la contraseña
+//				String newPassword = PasswordGenerator.hashPassword(usuarioDTO.getPassword().trim()).get();
+//				usuario.setPassword(newPassword);
+//			}
 
-			if(usuarioDTO.getUsuaId() == null){
+			if (usuarioDTO.getUsuaId() == null) {
+				// Cuando se cree el usuario se genera una clave aleatoria y se envía por email
+				final String claveNueva = PasswordGenerator.getPassword(6);
+				Optional<String> claveMd5 = PasswordGenerator.hashPassword(claveNueva);
+				usuario.setPassword(claveMd5.get());
+				usuario.setToken(null);
+
 				usuario.setUsuCreador(usuarioDTO.getUsuCreador());
 				usuario.setFechaCreacion(new Date());
 				save(usuario);
-			}else{
+
+				emailService.sendNuevaContrasena(usuario.getCorreo(), claveNueva);
+			} else {
 				usuario.setUsuModificador(usuarioDTO.getUsuCreador());
 				usuario.setFechaModificacion(new Date());
 				update(usuario);
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error en guardar", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String solicitarClave(String codigo) throws Exception {
+		try {
+			// Consulto el usuario
+			List<Usuario> usuariosEncontrados = usuarioRepository.findByCodigo(codigo);
+			if (usuariosEncontrados == null || usuariosEncontrados.isEmpty()) {
+				throw new Exception("No existe un usuario con el código ingresado");
+			}
+
+			Usuario usuario = usuariosEncontrados.get(0);
+
+			String token = Utilities.generarToken();
+
+			// Genero un token temporal
+			usuario.setToken(token);
+			update(usuario);
+
+			// Se envía el correo
+			emailService.sendRecuperarContrasena(usuario.getCorreo(), token);
+			return usuariosEncontrados.get(0).getCorreo();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void recuperarClave(String token) throws Exception {
+		try {
+			// Consulto si existe algún usuario con el token ingresado
+			Usuario usuario = usuarioRepository.findByToken(token);
+			if (usuario == null) {
+				throw new Exception("El token ingresado ha expirado");
+			}
+
+			final String claveNueva = PasswordGenerator.getPassword(6);
+			Optional<String> claveMd5 = PasswordGenerator.hashPassword(claveNueva);
+			usuario.setPassword(claveMd5.get());
+			usuario.setToken(null);
+			update(usuario);
+
+			emailService.sendNuevaContrasena(usuario.getCorreo(), claveNueva);
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public void cambiarClave(UsuarioDTO usuarioDTO) throws Exception {
+		try {
+			Usuario usuario = findById(usuarioDTO.getUsuaId()).get();
+
+			// Valido que la contraseña ingresada sea la actual
+
+			String claveActual = PasswordGenerator.hashPassword(usuarioDTO.getPassword().trim()).get();
+			String claveNueva = PasswordGenerator.hashPassword(usuarioDTO.getPasswordNueva().trim()).get();
+
+			if (!usuario.getPassword().equals(claveActual)) {
+				throw new Exception("La clave ingresada no coincide con la actual");
+			}
+
+			usuario.setPassword(claveNueva);
+			usuario.setFechaModificacion(new Date());
+			update(usuario);
+
+		} catch (Exception e) {
+//			log.error("Error en guardar", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cargar(CargueMasivoDTO request) throws Exception {
+		try {
+			// Se valida el request
+			if (request == null) {
+				throw new Exception("El request se encuentra vacío");
+			}
+			if (request.getUsuarios() == null || request.getUsuarios().isEmpty()) {
+				throw new Exception("La lista se encuentra vacía");
+			}
+			if (request.getUsuarioCreador() == null) {
+				throw new Exception("El usuario se encuentra vacío");
+			}
+			// Obtengo todos los programas
+			List<Programa> programas = programaService.findAll();
+			Map<String, Programa> programasMap = programas.stream()
+					.collect(Collectors.toMap(Programa::getDescripcion, programa -> programa));
+			for (UsuarioDTO usuario : request.getUsuarios()) {
+				if (!programasMap.containsKey(usuario.getNombrePrograma().trim().toUpperCase())) {
+					throw new Exception(
+							"El programa " + usuario.getNombrePrograma().trim() + " no existe en el sistema");
+				}
+				usuario.setProgId_Programa(
+						programasMap.get(usuario.getNombrePrograma().trim().toUpperCase()).getProgId());
+				usuario.setUsuCreador(request.getUsuarioCreador());
+				usuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+				guardar(usuario);
+			}
+
+		} catch (Exception e) {
 			throw e;
 		}
 	}

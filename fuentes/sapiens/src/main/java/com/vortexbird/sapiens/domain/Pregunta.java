@@ -48,6 +48,9 @@ public class Pregunta implements java.io.Serializable {
     @NotEmpty
     @Size(max = 25500)
     private String retroalimentacion;
+    private Long valorPregunta;
+    @NotNull
+    private Long complejidad;
     @NotNull
     private Long usuCreador;
     private Long usuModificador;
@@ -152,6 +155,15 @@ public class Pregunta implements java.io.Serializable {
         this.retroalimentacion = retroalimentacion;
     }
 
+    @Column(name = "complejidad", nullable = false)
+    public Long getComplejidad() {
+        return this.complejidad;
+    }
+
+    public void setComplejidad(Long complejidad) {
+        this.complejidad = complejidad;
+    }
+    
     @Column(name = "usu_creador", nullable = false)
     public Long getUsuCreador() {
         return this.usuCreador;
@@ -188,4 +200,13 @@ public class Pregunta implements java.io.Serializable {
     public void setRespuestas(List<Respuesta> respuestas) {
         this.respuestas = respuestas;
     }
+
+	public Long getValorPregunta() {
+		return valorPregunta;
+	}
+
+	@Column(name = "valor_pregunta")
+	public void setValorPregunta(Long valorPregunta) {
+		this.valorPregunta = valorPregunta;
+	}
 }

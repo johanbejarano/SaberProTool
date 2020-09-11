@@ -6,6 +6,7 @@
     <div class="content">
       <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
         <usuario-list [actualizar]="actualizar" fxFlex="100"></usuario-list>
+        <cargar-archivo (actualizar)="onActualizar()" fxFlex="100"></cargar-archivo>
       </div>
       <button mat-fab class="btnCrear btnSecundario" (click)="crear()">
         <mat-icon class="icon">add</mat-icon>

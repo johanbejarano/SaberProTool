@@ -38,9 +38,20 @@
                                             <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
                                                 class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
                                                 respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
+                                                [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
                                                 [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
                                                 <div [innerHTML]="respuesta.descripcion"></div>
                                             </mat-checkbox>
+                                        </div>
+                                        <div *ngIf="!pregunta.respuestas || pregunta.respuestas.lenght == 0">
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" (blur)="actualizar(pregunta, $event.target)">
+                                            </ckeditor>
+                                        </div>
+                                        <div fxFlex="1 0 auto" fxLayout="column"
+                                            *ngIf="pregunta.retroalimentacionPregunta">
+                                            <div class="h3">Retroalimentación:</div>
+                                            <mat-divider></mat-divider>
+                                            <div [innerHTML]="pregunta.retroalimentacionPregunta"></div>
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -48,8 +59,9 @@
                                                 class="btnSecundario mx-8" matStepperPrevious>
                                                 Anterior pregunta
                                             </button>
-                                            <button fxFlex="33" mat-stroked-button type="button" *ngIf="i != preguntas.length -1"
-                                                class="btnPrimario mx-8" matStepperNext>
+                                            <button fxFlex="33" mat-stroked-button type="button"
+                                                *ngIf="i != preguntas.length -1" class="btnPrimario mx-8"
+                                                matStepperNext>
                                                 Siguiente pregunta
                                             </button>
                                         </div>

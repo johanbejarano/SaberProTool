@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FuseConfirmDialogModule, FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -57,6 +58,7 @@ import { ResumenPruebaComponent } from './mis-pruebas/resumen-prueba/resumen-pru
     FuseSharedModule,
     FuseWidgetModule,
     FuseConfirmDialogModule,
+    CKEditorModule
   ], providers: [
     DatePipe
   ]

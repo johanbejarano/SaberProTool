@@ -52,7 +52,8 @@ export class ModuloDialogComponent implements OnInit {
       'cantidadPreguntas': [this.moduloDialog.cantidadPreguntas, Validators.required],
       'prioridad': [this.moduloDialog.prioridad, Validators.required],
       'tipoModulo': [this.moduloDialog.timoId_TipoModulo ? '' + this.moduloDialog.timoId_TipoModulo : null, Validators.required],
-      'estado': [this.moduloDialog.estadoRegistro, Validators.required]
+      'estado': [this.moduloDialog.estadoRegistro, Validators.required],
+      'valorPregunta': [this.moduloDialog.igualValor, Validators.required]
     });
   }
 
@@ -73,15 +74,16 @@ export class ModuloDialogComponent implements OnInit {
       request.prioridad = this.form.controls.prioridad.value;
       request.timoId_TipoModulo = this.form.controls.tipoModulo.value;
       request.estadoRegistro = this.form.controls.estado.value;
+      request.igualValor = this.form.controls.valorPregunta.value;
 
       this.moduloService.guardar(request).subscribe(() => {
         this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
         this.dialogRef.close(true);
       });
     }
-  } 
+  }
 
-  getTiposModulo(){
+  getTiposModulo() {
     this.tipoModuloService.find().subscribe((tiposModulo: TipoModulo[]) => {
       this.tiposModulo = tiposModulo;
     });

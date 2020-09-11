@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Modulo } from 'app/domain/modulo';
@@ -11,13 +11,13 @@ import { Usuario } from 'app/domain/usuario';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { ModuloService } from 'app/services/modulo.service';
 import { PreguntaService } from 'app/services/pregunta.service';
-import { RespuestaService } from 'app/services/respuesta.service';
 import { TipoModuloService } from 'app/services/tipo-modulo.service';
 import { UsuarioService } from 'app/services/usuario.service';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../../../src/environments/environment.js';
 import * as ClassicEditor from '../../../../../assets/ckeditor.js';
-
+import { ContextoComponent } from '../../contexto/contexto.component';
+import { VisualizarPreguntaComponent } from '../../visualizar-pregunta/visualizar-pregunta.component';
 
 @Component({
   selector: 'app-crear-pregunta',
@@ -26,67 +26,49 @@ import * as ClassicEditor from '../../../../../assets/ckeditor.js';
 })
 export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
+  usuario: Usuario;
+
   form: FormGroup;
 
   // Horizontal Stepper
+  stepsRespuestasList: FormGroup[];
   horizontalStepperStep1: FormGroup;
-  horizontalStepperStep2: FormGroup;
-  horizontalStepperStep3: FormGroup;
-  horizontalStepperStep4: FormGroup;
-  horizontalStepperStep5: FormGroup;
   horizontalStepperStep6: FormGroup;
-
   subscription: Subscription;
 
   tiposModulo: TipoModulo[] = [];
   tipoModulo: TipoModulo = new TipoModulo();
-  
+
   modulos: Modulo[] = [];
   modulo: Modulo = new Modulo();
 
   pregunta: Pregunta;
   idxRespuestaCorrecta: number;
-  
+
+  tiposPregunta = [{ key: 1, label: 'Cerrada' }, { key: 2, label: 'Abierta' }];
+  complejidades = [1, 2, 3, 4]
+
   //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
-  public editorPreguntaConfig = {
-    //placeholder: 'Redacte la pregunta aquí!',
-    
+  public editorConfig = {
     simpleUpload: {
-      // The URL that the images are uploaded to.
       uploadUrl: environment.URL_CKEDITOR_UPLOAD,
     }
   };
 
-  public editorRetroalimentacionConfig = {
-    //placeholder: 'Redacte la retroalimentación aquí!',
-    
-    simpleUpload: {
-      // The URL that the images are uploaded to.
-      uploadUrl: environment.URL_CKEDITOR_UPLOAD,
-    }
-  };
-
-  public EditorPregunta = ClassicEditor;
-  public EditorRespuesta1 = ClassicEditor;
-  public EditorRespuesta2 = ClassicEditor;
-  public EditorRespuesta3 = ClassicEditor;
-  public EditorRespuesta4 = ClassicEditor;
-  public EditorRetroalimentacion = ClassicEditor;
+  public Editor = ClassicEditor;
 
   constructor(
     private _formBuilder: FormBuilder,
     private tipomoduloService: TipoModuloService,
     private moduloService: ModuloService,
     private preguntaService: PreguntaService,
-    private respuestaService: RespuestaService,
-    private usuarioService: UsuarioService,
-    private matDialog: MatDialog,
+    usuarioService: UsuarioService,
     private router: Router,
     private snackBar: MatSnackBar,
     private localStorage: LocalStorageService,
+    private dialog: MatDialog
   ) {
-
-
+    this.usuario = usuarioService.getUsuario();
   }
 
   ngOnInit(): void {
@@ -94,7 +76,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     this.pregunta = new Pregunta();
     let idPregunta = this.localStorage.getFromLocal('idPregunta');
 
-    if (idPregunta){
+    if (idPregunta) {
 
       //Se consulta la pregunta
       this.preguntaService.getPregunta(idPregunta)
@@ -102,24 +84,24 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
           this.pregunta = pregunta;
 
           //Se calcula el idx de la respuesta correcta
-          for (let i=0; i<this.pregunta.respuestasDTO.length; i++){
-            
-            if (this.pregunta.respuestasDTO[i].correcta == 1){
+          for (let i = 0; i < this.pregunta.respuestasDTO.length; i++) {
+
+            if (this.pregunta.respuestasDTO[i].correcta == 1) {
               this.idxRespuestaCorrecta = i;
-              
+
               break;
             }
           }
-          
+
           this.localStorage.putInLocal('pregunta', this.pregunta);
 
           this.actualizarFormulario();
           this.getModulos(false);
         });
 
-    }else{
+    } else {
       //se va a crear una pregunta
-      
+
       this.actualizarFormulario();
     }
 
@@ -127,54 +109,71 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
   }
 
-  actualizarFormulario(){
+  actualizarFormulario() {
 
     //Se consulta el programa al que pertenece el usuario
-    let usuario : Usuario = this.usuarioService.getUsuario();
 
     // Reactive Form
     this.form = this._formBuilder.group({
-      
-      facultad: [{ value: usuario.nombreFacultad, disabled: true }],
-      programa: [{ value: usuario.nombrePrograma, disabled: true }],
+
+      facultad: [{ value: this.usuario.nombreFacultad, disabled: true }],
+      programa: [{ value: this.usuario.nombrePrograma, disabled: true }],
       'tipoModulo': [this.pregunta.timoId, Validators.required],
       modulo: [this.pregunta.moduId_Modulo, Validators.required],
-
+      complejidad: [this.pregunta.complejidad, Validators.required],
+      tipoPregunta: [this.pregunta.tprgId_TipoPregunta, Validators.required],
+      cantidadRespuestas: [this.pregunta.tprgId_TipoPregunta ? this.pregunta.tprgId_TipoPregunta === 1 ? this.pregunta.respuestasDTO.length : 0 : 4, Validators.required],
+      estado: [this.pregunta.estadoRegistro, Validators.required],
+      valorPregunta: [this.pregunta.valorPregunta, Validators.required],
+      contexto: [this.pregunta.contId],
+      contextoText: [this.pregunta.contexto]
     });
+
+    if (this.form.controls.tipoPregunta.value == 1) {
+      this.form.controls.cantidadRespuestas.setValidators(Validators.min(2));
+      this.form.controls.cantidadRespuestas.setValidators(Validators.max(10));
+    }
 
     // Horizontal Stepper form steps
     this.horizontalStepperStep1 = this._formBuilder.group({
-        editorPregunta: [this.pregunta.descripcion, Validators.required]
+      editorPregunta: [this.pregunta.descripcion, Validators.required]
     });
 
-    this.horizontalStepperStep2 = this._formBuilder.group({
-        editorRespuesta1: [this.pregunta.respuestasDTO && this.pregunta.respuestasDTO.length>0 ? this.pregunta.respuestasDTO[0].descripcion : '', Validators.required]
-    });
+    this.stepsRespuestasList = [];
+    if (this.pregunta.tprgId_TipoPregunta == 1) {
+      for (let i = 0; i < this.pregunta.respuestasDTO.length; i++) {
+        const respuesta = this.pregunta.respuestasDTO[i];
+        let form = this._formBuilder.group({
+          editorRespuesta: [respuesta.descripcion, Validators.required]
+        });
+        this.stepsRespuestasList.push(form);
+      }
+    }
 
-    this.horizontalStepperStep3 = this._formBuilder.group({
-      editorRespuesta2: [this.pregunta.respuestasDTO && this.pregunta.respuestasDTO.length>1 ? this.pregunta.respuestasDTO[1].descripcion : '', Validators.required]
-    });
-
-    this.horizontalStepperStep4 = this._formBuilder.group({
-      editorRespuesta3: [this.pregunta.respuestasDTO && this.pregunta.respuestasDTO.length>2 ? this.pregunta.respuestasDTO[2].descripcion : '', Validators.required]
-    });
-
-    this.horizontalStepperStep5 = this._formBuilder.group({
-      editorRespuesta4: [this.pregunta.respuestasDTO && this.pregunta.respuestasDTO.length>3 ? this.pregunta.respuestasDTO[3].descripcion : '', Validators.required]
-    });
-    
     this.horizontalStepperStep6 = this._formBuilder.group({
-      respuestaCorrecta: [this.idxRespuestaCorrecta+'', Validators.required],
+      respuestaCorrecta: [this.idxRespuestaCorrecta ? this.idxRespuestaCorrecta : null],
       editorRetroalimentacion: [this.pregunta.retroalimentacion, Validators.required]
     });
 
     //Se consultan los tipos de modulo
     this.getTiposModulo();
 
+    if (this.pregunta.usuCreador && this.pregunta.usuCreador !== this.usuario.usuaId) {
+      this.form.disable();
+      for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+        const formRespuesta = this.stepsRespuestasList[i];
+        formRespuesta.disable();
+      }
+      ;
+      this.horizontalStepperStep1.disable();
+      this.horizontalStepperStep6.disable();
+
+    }
+
   }
 
   ngOnDestroy(): void {
-    if (this.subscription !== null && this.subscription !== undefined){
+    if (this.subscription !== null && this.subscription !== undefined) {
       this.subscription.unsubscribe();
     }
 
@@ -189,10 +188,10 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       });
   }
 
-  getModulos(clear: boolean){
+  getModulos(clear: boolean) {
     if (this.form.controls.tipoModulo.value) {
       const tipoModulo: TipoModulo = this.tiposModulo.filter(tipoModulo => { return tipoModulo.timoId == this.form.controls.tipoModulo.value })[0];
-      
+
       if (clear) {
         this.form.controls.modulo.setValue(null);
         //this.changeModulo();
@@ -201,129 +200,209 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       this.subscription = this.moduloService.findByTipoModulo(this.form.controls.tipoModulo.value)
         .subscribe((modulos: Modulo[]) => {
           this.modulos = modulos;
+          this.changeModulo();
         });
 
-      
+
     }
   }
 
-  guardarPregunta(): void{
-
-    if (!this.form.valid){
-      this.snackBar.open('Faltan datos asociados a la clasificación de la pregunta', 'x', {verticalPosition: 'top', duration: 10000});
+  guardarPregunta(): void {
+    if (!this.form.valid) {
+      this.snackBar.open('Faltan datos asociados a la clasificación de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 
-    if (!this.horizontalStepperStep1.valid){
-      this.snackBar.open('Faltan datos asociados al encabezado de la pregunta', 'x', {verticalPosition: 'top', duration: 10000});
+    if (!this.horizontalStepperStep1.valid) {
+      this.snackBar.open('Faltan datos asociados al encabezado de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 
-    if (!this.horizontalStepperStep2.valid){
-      this.snackBar.open('Faltan datos asociados a la respuesta 1', 'x', {verticalPosition: 'top', duration: 10000});
+    //Si es cerrada, valido que todos los forms esten llenos
+    if (this.form.controls.tipoPregunta.value == 1) {
+      for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+        const formRespuesta = this.stepsRespuestasList[i];
+        if (!formRespuesta.valid) {
+          this.snackBar.open('Faltan datos asociados a la respuesta ' + (i + 1), 'x', { verticalPosition: 'top', duration: 10000 });
+          return;
+        }
+      }
+    }
+
+    if (!this.horizontalStepperStep6.valid) {
+      this.snackBar.open('Faltan datos asociados a la retroalimentación', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 
-    if (!this.horizontalStepperStep3.valid){
-      this.snackBar.open('Faltan datos asociados a la respuesta 2', 'x', {verticalPosition: 'top', duration: 10000});
-      return;
-    }
-
-    if (!this.horizontalStepperStep4.valid){
-      this.snackBar.open('Faltan datos asociados a la respuesta 3', 'x', {verticalPosition: 'top', duration: 10000});
-      return;
-    }
-
-    if (!this.horizontalStepperStep5.valid){
-      this.snackBar.open('Faltan datos asociados a la respuesta 4', 'x', {verticalPosition: 'top', duration: 10000});
-      return;
-    }
-
-    if (!this.horizontalStepperStep6.valid){
-      this.snackBar.open('Faltan datos asociados a la retroalimentación', 'x', {verticalPosition: 'top', duration: 10000});
-      return;
-    }
-    
     this.pregunta.respuestasDTO = Array<Respuesta>();
-    
+
     let respuestaCorrecta = (+this.horizontalStepperStep6.controls.respuestaCorrecta.value);
 
     //Se guarda la pregunta
     this.pregunta.moduId_Modulo = this.form.controls.modulo.value;
-    this.pregunta.tprgId_TipoPregunta = 1;
+    this.pregunta.tprgId_TipoPregunta = this.form.controls.tipoPregunta.value;
+    this.pregunta.complejidad = this.form.controls.complejidad.value;
     this.pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
     this.pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
-    this.pregunta.usuCreador = 1;
-    this.pregunta.usuModificador = 1;
+    this.pregunta.usuCreador = this.usuario.usuaId;
+    this.pregunta.usuModificador = this.usuario.usuaId;
+    this.pregunta.estadoRegistro = this.form.controls.estado.value;
 
-    let respuesta1 = new Respuesta();
-    respuesta1.correcta = respuestaCorrecta==0?1:0;
-    respuesta1.descripcion = this.horizontalStepperStep2.controls.editorRespuesta1.value;
-    respuesta1.estadoRegistro = 'A';
-    respuesta1.fechaCreacion = new Date();
-    respuesta1.usuCreador = 1;
-    respuesta1.usuModificador = 1;
+    for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+      const respuestaForm = this.stepsRespuestasList[i];
+      let respuesta = new Respuesta();
+      respuesta.correcta = respuestaCorrecta == i ? 1 : 0;
+      respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
+      this.pregunta.respuestasDTO.push(respuesta);
+    }
 
-    let respuesta2 = new Respuesta();
-    respuesta2.correcta = respuestaCorrecta==1?1:0;
-    respuesta2.descripcion = this.horizontalStepperStep3.controls.editorRespuesta2.value;;
-    respuesta2.estadoRegistro = 'A';
-    respuesta2.fechaCreacion = new Date();
-    respuesta2.usuCreador = 1;
-    respuesta2.usuModificador = 1;
-
-    let respuesta3 = new Respuesta();
-    respuesta3.correcta = respuestaCorrecta==2?1:0;
-    respuesta3.descripcion = this.horizontalStepperStep4.controls.editorRespuesta3.value;;
-    respuesta3.estadoRegistro = 'A';
-    respuesta3.fechaCreacion = new Date();
-    respuesta3.usuCreador = 1;
-    respuesta3.usuModificador = 1;
-
-    let respuesta4 = new Respuesta();
-    respuesta4.correcta = respuestaCorrecta==3?1:0;
-    respuesta4.descripcion = this.horizontalStepperStep5.controls.editorRespuesta4.value;
-    respuesta4.estadoRegistro = 'A';
-    respuesta4.fechaCreacion = new Date();
-    respuesta4.usuCreador = 1;
-    respuesta4.usuModificador = 1;
-    
-    this.pregunta.respuestasDTO.push(respuesta1);
-    this.pregunta.respuestasDTO.push(respuesta2);
-    this.pregunta.respuestasDTO.push(respuesta3);
-    this.pregunta.respuestasDTO.push(respuesta4);
+    if (this.modulo.igualValor == 'N') {
+      this.pregunta.valorPregunta = this.form.controls.valorPregunta.value;
+      if (!this.pregunta.valorPregunta) {
+        this.snackBar.open('Se debe de ingresar el peso de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
+        return;
+      }
+    }
 
     let idPregunta = this.localStorage.getFromLocal('idPregunta');
 
-    if (!idPregunta){
+    if (!idPregunta) {
       this.subscription = this.preguntaService.guardarPregunta(this.pregunta)
         .subscribe((pregunta: Pregunta) => {
-          this.snackBar.open('Se ha almacenado correctamente la pregunta ' + pregunta.pregId, 'x', {verticalPosition: 'top', duration: 10000});
+          this.snackBar.open('Se ha almacenado correctamente la pregunta ' + pregunta.pregId, 'x', { verticalPosition: 'top', duration: 10000 });
           this.router.navigate(["/gestionPreguntas"]);
         },
-        error => {
-          this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
-        });
-    }else{
-      
+          error => {
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+          });
+    } else {
+
       this.subscription = this.preguntaService.actualizarPregunta(this.pregunta)
         .subscribe((pregunta: Pregunta) => {
-          this.snackBar.open('Se ha actualizado correctamente la pregunta ' + pregunta.pregId, 'x', {verticalPosition: 'top', duration: 10000});
+          this.snackBar.open('Se ha actualizado correctamente la pregunta ' + pregunta.pregId, 'x', { verticalPosition: 'top', duration: 10000 });
           this.router.navigate(["/gestionPreguntas"]);
         },
-        error => {
-          this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
-        });
+          error => {
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+          });
     }
 
   }
 
-  // public onChange( { editor }: ChangeEvent ) {
-  //   if (editor){
-  //     const data = editor.getData();
+  changeRespuestas() {
+    if (this.form.controls.cantidadRespuestas.valid) {
 
-  //     console.log( data );
-  //   }
-  // }
+      const cantidadRespuestas = this.form.controls.cantidadRespuestas.value;
+      if (cantidadRespuestas) {
+        let respuestasForm: FormGroup[] = [];
+        for (let i = 0; i < cantidadRespuestas; i++) {
+          if (i >= this.stepsRespuestasList.length) {
 
+            let form = this._formBuilder.group({
+              editorRespuesta: ['', Validators.required]
+            });
+
+            respuestasForm.push(form);
+          } else {
+            const formRespuesta = this.stepsRespuestasList[i];
+            respuestasForm.push(formRespuesta);
+          }
+        }
+        this.stepsRespuestasList = respuestasForm;
+      } else {
+        this.stepsRespuestasList = [];
+      }
+    }
+  }
+
+  changeTipoPregunta() {
+    if (this.form.controls.tipoPregunta.value !== 1) {
+      this.form.controls.cantidadRespuestas.clearValidators();
+      this.form.controls.cantidadRespuestas.setValue(0);
+    } else {
+      this.form.controls.cantidadRespuestas.setValidators([Validators.required, Validators.min(2), Validators.max(10)]);
+
+      if (this.form.controls.cantidadRespuestas.value === 0) {
+        this.form.controls.cantidadRespuestas.setValue(4);
+      }
+    }
+    this.changeRespuestas();
+  }
+
+  changeModulo() {
+    if (this.form.controls.modulo.value) {
+      let modulo = this.modulos.find(modulo => modulo.moduId == this.form.controls.modulo.value);
+      this.modulo = modulo;
+    } else {
+      this.modulo = null;
+    }
+  }
+
+  visualizar() {
+    let pregunta = new Pregunta();
+    pregunta.respuestasDTO = [];
+    pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
+    pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
+    pregunta.nombreModulo = this.modulo.nombre;
+    for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+      const respuestaForm = this.stepsRespuestasList[i];
+      let respuesta = new Respuesta();
+      respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
+      pregunta.respuestasDTO.push(respuesta);
+    }
+
+    this.dialog.open(VisualizarPreguntaComponent, {
+      data: pregunta
+    });
+  }
+
+  duplicar() {
+    this.pregunta.respuestasDTO = Array<Respuesta>();
+
+    let respuestaCorrecta = (+this.horizontalStepperStep6.controls.respuestaCorrecta.value);
+
+    //Se guarda la pregunta
+    this.pregunta.moduId_Modulo = this.form.controls.modulo.value;
+    this.pregunta.tprgId_TipoPregunta = this.form.controls.tipoPregunta.value;
+    this.pregunta.complejidad = this.form.controls.complejidad.value;
+    this.pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
+    this.pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
+    this.pregunta.usuCreador = this.usuario.usuaId;
+    this.pregunta.usuModificador = this.usuario.usuaId;
+    this.pregunta.estadoRegistro = 'I';
+
+    for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+      const respuestaForm = this.stepsRespuestasList[i];
+      let respuesta = new Respuesta();
+      respuesta.correcta = respuestaCorrecta == i ? 1 : 0;
+      respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
+      this.pregunta.respuestasDTO.push(respuesta);
+    }
+
+    if (this.modulo.igualValor == 'N') {
+      this.pregunta.valorPregunta = this.form.controls.valorPregunta.value;
+      if (!this.pregunta.valorPregunta) {
+        this.snackBar.open('Se debe de ingresar el peso de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
+        return;
+      }
+    }
+
+    this.subscription = this.preguntaService.guardarPregunta(this.pregunta)
+      .subscribe((pregunta: Pregunta) => {
+        this.snackBar.open('Se ha duplicado correctamente la pregunta ' + pregunta.pregId, 'x', { verticalPosition: 'top', duration: 10000 });
+        this.router.navigate(["/gestionPreguntas"]);
+      },
+        error => {
+          this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+        });
+  }
+
+  seleccionarContexto(){
+    this.dialog.open(ContextoComponent, {
+      data: {
+        modulo: this.form.controls.modulo.value,
+        contexto: this.form.controls.contexto.value
+      }
+    })
+  }
 }
