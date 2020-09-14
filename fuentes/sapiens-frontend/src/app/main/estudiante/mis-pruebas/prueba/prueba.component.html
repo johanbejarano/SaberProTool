@@ -30,8 +30,15 @@
                                         <div fxFlex="1 0 auto" fxLayout="column">
                                             <div class="h3">Modulo: <span
                                                     class="h4 color1">{{pregunta.nombreModulo}}</span></div>
+                                            <mat-divider *ngIf="pregunta.descripcionContexto"></mat-divider>
+                                            <ckeditor *ngIf="pregunta.descripcionContexto" [editor]="Editor"
+                                                [config]="editorConfig" data="{{pregunta.descripcionContexto}}"
+                                                disabled=true>
+                                            </ckeditor>
                                             <mat-divider></mat-divider>
-                                            <div [innerHTML]="pregunta.descripcionPregunta"></div>
+                                            <ckeditor [editor]="Editor" [config]="editorConfig"
+                                                data="{{pregunta.descripcionPregunta}}" disabled=true>
+                                            </ckeditor>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div *ngFor="let respuesta of pregunta.respuestas">
@@ -44,14 +51,18 @@
                                             </mat-checkbox>
                                         </div>
                                         <div *ngIf="!pregunta.respuestas || pregunta.respuestas.lenght == 0">
-                                            <ckeditor [editor]="Editor" [config]="editorConfig" (blur)="actualizar(pregunta, $event.target)">
+                                            <ckeditor [editor]="Editor" [config]="editorConfig"
+                                                (blur)="actualizar(pregunta, $event.target)">
                                             </ckeditor>
                                         </div>
                                         <div fxFlex="1 0 auto" fxLayout="column"
                                             *ngIf="pregunta.retroalimentacionPregunta">
                                             <div class="h3">Retroalimentación:</div>
                                             <mat-divider></mat-divider>
-                                            <div [innerHTML]="pregunta.retroalimentacionPregunta"></div>
+                                            <ckeditor [editor]="Editor"
+                                                [config]="editorConfig" data="{{pregunta.retroalimentacionPregunta}}"
+                                                disabled=true>
+                                            </ckeditor>
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
 

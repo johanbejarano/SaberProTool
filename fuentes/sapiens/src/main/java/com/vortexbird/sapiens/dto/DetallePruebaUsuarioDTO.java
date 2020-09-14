@@ -33,6 +33,7 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private Long prioridadModulo;
     private String descripcionPregunta;
     private String retroalimentacionPregunta;
+    private String descripcionContexto;
     private List<RespuestaDTO> respuestas;
 
     public Integer getDpruId() {
@@ -159,5 +160,13 @@ public class DetallePruebaUsuarioDTO implements Serializable {
 
 	public void setPrioridadModulo(Long prioridadModulo) {
 		this.prioridadModulo = prioridadModulo;
+	}
+
+	public String getDescripcionContexto() {
+		return descripcionContexto;
+	}
+
+	public void setDescripcionContexto(String descripcionContexto) {
+		this.descripcionContexto = descripcionContexto;
 	}
 }

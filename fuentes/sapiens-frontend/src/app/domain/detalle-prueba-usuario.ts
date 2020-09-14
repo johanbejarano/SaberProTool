@@ -9,6 +9,7 @@ export class DetallePruebaUsuario {
 
     nombreModulo: string;
     descripcionPregunta: string;
+    descripcionContexto: string;
     retroalimentacionPregunta: Date;
     respuestas: Respuesta[];
 }

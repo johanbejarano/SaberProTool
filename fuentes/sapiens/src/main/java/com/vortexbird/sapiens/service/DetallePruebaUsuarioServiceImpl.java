@@ -321,6 +321,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				detallePruebaUsuarioDTO.setNombreModulo(detallePruebaUsuario.getPregunta().getModulo().getNombre());
 				detallePruebaUsuarioDTO.setPrioridadModulo(detallePruebaUsuario.getPregunta().getModulo().getPrioridad());
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
+				if(detallePruebaUsuario.getPregunta().getContexto() != null) {
+					detallePruebaUsuarioDTO.setDescripcionContexto(detallePruebaUsuario.getPregunta().getContexto().getDescripcion());					
+				}
 				if (mostrarRetroalimentacion) {
 					detallePruebaUsuarioDTO
 							.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
@@ -338,7 +341,23 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			preguntasDTO.sort(new Comparator<DetallePruebaUsuarioDTO>() {
 				@Override
 				public int compare(DetallePruebaUsuarioDTO p1, DetallePruebaUsuarioDTO p2) {
-					return p2.getNombreModulo().compareTo(p1.getNombreModulo());
+					int  prioridadModulo = p1.getPrioridadModulo().compareTo(p2.getPrioridadModulo());
+
+					if(prioridadModulo != 0) {
+						return prioridadModulo;
+					}
+					
+					int  nombreModulo = p2.getNombreModulo().compareTo(p1.getNombreModulo());
+
+					if(nombreModulo != 0) {
+						return nombreModulo;
+					}
+					
+					String contexto1 = p1.getDescripcionContexto() == null ? "" : p1.getDescripcionContexto();
+					String contexto2 = p2.getDescripcionContexto() == null ? "" : p2.getDescripcionContexto();
+					
+					int contexto = contexto1.compareTo(contexto2);						
+					return contexto;
 				}
 			});
 
