@@ -1,17 +1,33 @@
-<div id="observation-dialog" class="dialog-content-wrapper {{ocultar ? 'ocultar' : ''}}" fxLayout="row wrap" fxFlex="100">
+<div id="contexto" class="dialog-content-wrapper {{ocultar ? 'ocultar' : ''}}" fxLayout="row wrap" fxFlex="100">
     <div class="px-16 py-12 titlecard" fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="h3">Seleccionar contexto</div>
-        <button (click)="editar(null)" mat-icon-button class="btnSecundario">
+        <button (click)="nuevo()" mat-icon-button class="btnSecundario">
             <mat-icon>add</mat-icon>
         </button>
     </div>
-    <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+    <div mat-dialog-content class="m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
         <div fxFlex="100" fxLayout="row wrap">
-            <div *ngFor="let contexto of contextos">
-                <div class="h3">{{contexto.nombre}}</div>
-                <mat-divider></mat-divider>
-                <div [innerHTML]="contexto.descripcion"></div>
-            </div>
+            <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100" *ngFor="let contexto of contextos"
+                (click)="seleccionar(contexto)">
+                <div class="fuse-widget-front {{contexto.contId == contextoSelected.contId ? 'seleccionado' : ''}}" fxFlex="100">
+                    <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="h3">{{contexto.nombre}}</div>
+                        <button (click)="editar(contexto)" mat-icon-button class="btnSecundario">
+                            <mat-icon>send</mat-icon>
+                        </button>
+                    </div>
+                    <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                        <div [innerHTML]="contexto.descripcion" fxFlex="100"></div>
+                    </div>
+                </div>
+            </fuse-widget>
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end start">
+        <div fxFlex="50" class="px-8">
+            <button fxFlex="100" mat-stroked-button (click)="guardar()" class="btnPrimario">
+                Guardar
+            </button>
         </div>
     </div>
 </div>

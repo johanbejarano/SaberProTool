@@ -1,5 +1,6 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -8,6 +9,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.vortexbird.sapiens.domain.Contexto;
+import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.ContextoDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
@@ -43,6 +45,9 @@ public class ContextoServiceImpl implements ContextoService {
 
 	@Autowired
 	private Validator validator;
+	
+	@Autowired
+	private ModuloService moduloService;
 
 	@Override
 	public void validate(Contexto contexto) throws Exception {
@@ -87,10 +92,6 @@ public class ContextoServiceImpl implements ContextoService {
 			}
 
 			validate(entity);
-
-			if (contextoRepository.findById(entity.getContId()).isPresent()) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
 
 			return contextoRepository.save(entity);
 
@@ -189,8 +190,39 @@ public class ContextoServiceImpl implements ContextoService {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void guardar(ContextoDTO contextoDTO) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			//Valido que llegue la info
+			if(contextoDTO == null) {
+				throw new Exception("El contexto es obligatorio");
+			}
+			//Si no tiene contId se crea
+			Contexto contexto;
+			if(contextoDTO.getContId() == null) {
+				contexto = new Contexto();
+			}else {
+				//Valido que exista
+				contexto = findById(contextoDTO.getContId()).get();
+			}
+			contexto.setNombre(contextoDTO.getNombre().trim());
+			contexto.setDescripcion(contextoDTO.getDescripcion());
+			
+			if(contextoDTO.getContId() == null) {
+				Modulo modulo = moduloService.findById(contextoDTO.getModuId()).get();
+				contexto.setModulo(modulo);
+				contexto.setUsuCreador(contextoDTO.getUsuCreador());
+				contexto.setFechaCreacion(new Date());
+				contexto.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+				save(contexto);
+			}else {
+				contexto.setUsuModificador(contextoDTO.getUsuCreador());
+				contexto.setFechaModificacion(new Date());
+				update(contexto);
+			}
+			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
 	}
 
 }

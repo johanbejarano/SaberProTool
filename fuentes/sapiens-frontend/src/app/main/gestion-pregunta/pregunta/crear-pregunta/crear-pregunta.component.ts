@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Contexto } from 'app/domain/contexto.js';
 import { Modulo } from 'app/domain/modulo';
 import { Pregunta } from 'app/domain/pregunta';
 import { Respuesta } from 'app/domain/respuesta';
@@ -126,7 +127,8 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       estado: [this.pregunta.estadoRegistro, Validators.required],
       valorPregunta: [this.pregunta.valorPregunta, Validators.required],
       contexto: [this.pregunta.contId],
-      contextoText: [this.pregunta.contexto]
+      contextoText: [this.pregunta.nombreContexto],
+      descripcionContexto: [this.pregunta.contexto]
     });
 
     if (this.form.controls.tipoPregunta.value == 1) {
@@ -242,6 +244,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     this.pregunta.moduId_Modulo = this.form.controls.modulo.value;
     this.pregunta.tprgId_TipoPregunta = this.form.controls.tipoPregunta.value;
     this.pregunta.complejidad = this.form.controls.complejidad.value;
+    this.pregunta.contId = this.form.controls.contexto.value;
     this.pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
     this.pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
     this.pregunta.usuCreador = this.usuario.usuaId;
@@ -344,6 +347,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
     pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
     pregunta.nombreModulo = this.modulo.nombre;
+    pregunta.contexto = this.form.controls.descripcionContexto.value;
     for (let i = 0; i < this.stepsRespuestasList.length; i++) {
       const respuestaForm = this.stepsRespuestasList[i];
       let respuesta = new Respuesta();
@@ -365,6 +369,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     this.pregunta.moduId_Modulo = this.form.controls.modulo.value;
     this.pregunta.tprgId_TipoPregunta = this.form.controls.tipoPregunta.value;
     this.pregunta.complejidad = this.form.controls.complejidad.value;
+    this.pregunta.contId = this.form.controls.contexto.value;
     this.pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
     this.pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
     this.pregunta.usuCreador = this.usuario.usuaId;
@@ -397,12 +402,21 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
         });
   }
 
-  seleccionarContexto(){
-    this.dialog.open(ContextoComponent, {
+  seleccionarContexto() {
+    let contexto = new Contexto();
+    contexto.contId = this.form.controls.contexto.value;
+    let dialogRef = this.dialog.open(ContextoComponent, {
       data: {
         modulo: this.form.controls.modulo.value,
-        contexto: this.form.controls.contexto.value
+        contexto: contexto
       }
-    })
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.form.controls.contexto.setValue(result.contId);
+        this.form.controls.contextoText.setValue(result.nombre);
+        this.form.controls.descripcionContexto.setValue(result.descripcion);
+      }
+    });
   }
 }

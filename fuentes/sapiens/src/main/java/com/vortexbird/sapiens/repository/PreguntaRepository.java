@@ -15,5 +15,5 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Integer> {
 
 	List<Pregunta> findByModulo_moduIdAndEstadoRegistro(Integer moduId, String estado);
 	
-	List<Pregunta> findByEstadoRegistroAndUsuCreador(String estado, Long usuario);
+	List<Pregunta> findByEstadoRegistroAndUsuario_usuaId(String estado, Integer usuario);
 }

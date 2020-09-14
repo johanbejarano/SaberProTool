@@ -75,10 +75,13 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   }
 
   getData() {
+    console.log(this.usuario.usuaId);
+    
     this.subscription = this.preguntaService.getPreguntasPorUsuario(this.usuario.usuaId)
       .subscribe((preguntas: Pregunta[]) => {
-
+        
         this.data = preguntas;
+        console.log(this.data);
         this.datasource = new MatTableDataSource<Pregunta>(this.data);
 
         this.datasource.paginator = this.paginator;
@@ -139,7 +142,7 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
       for (let i = 0; i < dataTmp.length; i++) {
         const pregunta = dataTmp[i];
         let contiene = false;
-        if (pregunta.descripcion.toLowerCase().search(filtro) !== -1) {
+        if (pregunta.descripcion.toLowerCase().search(filtro) !== -1 || pregunta.codigoUsuario.toLowerCase() === filtro) {
           contiene = true;
         } else {
           if (pregunta.respuestasDTO) {

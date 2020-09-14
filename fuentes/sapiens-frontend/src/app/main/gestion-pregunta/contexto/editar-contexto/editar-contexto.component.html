@@ -9,9 +9,10 @@
                 <mat-error *ngIf="form.controls.nombre.errors?.required">Nombre obligatorio
                 </mat-error>
             </mat-form-field>
-            <div fxflex="100" class="px-8">
-                <div fxFlex="100" fxLayout="row wrap">
-                    <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="descripcion" fxFlex="100">
+            <div class="px-8">
+                <div fxFlex="1 0 auto" fxLayout="column">
+                    <ckeditor [editor]="Editor" [config]="editorConfig"
+                        formControlName="descripcion">
                     </ckeditor>
                     <mat-error *ngIf="form.controls.descripcion.errors?.required">
                         La descripción del contexto es obligatorio</mat-error>

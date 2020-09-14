@@ -33,6 +33,7 @@ public class Pregunta implements java.io.Serializable {
     private Modulo modulo;
     @NotNull
     private TipoPregunta tipoPregunta;
+    private Contexto contexto;
     @NotNull
     @NotEmpty
     @Size(max = 25500)
@@ -52,7 +53,7 @@ public class Pregunta implements java.io.Serializable {
     @NotNull
     private Long complejidad;
     @NotNull
-    private Long usuCreador;
+    private Usuario usuario;
     private Long usuModificador;
     private List<DetallePruebaUsuario> detallePruebaUsuarios = new ArrayList<DetallePruebaUsuario>(0);
     private List<Respuesta> respuestas = new ArrayList<Respuesta>(0);
@@ -64,7 +65,7 @@ public class Pregunta implements java.io.Serializable {
         List<DetallePruebaUsuario> detallePruebaUsuarios,
         String estadoRegistro, Date fechaCreacion, Date fechaModificacion,
         Modulo modulo, List<Respuesta> respuestas, String retroalimentacion,
-        TipoPregunta tipoPregunta, Long usuCreador, Long usuModificador) {
+        TipoPregunta tipoPregunta, Usuario usuario, Long usuModificador) {
         this.pregId = pregId;
         this.modulo = modulo;
         this.tipoPregunta = tipoPregunta;
@@ -73,7 +74,7 @@ public class Pregunta implements java.io.Serializable {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.retroalimentacion = retroalimentacion;
-        this.usuCreador = usuCreador;
+        this.usuario = usuario;
         this.usuModificador = usuModificador;
         this.detallePruebaUsuarios = detallePruebaUsuarios;
         this.respuestas = respuestas;
@@ -108,6 +109,16 @@ public class Pregunta implements java.io.Serializable {
 
     public void setTipoPregunta(TipoPregunta tipoPregunta) {
         this.tipoPregunta = tipoPregunta;
+    }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cont_id")
+    public Contexto getContexto() {
+        return this.contexto;
+    }
+
+    public void setContexto(Contexto contexto) {
+        this.contexto = contexto;
     }
 
     @Column(name = "descripcion", nullable = false)
@@ -164,13 +175,14 @@ public class Pregunta implements java.io.Serializable {
         this.complejidad = complejidad;
     }
     
-    @Column(name = "usu_creador", nullable = false)
-    public Long getUsuCreador() {
-        return this.usuCreador;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usu_creador")
+    public Usuario getUsuario() {
+        return this.usuario;
     }
 
-    public void setUsuCreador(Long usuCreador) {
-        this.usuCreador = usuCreador;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Column(name = "usu_modificador")

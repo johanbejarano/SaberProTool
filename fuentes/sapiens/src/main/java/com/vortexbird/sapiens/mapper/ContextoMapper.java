@@ -6,6 +6,7 @@ import com.vortexbird.sapiens.domain.Contexto;
 import com.vortexbird.sapiens.dto.ContextoDTO;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 
 /**
@@ -19,9 +20,11 @@ import org.mapstruct.Mapper;
 */
 @Mapper
 public interface ContextoMapper {
+	@Mapping(source = "modulo.moduId", target = "moduId")
     public ContextoDTO contextoToContextoDTO(Contexto contexto)
         throws Exception;
 
+	@Mapping(source = "moduId", target = "modulo.moduId")
     public Contexto contextoDTOToContexto(
         ContextoDTO contextoDTO) throws Exception;
 

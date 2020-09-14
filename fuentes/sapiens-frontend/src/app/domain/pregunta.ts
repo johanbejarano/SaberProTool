@@ -8,6 +8,7 @@ export class Pregunta {
     pregId: number;
     retroalimentacion: string;
     usuCreador: number;
+    codigoUsuario: string;
     usuModificador: number;
     moduId_Modulo: number;
     tprgId_TipoPregunta: number;
@@ -27,5 +28,6 @@ export class Pregunta {
     programa: string;
 
     contId: number;
+    nombreContexto: string;
     contexto: string;
 }

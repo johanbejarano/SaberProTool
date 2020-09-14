@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Contexto } from 'app/domain/contexto';
 import { ContextoService } from 'app/services/contexto.service';
 import { EditarContextoComponent } from './editar-contexto/editar-contexto.component';
 
@@ -11,9 +12,9 @@ import { EditarContextoComponent } from './editar-contexto/editar-contexto.compo
 export class ContextoComponent implements OnInit {
 
   moduId: number;
-  contId: number;
+  contextoSelected: Contexto;
 
-  contextos: any[];
+  contextos: Contexto[];
 
   ocultar: boolean = false;
 
@@ -22,7 +23,7 @@ export class ContextoComponent implements OnInit {
     private dialog: MatDialog,
     private contextoService: ContextoService) {
     this.moduId = data.modulo;
-    this.contId = data.contexto;
+    this.contextoSelected = data.contexto;
   }
 
   ngOnInit() {
@@ -30,16 +31,26 @@ export class ContextoComponent implements OnInit {
   }
 
   getContextos() {
-    this.contextoService.getByModulo(this.moduId).subscribe((result: any[]) => {
+    this.contextoService.getByModulo(this.moduId).subscribe((result: Contexto[]) => {
       this.contextos = result;
       if (!this.contextos || this.contextos.length == 0) {
-        this.editar(null);
+        this.nuevo();
       }
     })
   }
 
-  seleccionar(contId: number) {
-    this.contId = contId;
+  seleccionar(contexto: Contexto) {
+    if (this.contextoSelected.contId == contexto.contId) {
+      this.contextoSelected = new Contexto();
+    } else {
+      this.contextoSelected = contexto;
+    }
+  }
+
+  nuevo() {
+    let contextoTmp = new Contexto();
+    contextoTmp.moduId = this.moduId;
+    this.editar(contextoTmp);
   }
 
   editar(contexto) {
@@ -61,7 +72,7 @@ export class ContextoComponent implements OnInit {
   }
 
   guardar() {
-
+    this.dialogRef.close(this.contextoSelected);
   }
 
 }

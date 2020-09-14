@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,7 +27,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "contexto", schema = "public")
 public class Contexto implements java.io.Serializable {
-    @NotNull
     private Integer contId;
     @NotNull
     @NotEmpty
@@ -65,6 +66,7 @@ public class Contexto implements java.io.Serializable {
 
     @Id
     @Column(name = "cont_id", unique = true, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getContId() {
         return this.contId;
     }

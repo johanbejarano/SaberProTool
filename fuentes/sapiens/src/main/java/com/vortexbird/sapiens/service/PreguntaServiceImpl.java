@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.vortexbird.sapiens.domain.Contexto;
 import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
 import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.domain.Pregunta;
@@ -73,6 +74,9 @@ public class PreguntaServiceImpl implements PreguntaService {
 
 	@Autowired
 	private PreguntaMapper preguntaMapper;
+
+	@Autowired
+	private ContextoService contextoService;
 
 	@Override
 	public void validate(Pregunta pregunta) throws Exception {
@@ -255,6 +259,22 @@ public class PreguntaServiceImpl implements PreguntaService {
 				throw new Exception("No existe el tipo pregunta " + guardarPreguntaDTO.getTprgId_TipoPregunta());
 			}
 
+			// Se consulta el usuario
+			Optional<Usuario> usuario = usuarioService.findById(guardarPreguntaDTO.getUsuCreador());
+			if (!tipoPregunta.isPresent()) {
+				throw new Exception("No existe el tipo pregunta " + guardarPreguntaDTO.getTprgId_TipoPregunta());
+			}
+
+			// Se consulta el contexto si tiene
+			Contexto contexto = null;
+			if (guardarPreguntaDTO.getContId() != null) {
+				Optional<Contexto> contextoOpt = contextoService.findById(guardarPreguntaDTO.getContId());
+				if (!contextoOpt.isPresent()) {
+					throw new Exception("No existe el contexto " + guardarPreguntaDTO.getContId());
+				}
+				contexto = contextoOpt.get();
+			}
+
 			// Se crea la pregunta
 			Pregunta pregunta = new Pregunta();
 
@@ -264,10 +284,11 @@ public class PreguntaServiceImpl implements PreguntaService {
 			pregunta.setModulo(modulo.get());
 			pregunta.setRetroalimentacion(guardarPreguntaDTO.getRetroalimentacion());
 			pregunta.setTipoPregunta(tipoPregunta.get());
-			pregunta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
+			pregunta.setUsuario(usuario.get());
 			pregunta.setComplejidad(guardarPreguntaDTO.getComplejidad());
 			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
-			
+			pregunta.setContexto(contexto);
+
 			save(pregunta);
 
 			if (pregunta.getTipoPregunta().getTprgId() == 1L) {
@@ -289,7 +310,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 					respuesta.setPregunta(pregunta);
 					respuesta.setRetroalimentacion(
 							respuesta.getRetroalimentacion() == null ? "-" : respuesta.getRetroalimentacion());
-					respuesta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
+					respuesta.setUsuCreador(guardarPreguntaDTO.getUsuCreador().longValue());
 
 					respuestaService.save(respuesta);
 
@@ -337,7 +358,27 @@ public class PreguntaServiceImpl implements PreguntaService {
 				throw new Exception("No existe el tipo pregunta " + guardarPreguntaDTO.getTprgId_TipoPregunta());
 			}
 
+			// Se consulta el usuario
+			Optional<Usuario> usuario = usuarioService.findById(guardarPreguntaDTO.getUsuCreador());
+			if (!usuario.isPresent()) {
+				throw new Exception("No existe el usuario " + guardarPreguntaDTO.getTprgId_TipoPregunta());
+			}
+
+			// Se consulta el contexto si tiene
+			Contexto contexto = null;
+			if (guardarPreguntaDTO.getContId() != null) {
+				Optional<Contexto> contextoOpt = contextoService.findById(guardarPreguntaDTO.getContId());
+				if (!contextoOpt.isPresent()) {
+					throw new Exception("No existe el contexto " + guardarPreguntaDTO.getContId());
+				}
+				contexto = contextoOpt.get();
+			}
+
 			Pregunta pregunta = optPregunta.get();
+			
+			if(!pregunta.getUsuario().getUsuaId().equals(guardarPreguntaDTO.getUsuCreador())) {
+				throw new Exception("El usuario que modifica no es el dueño de la pregunta");
+			}
 
 			// Se valida que la pregunta NO haya tenido ya ejecución (Respuestas realizadas
 			// por estudiantes)
@@ -354,10 +395,10 @@ public class PreguntaServiceImpl implements PreguntaService {
 			pregunta.setModulo(modulo.get());
 			pregunta.setRetroalimentacion(guardarPreguntaDTO.getRetroalimentacion());
 			pregunta.setTipoPregunta(tipoPregunta.get());
-			pregunta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
 			pregunta.setComplejidad(guardarPreguntaDTO.getComplejidad());
 			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
-			
+			pregunta.setContexto(contexto);
+
 			update(pregunta);
 
 			// Se borran las respuestas originales de la pregunta
@@ -387,7 +428,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 					respuesta.setRetroalimentacion(respuestaDTO.getRetroalimentacion());
 					respuesta.setRetroalimentacion(
 							respuesta.getRetroalimentacion() == null ? "-" : respuesta.getRetroalimentacion());
-					respuesta.setUsuCreador(guardarPreguntaDTO.getUsuCreador());
+					respuesta.setUsuCreador(guardarPreguntaDTO.getUsuCreador().longValue());
 
 					respuestaService.save(respuesta);
 
@@ -445,9 +486,10 @@ public class PreguntaServiceImpl implements PreguntaService {
 			}
 
 			// Se obtienen todas las preguntas inactivas que sean creadas por el usuario
-			List<Pregunta> preguntasDelUsuario = preguntaRepository.findByEstadoRegistroAndUsuCreador(Constantes.ESTADO_INACTIVO, new Long(usuaId));
+			List<Pregunta> preguntasDelUsuario = preguntaRepository
+					.findByEstadoRegistroAndUsuario_usuaId(Constantes.ESTADO_INACTIVO, usuaId);
 			preguntas.addAll(preguntasDelUsuario);
-			
+
 			List<PreguntaDTO> preguntasDTO = preguntaMapper.listPreguntaToListPreguntaDTO(preguntas);
 
 			// A cada pregunta se le calcula su modulo
@@ -457,7 +499,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 				Modulo modulo = pregunta.getModulo();
 
 				preguntasDTO.get(i).setNombreModulo(modulo.getNombre());
-				
+
 				List<Respuesta> respuestas = pregunta.getRespuestas();
 				List<RespuestaDTO> respuestasDTO = new ArrayList<RespuestaDTO>();
 				for (int j = 0; j < respuestas.size(); j++) {
@@ -510,21 +552,21 @@ public class PreguntaServiceImpl implements PreguntaService {
 					.collect(Collectors.toMap(Modulo::getNombre, modulo -> modulo));
 			for (PreguntaDTO pregunta : request.getPreguntas()) {
 				if (!modulosMap.containsKey(pregunta.getNombreModulo().trim().toUpperCase())) {
-					throw new Exception(
-							"El módulo " + pregunta.getNombreModulo().trim() + " no existe en el sistema");
+					throw new Exception("El módulo " + pregunta.getNombreModulo().trim() + " no existe en el sistema");
 				}
 				GuardarPreguntaDTO preguntaGuardar = new GuardarPreguntaDTO();
-				
-				preguntaGuardar.setModuId_Modulo(modulosMap.get(pregunta.getNombreModulo().trim().toUpperCase()).getModuId());
+
+				preguntaGuardar
+						.setModuId_Modulo(modulosMap.get(pregunta.getNombreModulo().trim().toUpperCase()).getModuId());
 				preguntaGuardar.setTprgId_TipoPregunta(pregunta.getTprgId_TipoPregunta());
 				preguntaGuardar.setDescripcion(pregunta.getDescripcion());
 				preguntaGuardar.setRetroalimentacion(pregunta.getRetroalimentacion());
 				preguntaGuardar.setComplejidad(pregunta.getComplejidad());
 				preguntaGuardar.setValorPregunta(pregunta.getValorPregunta());
-				
+
 				preguntaGuardar.setRespuestasDTO(pregunta.getRespuestasDTO());
-				
-				preguntaGuardar.setUsuCreador(request.getUsuarioCreador());
+
+				preguntaGuardar.setUsuCreador(request.getUsuarioCreador().intValue());
 				preguntaGuardar.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
 				guardarPregunta(preguntaGuardar);
 			}

@@ -5,6 +5,8 @@
     <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
         <div fxFlex="100" fxLayout="column">
             <div class="h3">Modulo: <span class="h4 color1">{{pregunta.nombreModulo}}</span></div>
+            <mat-divider *ngIf="pregunta.contexto"></mat-divider>
+            <div [innerHTML]="pregunta.contexto"></div>
             <mat-divider></mat-divider>
             <div [innerHTML]="pregunta.descripcion"></div>
         </div>

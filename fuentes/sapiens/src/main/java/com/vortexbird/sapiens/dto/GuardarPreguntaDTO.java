@@ -27,12 +27,13 @@ public class GuardarPreguntaDTO implements Serializable {
     private Date fechaModificacion;
     private Integer pregId;
     private String retroalimentacion;
-    private Long usuCreador;
+    private Integer usuCreador;
     private Long usuModificador;
     private Integer moduId_Modulo;
     private Integer tprgId_TipoPregunta;
     private Long complejidad;
     private Long valorPregunta;
+    private Integer contId;
     
     private List<RespuestaDTO> respuestasDTO;
 
@@ -84,11 +85,11 @@ public class GuardarPreguntaDTO implements Serializable {
         this.retroalimentacion = retroalimentacion;
     }
 
-    public Long getUsuCreador() {
+    public Integer getUsuCreador() {
         return usuCreador;
     }
 
-    public void setUsuCreador(Long usuCreador) {
+    public void setUsuCreador(Integer usuCreador) {
         this.usuCreador = usuCreador;
     }
 
@@ -152,6 +153,14 @@ public class GuardarPreguntaDTO implements Serializable {
 
 	public void setValorPregunta(Long valorPregunta) {
 		this.valorPregunta = valorPregunta;
+	}
+
+	public Integer getContId() {
+		return contId;
+	}
+
+	public void setContId(Integer contId) {
+		this.contId = contId;
 	}
 
 }

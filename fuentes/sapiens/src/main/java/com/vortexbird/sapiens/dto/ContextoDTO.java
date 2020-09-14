@@ -25,6 +25,7 @@ public class ContextoDTO implements Serializable {
     private Date fechaCreacion;
     private Date fechaModificacion;
     private Integer contId;
+    private Integer moduId;
     private Long usuCreador;
     private Long usuModificador;
 
@@ -104,5 +105,13 @@ public class ContextoDTO implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Integer getModuId() {
+		return moduId;
+	}
+
+	public void setModuId(Integer moduId) {
+		this.moduId = moduId;
 	}
 }
