@@ -16,7 +16,6 @@ import { UsuarioService } from 'app/services/usuario.service';
 import { createAndDownloadBlobFile } from 'app/utils/files';
 import { environment } from 'environments/environment.js';
 import * as ClassicEditor from '../../../../../assets/ckeditor.js';
-//import * as ClassicEditorToolbar from '../../../../../assets/ckeditor_toolbar.js';
 
 @Component({
   selector: 'app-prueba',

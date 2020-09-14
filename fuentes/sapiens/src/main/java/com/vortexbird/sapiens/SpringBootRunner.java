@@ -96,11 +96,12 @@ public class SpringBootRunner implements WebMvcConfigurer{
 	@Bean
 	public JavaMailSender getJavaMailSender() {
 	    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-	    mailSender.setHost("smtp.gmail.com");
+	    mailSender.setHost("smtp.office365.com");
 	    mailSender.setPort(587);
 	    
-	    mailSender.setUsername("cdelgado@vortexbird.com");
-	    mailSender.setPassword("Lalapoposa98");
+	    mailSender.setUsername("sabertool@usbcali.edu.co");
+	    //mailSender.setUsername("adm.usbcali.edu.co\\sabertool");
+	    mailSender.setPassword("52390372");
 	    
 	    Properties props = mailSender.getJavaMailProperties();
 	    props.put("mail.transport.protocol", "smtp");

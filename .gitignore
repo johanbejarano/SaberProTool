@@ -6,3 +6,5 @@ sapiens.log
 .project
 org.eclipse.core.resources.prefs
 .classpath
+/fuentes/ROOT/WebContent/*
+-/fuentes/ROOT/WebContent/WEB-INF/*

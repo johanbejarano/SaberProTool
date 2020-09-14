@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -101,6 +101,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
         });
 
     } else {
+      this.pregunta.usuCreador = this.usuario.usuaId;
       //se va a crear una pregunta
 
       this.actualizarFormulario();
@@ -210,6 +211,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   }
 
   guardarPregunta(): void {
+
     if (!this.form.valid) {
       this.snackBar.open('Faltan datos asociados a la clasificación de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
@@ -336,6 +338,11 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     if (this.form.controls.modulo.value) {
       let modulo = this.modulos.find(modulo => modulo.moduId == this.form.controls.modulo.value);
       this.modulo = modulo;
+      if (modulo.igualValor !== 'N') {
+        this.form.setControl('valorPregunta', new FormControl(''));
+      } else {
+        this.form.controls.valorPregunta.setValidators(Validators.required);
+      }
     } else {
       this.modulo = null;
     }

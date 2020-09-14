@@ -6,9 +6,12 @@
         <div fxFlex="100" fxLayout="column">
             <div class="h3">Modulo: <span class="h4 color1">{{pregunta.nombreModulo}}</span></div>
             <mat-divider *ngIf="pregunta.contexto"></mat-divider>
-            <div [innerHTML]="pregunta.contexto"></div>
+            <ckeditor *ngIf="pregunta.contexto" [editor]="Editor" [config]="editorConfig"
+                data="{{pregunta.contexto}}" disabled=true>
+            </ckeditor>
             <mat-divider></mat-divider>
-            <div [innerHTML]="pregunta.descripcion"></div>
+            <ckeditor [editor]="Editor" [config]="editorConfig" data="{{pregunta.descripcion}}" disabled=true>
+            </ckeditor>
         </div>
         <mat-divider></mat-divider>
         <div *ngFor="let respuesta of pregunta.respuestasDTO" fxFlex="100">

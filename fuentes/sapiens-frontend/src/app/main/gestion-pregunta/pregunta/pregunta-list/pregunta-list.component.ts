@@ -75,13 +75,10 @@ export class PreguntaListComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    console.log(this.usuario.usuaId);
-    
     this.subscription = this.preguntaService.getPreguntasPorUsuario(this.usuario.usuaId)
       .subscribe((preguntas: Pregunta[]) => {
         
         this.data = preguntas;
-        console.log(this.data);
         this.datasource = new MatTableDataSource<Pregunta>(this.data);
 
         this.datasource.paginator = this.paginator;
