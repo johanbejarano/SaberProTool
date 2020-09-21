@@ -2,7 +2,7 @@ package com.vortexbird.sapiens.utility;
 
 public class Constantes {
 	
-	public static final String urlSistema = "http://127.0.0.1:9090/api/usuario/recuperarClave/";
+//	public static final String urlSistema = "http://127.0.0.1:9090/api/usuario/recuperarClave/";
 	
 	public final static String salt = "CERBERUSSYSTEM";
 	
