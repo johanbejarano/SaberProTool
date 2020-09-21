@@ -43,6 +43,8 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
   listaModulos: Modulo[];
 
   usuario: Usuario;
+
+  hoy = new Date();
   
   constructor(
     private _formBuilder: FormBuilder,
@@ -102,7 +104,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     // Reactive Form
     this.form = this._formBuilder.group({
       
-      tipoPrueba: [this.prueba.tiprId_TipoPrueba, Validators.required],
+      tipoPrueba: [2, Validators.required],
       fechaInicial: [this.prueba.fechaInicial ? new DatePipe('en-US').transform(this.prueba.fechaInicial, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
       fechaFinal: [this.prueba.fechaFinal ? new DatePipe('en-US').transform(this.prueba.fechaFinal, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
       duracion: [this.prueba.tiempo, Validators.required],
@@ -145,7 +147,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.prueba.fechaFinal = new Date(this.form.controls.fechaFinal.value);
     this.prueba.idModulos = this.form.controls.modulos.value;
     this.prueba.idUsuarios = this.usuariosSeleccionados;
-    this.prueba.tiprId_TipoPrueba = this.form.controls.tipoPrueba.value;
+    this.prueba.tiprId_TipoPrueba = 2;
     this.prueba.tiempo = this.form.controls.duracion.value;
     this.prueba.usuCreador = this.usuario.usuaId;
 

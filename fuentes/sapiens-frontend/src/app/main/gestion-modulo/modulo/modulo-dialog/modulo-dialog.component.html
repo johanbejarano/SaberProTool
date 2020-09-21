@@ -28,12 +28,6 @@
             </mat-form-field>
 
             <mat-form-field class="px-8" fxFlex="50">
-                <input matInput placeholder="Cantidad de preguntas" formControlName="cantidadPreguntas" type="number">
-                <mat-error *ngIf="form.controls.cantidadPreguntas.errors?.required">{{'msg.campoRequerido' | translate}}
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="px-8" fxFlex="50">
                 <input matInput placeholder="Prioridad" formControlName="prioridad" type="number">
                 <mat-error *ngIf="form.controls.prioridad.errors?.required">{{'msg.campoRequerido' | translate}}
                 </mat-error>
@@ -52,6 +46,31 @@
                     {{'msg.campoRequerido' | translate}}
                 </mat-error>
             </div>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Cantidad de preguntas complejidad 1" formControlName="cantidadPreguntas1" type="number">
+                <mat-error *ngIf="form.controls.cantidadPreguntas1.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Cantidad de preguntas complejidad 2" formControlName="cantidadPreguntas2" type="number">
+                <mat-error *ngIf="form.controls.cantidadPreguntas2.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Cantidad de preguntas complejidad 3" formControlName="cantidadPreguntas3" type="number">
+                <mat-error *ngIf="form.controls.cantidadPreguntas3.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="px-8" fxFlex="50">
+                <input matInput placeholder="Cantidad de preguntas complejidad 4" formControlName="cantidadPreguntas4" type="number">
+                <mat-error *ngIf="form.controls.cantidadPreguntas4.errors?.required">{{'msg.campoRequerido' | translate}}
+                </mat-error>
+            </mat-form-field>
+
             <div fxFlex="50" fxLayout="row wrap">
                 <mat-radio-group formControlName="estado" fxLayout="row wrap" class="mat-checkbox-group">
                     <mat-radio-button value="A" class="py-8" fxFlex="100">

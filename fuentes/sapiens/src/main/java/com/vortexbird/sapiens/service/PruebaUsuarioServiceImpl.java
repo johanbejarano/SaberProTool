@@ -243,10 +243,10 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			if (prueba.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
 				throw new Exception("La prueba ha sido cancelada");
 			}
-			if (prueba.getFechaInicial().after(fecha)){
+			if (prueba.getFechaInicial() != null && prueba.getFechaInicial().after(fecha)){
 				throw new Exception("La prueba no se encuentra disponible para comenzar");
 			}
-			if (prueba.getFechaFinal().before(fecha)){
+			if (prueba.getFechaFinal() != null && prueba.getFechaFinal().before(fecha)){
 				throw new Exception("Se terminó el tiempo de la prueba");
 			}
 
@@ -257,14 +257,50 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 				for (PruebaModulo pruebaModulo : pruebasModulo) {
 					// Por cada modulo consulto las preguntas a realizar
 					Modulo modulo = pruebaModulo.getModulo();
-					int cantidadPreguntas = modulo.getCantidadPreguntas().intValue();
-					List<Pregunta> preguntasModulo = preguntaService.getPreguntasPorModulo(modulo.getModuId());
-					Collections.shuffle(preguntasModulo);
-					preguntasModulo = preguntasModulo.subList(0,
-							preguntasModulo.size() > cantidadPreguntas ? cantidadPreguntas : preguntasModulo.size());
-					preguntas.addAll(preguntasModulo);
+					int cantidadPreguntas1 = modulo.getCantidadPreguntas1().intValue();
+					int cantidadPreguntas2 = modulo.getCantidadPreguntas2().intValue();
+					int cantidadPreguntas3 = modulo.getCantidadPreguntas3().intValue();
+					int cantidadPreguntas4 = modulo.getCantidadPreguntas4().intValue();
+					
+					//Nivel 1
+					List<Pregunta> preguntasModuloComplejidad1 = preguntaService.getPreguntasPorModuloPorComplejidad(modulo.getModuId(), 1L);
+					//Nivel 2
+					List<Pregunta> preguntasModuloComplejidad2 = preguntaService.getPreguntasPorModuloPorComplejidad(modulo.getModuId(), 2L);
+					//Nivel 3
+					List<Pregunta> preguntasModuloComplejidad3 = preguntaService.getPreguntasPorModuloPorComplejidad(modulo.getModuId(), 3L);
+					//Nivel 4
+					List<Pregunta> preguntasModuloComplejidad4 = preguntaService.getPreguntasPorModuloPorComplejidad(modulo.getModuId(), 4L);
+					
+					if(preguntasModuloComplejidad4.size() < cantidadPreguntas4) {
+						cantidadPreguntas3 += preguntasModuloComplejidad4.size() - cantidadPreguntas4;
+					}
+					if(preguntasModuloComplejidad3.size() < cantidadPreguntas3) {
+						cantidadPreguntas2 += preguntasModuloComplejidad3.size() - cantidadPreguntas3;
+					}
+					if(preguntasModuloComplejidad2.size() < cantidadPreguntas2) {
+						cantidadPreguntas1 += preguntasModuloComplejidad2.size() - cantidadPreguntas2;
+					}
+					
+					Collections.shuffle(preguntasModuloComplejidad1);
+					Collections.shuffle(preguntasModuloComplejidad2);
+					Collections.shuffle(preguntasModuloComplejidad3);
+					Collections.shuffle(preguntasModuloComplejidad4);
+					
+					preguntasModuloComplejidad1 = preguntasModuloComplejidad1.subList(0,
+							preguntasModuloComplejidad1.size() > cantidadPreguntas1 ? cantidadPreguntas1 : preguntasModuloComplejidad1.size());
+					preguntasModuloComplejidad2 = preguntasModuloComplejidad2.subList(0,
+							preguntasModuloComplejidad2.size() > cantidadPreguntas2 ? cantidadPreguntas2 : preguntasModuloComplejidad2.size());
+					preguntasModuloComplejidad3 = preguntasModuloComplejidad3.subList(0,
+							preguntasModuloComplejidad3.size() > cantidadPreguntas3 ? cantidadPreguntas3 : preguntasModuloComplejidad3.size());
+					preguntasModuloComplejidad4 = preguntasModuloComplejidad4.subList(0,
+							preguntasModuloComplejidad4.size() > cantidadPreguntas4 ? cantidadPreguntas4 : preguntasModuloComplejidad4.size());
+					
+					preguntas.addAll(preguntasModuloComplejidad1);
+					preguntas.addAll(preguntasModuloComplejidad2);
+					preguntas.addAll(preguntasModuloComplejidad3);
+					preguntas.addAll(preguntasModuloComplejidad4);
 				}
-
+				
 				Long puntaje = 0L;
 				
 				for (Pregunta pregunta : preguntas) {

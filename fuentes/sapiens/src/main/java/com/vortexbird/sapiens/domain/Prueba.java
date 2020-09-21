@@ -37,9 +37,7 @@ public class Prueba implements java.io.Serializable {
     private String estadoRegistro;
     @NotNull
     private Date fechaCreacion;
-    @NotNull
     private Date fechaFinal;
-    @NotNull
     private Date fechaInicial;
     private Date fechaModificacion;
     private Long tiempo;

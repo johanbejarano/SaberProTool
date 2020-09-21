@@ -18,8 +18,8 @@ public class GlobalProperties {
 		return SUBREPORT_DIR;
 	}
 
-	public void setSUBREPORT_DIR(String sUBREPORT_DIR) {
-		SUBREPORT_DIR = sUBREPORT_DIR;
+	public void setSUBREPORT_DIR(String SUBREPORT_DIR) {
+		this.SUBREPORT_DIR = SUBREPORT_DIR;
 	}
 	
 	

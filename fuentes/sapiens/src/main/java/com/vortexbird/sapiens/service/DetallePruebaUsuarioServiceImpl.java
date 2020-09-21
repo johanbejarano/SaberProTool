@@ -199,13 +199,13 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void responder(Integer dpruId, Integer respId, Long usuario) throws Exception {
+	public void responder(Integer dpruId, Integer respId, String respuestaAbierta, Long usuario) throws Exception {
 		try {
 			// Valido que lleguen los datos
 			if (dpruId == null) {
 				throw new Exception("No se ingresó la pregunta");
 			}
-			if (respId == null) {
+			if (respId == null && (respuestaAbierta == null || respuestaAbierta.trim().isEmpty())) {
 				throw new Exception("No se ingresó la respuesta");
 			}
 			if (usuario == null) {
@@ -217,19 +217,25 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					|| detallePruebaUsuarioOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
 				throw new Exception("No se encontró el detalle de la prueba o no se encuentra activo");
 			}
-
-			Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
-			if (!respuestaOpt.isPresent()
-					|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
-				throw new Exception("No se encontró la respuesta o no se encuentra activa");
-			}
-
+			
 			DetallePruebaUsuario detallePruebaUsuario = detallePruebaUsuarioOpt.get();
-			Respuesta respuesta = respuestaOpt.get();
-			// Valido que la respuesta sea de la pregunta dada
-			if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
-				throw new Exception("La respuesta no es de la pregunta dada");
+			
+			if(respId != null) {
+				Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
+				if (!respuestaOpt.isPresent()
+						|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+					throw new Exception("No se encontró la respuesta o no se encuentra activa");
+				}
+				Respuesta respuesta = respuestaOpt.get();
+				// Valido que la respuesta sea de la pregunta dada
+				if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
+					throw new Exception("La respuesta no es de la pregunta dada");
+				}
+				detallePruebaUsuario.setRespuesta(respuesta);
+			}else {
+				detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
 			}
+			
 
 			PruebaUsuario pruebaUsuario = detallePruebaUsuario.getPruebaUsuario();
 			if (pruebaUsuario.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)
@@ -249,7 +255,6 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				throw new Exception("Se terminó el tiempo de la prueba");
 			}
 
-			detallePruebaUsuario.setRespuesta(respuesta);
 			detallePruebaUsuario.setFechaModificacion(fecha);
 			detallePruebaUsuario.setUsuModificador(usuario);
 			update(detallePruebaUsuario);
@@ -308,8 +313,6 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				mostrarRetroalimentacion = true;
 			}
 			Date fecha = new Date();
-			if (pruebaUsuario.get().getPrueba().getFechaFinal().before(fecha)) {
-			}
 			// Valido si la prueba ya terminó el periodo para mostrar la retroalimentación
 
 			List<DetallePruebaUsuarioDTO> preguntasDTO = new ArrayList<DetallePruebaUsuarioDTO>();
@@ -328,6 +331,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					detallePruebaUsuarioDTO
 							.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
 				}
+				detallePruebaUsuarioDTO.setRespuestaAbierta(detallePruebaUsuario.getRespuestaAbierta());
 				detallePruebaUsuarioDTO.setRespId(
 						detallePruebaUsuario.getRespuesta() != null ? detallePruebaUsuario.getRespuesta().getRespId()
 								: null);

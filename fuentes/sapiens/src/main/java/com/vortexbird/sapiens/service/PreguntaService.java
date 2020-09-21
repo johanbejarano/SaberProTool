@@ -24,6 +24,8 @@ public interface PreguntaService extends GenericService<Pregunta, Integer> {
 	List<PreguntaDTO> getPreguntasPorUsuario(Integer usuaId) throws Exception;
 
 	List<Pregunta> getPreguntasPorModulo(Integer moduId) throws Exception;
+	
+	List<Pregunta> getPreguntasPorModuloPorComplejidad(Integer moduId, Long complejidad) throws Exception;
 
 	void cargar(CargueMasivoDTO request) throws Exception;
 }

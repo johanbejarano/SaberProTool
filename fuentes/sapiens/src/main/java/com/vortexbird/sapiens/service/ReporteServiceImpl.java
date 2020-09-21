@@ -1,227 +1,125 @@
 package com.vortexbird.sapiens.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import com.vortexbird.sapiens.domain.Contexto;
-import com.vortexbird.sapiens.domain.Modulo;
-import com.vortexbird.sapiens.domain.Usuario;
-import com.vortexbird.sapiens.dto.ContextoDTO;
-import com.vortexbird.sapiens.exception.ZMessManager;
-import com.vortexbird.sapiens.mapper.ContextoMapper;
-import com.vortexbird.sapiens.repository.ContextoRepository;
-import com.vortexbird.sapiens.utility.Constantes;
-import com.vortexbird.sapiens.utility.Utilities;
+import javax.sql.DataSource;
+import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
- * 
- */
+import com.vortexbird.sapiens.utility.GlobalProperties;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 @Scope("singleton")
 @Service
-public class ReporteServiceImpl implements ContextoService {
+public class ReporteServiceImpl implements ReporteService {
 
 	private static final Logger log = LoggerFactory.getLogger(ReporteServiceImpl.class);
 
 	@Autowired
-	private ContextoRepository contextoRepository;
-	
-	@Autowired
-	private ContextoMapper contextoMapper;
+	private GlobalProperties globalProperties;
 
 	@Autowired
-	private Validator validator;
-	
-	@Autowired
-	private ModuloService moduloService;
+	protected DataSource dataSource;
 
 	@Override
-	public void validate(Contexto contexto) throws Exception {
+	public String reportePruebaEstudiante(Long prueId, Long estuId) throws Exception {
+		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+		// Crea la variable de parametros
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		// Asigna los parametros enviados
+		params.put("pPrueId", prueId);
+		params.put("pEstuId", estuId);
+
+		String reporte = generarReporte(rutaReporte, params);
+
+		return reporte;
+
+	}
+
+	private String generarReporte(String rutaReporte, Map<String, Object> params) throws Exception {
+		ByteArrayInputStream informe = null;
+		InputStream inputStream = null;
+		ByteArrayOutputStream bos = null;
+		Connection connection = null;
 		try {
-			Set<ConstraintViolation<Contexto>> constraintViolations = validator.validate(contexto);
-			if (constraintViolations.size() > 0) {
-				StringBuilder strMessage = new StringBuilder();
-				for (ConstraintViolation<Contexto> constraintViolation : constraintViolations) {
-					strMessage.append(constraintViolation.getPropertyPath().toString());
-					strMessage.append(" - ");
-					strMessage.append(constraintViolation.getMessage());
-					strMessage.append(". \n");
-				}
-				throw new Exception(strMessage.toString());
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-	}
+			// Se valida si la ruta existe
+			File fRutaBaseReportes = new File(globalProperties.getSUBREPORT_DIR());
 
-	@Override
-	@Transactional(readOnly = true)
-	public Long count() {
-		return contextoRepository.count();
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<Contexto> findAll() {
-		log.debug("finding all Contexto instances");
-		return contextoRepository.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Contexto save(Contexto entity) throws Exception {
-		log.debug("saving Contexto instance");
-		try {
-
-			if (entity == null) {
-				throw new ZMessManager().new NullEntityExcepcion("Contexto");
+			if (!fRutaBaseReportes.exists() || !fRutaBaseReportes.isDirectory() || !fRutaBaseReportes.canRead()) {
+				throw new Exception(
+						"No existe la ruta base de reportes, no es un directorio o no se tiene acceso de lectura al directorio: "
+								+ fRutaBaseReportes.getPath());
 			}
 
-			validate(entity);
-
-			return contextoRepository.save(entity);
-
-		} catch (Exception e) {
-			log.error("save Contexto failed", e);
-			throw e;
-		}
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void delete(Contexto entity) throws Exception {
-		log.debug("deleting Contexto instance");
-
-		if (entity == null) {
-			throw new ZMessManager().new NullEntityExcepcion("Contexto");
-		}
-
-		if (entity.getContId() == null) {
-			throw new ZMessManager().new EmptyFieldException("tiusId");
-		}
-
-		findById(entity.getContId()).ifPresent(entidad -> {
-			List<Usuario> usuarios = entidad.getUsuarios();
-
-			if (Utilities.validationsList(usuarios) == true) {
-				throw new ZMessManager().new DeletingException("usuarios");
-			}
-		});
-
-		try {
-
-			contextoRepository.deleteById(entity.getContId());
-			log.debug("delete Contexto successful");
-
-		} catch (Exception e) {
-			log.error("delete Contexto failed", e);
-			throw e;
-		}
-
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void deleteById(Integer id) throws Exception {
-		log.debug("deleting Contexto instance");
-		if (id == null) {
-			throw new ZMessManager().new EmptyFieldException("tiusId");
-		}
-		if (contextoRepository.findById(id).isPresent()) {
-			delete(contextoRepository.findById(id).get());
-		}
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Contexto update(Contexto entity) throws Exception {
-
-		log.debug("updating Contexto instance");
-
-		try {
-
-			if (entity == null) {
-				throw new ZMessManager().new NullEntityExcepcion("Contexto");
+			// Se valida la ruta del reporte
+			File fReporte = new File(fRutaBaseReportes, rutaReporte);
+			if (!fReporte.exists() || !fReporte.isFile() || !fReporte.canRead()) {
+				throw new Exception(
+						"No existe la ruta del reporte, no es un archivo o no se tiene acceso de lectura al mismo: "
+								+ fReporte.getPath());
 			}
 
-			validate(entity);
+			// Se abre el reporte
+			inputStream = new FileInputStream(fReporte);
 
-			return contextoRepository.save(entity);
+			// Se envía la ruta de parámetos siempre
+			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
+					: (fRutaBaseReportes.getPath() + "/")));
 
-		} catch (Exception e) {
-			log.error("update Contexto failed", e);
-			throw e;
-		}
-	}
+			bos = new ByteArrayOutputStream();
+			// Se rellena el reporte
+			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
 
-	@Override
-	@Transactional(readOnly = true)
-	public Optional<Contexto> findById(Integer tiusId) throws Exception {
-		log.debug("getting Contexto instance");
-		return contextoRepository.findById(tiusId);
-	}
+			// Se exporta el reporte a pdf
+			JRPdfExporter jrPdfExporter = new JRPdfExporter();
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<ContextoDTO> getByModulo(Integer moduId) throws Exception {
-		try {
-			List<Contexto> contextos = contextoRepository.findByModulo_moduIdAndEstadoRegistro(moduId, Constantes.ESTADO_ACTIVO);
-			return contextoMapper.listContextoToListContextoDTO(contextos);
+			jrPdfExporter.setExporterInput(new SimpleExporterInput(print));
+			jrPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(bos));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			jrPdfExporter.setConfiguration(configuration);
+
+			jrPdfExporter.exportReport();
+
+			byte[] bytes = bos.toByteArray();
+
+			String base64 = DatatypeConverter.printBase64Binary(bytes);
+			return base64;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
-		}
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void guardar(ContextoDTO contextoDTO) throws Exception {
-		try {
-			//Valido que llegue la info
-			if(contextoDTO == null) {
-				throw new Exception("El contexto es obligatorio");
+		} finally {
+			if (informe != null) {
+				informe.close();
 			}
-			//Si no tiene contId se crea
-			Contexto contexto;
-			if(contextoDTO.getContId() == null) {
-				contexto = new Contexto();
-			}else {
-				//Valido que exista
-				contexto = findById(contextoDTO.getContId()).get();
+			if (inputStream != null) {
+				inputStream.close();
 			}
-			contexto.setNombre(contextoDTO.getNombre().trim());
-			contexto.setDescripcion(contextoDTO.getDescripcion());
-			
-			if(contextoDTO.getContId() == null) {
-				Modulo modulo = moduloService.findById(contextoDTO.getModuId()).get();
-				contexto.setModulo(modulo);
-				contexto.setUsuCreador(contextoDTO.getUsuCreador());
-				contexto.setFechaCreacion(new Date());
-				contexto.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
-				save(contexto);
-			}else {
-				contexto.setUsuModificador(contextoDTO.getUsuCreador());
-				contexto.setFechaModificacion(new Date());
-				update(contexto);
+			if (bos != null) {
+				bos.close();
 			}
-			
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw e;
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
 		}
 	}
 

@@ -27,9 +27,10 @@ import { MisPruebasComponent } from './mis-pruebas/mis-pruebas.component';
 import { PruebaListComponent } from './mis-pruebas/prueba-list/prueba-list.component';
 import { PruebaComponent } from './mis-pruebas/prueba/prueba.component';
 import { ResumenPruebaComponent } from './mis-pruebas/resumen-prueba/resumen-prueba.component';
+import { CrearEntrenamientoComponent } from './crear-entrenamiento/crear-entrenamiento.component';
 
 @NgModule({
-  declarations: [MisPruebasComponent, PruebaListComponent, ResumenPruebaComponent, PruebaComponent],
+  declarations: [MisPruebasComponent, PruebaListComponent, ResumenPruebaComponent, PruebaComponent, CrearEntrenamientoComponent],
   imports: [
     CommonModule,
     EstudianteRoutingModule,
