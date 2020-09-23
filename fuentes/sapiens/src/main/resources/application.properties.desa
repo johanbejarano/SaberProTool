@@ -4,7 +4,7 @@ spring.info.build.encoding=UTF-8
 
 #Ruta de almacenamiento raiz de las imagenes cargadas
 sapiens.image.base.path=/home/master/sapiens/
-sapiens.image.api.url=http://192.168.10.32:9090/api/public/image/
+sapiens.image.api.url=http://192.168.7.51:9090/api/public/image/
 
 
 #Spring DataSource Basic Config

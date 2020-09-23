@@ -41,6 +41,7 @@ export class PruebaComponent implements OnInit {
   };
 
   public Editor = ClassicEditor;
+  public EditorReadOnly = ClassicEditor;
 
   constructor(private detallePruebaUsuarioService: DetallePruebaUsuarioService,
     private pruebaUsuarioService: PruebaUsuarioService,
@@ -50,7 +51,7 @@ export class PruebaComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private pruebaService: PruebaService) {
-    this.Editor.isReadOnly = true;
+      
   }
 
   ngOnInit(): void {

@@ -32,13 +32,12 @@
                                             <div class="h3">Modulo: <span
                                                     class="h4 color1">{{pregunta.nombreModulo}}</span></div>
                                             <mat-divider *ngIf="pregunta.descripcionContexto"></mat-divider>
-                                            <ckeditor *ngIf="pregunta.descripcionContexto" [editor]="Editor"
-                                                [config]="editorConfig" data="{{pregunta.descripcionContexto}}"
-                                                disabled=true>
+                                            <ckeditor *ngIf="pregunta.descripcionContexto" [editor]="EditorReadOnly"
+                                                [config]="editorConfig" data="{{pregunta.descripcionContexto}}">
                                             </ckeditor>
                                             <mat-divider></mat-divider>
-                                            <ckeditor [editor]="Editor" [config]="editorConfig"
-                                                data="{{pregunta.descripcionPregunta}}" disabled=true>
+                                            <ckeditor [editor]="EditorReadOnly" [config]="editorConfig"
+                                                data="{{pregunta.descripcionPregunta}}" >
                                             </ckeditor>
                                         </div>
                                         <mat-divider></mat-divider>
@@ -51,9 +50,10 @@
                                                 <div [innerHTML]="respuesta.descripcion"></div>
                                             </mat-checkbox>
                                         </div>
+                                        {{pruebaUsuario.nombreEstadoPrueba}}
                                         <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
                                             <ckeditor [editor]="Editor" [config]="editorConfig"
-                                                [(data)]="pregunta.respuestaAbierta" disabled="{{pruebaUsuario.nombreEstadoPrueba === 'FINALIZADA'}}"
+                                                [(data)]="pregunta.respuestaAbierta"
                                                 (blur)="actualizar(pregunta, $event)">
                                             </ckeditor>
                                         </div>
