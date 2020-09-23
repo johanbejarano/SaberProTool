@@ -47,7 +47,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   idxRespuestaCorrecta: number;
 
   tiposPregunta = [{ key: 1, label: 'Cerrada' }, { key: 2, label: 'Abierta' }];
-  complejidades = [1, 2, 3, 4]
+  complejidades = [1, 2, 3, 4];
 
   //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
   public editorConfig = {

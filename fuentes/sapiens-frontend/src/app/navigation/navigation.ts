@@ -103,6 +103,14 @@ export const navigationEstudiante: FuseNavigation[] = [
                 icon: 'device_unknown',
                 url: '/estudiante/misPruebas',
             },
+            {
+                id: 'crearEntrenamiento',
+                title: 'entrenamiento',
+                translate: 'NAV.ESTUDIANTE.ENTRENAMIENTO',
+                type: 'item',
+                icon: 'assignment',
+                url: '/estudiante/crearEntrenamiento',
+            }
         ]
     },
     {

@@ -44,6 +44,8 @@ public class DetallePruebaUsuario implements java.io.Serializable {
     private PruebaUsuario pruebaUsuario;
     //@NotNull
     private Respuesta respuesta;
+    @Size(max = 25500)
+    private String respuestaAbierta;
     @NotNull
     @NotEmpty
     @Size(max = 255)
@@ -112,6 +114,15 @@ public class DetallePruebaUsuario implements java.io.Serializable {
 
     public void setRespuesta(Respuesta respuesta) {
         this.respuesta = respuesta;
+    }
+    
+    @Column(name = "respuesta_abierta")
+    public String getRespuestaAbierta() {
+        return this.respuestaAbierta;
+    }
+
+    public void setRespuestaAbierta(String respuestaAbierta) {
+        this.respuestaAbierta = respuestaAbierta;
     }
 
     @Column(name = "estado_registro", nullable = false)

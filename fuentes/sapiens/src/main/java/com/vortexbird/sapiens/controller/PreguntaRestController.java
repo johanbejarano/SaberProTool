@@ -164,11 +164,8 @@ public class PreguntaRestController {
 	@PostMapping(value = "/guardarPregunta")
 	public ResponseEntity<?> guardarPregunta(@RequestBody GuardarPreguntaDTO guardarPreguntaDTO) {
 		log.debug("Request to guardarPregunta: ", guardarPreguntaDTO);
-
 		try {
-			
 			Pregunta pregunta = preguntaService.guardarPregunta(guardarPreguntaDTO);
-
 			PreguntaDTO preguntaDTO = preguntaMapper.preguntaToPreguntaDTO(pregunta);
 			
 			//Se consultan las respuestas

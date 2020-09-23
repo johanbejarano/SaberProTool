@@ -231,7 +231,10 @@ public class ModuloServiceImpl implements ModuloService {
 
 			modulo.setNombre(moduloDTO.getNombre().toUpperCase());
 			modulo.setDescripcion(moduloDTO.getDescripcion());
-			modulo.setCantidadPreguntas(moduloDTO.getCantidadPreguntas());
+			modulo.setCantidadPreguntas1(moduloDTO.getCantidadPreguntas1());
+			modulo.setCantidadPreguntas2(moduloDTO.getCantidadPreguntas2());
+			modulo.setCantidadPreguntas3(moduloDTO.getCantidadPreguntas3());
+			modulo.setCantidadPreguntas4(moduloDTO.getCantidadPreguntas4());
 			modulo.setPrioridad(moduloDTO.getPrioridad());
 			modulo.setIgualValor(moduloDTO.getIgualValor());
 			modulo.setTipoModulo(tipoModuloService.findById(moduloDTO.getTimoId_TipoModulo()).get());

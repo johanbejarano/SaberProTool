@@ -50,8 +50,8 @@ export class PruebaComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private pruebaService: PruebaService) {
-      this.Editor.isReadOnly = true;
-    }
+    this.Editor.isReadOnly = true;
+  }
 
   ngOnInit(): void {
     this.pruebaUsuario = this.localStorage.getFromLocal('pruebaUsuario');
@@ -64,6 +64,8 @@ export class PruebaComponent implements OnInit {
   getPreguntas() {
     this.detallePruebaUsuarioService.getPreguntasByPruebaUsuario(this.pruebaUsuario.prusId).subscribe((preguntas: DetallePruebaUsuario[]) => {
       this.preguntas = preguntas;
+      console.log(preguntas);
+      
     })
   }
 
@@ -112,11 +114,15 @@ export class PruebaComponent implements OnInit {
   }
 
   guardarRespuesta(pregunta: DetallePruebaUsuario) {
-    if (pregunta.respId) {
+    
+    if (pregunta.respId || pregunta.respuestaAbierta) {
       let request: DetallePruebaUsuario = new DetallePruebaUsuario();
       request.dpruId = pregunta.dpruId;
       request.respId = pregunta.respId;
+      request.respuestaAbierta = pregunta.respuestaAbierta;
       request.usuCreador = this.usuario.usuaId;
+      console.log(request);
+      
       this.detallePruebaUsuarioService.responder(request).subscribe(() => {
       });
     }
@@ -126,7 +132,7 @@ export class PruebaComponent implements OnInit {
     if (this.preguntas) {
       for (let i = 0; i < this.preguntas.length; i++) {
         const pregunta = this.preguntas[i];
-        if (!pregunta.respId) {
+        if (!pregunta.respId && !pregunta.respuestaAbierta) {
           this.snackBar.open('Se deben responder todas las preguntas', 'x', { verticalPosition: 'top', duration: 10000 });
           return;
         }
@@ -194,8 +200,9 @@ export class PruebaComponent implements OnInit {
     });
   }
 
-  actualizar(pregunta: DetallePruebaUsuario, valor) {
-    pregunta.respuestaAbierta = valor;
+  actualizar(pregunta: DetallePruebaUsuario, event) {
+    pregunta.respuestaAbierta = event.editor.getData();
+    this.guardarRespuesta(pregunta);
   }
 
 }

@@ -1,7 +1,7 @@
 <div id="usuario" class="pagina-principal page-layout simple right-sidebar" fxLayout="row">
     <div class="center" fusePerfectScrollbar>
         <div class="tituloPrincipal" fxFlex="100">
-            Registrar una prueba
+            Crea un entrenamiento
         </div>
         <div class="content">
             <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom>
@@ -9,28 +9,13 @@
                     <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
                         <div class="fuse-widget-front" fxFlex="100">
                             <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
-                                <div class="h3">Datos generales de la prueba</div>
+                                <div class="h3">Datos generales del entrenamiento</div>
                             </div>
                             <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
                                 <p class="pt-0 pb-16">
-                                    Diseñe una prueba. Incluya uno o varios módulos. Conforme la población y actívela
-                                    cuando desee dar inicio a la misma.
+                                    Diseñe un entrenamiento. Incluya uno o varios módulos y confirme la duración.
                                 </p>
                                 <form [formGroup]="form" fxLayout="row wrap" fxFlex="100">
-                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8">
-                                        <mat-label>Tipo de prueba</mat-label>
-                                        <mat-select formControlName="tipoPrueba" required disabled>
-                                            <mat-option [value]="1">
-                                                Entrenamiento
-                                            </mat-option>
-                                            <mat-option [value]="2">
-                                                Simulacro
-                                            </mat-option>
-                                        </mat-select>
-                                        <mat-icon matSuffix class="secondary-text">bookmarks</mat-icon>
-                                        <mat-error>El tipo de prueba es obligatorio!</mat-error>
-                                    </mat-form-field>
-
                                     <!--DURACION DE LA PRUEBA-->
                                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
                                         <div class="h3" fxFlex="100">Duración (En minutos):</div>
@@ -68,15 +53,12 @@
                                 </form>
                             </div>
 
-                            <app-lista-estudiantes [usuariosSeleccionados]="usuariosSeleccionados">
-                            </app-lista-estudiantes>
-
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100"
                                 fxLayoutAlign="end center">
                                 <div fxFlex="50" fxFlex.xs="0"></div>
                                 <button fxFlex="50" fxFlex.xs="100" mat-stroked-button type="button" class="btnPrimario"
                                     (click)="guardarPrueba()">
-                                    Guardar prueba
+                                    Crear entrenamiento
                                 </button>
                             </div>
                         </div>

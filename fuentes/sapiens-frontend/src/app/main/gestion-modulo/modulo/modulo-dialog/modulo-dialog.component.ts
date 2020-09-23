@@ -49,11 +49,14 @@ export class ModuloDialogComponent implements OnInit {
     this.form = this.formBuilder.group({
       'nombre': [this.moduloDialog.nombre, Validators.required],
       'descripcion': [this.moduloDialog.descripcion, Validators.maxLength(500)],
-      'cantidadPreguntas': [this.moduloDialog.cantidadPreguntas, Validators.required],
       'prioridad': [this.moduloDialog.prioridad, Validators.required],
       'tipoModulo': [this.moduloDialog.timoId_TipoModulo ? '' + this.moduloDialog.timoId_TipoModulo : null, Validators.required],
       'estado': [this.moduloDialog.estadoRegistro, Validators.required],
-      'valorPregunta': [this.moduloDialog.igualValor, Validators.required]
+      'valorPregunta': [this.moduloDialog.igualValor, Validators.required],
+      'cantidadPreguntas1': [this.moduloDialog.cantidadPreguntas1, Validators.required],
+      'cantidadPreguntas2': [this.moduloDialog.cantidadPreguntas2, Validators.required],
+      'cantidadPreguntas3': [this.moduloDialog.cantidadPreguntas3, Validators.required],
+      'cantidadPreguntas4': [this.moduloDialog.cantidadPreguntas4, Validators.required],
     });
   }
 
@@ -70,11 +73,14 @@ export class ModuloDialogComponent implements OnInit {
 
       request.nombre = this.form.controls.nombre.value;
       request.descripcion = this.form.controls.descripcion.value;
-      request.cantidadPreguntas = this.form.controls.cantidadPreguntas.value;
       request.prioridad = this.form.controls.prioridad.value;
       request.timoId_TipoModulo = this.form.controls.tipoModulo.value;
       request.estadoRegistro = this.form.controls.estado.value;
       request.igualValor = this.form.controls.valorPregunta.value;
+      request.cantidadPreguntas1 = this.form.controls.cantidadPreguntas1.value;
+      request.cantidadPreguntas2 = this.form.controls.cantidadPreguntas2.value;
+      request.cantidadPreguntas3 = this.form.controls.cantidadPreguntas3.value;
+      request.cantidadPreguntas4 = this.form.controls.cantidadPreguntas4.value;
 
       this.moduloService.guardar(request).subscribe(() => {
         this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });

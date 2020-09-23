@@ -35,6 +35,7 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private String retroalimentacionPregunta;
     private String descripcionContexto;
     private List<RespuestaDTO> respuestas;
+    private String respuestaAbierta;
 
     public Integer getDpruId() {
         return dpruId;
@@ -168,5 +169,13 @@ public class DetallePruebaUsuarioDTO implements Serializable {
 
 	public void setDescripcionContexto(String descripcionContexto) {
 		this.descripcionContexto = descripcionContexto;
+	}
+
+	public String getRespuestaAbierta() {
+		return respuestaAbierta;
+	}
+
+	public void setRespuestaAbierta(String respuestaAbierta) {
+		this.respuestaAbierta = respuestaAbierta;
 	}
 }

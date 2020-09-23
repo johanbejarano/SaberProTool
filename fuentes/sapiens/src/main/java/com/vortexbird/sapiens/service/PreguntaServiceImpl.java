@@ -576,4 +576,15 @@ public class PreguntaServiceImpl implements PreguntaService {
 		}
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Pregunta> getPreguntasPorModuloPorComplejidad(Integer moduId, Long complejidad) throws Exception {
+		try {
+			return preguntaRepository.findByModulo_moduIdAndAndComplejidadAndEstadoRegistro(moduId, complejidad, Constantes.ESTADO_ACTIVO);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
 }

@@ -8,6 +8,7 @@ export const locale = {
             },
             'ESTUDIANTE': {
                 'MISPRUEBAS': 'Mis pruebas',
+                'ENTRENAMIENTO': 'Crear entrenamiento'
             },
             'DIRECTOR': {
                 'PREGUNTAS': 'Preguntas',

@@ -11,7 +11,8 @@
                             <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
                                 <div class="h3">Realizar prueba</div>
                             </div>
-                            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100"
+                                *ngIf="horas">
                                 <div class="pt-0 pb-16 displayBlock" fxFlex="100">
                                     <span class="encabezadoReloj">Tiempo restante:</span>
                                     <span class="reloj">{{horas | number : '2.0'}} - {{minutos | number : '2.0'}} -
@@ -50,18 +51,18 @@
                                                 <div [innerHTML]="respuesta.descripcion"></div>
                                             </mat-checkbox>
                                         </div>
-                                        <div *ngIf="!pregunta.respuestas || pregunta.respuestas.lenght == 0">
+                                        <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
                                             <ckeditor [editor]="Editor" [config]="editorConfig"
-                                                (blur)="actualizar(pregunta, $event.target)">
+                                                [(data)]="pregunta.respuestaAbierta" disabled="{{pruebaUsuario.nombreEstadoPrueba === 'FINALIZADA'}}"
+                                                (blur)="actualizar(pregunta, $event)">
                                             </ckeditor>
                                         </div>
                                         <div fxFlex="1 0 auto" fxLayout="column"
                                             *ngIf="pregunta.retroalimentacionPregunta">
                                             <div class="h3">Retroalimentación:</div>
                                             <mat-divider></mat-divider>
-                                            <ckeditor [editor]="Editor"
-                                                [config]="editorConfig" data="{{pregunta.retroalimentacionPregunta}}"
-                                                disabled=true>
+                                            <ckeditor [editor]="Editor" [config]="editorConfig"
+                                                data="{{pregunta.retroalimentacionPregunta}}" disabled=true>
                                             </ckeditor>
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
