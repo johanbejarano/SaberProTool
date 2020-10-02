@@ -90,6 +90,7 @@ export class CargarArchivoComponent implements OnInit {
           pregunta.retroalimentacion = preguntaArray[3];
           pregunta.complejidad = preguntaArray[4];
           pregunta.valorPregunta = preguntaArray[5];
+          pregunta.orden = preguntaArray[6];
 
           let respuestas: Respuesta[] = [];
           for (let i = 6; i < preguntaArray.length; i++) {

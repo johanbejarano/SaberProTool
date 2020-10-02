@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
@@ -41,14 +42,59 @@ public class ReporteServiceImpl implements ReporteService {
 	protected DataSource dataSource;
 
 	@Override
-	public String reportePruebaEstudiante(Long prueId, Long estuId) throws Exception {
+	public String reportePruebaEstudiante(Integer prueId, Integer estuId) throws Exception {
 		String rutaReporte = "/ReportePruebaEstudiante.jasper";
 		// Crea la variable de parametros
 		Map<String, Object> params = new HashMap<String, Object>();
 
 		// Asigna los parametros enviados
-		params.put("pPrueId", prueId);
-		params.put("pEstuId", estuId);
+		params.put("P_PRUE_ID", new Long(prueId));
+		params.put("P_USUA_ID", new Long(estuId));
+
+		String reporte = generarReporte(rutaReporte, params);
+
+		return reporte;
+
+	}
+
+	@Override
+	public String reportePruebaModulo(Long prueId) throws Exception {
+		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+		// Crea la variable de parametros
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		// Asigna los parametros enviados
+		params.put("P_PRUE_ID", new Long(prueId));
+
+		String reporte = generarReporte(rutaReporte, params);
+
+		return reporte;
+
+	}
+
+	@Override
+	public String reportePruebaPrograma(Long prueId) throws Exception {
+		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+		// Crea la variable de parametros
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		// Asigna los parametros enviados
+		params.put("P_PRUE_ID", new Long(prueId));
+
+		String reporte = generarReporte(rutaReporte, params);
+
+		return reporte;
+
+	}
+
+	@Override
+	public String reportePruebaDetalleEstudiante(Long prueId) throws Exception {
+		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+		// Crea la variable de parametros
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		// Asigna los parametros enviados
+		params.put("P_PRUE_ID", new Long(prueId));
 
 		String reporte = generarReporte(rutaReporte, params);
 
@@ -86,6 +132,9 @@ public class ReporteServiceImpl implements ReporteService {
 			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
 					: (fRutaBaseReportes.getPath() + "/")));
 
+			// Crea la conexión a la base de datos
+			connection = dataSource.getConnection();
+
 			bos = new ByteArrayOutputStream();
 			// Se rellena el reporte
 			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
@@ -122,5 +171,4 @@ public class ReporteServiceImpl implements ReporteService {
 			}
 		}
 	}
-
 }

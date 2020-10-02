@@ -36,12 +36,14 @@ public class PreguntaDTO implements Serializable {
 
 	private Long complejidad;
 	private Long valorPregunta;
+	private Long orden;
 
 	private Integer contId;
 	private String nombreContexto;
 	private String contexto;
 	
 	private String codigoUsuario;
+	private boolean tienePruebas;
 
 	public String getDescripcion() {
 		return descripcion;
@@ -207,5 +209,21 @@ public class PreguntaDTO implements Serializable {
 
 	public void setCodigoUsuario(String codigoUsuario) {
 		this.codigoUsuario = codigoUsuario;
+	}
+
+	public boolean isTienePruebas() {
+		return tienePruebas;
+	}
+
+	public void setTienePruebas(boolean tienePruebas) {
+		this.tienePruebas = tienePruebas;
+	}
+
+	public Long getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Long orden) {
+		this.orden = orden;
 	}
 }

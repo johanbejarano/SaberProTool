@@ -222,8 +222,15 @@ public class PreguntaServiceImpl implements PreguntaService {
 		if (!pregunta.isPresent()) {
 			return null;
 		}
-
+		
 		PreguntaDTO preguntaDTO = preguntaMapper.preguntaToPreguntaDTO(pregunta.get());
+		
+		List<DetallePruebaUsuario> detalles = pregunta.get().getDetallePruebaUsuarios();
+		if(detalles.size() > 0) {
+			preguntaDTO.setTienePruebas(true);
+		}else {
+			preguntaDTO.setTienePruebas(false);
+		}
 
 		// Se consulta el modulo de la pregunta
 		preguntaDTO.setNombreModulo(pregunta.get().getModulo().getNombre());
@@ -287,6 +294,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 			pregunta.setUsuario(usuario.get());
 			pregunta.setComplejidad(guardarPreguntaDTO.getComplejidad());
 			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
+			pregunta.setOrden(guardarPreguntaDTO.getOrden());
 			pregunta.setContexto(contexto);
 
 			save(pregunta);
@@ -382,29 +390,38 @@ public class PreguntaServiceImpl implements PreguntaService {
 
 			// Se valida que la pregunta NO haya tenido ya ejecución (Respuestas realizadas
 			// por estudiantes)
-			List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.findByPregunta(pregunta);
-			if (detallesPruebaUsuario != null && detallesPruebaUsuario.size() > 0) {
-				throw new Exception(
-						"La pregunta no se puede modificar. Ya se encuentra con algunas ejecuciones (Respuestas) en simulaciones o talleres");
+			//Si no se ha confirmado en el front se valida
+			if(!guardarPreguntaDTO.isTienePruebas()) {
+				List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.findByPregunta(pregunta);
+				if (detallesPruebaUsuario != null && detallesPruebaUsuario.size() > 0) {
+					throw new Exception(
+							"La pregunta no se puede modificar. Ya se encuentra con algunas ejecuciones (Respuestas) en simulaciones o talleres");
+				}
 			}
+			
+			Date fecha = new Date();
 
 			// Se modifican los datos de la pregunta
 			pregunta.setDescripcion(guardarPreguntaDTO.getDescripcion());
 			pregunta.setEstadoRegistro(guardarPreguntaDTO.getEstadoRegistro());
-			pregunta.setFechaModificacion(new Date());
+			pregunta.setFechaModificacion(fecha);
 			pregunta.setModulo(modulo.get());
 			pregunta.setRetroalimentacion(guardarPreguntaDTO.getRetroalimentacion());
 			pregunta.setTipoPregunta(tipoPregunta.get());
 			pregunta.setComplejidad(guardarPreguntaDTO.getComplejidad());
 			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
+			pregunta.setOrden(guardarPreguntaDTO.getOrden());
 			pregunta.setContexto(contexto);
 
 			update(pregunta);
 
-			// Se borran las respuestas originales de la pregunta
+			
+			// Se inactivan las respuestas originales de la pregunta
 			List<Respuesta> respuestasOriginales = pregunta.getRespuestas();
 			for (Respuesta respuesta : respuestasOriginales) {
-				respuestaService.delete(respuesta);
+				respuesta.setEstadoRegistro(Constantes.ESTADO_INACTIVO);
+				respuesta.setFechaModificacion(fecha);
+				respuestaService.update(respuesta);
 			}
 
 			if (pregunta.getTipoPregunta().getTprgId() == 1L) {
@@ -423,7 +440,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 					respuesta.setCorrecta(respuestaDTO.getCorrecta());
 					respuesta.setDescripcion(respuestaDTO.getDescripcion());
 					respuesta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
-					respuesta.setFechaCreacion(new Date());
+					respuesta.setFechaCreacion(fecha);
 					respuesta.setPregunta(pregunta);
 					respuesta.setRetroalimentacion(respuestaDTO.getRetroalimentacion());
 					respuesta.setRetroalimentacion(
@@ -503,9 +520,12 @@ public class PreguntaServiceImpl implements PreguntaService {
 				List<Respuesta> respuestas = pregunta.getRespuestas();
 				List<RespuestaDTO> respuestasDTO = new ArrayList<RespuestaDTO>();
 				for (int j = 0; j < respuestas.size(); j++) {
-					RespuestaDTO respuesta = new RespuestaDTO();
-					respuesta.setDescripcion(respuestas.get(j).getDescripcion());
-					respuestasDTO.add(respuesta);
+					Respuesta respuesta = respuestas.get(j);
+					if(respuesta.getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)){
+						RespuestaDTO respuestaDTO = new RespuestaDTO();
+						respuestaDTO.setDescripcion(respuesta.getDescripcion());
+						respuestasDTO.add(respuestaDTO);
+					}
 				}
 				preguntasDTO.get(i).setRespuestasDTO(respuestasDTO);
 			}

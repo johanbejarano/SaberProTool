@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
-import { Contexto } from 'app/domain/contexto.js';
-import { Usuario } from 'app/domain/usuario.js';
+import { Contexto } from 'app/domain/contexto';
+import { Usuario } from 'app/domain/usuario';
 import { ContextoService } from 'app/services/contexto.service';
-import { UsuarioService } from 'app/services/usuario.service.js';
+import { UsuarioService } from 'app/services/usuario.service';
 import { environment } from 'environments/environment';
-import * as ClassicEditor from '../../../../../assets/ckeditor.js';
+import * as ClassicEditor from '../../../../../assets/ckeditor';
 
 @Component({
   selector: 'app-editar-contexto',

@@ -217,10 +217,10 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					|| detallePruebaUsuarioOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
 				throw new Exception("No se encontró el detalle de la prueba o no se encuentra activo");
 			}
-			
+
 			DetallePruebaUsuario detallePruebaUsuario = detallePruebaUsuarioOpt.get();
-			
-			if(respId != null) {
+
+			if (respId != null) {
 				Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
 				if (!respuestaOpt.isPresent()
 						|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
@@ -232,10 +232,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					throw new Exception("La respuesta no es de la pregunta dada");
 				}
 				detallePruebaUsuario.setRespuesta(respuesta);
-			}else {
+			} else {
 				detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
 			}
-			
 
 			PruebaUsuario pruebaUsuario = detallePruebaUsuario.getPruebaUsuario();
 			if (pruebaUsuario.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)
@@ -284,7 +283,8 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			List<DetallePruebaUsuario> respuestasCorrectas = new ArrayList<DetallePruebaUsuario>();
 			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
 			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
-				if (detallePruebaUsuario.getRespuesta() != null && detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
+				if (detallePruebaUsuario.getRespuesta() != null
+						&& detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
 					respuestasCorrectas.add(detallePruebaUsuario);
 				}
 			}
@@ -322,10 +322,14 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				detallePruebaUsuarioDTO.setDpruId(detallePruebaUsuario.getDpruId());
 				detallePruebaUsuarioDTO.setPregId(detallePruebaUsuario.getPregunta().getPregId());
 				detallePruebaUsuarioDTO.setNombreModulo(detallePruebaUsuario.getPregunta().getModulo().getNombre());
-				detallePruebaUsuarioDTO.setPrioridadModulo(detallePruebaUsuario.getPregunta().getModulo().getPrioridad());
+				detallePruebaUsuarioDTO
+						.setPrioridadModulo(detallePruebaUsuario.getPregunta().getModulo().getPrioridad());
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
-				if(detallePruebaUsuario.getPregunta().getContexto() != null) {
-					detallePruebaUsuarioDTO.setDescripcionContexto(detallePruebaUsuario.getPregunta().getContexto().getDescripcion());					
+				detallePruebaUsuarioDTO.setOrdenPregunta(detallePruebaUsuario.getPregunta().getOrden());
+
+				if (detallePruebaUsuario.getPregunta().getContexto() != null) {
+					detallePruebaUsuarioDTO
+							.setDescripcionContexto(detallePruebaUsuario.getPregunta().getContexto().getDescripcion());
 				}
 				if (mostrarRetroalimentacion) {
 					detallePruebaUsuarioDTO
@@ -345,23 +349,37 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			preguntasDTO.sort(new Comparator<DetallePruebaUsuarioDTO>() {
 				@Override
 				public int compare(DetallePruebaUsuarioDTO p1, DetallePruebaUsuarioDTO p2) {
-					int  prioridadModulo = p1.getPrioridadModulo().compareTo(p2.getPrioridadModulo());
+					int prioridadModulo = p1.getPrioridadModulo().compareTo(p2.getPrioridadModulo());
 
-					if(prioridadModulo != 0) {
+					if (prioridadModulo != 0) {
 						return prioridadModulo;
 					}
-					
-					int  nombreModulo = p2.getNombreModulo().compareTo(p1.getNombreModulo());
 
-					if(nombreModulo != 0) {
+					int nombreModulo = p2.getNombreModulo().compareTo(p1.getNombreModulo());
+
+					if (nombreModulo != 0) {
 						return nombreModulo;
 					}
-					
+
 					String contexto1 = p1.getDescripcionContexto() == null ? "" : p1.getDescripcionContexto();
 					String contexto2 = p2.getDescripcionContexto() == null ? "" : p2.getDescripcionContexto();
+
+					int contexto = contexto1.compareTo(contexto2);
+
+					if (contexto != 0) {
+						return contexto;
+					}
+
+					Long orden1 = p1.getOrdenPregunta() == null ? 999L : p1.getOrdenPregunta();
+					Long orden2 = p2.getOrdenPregunta() == null ? 999L : p2.getOrdenPregunta();
 					
-					int contexto = contexto1.compareTo(contexto2);						
-					return contexto;
+					int orden = orden1.compareTo(orden2); 
+					
+					if (orden != 0) {
+						return orden;
+					}
+
+					return p1.getDpruId().compareTo(p2.getDpruId());
 				}
 			});
 
@@ -378,13 +396,17 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 		List<RespuestaDTO> respuestasDTO = new ArrayList<RespuestaDTO>();
 		List<Respuesta> respuestas = detallePruebaUsuario.getPregunta().getRespuestas();
 		for (Respuesta respuesta : respuestas) {
+			if (!respuesta.getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
+				continue;
+			}
 			RespuestaDTO respuestaDTO = new RespuestaDTO();
 			respuestaDTO.setRespId(respuesta.getRespId());
 			respuestaDTO.setDescripcion(respuesta.getDescripcion());
 			respuestaDTO.setRetroalimentacion(respuesta.getRetroalimentacion());
 			respuestaDTO.setEsCorrecta(null);
 			if (mostrarCorrecto) {
-				if (detallePruebaUsuario.getRespuesta() != null && detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
+				if (detallePruebaUsuario.getRespuesta() != null
+						&& detallePruebaUsuario.getRespuesta().getRespId().equals(respuesta.getRespId())) {
 					respuestaDTO.setEsCorrecta(respuesta.getCorrecta().equals(Constantes.RESPUESTA_CORRECTA));
 				}
 			}

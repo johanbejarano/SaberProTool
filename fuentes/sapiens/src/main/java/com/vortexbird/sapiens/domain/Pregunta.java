@@ -50,6 +50,7 @@ public class Pregunta implements java.io.Serializable {
     @Size(max = 25500)
     private String retroalimentacion;
     private Long valorPregunta;
+    private Long orden;
     @NotNull
     private Long complejidad;
     @NotNull
@@ -220,5 +221,13 @@ public class Pregunta implements java.io.Serializable {
 	@Column(name = "valor_pregunta")
 	public void setValorPregunta(Long valorPregunta) {
 		this.valorPregunta = valorPregunta;
+	}
+
+	public Long getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Long orden) {
+		this.orden = orden;
 	}
 }

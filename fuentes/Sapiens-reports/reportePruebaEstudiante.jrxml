@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensLocal"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
 	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
 	<parameter name="P_USUA_ID" class="java.lang.Long"/>
+	<parameter name="pSubreportDir" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[WITH resultado AS (
-	SELECT prog.facu_id, prog.prog_id, usua.usua_id, modu.modu_id, modu.nombre modulo, COUNT(dpru.dpru_id) totalPreguntas, SUM(CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) correctas, COUNT(dpru.dpru_id) - SUM(CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) incorrectas, 
+	SELECT prog.facu_id, prog.prog_id, usua.usua_id, modu.modu_id, usua.codigo, usua.identificacion, usua.nombre, usua.apellido, prog.descripcion programa, modu.nombre modulo, COUNT(dpru.dpru_id) totalPreguntas, SUM(CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) correctas, COUNT(dpru.dpru_id) - SUM(CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) incorrectas, 
 		SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END) totalPregunta, 
 		SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END * CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) totalCorrecto
 	FROM prueba_usuario prus 
@@ -30,13 +22,14 @@
 		AND prus.espr_id = 4
 	GROUP BY prog.facu_id, prog.prog_id, usua.usua_id, modu.modu_id
 )
-SELECT modulo, totalPreguntas, correctas, incorrectas, porcUsua, porcProg, porcFacu, porcUniv,
+SELECT codigo, identificacion, nombre, apellido, programa, modulo, totalPreguntas, correctas, incorrectas, porcUsua, porcProg, porcFacu, porcUniv,
 	SUM(porcUsua) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) promUsua,
 	SUM(porcProg) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) promProg,
 	SUM(porcFacu) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) promFacu,
 	SUM(porcUniv) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) promUniv
 FROM (
-	SELECT usua.usua_id, usua.modulo, usua.totalpreguntas, usua.correctas, usua.incorrectas, 
+	SELECT usua.usua_id, usua.codigo, usua.identificacion, usua.nombre, usua.apellido, usua.programa, 
+		usua.modulo, usua.totalpreguntas, usua.correctas, usua.incorrectas, 
 		(usua.totalCorrecto) / usua.totalPregunta porcUsua,
 		SUM((prog.totalCorrecto) / prog.totalPregunta)/COUNT(1) porcProg,
 		SUM((facu.totalCorrecto) / facu.totalPregunta)/COUNT(1) porcFacu,
@@ -48,9 +41,30 @@ FROM (
 	WHERE usua.usua_id = $P{P_USUA_ID}
 		AND prog.prog_id = usua.prog_id
 		AND facu.facu_id = prog.prog_id
-	GROUP BY usua.usua_id, usua.modulo, usua.totalpreguntas, usua.correctas, usua.incorrectas, usua.totalCorrecto, usua.totalPregunta
+	GROUP BY usua.usua_id, usua.codigo, usua.identificacion, usua.nombre, usua.apellido, usua.programa, 
+		usua.modulo, usua.totalpreguntas, usua.correctas, usua.incorrectas, usua.totalCorrecto, usua.totalPregunta
 ) q]]>
 	</queryString>
+	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="identificacion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="apellido" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="apellido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="programa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="programa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="programa"/>
+	</field>
 	<field name="modulo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="modulo"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="modulo"/>
@@ -96,163 +110,270 @@ FROM (
 		<variableExpression><![CDATA[$F{porcusua}]]></variableExpression>
 	</variable>
 	<pageHeader>
-		<band height="127" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="80" height="80" uuid="58aa5a22-d0a3-40e1-afc7-b117db546ead"/>
-				<imageExpression><![CDATA["sapiens.png"]]></imageExpression>
-			</image>
+		<band height="160" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="100" y="50" width="172" height="20" uuid="68243443-a326-4bba-baa2-5a10f607223e"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="80" y="0" width="672" height="80" uuid="8c546157-2545-4322-b11d-e3184c13a312"/>
+				<reportElement x="0" y="50" width="100" height="20" uuid="8ff06e41-583e-450b-bc01-ea88e1c61d05"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="100" height="20" uuid="70b15fd4-e06a-4b03-8e60-0975d987391a"/>
+				<box leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="100" height="20" uuid="3637f56f-06aa-450e-af9a-86a1932029e2"/>
+				<box leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="100" height="20" uuid="009c4e99-3d84-433e-8616-48e0c5b78bde"/>
+				<box leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Identificaci�n]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="130" width="100" height="20" uuid="65ffc690-7021-425a-856e-d5fbe44be42d"/>
+				<box leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Programa]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="100" y="70" width="172" height="20" uuid="49414b9b-dc75-4ac0-b7e7-b0ee06775512"/>
+				<box leftPadding="2" rightPadding="2">
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identificacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="100" y="90" width="172" height="20" uuid="08512024-e653-4e41-84b8-782c1590eaa9"/>
+				<box leftPadding="2" rightPadding="2">
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="100" y="110" width="172" height="20" uuid="3ef915a8-ae69-47c1-a3df-9f1a457c0280"/>
+				<box leftPadding="2" rightPadding="2">
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="100" y="130" width="172" height="20" uuid="6f68e289-ff5d-4cc9-9d42-f86cfcd82cd5"/>
+				<box leftPadding="2" rightPadding="2">
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="752" height="40" uuid="ed0cdefb-9cab-4626-b963-87c9c73ba72d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="25" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Reporte estudiante]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="229" height="40" uuid="794dd56d-8417-440e-bb34-e44b91fde830"/>
+				<imageExpression><![CDATA[$P{pSubreportDir}+"sapiens_large.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="-20" y="40" width="792" height="1" uuid="4fdcbded-d2c6-4fec-bc5c-203423a6b9f5"/>
+			</line>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="102" height="30" uuid="1fe199ad-cac0-426f-8c0b-1704391746e1">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="102" height="30" uuid="1fe199ad-cac0-426f-8c0b-1704391746e1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b4afc53-21e2-41a6-bbbc-473154950d14"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Módulo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="102" y="0" width="50" height="30" uuid="c2a40485-31f3-400f-a4e2-fb4f1313d001">
+				<reportElement stretchType="RelativeToTallestObject" x="102" y="0" width="50" height="30" uuid="c2a40485-31f3-400f-a4e2-fb4f1313d001">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="61e3b617-a6c2-41d2-a00c-f71fc288ef6a"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total de preguntas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="152" y="0" width="60" height="30" uuid="b82df1b9-6a54-4f58-98b7-1002c357e31f">
+				<reportElement stretchType="RelativeToTallestObject" x="152" y="0" width="60" height="30" uuid="b82df1b9-6a54-4f58-98b7-1002c357e31f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Respuestas correctas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="212" y="0" width="60" height="30" uuid="20b148c2-59ec-4652-ac1f-2283d11c1d31">
+				<reportElement stretchType="RelativeToTallestObject" x="212" y="0" width="60" height="30" uuid="20b148c2-59ec-4652-ac1f-2283d11c1d31">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Respuestas incorrectas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="272" y="0" width="60" height="30" uuid="e190c99b-d7c9-4850-897c-0bea57f22601">
+				<reportElement stretchType="RelativeToTallestObject" x="272" y="0" width="60" height="30" uuid="e190c99b-d7c9-4850-897c-0bea57f22601">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Calificación]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="332" y="0" width="60" height="30" uuid="dcc73b7e-90b3-493c-bc63-57858b9a16aa">
+				<reportElement stretchType="RelativeToTallestObject" x="332" y="0" width="60" height="30" uuid="dcc73b7e-90b3-493c-bc63-57858b9a16aa">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Promedio programa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="392" y="0" width="60" height="30" uuid="9d7b1ba7-b817-4a2a-a3ee-fdf6ae119142">
+				<reportElement stretchType="RelativeToTallestObject" x="392" y="0" width="60" height="30" uuid="9d7b1ba7-b817-4a2a-a3ee-fdf6ae119142">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Promedio facultad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="452" y="0" width="60" height="30" uuid="213da759-a282-4101-8dd2-5490bc9f7591">
+				<reportElement stretchType="RelativeToTallestObject" x="452" y="0" width="60" height="30" uuid="213da759-a282-4101-8dd2-5490bc9f7591">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Promedio universidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="572" y="0" width="60" height="30" uuid="7d07525a-eb85-4bf2-9bac-5b06b2c8ab97">
+				<reportElement stretchType="RelativeToTallestObject" x="572" y="0" width="60" height="30" uuid="7d07525a-eb85-4bf2-9bac-5b06b2c8ab97">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Promedio programa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="632" y="0" width="60" height="30" uuid="89112ffe-51fc-45e8-aebd-5e772c57ebc6">
+				<reportElement stretchType="RelativeToTallestObject" x="632" y="0" width="60" height="30" uuid="89112ffe-51fc-45e8-aebd-5e772c57ebc6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Promedio facultad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="692" y="0" width="60" height="30" uuid="1ea59652-f544-4e81-a390-0f7344a6818f">
+				<reportElement stretchType="RelativeToTallestObject" x="692" y="0" width="60" height="30" uuid="1ea59652-f544-4e81-a390-0f7344a6818f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% Promedio universidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="512" y="0" width="60" height="30" uuid="24ea3c27-a203-4ae1-9e29-1c3f8e74dfa7">
+				<reportElement stretchType="RelativeToTallestObject" x="512" y="0" width="60" height="30" uuid="24ea3c27-a203-4ae1-9e29-1c3f8e74dfa7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[% General estudiante]]></text>
 			</staticText>
@@ -268,7 +389,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalpreguntas}]]></textFieldExpression>
 			</textField>
@@ -280,7 +401,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{correctas}]]></textFieldExpression>
 			</textField>
@@ -292,7 +413,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcusua}]]></textFieldExpression>
 			</textField>
@@ -304,7 +425,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcprog}]]></textFieldExpression>
 			</textField>
@@ -316,7 +437,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcfacu}]]></textFieldExpression>
 			</textField>
@@ -328,7 +449,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{incorrectas}]]></textFieldExpression>
 			</textField>
@@ -340,7 +461,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{modulo}]]></textFieldExpression>
 			</textField>
@@ -352,7 +473,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcuniv}]]></textFieldExpression>
 			</textField>
@@ -364,7 +485,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promusua}]]></textFieldExpression>
 			</textField>
@@ -376,7 +497,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promprog}]]></textFieldExpression>
 			</textField>
@@ -388,7 +509,7 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promfacu}]]></textFieldExpression>
 			</textField>
@@ -400,63 +521,21 @@ FROM (
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promuniv}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="175">
+	<lastPageFooter>
+		<band height="349">
 			<barChart>
 				<chart evaluationTime="Report">
-					<reportElement x="0" y="20" width="380" height="150" uuid="b8584497-1f1c-4d3c-b8a2-0b42d0642be0"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<categoryDataset>
-					<dataset resetType="Column" incrementType="Column"/>
-					<categorySeries>
-						<seriesExpression><![CDATA["Estudiante"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
-						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcusua})]]></valueExpression>
-						<labelExpression><![CDATA[$F{modulo}]]></labelExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["Programa"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
-						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcprog})]]></valueExpression>
-						<labelExpression><![CDATA[$F{modulo}]]></labelExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["Facultad"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
-						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcfacu})]]></valueExpression>
-						<labelExpression><![CDATA[$F{modulo}]]></labelExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["Universidad"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
-						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcuniv})]]></valueExpression>
-						<labelExpression><![CDATA[$F{modulo}]]></labelExpression>
-					</categorySeries>
-				</categoryDataset>
-				<barPlot>
-					<plot/>
-					<itemLabel/>
-					<categoryAxisFormat>
-						<axisFormat/>
-					</categoryAxisFormat>
-					<valueAxisFormat>
-						<axisFormat/>
-					</valueAxisFormat>
-				</barPlot>
-			</barChart>
-			<barChart>
-				<chart evaluationTime="Report">
-					<reportElement x="452" y="20" width="272" height="150" uuid="923db9e3-0019-4122-aa05-01ef79e6d2f1"/>
-					<chartTitle/>
+					<reportElement x="0" y="195" width="752" height="125" uuid="923db9e3-0019-4122-aa05-01ef79e6d2f1"/>
+					<chartTitle>
+						<font size="15" isBold="true"/>
+						<titleExpression><![CDATA["Calificación general"]]></titleExpression>
+					</chartTitle>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
@@ -498,14 +577,49 @@ FROM (
 					</valueAxisFormat>
 				</barPlot>
 			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="10" width="752" height="185" uuid="c21178fb-55ef-4ab4-a4da-6a218615bb5d"/>
+					<chartTitle>
+						<font size="15" isBold="true"/>
+						<titleExpression><![CDATA["Calificación por módulo"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Estudiante"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
+						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcusua})]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Programa"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
+						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcprog})]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Facultad"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
+						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcfacu})]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Universidad"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>
+						<valueExpression><![CDATA[new BigDecimal(100).multiply($F{porcuniv})]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
 		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="30">
-			<image>
-				<reportElement x="580" y="0" width="172" height="30" uuid="03291107-114b-40f1-b20f-fb598d23dc8b"/>
-				<imageExpression><![CDATA["sapiens_large.png"]]></imageExpression>
-			</image>
-		</band>
-	</pageFooter>
+	</lastPageFooter>
 </jasperReport>

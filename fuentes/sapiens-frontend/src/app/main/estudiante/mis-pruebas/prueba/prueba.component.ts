@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -12,9 +13,10 @@ import { DetallePruebaUsuarioService } from 'app/services/detalle-prueba-usuario
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { PruebaUsuarioService } from 'app/services/prueba-usuario.service';
 import { PruebaService } from 'app/services/prueba.service';
+import { ReporteService } from 'app/services/reporte.service.js';
 import { UsuarioService } from 'app/services/usuario.service';
 import { createAndDownloadBlobFile } from 'app/utils/files';
-import { environment } from 'environments/environment.js';
+import { environment } from 'environments/environment';
 import * as ClassicEditor from '../../../../../assets/ckeditor.js';
 
 @Component({
@@ -33,6 +35,8 @@ export class PruebaComponent implements OnInit {
 
   usuario: Usuario;
 
+  selected = new FormControl(0);
+
   //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
   public editorConfig = {
     simpleUpload: {
@@ -50,8 +54,9 @@ export class PruebaComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
     private dialog: MatDialog,
-    private pruebaService: PruebaService) {
-      
+    private pruebaService: PruebaService,
+    private reporteService: ReporteService) {
+
   }
 
   ngOnInit(): void {
@@ -63,10 +68,11 @@ export class PruebaComponent implements OnInit {
   }
 
   getPreguntas() {
+    this.preguntas = [];
     this.detallePruebaUsuarioService.getPreguntasByPruebaUsuario(this.pruebaUsuario.prusId).subscribe((preguntas: DetallePruebaUsuario[]) => {
       this.preguntas = preguntas;
       console.log(preguntas);
-      
+
     })
   }
 
@@ -87,8 +93,9 @@ export class PruebaComponent implements OnInit {
         request.prusId = this.pruebaUsuario.prusId;
         request.usuCreador = this.usuario.usuaId;
         this.pruebaUsuarioService.finalizarPrueba(request).subscribe(() => {
-          this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, -1).subscribe((pruebas: PruebaUsuario[]) => {
+          this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, this.pruebaUsuario.prusId).subscribe((pruebas: PruebaUsuario[]) => {
             let prueba = pruebas[0];
+            this.selected.setValue(0);
             this.pruebaUsuario = prueba;
             this.localStorage.putInLocal('pruebaUsuario', prueba);
             this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 });
@@ -115,7 +122,7 @@ export class PruebaComponent implements OnInit {
   }
 
   guardarRespuesta(pregunta: DetallePruebaUsuario) {
-    
+
     if (pregunta.respId || pregunta.respuestaAbierta) {
       let request: DetallePruebaUsuario = new DetallePruebaUsuario();
       request.dpruId = pregunta.dpruId;
@@ -123,7 +130,7 @@ export class PruebaComponent implements OnInit {
       request.respuestaAbierta = pregunta.respuestaAbierta;
       request.usuCreador = this.usuario.usuaId;
       console.log(request);
-      
+
       this.detallePruebaUsuarioService.responder(request).subscribe(() => {
       });
     }
@@ -151,8 +158,9 @@ export class PruebaComponent implements OnInit {
           request.prusId = this.pruebaUsuario.prusId;
           request.usuCreador = this.usuario.usuaId;
           this.pruebaUsuarioService.finalizarPrueba(request).subscribe(() => {
-            this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, -1).subscribe((pruebas: PruebaUsuario[]) => {
+            this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, this.pruebaUsuario.prusId).subscribe((pruebas: PruebaUsuario[]) => {
               let prueba = pruebas[0];
+              this.selected.setValue(0);
               this.pruebaUsuario = prueba;
               this.localStorage.putInLocal('pruebaUsuario', prueba);
               this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 });
@@ -201,9 +209,28 @@ export class PruebaComponent implements OnInit {
     });
   }
 
+  descargarInformeGeneral() {
+    let request = new Reporte();
+    request.usuaId = this.usuario.usuaId;
+    request.prueId = this.pruebaUsuario.prueId;
+
+    this.reporteService.reportePruebaEstudiante(request).subscribe((result) => {
+      const arrayBuffer = result.pdf;
+      createAndDownloadBlobFile(arrayBuffer, 'reporteResultados', 'pdf');
+    });
+  }
+
   actualizar(pregunta: DetallePruebaUsuario, event) {
     pregunta.respuestaAbierta = event.editor.getData();
     this.guardarRespuesta(pregunta);
+  }
+
+  nextTab() {
+    this.selected.setValue(this.selected.value + 1);
+  }
+
+  prevTab() {
+    this.selected.setValue(this.selected.value - 1);
   }
 
 }

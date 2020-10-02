@@ -6,11 +6,15 @@ import { Router } from '@angular/router';
 import { Modulo } from 'app/domain/modulo';
 import { Prueba } from 'app/domain/prueba';
 import { PruebaUsuario } from 'app/domain/prueba-usuario';
+import { Reporte } from 'app/domain/reporte';
+import { Usuario } from 'app/domain/usuario';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { ModuloService } from 'app/services/modulo.service';
 import { PruebaUsuarioService } from 'app/services/prueba-usuario.service';
 import { PruebaService } from 'app/services/prueba.service';
+import { ReporteService } from 'app/services/reporte.service';
 import { UsuarioService } from 'app/services/usuario.service';
+import { createAndDownloadBlobFile } from 'app/utils/files';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -29,6 +33,8 @@ export class ResumenPruebaComponent implements OnInit {
 
   subscription: Subscription;
 
+  usuario: Usuario;
+
   constructor(private pruebaService: PruebaService,
     private pruebaUsuarioService: PruebaUsuarioService,
     private localStorage: LocalStorageService,
@@ -37,7 +43,10 @@ export class ResumenPruebaComponent implements OnInit {
     private moduloService: ModuloService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private datepipe: DatePipe) { }
+    private datepipe: DatePipe,
+    private reporteService: ReporteService) {
+    this.usuario = usuarioService.getUsuario();
+  }
 
   ngOnInit(): void {
     this.prueba = new Prueba();
@@ -80,11 +89,11 @@ export class ResumenPruebaComponent implements OnInit {
   }
 
   iniciarPrueba() {
-    let fecha : Date = new Date();
+    let fecha: Date = new Date();
     let fechaInicial = new Date(this.prueba.fechaInicial);
     let fechaFinal = new Date(this.prueba.fechaFinal);
-    
-    if(fecha.getTime() < fechaInicial.getTime()){
+
+    if (fecha.getTime() < fechaInicial.getTime()) {
       this.snackBar.open('La prueba no se encuentra en tiempos para iniciar', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
@@ -101,6 +110,18 @@ export class ResumenPruebaComponent implements OnInit {
 
   irAPrueba() {
     this.router.navigate(['/estudiante/prueba/']);
+  }
+
+  verInforme() {
+    console.log(this.pruebaUsuario);
+    let request = new Reporte();
+    request.usuaId = this.usuario.usuaId;
+    request.prueId = this.pruebaUsuario.prueId;
+
+    this.reporteService.reportePruebaEstudiante(request).subscribe((result) => {
+      const arrayBuffer = result.pdf;
+      createAndDownloadBlobFile(arrayBuffer, 'reporteResultados', 'pdf');
+    });
   }
 
 }

@@ -298,6 +298,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 					throw new Exception("Ya se encuentra un usuario con la identificacion ingresado");
 				}
 			}
+			
 			usuario.setNombre(usuarioDTO.getNombre());
 			usuario.setApellido(usuarioDTO.getApellido());
 			usuario.setCodigo(usuarioDTO.getCodigo());
@@ -326,7 +327,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				usuario.setFechaCreacion(new Date());
 				save(usuario);
 
-				emailService.sendNuevaContrasena(usuario.getCorreo(), claveNueva);
+				emailService.sendCrearUsuario(usuario.getCorreo(), usuario.getCodigo(), claveNueva);
 			} else {
 				usuario.setUsuModificador(usuarioDTO.getUsuCreador());
 				usuario.setFechaModificacion(new Date());
@@ -434,15 +435,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 			Map<String, Programa> programasMap = programas.stream()
 					.collect(Collectors.toMap(Programa::getDescripcion, programa -> programa));
 			for (UsuarioDTO usuario : request.getUsuarios()) {
-				if (!programasMap.containsKey(usuario.getNombrePrograma().trim().toUpperCase())) {
-					throw new Exception(
-							"El programa " + usuario.getNombrePrograma().trim() + " no existe en el sistema");
+				try {
+					if (!programasMap.containsKey(usuario.getNombrePrograma().trim().toUpperCase())) {
+						throw new Exception(
+								"El programa " + usuario.getNombrePrograma().trim() + " no existe en el sistema");
+					}
+					usuario.setProgId_Programa(
+							programasMap.get(usuario.getNombrePrograma().trim().toUpperCase()).getProgId());
+					usuario.setUsuCreador(request.getUsuarioCreador());
+					usuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					guardar(usuario);
+				} catch (Exception e) {
+					log.error("Error al crear usuario masivo:" + e.getMessage(), e);
 				}
-				usuario.setProgId_Programa(
-						programasMap.get(usuario.getNombrePrograma().trim().toUpperCase()).getProgId());
-				usuario.setUsuCreador(request.getUsuarioCreador());
-				usuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
-				guardar(usuario);
 			}
 
 		} catch (Exception e) {

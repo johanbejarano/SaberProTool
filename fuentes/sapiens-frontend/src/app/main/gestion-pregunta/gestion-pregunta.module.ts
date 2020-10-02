@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatTabsModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -28,10 +29,10 @@ import { GestionPreguntaRoutingModule } from './gestion-pregunta-routing.module'
 import { CrearPreguntaComponent } from './pregunta/crear-pregunta/crear-pregunta.component';
 import { PreguntaListComponent } from './pregunta/pregunta-list/pregunta-list.component';
 import { PreguntaComponent } from './pregunta/pregunta.component';
-import { VisualizarPreguntaComponent } from './visualizar-pregunta/visualizar-pregunta.component';
+import { SafePipe, VisualizarPreguntaComponent } from './visualizar-pregunta/visualizar-pregunta.component';
 
 @NgModule({
-  declarations: [PreguntaComponent, PreguntaListComponent, CrearPreguntaComponent, CargarArchivoComponent, VisualizarPreguntaComponent, ContextoComponent, EditarContextoComponent],
+  declarations: [PreguntaComponent, PreguntaListComponent, CrearPreguntaComponent, CargarArchivoComponent, VisualizarPreguntaComponent, ContextoComponent, EditarContextoComponent, SafePipe],
   imports: [
     CommonModule,
 
@@ -53,6 +54,7 @@ import { VisualizarPreguntaComponent } from './visualizar-pregunta/visualizar-pr
     MatRadioModule,
     MatCheckboxModule,
     MatStepperModule,
+    MatTabsModule,
     FooterModule,
 
     FuseSharedModule,

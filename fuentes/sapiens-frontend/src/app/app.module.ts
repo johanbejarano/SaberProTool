@@ -1,29 +1,25 @@
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatPaginatorIntl, MatStepperModule } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import 'hammerjs';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
-
-import { fuseConfig } from 'app/fuse-config';
-
+import { TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from 'app/app.component';
+import { fuseConfig } from 'app/fuse-config';
 import { LayoutModule } from 'app/layout/layout.module';
+import 'hammerjs';
+import { CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
 import { routing } from './app.routing';
 import { AppInterceptor } from './utils/app-interceptor';
-import { MatPaginatorIntl } from '@angular/material';
-import { getSpanishPaginatorIntl } from './utils/spanish-paginator-intl';
-import { AuthGuard } from './utils/guards/auth.guard';
-import { TranslateModule } from '@ngx-translate/core';
-
-import { CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
 import { CustomCurrencyMaskConfig } from './utils/customCurrencyMaskConfig';
+import { AuthGuard } from './utils/guards/auth.guard';
+import { getSpanishPaginatorIntl } from './utils/spanish-paginator-intl';
 
 @NgModule({
     declarations: [
@@ -43,6 +39,7 @@ import { CustomCurrencyMaskConfig } from './utils/customCurrencyMaskConfig';
         // Material
         MatButtonModule,
         MatIconModule,
+        MatStepperModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),

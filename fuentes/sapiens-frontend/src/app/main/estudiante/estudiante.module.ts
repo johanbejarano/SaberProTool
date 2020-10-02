@@ -1,5 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatTabsModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -14,7 +15,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -22,12 +22,12 @@ import { FuseConfirmDialogModule, FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FooterModule } from 'app/layout/components/footer/footer.module';
+import { CrearEntrenamientoComponent } from './crear-entrenamiento/crear-entrenamiento.component';
 import { EstudianteRoutingModule } from './estudiante-routing.module';
 import { MisPruebasComponent } from './mis-pruebas/mis-pruebas.component';
 import { PruebaListComponent } from './mis-pruebas/prueba-list/prueba-list.component';
 import { PruebaComponent } from './mis-pruebas/prueba/prueba.component';
 import { ResumenPruebaComponent } from './mis-pruebas/resumen-prueba/resumen-prueba.component';
-import { CrearEntrenamientoComponent } from './crear-entrenamiento/crear-entrenamiento.component';
 
 @NgModule({
   declarations: [MisPruebasComponent, PruebaListComponent, ResumenPruebaComponent, PruebaComponent, CrearEntrenamientoComponent],
@@ -54,7 +54,7 @@ import { CrearEntrenamientoComponent } from './crear-entrenamiento/crear-entrena
     MatCheckboxModule,
     MatSliderModule,
     FooterModule,
-    MatStepperModule,
+    MatTabsModule,
 
     FuseSharedModule,
     FuseWidgetModule,
