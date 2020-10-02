@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenEstudiantes" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="839477af-3770-4b10-abd5-c8b28e85698f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sapiens"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SaberTool Produccion"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="558"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="432"/>
 	<style name="Colorified">
@@ -106,6 +106,12 @@ and		case when $P{pEsprId} is null then 1 else espr.espr_id end = coalesce($P{pE
 and		case when $P{pPregId} is null then 1 else preg.preg_id end = coalesce($P{pPregId}, 1)
 and		case when $P{pRespOk} is null then 1 else respuesta_seleccionada.correcta end = coalesce($P{pRespOk}, 1)
 and		case when $P{pModuId} is null then 1 else modu.modu_id end = coalesce($P{pModuId}, 1)
+and		prog.estado_registro = 'A'
+and		facu.estado_registro = 'A'
+and		prue.estado_registro = 'A'
+and		modu.estado_registro = 'A'
+and		respuesta_seleccionada.estado_registro = 'A'
+and		preg.estado_registro  = 'A'
 group	by facu.facu_id, prog.prog_id, usua.usua_id , tipr.tipr_id, prue.prue_id , modu.modu_id
 order	by facu.facu_id, prog.prog_id, usua.codigo, prue.prue_id , modu.modu_id]]>
 	</queryString>
