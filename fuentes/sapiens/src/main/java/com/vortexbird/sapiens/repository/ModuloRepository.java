@@ -12,5 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 *
 */
 public interface ModuloRepository extends JpaRepository<Modulo, Integer> {
-	List<Modulo> findByTipoModulo_timoId(Integer timoId);
+	List<Modulo> findByTipoModulo_timoIdAndEstadoRegistro(Integer timoId, String estado);
+
+	List<Modulo> findByEstadoRegistro(String estado);
 }

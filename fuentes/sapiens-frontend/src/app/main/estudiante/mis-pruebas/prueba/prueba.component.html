@@ -11,8 +11,7 @@
                             <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
                                 <div class="h3">Realizar prueba</div>
                             </div>
-                            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100"
-                                *ngIf="horas">
+                            <div class="p-16 pb-0 m-0" fxLayout="row wrap" fxFlex="100" *ngIf="horas">
                                 <div class="pt-0 pb-16 displayBlock" fxFlex="100">
                                     <span class="encabezadoReloj">Tiempo restante:</span>
                                     <span class="reloj">{{horas | number : '2.0'}} - {{minutos | number : '2.0'}} -
@@ -23,23 +22,27 @@
                                 </div>
                             </div>
 
-                            <div class="horizontal-stepper-wrapper" fxFlex="100" class="mx-16">
-                                <!-- PASOS PARA LA CREACION DE LA PREGUNTA -->
-                                <mat-horizontal-stepper class="mat-elevation-z4" [linear]="false">
+                            <div *ngIf="preguntas && preguntas.length > 0 && preguntas[selected.value]" class="tituloPrincipal" fxFlex="100">
+                                Módulo: {{preguntas[selected.value].nombreModulo}}
+                            </div>
 
-                                    <mat-step *ngFor="let pregunta of preguntas;  let i = index">
-                                        <div fxFlex="1 0 auto" fxLayout="column">
-                                            <div class="h3">Modulo: <span
-                                                    class="h4 color1">{{pregunta.nombreModulo}}</span></div>
-                                            <mat-divider *ngIf="pregunta.descripcionContexto"></mat-divider>
-                                            <ckeditor *ngIf="pregunta.descripcionContexto" [editor]="EditorReadOnly"
-                                                [config]="editorConfig" data="{{pregunta.descripcionContexto}}">
-                                            </ckeditor>
-                                            <mat-divider></mat-divider>
-                                            <ckeditor [editor]="EditorReadOnly" [config]="editorConfig"
-                                                data="{{pregunta.descripcionPregunta}}" >
-                                            </ckeditor>
-                                        </div>
+                            <div fxFlex="100">
+                                <mat-tab-group mat-align-tabs="center" mat-stretch-tabs fxFlex="100"
+                                    [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+                                    <mat-tab *ngFor="let pregunta of preguntas;  let i = index">
+                                        <ng-template mat-tab-label>
+                                            <div class="board-list-item color1" fxLayout="column"
+                                                fxLayoutAlign="center center">
+                                                <mat-icon class="s-40">edit</mat-icon>
+                                                <h3 class="m-0">Pregunta #{{i+1}}</h3>
+                                            </div>
+                                        </ng-template>
+
+                                        <div *ngIf="pregunta.descripcionContexto" class="px-4" fxFlex="100"
+                                            [innerHTML]="pregunta.descripcionContexto"></div>
+                                        <mat-divider *ngIf="pregunta.descripcionContexto"></mat-divider>
+                                        <div *ngIf="pregunta.descripcionPregunta" class="px-4" fxFlex="100"
+                                            [innerHTML]="pregunta.descripcionPregunta"></div>
                                         <mat-divider></mat-divider>
                                         <div *ngFor="let respuesta of pregunta.respuestas">
                                             <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
@@ -47,38 +50,37 @@
                                                 respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
                                                 [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
                                                 [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
-                                                <div [innerHTML]="respuesta.descripcion"></div>
+                                                <div [innerHTML]="respuesta.descripcion" fxFlex="100"></div>
                                             </mat-checkbox>
                                         </div>
-                                        {{pruebaUsuario.nombreEstadoPrueba}}
                                         <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
-                                            <ckeditor [editor]="Editor" [config]="editorConfig"
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                 [(data)]="pregunta.respuestaAbierta"
-                                                (blur)="actualizar(pregunta, $event)">
+                                                (blur)="actualizar(pregunta, $event)"
+                                                [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'">
                                             </ckeditor>
                                         </div>
-                                        <div fxFlex="1 0 auto" fxLayout="column"
-                                            *ngIf="pregunta.retroalimentacionPregunta">
-                                            <div class="h3">Retroalimentación:</div>
-                                            <mat-divider></mat-divider>
-                                            <ckeditor [editor]="Editor" [config]="editorConfig"
-                                                data="{{pregunta.retroalimentacionPregunta}}" disabled=true>
-                                            </ckeditor>
+
+                                        <div *ngIf="pregunta.retroalimentacionPregunta" class="tituloPrincipal mt-4"
+                                            fxFlex="100">
+                                            Retroalimentación
                                         </div>
+                                        <div *ngIf="pregunta.retroalimentacionPregunta" class="px-4 pb-4"
+                                            [innerHTML]="pregunta.retroalimentacionPregunta" fxFlex="100"></div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
 
                                             <button fxFlex="33" mat-stroked-button type="button" *ngIf="i != 0"
-                                                class="btnSecundario mx-8" matStepperPrevious>
+                                                class="btnSecundario mx-8" (click)="prevTab()">
                                                 Anterior pregunta
                                             </button>
                                             <button fxFlex="33" mat-stroked-button type="button"
                                                 *ngIf="i != preguntas.length -1" class="btnPrimario mx-8"
-                                                matStepperNext>
+                                                (click)="nextTab()">
                                                 Siguiente pregunta
                                             </button>
                                         </div>
-                                    </mat-step>
-                                </mat-horizontal-stepper>
+                                    </mat-tab>
+                                </mat-tab-group>
                             </div>
 
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100"
@@ -86,9 +88,15 @@
                                 <div fxFlex="50">
                                     <button
                                         *ngIf="pruebaUsuario.nombreEstadoPrueba == 'INICIADA' && pruebaUsuario.tipoPrueba == 'ENTRENAMIENTO'"
-                                        fxFlex="100" mat-stroked-button type="button" class="btnPrimario mx-8"
+                                        fxFlex="100" mat-stroked-button type="button" class="btnSecundario mx-8"
                                         (click)="pausarPrueba()">
                                         Pausar prueba
+                                    </button>
+
+                                    <button *ngIf="pruebaUsuario.nombreEstadoPrueba == 'FINALIZADA'" fxFlex="100"
+                                        mat-stroked-button type="button" class="btnSecundario mx-8"
+                                        (click)="descargarInformeGeneral()">
+                                        Ver informe general
                                     </button>
 
                                 </div>

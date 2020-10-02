@@ -12,6 +12,7 @@ import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.Respuesta;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.repository.RespuestaRepository;
+import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.Utilities;
 
 import org.slf4j.Logger;
@@ -185,7 +186,7 @@ public class RespuestaServiceImpl implements RespuestaService {
 			}
 			
 			//Se consultan las respuestas de la pregunta
-			List<Respuesta> respuestas = respuestaRepository.findByPregunta(pregunta.get());
+			List<Respuesta> respuestas = respuestaRepository.findByPregunta_pregIdAndEstadoRegistro(pregunta.get().getPregId(), Constantes.ESTADO_ACTIVO);
 			
 			return respuestas;
 			

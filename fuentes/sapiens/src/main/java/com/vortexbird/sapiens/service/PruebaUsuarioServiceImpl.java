@@ -257,6 +257,11 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 				for (PruebaModulo pruebaModulo : pruebasModulo) {
 					// Por cada modulo consulto las preguntas a realizar
 					Modulo modulo = pruebaModulo.getModulo();
+					
+					if(modulo.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+						continue;
+					}
+					
 					int cantidadPreguntas1 = modulo.getCantidadPreguntas1().intValue();
 					int cantidadPreguntas2 = modulo.getCantidadPreguntas2().intValue();
 					int cantidadPreguntas3 = modulo.getCantidadPreguntas3().intValue();
@@ -300,6 +305,8 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 					preguntas.addAll(preguntasModuloComplejidad3);
 					preguntas.addAll(preguntasModuloComplejidad4);
 				}
+				
+				Collections.shuffle(preguntas);
 				
 				Long puntaje = 0L;
 				

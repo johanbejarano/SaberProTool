@@ -21,141 +21,128 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/modulo")
 @CrossOrigin(origins = "*")
 public class ModuloRestController {
-    private static final Logger log = LoggerFactory.getLogger(ModuloRestController.class);
-    @Autowired
-    private ModuloService moduloService;
-    @Autowired
-    private ModuloMapper moduloMapper;
+	private static final Logger log = LoggerFactory.getLogger(ModuloRestController.class);
+	@Autowired
+	private ModuloService moduloService;
+	@Autowired
+	private ModuloMapper moduloMapper;
 
-    @GetMapping(value = "/findById/{moduId}")
-    public ResponseEntity<?> findById(@PathVariable("moduId")
-    Integer moduId) {
-        log.debug("Request to findById() Modulo");
+	@GetMapping(value = "/findById/{moduId}")
+	public ResponseEntity<?> findById(@PathVariable("moduId") Integer moduId) {
+		log.debug("Request to findById() Modulo");
 
-        try {
-            Modulo modulo = moduloService.findById(moduId).get();
+		try {
+			Modulo modulo = moduloService.findById(moduId).get();
 
-            return ResponseEntity.ok()
-                                 .body(moduloMapper.moduloToModuloDTO(modulo));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			return ResponseEntity.ok().body(moduloMapper.moduloToModuloDTO(modulo));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @GetMapping(value = "/findAll")
-    public ResponseEntity<?> findAll() {
-        log.debug("Request to findAll() Modulo");
+	@GetMapping(value = "/findAll")
+	public ResponseEntity<?> findAll() {
+		log.debug("Request to findAll() Modulo");
 
-        try {
-            return ResponseEntity.ok()
-                                 .body(moduloMapper.listModuloToListModuloDTO(
-                    moduloService.findAll()));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+		try {
+			List<Modulo> modulos = moduloService.findActive();
+			return ResponseEntity.ok().body(moduloMapper.listModuloToListModuloDTO(modulos));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @PostMapping(value = "/save")
-    public ResponseEntity<?> save(@RequestBody
-    ModuloDTO moduloDTO) {
-        log.debug("Request to save Modulo: {}", moduloDTO);
+	@PostMapping(value = "/save")
+	public ResponseEntity<?> save(@RequestBody ModuloDTO moduloDTO) {
+		log.debug("Request to save Modulo: {}", moduloDTO);
 
-        try {
-            Modulo modulo = moduloMapper.moduloDTOToModulo(moduloDTO);
-            modulo = moduloService.save(modulo);
+		try {
+			Modulo modulo = moduloMapper.moduloDTOToModulo(moduloDTO);
+			modulo = moduloService.save(modulo);
 
-            return ResponseEntity.ok()
-                                 .body(moduloMapper.moduloToModuloDTO(modulo));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			return ResponseEntity.ok().body(moduloMapper.moduloToModuloDTO(modulo));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @PutMapping(value = "/update")
-    public ResponseEntity<?> update(@RequestBody
-    ModuloDTO moduloDTO) {
-        log.debug("Request to update Modulo: {}", moduloDTO);
+	@PutMapping(value = "/update")
+	public ResponseEntity<?> update(@RequestBody ModuloDTO moduloDTO) {
+		log.debug("Request to update Modulo: {}", moduloDTO);
 
-        try {
-            Modulo modulo = moduloMapper.moduloDTOToModulo(moduloDTO);
-            modulo = moduloService.update(modulo);
+		try {
+			Modulo modulo = moduloMapper.moduloDTOToModulo(moduloDTO);
+			modulo = moduloService.update(modulo);
 
-            return ResponseEntity.ok()
-                                 .body(moduloMapper.moduloToModuloDTO(modulo));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			return ResponseEntity.ok().body(moduloMapper.moduloToModuloDTO(modulo));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @DeleteMapping(value = "/delete/{moduId}")
-    public ResponseEntity<?> delete(@PathVariable("moduId")
-    Integer moduId) throws Exception {
-        log.debug("Request to delete Modulo");
+	@DeleteMapping(value = "/delete/{moduId}")
+	public ResponseEntity<?> delete(@PathVariable("moduId") Integer moduId) throws Exception {
+		log.debug("Request to delete Modulo");
 
-        try {
-            Modulo modulo = moduloService.findById(moduId).get();
+		try {
+			Modulo modulo = moduloService.findById(moduId).get();
 
-            moduloService.delete(modulo);
+			moduloService.delete(modulo);
 
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @GetMapping(value = "/count")
-    public ResponseEntity<?> count() {
-        return ResponseEntity.ok().body(moduloService.count());
-    }
-    
-    @GetMapping(value = "/findByTipoModulo/{timoId}")
-    public ResponseEntity<?> findByTipoModulo(@PathVariable("timoId")
-    Integer timoId) {
-        log.debug("Request to findByTipoModulo()");
+	@GetMapping(value = "/count")
+	public ResponseEntity<?> count() {
+		return ResponseEntity.ok().body(moduloService.count());
+	}
 
-        try {
-            List<Modulo> modulos = moduloService.findByTipoModulo(timoId);
+	@GetMapping(value = "/findByTipoModulo/{timoId}")
+	public ResponseEntity<?> findByTipoModulo(@PathVariable("timoId") Integer timoId) {
+		log.debug("Request to findByTipoModulo()");
 
-            return ResponseEntity.ok()
-                                 .body(moduloMapper.listModuloToListModuloDTO(modulos));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+		try {
+			List<Modulo> modulos = moduloService.findByTipoModulo(timoId);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.ok().body(moduloMapper.listModuloToListModuloDTO(modulos));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-    @GetMapping(value = "/findByPrograma/{progId}")
-    public ResponseEntity<?> findByPrograma(@PathVariable("progId")
-    Integer progId) {
-        try {
-            List<Modulo> modulos = moduloService.findByPrograma(progId);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-            return ResponseEntity.ok()
-                                 .body(moduloMapper.listModuloToListModuloDTO(modulos));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+	@GetMapping(value = "/findByPrograma/{progId}")
+	public ResponseEntity<?> findByPrograma(@PathVariable("progId") Integer progId) {
+		try {
+			List<Modulo> modulos = moduloService.findByPrograma(progId);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.ok().body(moduloMapper.listModuloToListModuloDTO(modulos));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-    @PostMapping(value = "/guardar")
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PostMapping(value = "/guardar")
 	public ResponseEntity<?> guardar(@RequestBody ModuloDTO moduloDTO) {
 		try {
 			moduloService.guardar(moduloDTO);

@@ -3,7 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Contexto } from 'app/domain/contexto.js';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { Contexto } from 'app/domain/contexto';
 import { Modulo } from 'app/domain/modulo';
 import { Pregunta } from 'app/domain/pregunta';
 import { Respuesta } from 'app/domain/respuesta';
@@ -15,11 +16,10 @@ import { PreguntaService } from 'app/services/pregunta.service';
 import { TipoModuloService } from 'app/services/tipo-modulo.service';
 import { UsuarioService } from 'app/services/usuario.service';
 import { Subscription } from 'rxjs';
-import { environment } from '../../../../../../src/environments/environment.js';
+import { environment } from '../../../../../../src/environments/environment';
 import * as ClassicEditor from '../../../../../assets/ckeditor.js';
 import { ContextoComponent } from '../../contexto/contexto.component';
 import { VisualizarPreguntaComponent } from '../../visualizar-pregunta/visualizar-pregunta.component';
-
 @Component({
   selector: 'app-crear-pregunta',
   templateUrl: './crear-pregunta.component.html',
@@ -88,8 +88,8 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
           for (let i = 0; i < this.pregunta.respuestasDTO.length; i++) {
 
             if (this.pregunta.respuestasDTO[i].correcta == 1) {
-              this.idxRespuestaCorrecta = i;
 
+              this.idxRespuestaCorrecta = i;
               break;
             }
           }
@@ -126,10 +126,11 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       tipoPregunta: [this.pregunta.tprgId_TipoPregunta, Validators.required],
       cantidadRespuestas: [this.pregunta.tprgId_TipoPregunta ? this.pregunta.tprgId_TipoPregunta === 1 ? this.pregunta.respuestasDTO.length : 0 : 4, Validators.required],
       estado: [this.pregunta.estadoRegistro, Validators.required],
-      valorPregunta: [this.pregunta.valorPregunta, Validators.required],
+      valorPregunta: [this.pregunta.valorPregunta, Validators.compose([Validators.required, Validators.min(0), Validators.min(100)])],
       contexto: [this.pregunta.contId],
       contextoText: [this.pregunta.nombreContexto],
-      descripcionContexto: [this.pregunta.contexto]
+      descripcionContexto: [this.pregunta.contexto],
+      orden:  [this.pregunta.orden]
     });
 
     if (this.form.controls.tipoPregunta.value == 1) {
@@ -154,9 +155,11 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     }
 
     this.horizontalStepperStep6 = this._formBuilder.group({
-      respuestaCorrecta: [this.idxRespuestaCorrecta ? this.idxRespuestaCorrecta : null],
+      respuestaCorrecta: [this.idxRespuestaCorrecta !== null ? "" + this.idxRespuestaCorrecta : null],
       editorRetroalimentacion: [this.pregunta.retroalimentacion, Validators.required]
     });
+
+    console.log(this.horizontalStepperStep6);
 
     //Se consultan los tipos de modulo
     this.getTiposModulo();
@@ -167,7 +170,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
         const formRespuesta = this.stepsRespuestasList[i];
         formRespuesta.disable();
       }
-      ;
+
       this.horizontalStepperStep1.disable();
       this.horizontalStepperStep6.disable();
 
@@ -238,6 +241,24 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.pregunta.tienePruebas) {
+      let confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+        disableClose: false
+      });
+
+      confirmDialogRef.componentInstance.confirmMessage = 'Esta pregunta ya se encuentra con algunas ejecuciones (Respuestas) en simulaciones o talleres ¿Está seguro de modificar la pregunta?';
+
+      confirmDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.guardar(true);
+        }
+      });
+    } else {
+      this.guardar(false);
+    }
+  }
+
+  guardar(omitePruebas: boolean) {
     this.pregunta.respuestasDTO = Array<Respuesta>();
 
     let respuestaCorrecta = (+this.horizontalStepperStep6.controls.respuestaCorrecta.value);
@@ -246,12 +267,14 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     this.pregunta.moduId_Modulo = this.form.controls.modulo.value;
     this.pregunta.tprgId_TipoPregunta = this.form.controls.tipoPregunta.value;
     this.pregunta.complejidad = this.form.controls.complejidad.value;
+    this.pregunta.orden = this.form.controls.orden.value;
     this.pregunta.contId = this.form.controls.contexto.value;
     this.pregunta.descripcion = this.horizontalStepperStep1.controls.editorPregunta.value;
     this.pregunta.retroalimentacion = this.horizontalStepperStep6.controls.editorRetroalimentacion.value;
     this.pregunta.usuCreador = this.usuario.usuaId;
     this.pregunta.usuModificador = this.usuario.usuaId;
     this.pregunta.estadoRegistro = this.form.controls.estado.value;
+    this.pregunta.tienePruebas = omitePruebas;
 
     for (let i = 0; i < this.stepsRespuestasList.length; i++) {
       const respuestaForm = this.stepsRespuestasList[i];
@@ -291,7 +314,6 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
             this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
           });
     }
-
   }
 
   changeRespuestas() {

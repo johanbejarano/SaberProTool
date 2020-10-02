@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensLocal"/>
+	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT programa, modulo, totalCorrecto / totalPregunta porcModu, SUM(totalCorrecto / totalPregunta) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) porcProg
+FROM (
+	SELECT modu.modu_id, prog.descripcion programa, modu.nombre modulo,  
+		SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END) totalPregunta, 
+		SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END * CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) totalCorrecto
+	FROM prueba_usuario prus 
+	INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
+	INNER JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
+	INNER JOIN pregunta preg ON preg.preg_id = dpru.preg_id
+	INNER JOIN modulo modu ON modu.modu_id = preg.modu_id
+	INNER JOIN programa prog ON prog.prog_id = usua.prog_id
+	LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
+	WHERE prus.prue_id = $P{P_PRUE_ID}
+		AND prus.espr_id = 4
+	GROUP BY modu.modu_id, prog.descripcion
+) q]]>
+	</queryString>
+	<field name="programa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="programa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="programa"/>
+	</field>
+	<field name="modulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="modulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="modulo"/>
+	</field>
+	<field name="porcmodu" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="porcmodu"/>
+	</field>
+	<field name="porcprog" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="porcprog"/>
+	</field>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="752" height="40" uuid="8c546157-2545-4322-b11d-e3184c13a312"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte programas]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="40" width="792" height="1" uuid="68247f4a-6cd3-4de6-b443-d43f78bd85b6"/>
+			</line>
+			<image>
+				<reportElement x="0" y="0" width="229" height="40" uuid="03291107-114b-40f1-b20f-fb598d23dc8b"/>
+				<imageExpression><![CDATA["sapiens_large.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="270" y="0" width="160" height="30" uuid="1fe199ad-cac0-426f-8c0b-1704391746e1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b4afc53-21e2-41a6-bbbc-473154950d14"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Módulo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="160" height="30" uuid="c2a40485-31f3-400f-a4e2-fb4f1313d001">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="61e3b617-a6c2-41d2-a00c-f71fc288ef6a"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Programa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="100" height="30" uuid="e190c99b-d7c9-4850-897c-0bea57f22601">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[% Calificación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="0" width="100" height="30" uuid="89112ffe-51fc-45e8-aebd-5e772c57ebc6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[% General]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="110" y="0" width="160" height="20" uuid="08855ad4-d4b0-4a08-80db-5e9696f893b3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="61e3b617-a6c2-41d2-a00c-f71fc288ef6a"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="430" y="0" width="100" height="20" uuid="cdc0f3bc-b6f9-4561-8047-9d4740db2fcb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b027f8ce-fe63-46d6-b917-16137ac27bbb"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porcmodu}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="160" height="20" uuid="5fd45205-6270-4852-9d43-54fa40d55ca4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b4afc53-21e2-41a6-bbbc-473154950d14"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{modulo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="530" y="0" width="100" height="20" uuid="c8b9a413-73bc-439b-8674-b2c1d2ec2246">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porcprog}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20"/>
+	</pageFooter>
+</jasperReport>

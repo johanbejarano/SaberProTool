@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Pregunta } from 'app/domain/pregunta';
-import { environment } from 'environments/environment.js';
+import { environment } from 'environments/environment';
 import * as ClassicEditor from '../../../../assets/ckeditor.js';
 
 @Component({
@@ -29,4 +30,12 @@ export class VisualizarPreguntaComponent implements OnInit {
   ngOnInit() {
   }
   
+}
+
+@Pipe({ name: 'safe' })
+export class SafePipe implements PipeTransform {
+    constructor(private sanitizer: DomSanitizer) {}
+    transform(url) {
+        return this.sanitizer.bypassSecurityTrustHtml(url);
+    }
 }

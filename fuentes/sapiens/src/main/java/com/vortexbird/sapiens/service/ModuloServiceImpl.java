@@ -194,7 +194,7 @@ public class ModuloServiceImpl implements ModuloService {
 	@Transactional(readOnly = true)
 	public List<Modulo> findByTipoModulo(Integer timoId) throws Exception {
 		try {
-			return moduloRepository.findByTipoModulo_timoId(timoId);
+			return moduloRepository.findByTipoModulo_timoIdAndEstadoRegistro(timoId, Constantes.ESTADO_ACTIVO);
 		} catch (Exception e) {
 			log.error("Error findByTipoModulo", e);
 			throw e;
@@ -207,8 +207,12 @@ public class ModuloServiceImpl implements ModuloService {
 		try {
 			List<Modulo> modulos = new ArrayList<Modulo>();
 			List<ProgramaModulo> programaModulos = programaModuloService.findByPrograma(progId);
+			Modulo modulo;
 			for (ProgramaModulo programaModulo : programaModulos) {
-				modulos.add(programaModulo.getModulo());
+				modulo = programaModulo.getModulo();
+				if(modulo.getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
+					modulos.add(modulo);
+				}
 			}
 			return modulos;
 		} catch (Exception e) {
@@ -264,6 +268,12 @@ public class ModuloServiceImpl implements ModuloService {
 			log.error("Error en guardar", e);
 			throw e;
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Modulo> findActive() throws Exception {
+		return moduloRepository.findByEstadoRegistro(Constantes.ESTADO_ACTIVO);
 	}
 
 }

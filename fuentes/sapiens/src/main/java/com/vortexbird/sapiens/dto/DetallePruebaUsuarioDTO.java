@@ -36,6 +36,7 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private String descripcionContexto;
     private List<RespuestaDTO> respuestas;
     private String respuestaAbierta;
+    private Long ordenPregunta;
 
     public Integer getDpruId() {
         return dpruId;
@@ -177,5 +178,13 @@ public class DetallePruebaUsuarioDTO implements Serializable {
 
 	public void setRespuestaAbierta(String respuestaAbierta) {
 		this.respuestaAbierta = respuestaAbierta;
+	}
+
+	public Long getOrdenPregunta() {
+		return ordenPregunta;
+	}
+
+	public void setOrdenPregunta(Long ordenPregunta) {
+		this.ordenPregunta = ordenPregunta;
 	}
 }

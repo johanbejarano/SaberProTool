@@ -33,7 +33,9 @@ public class GuardarPreguntaDTO implements Serializable {
     private Integer tprgId_TipoPregunta;
     private Long complejidad;
     private Long valorPregunta;
+    private Long orden;
     private Integer contId;
+    private boolean tienePruebas;
     
     private List<RespuestaDTO> respuestasDTO;
 
@@ -161,6 +163,22 @@ public class GuardarPreguntaDTO implements Serializable {
 
 	public void setContId(Integer contId) {
 		this.contId = contId;
+	}
+
+	public boolean isTienePruebas() {
+		return tienePruebas;
+	}
+
+	public void setTienePruebas(boolean tienePruebas) {
+		this.tienePruebas = tienePruebas;
+	}
+
+	public Long getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Long orden) {
+		this.orden = orden;
 	}
 
 }

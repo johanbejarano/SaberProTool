@@ -21,6 +21,7 @@ export class Pregunta {
 
     complejidad: number;
     valorPregunta: number;
+    orden: number;
 
     facuId: number;
     facultad: string;
@@ -30,4 +31,5 @@ export class Pregunta {
     contId: number;
     nombreContexto: string;
     contexto: string;
+    tienePruebas: boolean;
 }
