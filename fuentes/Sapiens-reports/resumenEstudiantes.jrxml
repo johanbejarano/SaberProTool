@@ -86,7 +86,7 @@ $F{cantidad}.doubleValue()!=0?
 		count (case when (respuesta_seleccionada.correcta is null) then -1 else 1 end) cantidad
 from 	usuario usua
 inner	join programa prog on prog.prog_id = usua.prog_id 
-inner 	join facultad facu on facu.facu_id = prog.prog_id 
+inner 	join facultad facu on facu.facu_id = prog.facu_id 
 inner 	join prueba_usuario prus on prus.usua_id = usua.usua_id 
 inner	join estado_prueba espr on espr.espr_id = prus.espr_id 
 inner 	join prueba prue on prue.prue_id = prus.prue_id 
@@ -495,7 +495,7 @@ order	by facu.facu_id, prog.prog_id, usua.codigo, prue.prue_id , modu.modu_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Resultados pruebas Sapiens - Saper Pro]]></text>
+				<text><![CDATA[Resultados pruebas +SaberTool]]></text>
 			</staticText>
 		</band>
 	</title>
