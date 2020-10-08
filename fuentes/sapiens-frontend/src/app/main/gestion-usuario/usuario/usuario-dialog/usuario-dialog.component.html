@@ -52,7 +52,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="px-8" fxFlex="50">
+            <mat-form-field class="px-8" fxFlex="50" appearance="outline">
                 <mat-label>Programa</mat-label>
                 <mat-select formControlName="programa">
                     <mat-option *ngFor="let programa of programas" value="{{programa.progId}}">
@@ -63,7 +63,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="px-8" fxFlex="50">
+            <mat-form-field class="px-8" fxFlex="50" appearance="outline">
                 <mat-label>Tipo de usuario</mat-label>
                 <mat-select formControlName="tipoUsuario">
                     <mat-option [value]="1">
@@ -80,7 +80,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="px-8" fxFlex="50">
+            <mat-form-field class="px-8" fxFlex="50" appearance="outline">
                 <mat-label>Género</mat-label>
                 <mat-select formControlName="genero">
                     <mat-option [value]="'M'">

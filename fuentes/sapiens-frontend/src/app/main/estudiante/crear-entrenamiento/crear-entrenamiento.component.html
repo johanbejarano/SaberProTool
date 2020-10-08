@@ -32,17 +32,30 @@
 
                                     <mat-form-field appearance="outline" fxFlex="50" class="px-8">
                                         <mat-label>Fecha inicial</mat-label>
-                                        <input matInput type="datetime-local" formControlName="fechaInicial" [min]="hoy">
+                                        <input matInput formControlName="fechaInicial" [min]="hoy"
+                                            [max]="form.controls.fechaFinal.value ? form.controls.fechaFinal.value : null"
+                                            [ngxMatDatetimePicker]="picker1" readonly="true">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                                        </mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker1 [showSpinners]="true" [showSeconds]="false"
+                                            [stepHour]="1" [stepMinute]="10" [touchUi]="false" [stepSecond]="0">
+                                        </ngx-mat-datetime-picker>
                                         <mat-error>La fecha inicial es obligatoria!</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="50" class="px-8">
                                         <mat-label>Fecha final</mat-label>
-                                        <input matInput type="datetime-local" formControlName="fechaFinal" [min]="hoy">
-                                        <mat-error>La fecha final es obligatoria!</mat-error>
+                                        <input matInput formControlName="fechaFinal"
+                                            [min]="form.controls.fechaInicial.value ? form.controls.fechaInicial.value : hoy"
+                                            [ngxMatDatetimePicker]="picker2" readonly="true">
+                                        <mat-datepicker-toggle matSuffix [for]="picker2">
+                                        </mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker2 [showSpinners]="true" [showSeconds]="false"
+                                            [stepHour]="1" [stepMinute]="10" [touchUi]="false" [stepSecond]="0">
+                                        </ngx-mat-datetime-picker>
                                     </mat-form-field>
 
-                                    <mat-form-field fxFlex="100" class="px-8">
+                                    <mat-form-field fxFlex="100" class="px-8" appearance="outline">
                                         <mat-label>Módulos</mat-label>
                                         <mat-select formControlName="modulos" multiple>
                                             <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.moduId">

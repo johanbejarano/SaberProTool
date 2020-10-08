@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -43,7 +42,7 @@ export class CrearEntrenamientoComponent implements OnInit {
 
   usuario: Usuario;
   hoy = new Date();
-  
+
   constructor(
     private _formBuilder: FormBuilder,
     private router: Router,
@@ -71,13 +70,25 @@ export class CrearEntrenamientoComponent implements OnInit {
 
   actualizarFomulario() {
     // Reactive Form
+    this.hoy.setSeconds(0);
     this.form = this._formBuilder.group({
-      fechaInicial: [this.prueba.fechaInicial ? new DatePipe('en-US').transform(this.prueba.fechaInicial, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
-      fechaFinal: [this.prueba.fechaFinal ? new DatePipe('en-US').transform(this.prueba.fechaFinal, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
+      fechaInicial: [this.hoy, Validators.required],
+      fechaFinal: [null, Validators.required],
       duracion: [this.prueba.tiempo, Validators.required],
       modulos: [this.modulosSeleccionados, Validators.required],
     });
 
+    this.form.controls.fechaInicial.valueChanges.subscribe((event: Date) => {
+      let fecha: Date = event;
+      fecha.setSeconds(0);
+      this.form.controls.fechaInicial.setValue(fecha, { emitEvent: false });
+    });
+
+    this.form.controls.fechaFinal.valueChanges.subscribe((event: Date) => {
+      let fecha: Date = event;
+      fecha.setSeconds(0);
+      this.form.controls.fechaFinal.setValue(fecha, { emitEvent: false });
+    });
 
   }
 
@@ -99,8 +110,15 @@ export class CrearEntrenamientoComponent implements OnInit {
   }
 
   guardarPrueba() {
+
     if (!this.form.valid) {
       this.snackBar.open('Faltan datos por diligenciar', 'x', { verticalPosition: 'top', duration: 10000 });
+      return;
+    }
+
+
+    if (this.form.controls.fechaInicial.value === this.form.controls.fechaFinal.value) {
+      this.snackBar.open('La fecha final debe ser superior a la inicial', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 

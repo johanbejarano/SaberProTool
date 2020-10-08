@@ -10,7 +10,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="px-8" fxFlex="50">
+            <mat-form-field class="px-8" fxFlex="50" appearance="outline">
                 <mat-label>Tipo de módulo</mat-label>
                 <mat-select formControlName="tipoModulo">
                     <mat-option *ngFor="let tipoModulo of tiposModulo" value="{{'' + tipoModulo.timoId}}">

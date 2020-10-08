@@ -39,7 +39,7 @@
 
                                     <!-- TIPO MODULO -->
 
-                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8" appearance="outline">
                                         <mat-label>Tipo Módulo</mat-label>
                                         <mat-select formControlName="tipoModulo" required
                                             (selectionChange)="getModulos(true)">
@@ -57,7 +57,7 @@
                                     <!-- TIPO MODULO -->
 
                                     <!-- MODULO -->
-                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8" appearance="outline">
                                         <mat-label>Módulo</mat-label>
                                         <mat-select formControlName="modulo" required
                                             (selectionChange)="changeModulo()">
@@ -72,7 +72,7 @@
 
                                     <!-- TIPO PREGUNTA -->
 
-                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8" appearance="outline">
                                         <mat-label>Tipo de pregunta</mat-label>
                                         <mat-select formControlName="tipoPregunta" required
                                             (selectionChange)="changeTipoPregunta()">
@@ -100,7 +100,7 @@
 
                                     <!-- COMPLEJIDAD -->
 
-                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8" appearance="outline">
                                         <mat-label>Complejidad</mat-label>
                                         <mat-select formControlName="complejidad" required>
                                             <mat-option *ngFor="let complejidad of complejidades" [value]="complejidad">
@@ -113,7 +113,7 @@
                                     <!-- COMPLEJIDAD -->
 
                                     <!-- PUBLICADO -->
-                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8"
+                                    <mat-form-field appearance="outline" fxFlex="50" class="px-8" appearance="outline"
                                         *ngIf="pregunta.usuCreador && pregunta.usuCreador === usuario.usuaId">
                                         <mat-label>Publicado</mat-label>
                                         <mat-select formControlName="estado" required>
@@ -263,7 +263,7 @@
 
                                             <div fxFlex="1 0 auto" fxLayout="column">
 
-                                                <mat-form-field appearance="outline" fxFlex="100"
+                                                <mat-form-field appearance="outline" fxFlex="100" appearance="outline"
                                                     *ngIf="form.controls.tipoPregunta.value == 1">
                                                     <mat-label>Respuesta correcta</mat-label>
                                                     <mat-select formControlName="respuestaCorrecta" required>

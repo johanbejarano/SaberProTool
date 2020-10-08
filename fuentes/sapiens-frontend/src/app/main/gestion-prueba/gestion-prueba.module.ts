@@ -1,3 +1,4 @@
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,8 +55,10 @@ import { PruebaComponent } from './prueba/prueba.component';
     MatRadioModule,
     MatCheckboxModule,
     MatSliderModule,
-    FooterModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
 
+    FooterModule,
     FuseSharedModule,
     FuseWidgetModule,
     FuseConfirmDialogModule,

@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensLocal"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
 	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT codigo, identificacion, nombre, apellido, programa, modulo, totalPregunta, totalCorrecto, totalPregunta - totalCorrecto totalIncorrecto, totalCorrecto / totalPregunta porcUsua,
@@ -23,7 +23,8 @@ FROM (
 	WHERE prus.prue_id = $P{P_PRUE_ID}
 		AND prus.espr_id = 4
 	GROUP BY prog.facu_id, prog.prog_id, usua.usua_id, modu.modu_id
-) q]]>
+) q
+ORDER BY codigo]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="codigo"/>

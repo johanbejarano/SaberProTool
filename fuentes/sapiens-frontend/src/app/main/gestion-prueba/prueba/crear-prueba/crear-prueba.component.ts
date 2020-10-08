@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +20,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   subscription: Subscription;
-  
+
   prueba: Prueba;
 
   autoTicks = false;
@@ -45,7 +44,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
   usuario: Usuario;
 
   hoy = new Date();
-  
+
   constructor(
     private _formBuilder: FormBuilder,
     private router: Router,
@@ -58,15 +57,15 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
     this.usuario = usuarioService.getUsuario();
 
-   }
+  }
 
   ngOnInit(): void {
 
     this.prueba = new Prueba();
     let idPrueba = this.localStorage.getFromLocal('idPrueba');
 
-    if (idPrueba){
-      
+    if (idPrueba) {
+
       //Se consulta la prueba
       this.pruebaService.getPrueba(idPrueba)
         .subscribe((prueba: Prueba) => {
@@ -78,11 +77,11 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
           this.localStorage.putInLocal('x', this.prueba);
         },
-        error => {
-          this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
-        });
+          error => {
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+          });
 
-    }else{
+    } else {
       this.actualizarFomulario();
     }
 
@@ -92,7 +91,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription !== null && this.subscription !== undefined){
+    if (this.subscription !== null && this.subscription !== undefined) {
       this.subscription.unsubscribe();
     }
 
@@ -100,18 +99,31 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   }
 
-  actualizarFomulario(){
+  actualizarFomulario() {
     // Reactive Form
+
+    this.hoy.setSeconds(0);
     this.form = this._formBuilder.group({
-      
+
       tipoPrueba: [2, Validators.required],
-      fechaInicial: [this.prueba.fechaInicial ? new DatePipe('en-US').transform(this.prueba.fechaInicial, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
-      fechaFinal: [this.prueba.fechaFinal ? new DatePipe('en-US').transform(this.prueba.fechaFinal, 'yyyy-MM-ddTHH:mm') : '', Validators.required],
+      fechaInicial: [this.prueba.fechaInicial ? new Date(this.prueba.fechaInicial) : this.hoy, Validators.required],
+      fechaFinal: [this.prueba.fechaFinal ? new Date(this.prueba.fechaFinal) : null, Validators.required],
       duracion: [this.prueba.tiempo, Validators.required],
       modulos: [this.modulosSeleccionados, Validators.required],
     });
 
-    
+    this.form.controls.fechaInicial.valueChanges.subscribe((event: Date) => {
+      let fecha: Date = event;
+      fecha.setSeconds(0);
+      this.form.controls.fechaInicial.setValue(fecha, { emitEvent: false });
+    });
+
+    this.form.controls.fechaFinal.valueChanges.subscribe((event: Date) => {
+      let fecha: Date = event;
+      fecha.setSeconds(0);
+      this.form.controls.fechaFinal.setValue(fecha, { emitEvent: false });
+    });
+
   }
 
   getSliderTickInterval(): number | 'auto' {
@@ -122,7 +134,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     return 0;
   }
 
-  getModulos(){
+  getModulos() {
 
     this.subscription = this.moduloService.find()
       .subscribe((modulos: Modulo[]) => {
@@ -131,14 +143,14 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   }
 
-  guardarPrueba(){
-    if (!this.form.valid){
-      this.snackBar.open('Faltan datos por diligenciar', 'x', {verticalPosition: 'top', duration: 10000});
+  guardarPrueba() {
+    if (!this.form.valid) {
+      this.snackBar.open('Faltan datos por diligenciar', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 
-    if (!this.usuariosSeleccionados || this.usuariosSeleccionados.length==0){
-      this.snackBar.open('Debe seleccionar la población objetivo de la prueba', 'x', {verticalPosition: 'top', duration: 10000});
+    if (!this.usuariosSeleccionados || this.usuariosSeleccionados.length == 0) {
+      this.snackBar.open('Debe seleccionar la población objetivo de la prueba', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 
@@ -151,35 +163,35 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.prueba.tiempo = this.form.controls.duracion.value;
     this.prueba.usuCreador = this.usuario.usuaId;
 
-    let idPrueba = this.localStorage.getFromLocal('idPrueba'); 
+    let idPrueba = this.localStorage.getFromLocal('idPrueba');
 
     this.localStorage.putInLocal('x', this.prueba);
 
-    if (!idPrueba){
-    
+    if (!idPrueba) {
+
       this.subscription = this.pruebaService.guardarPrueba(this.prueba)
-          .subscribe((prueba: Prueba) => {
-            this.snackBar.open('Se ha almacenado correctamente la prueba ' + prueba.prueId, 'x', {verticalPosition: 'top', duration: 10000});
-            this.router.navigate(["/gestionPruebas"]);
-          },
+        .subscribe((prueba: Prueba) => {
+          this.snackBar.open('Se ha almacenado correctamente la prueba ' + prueba.prueId, 'x', { verticalPosition: 'top', duration: 10000 });
+          this.router.navigate(["/gestionPruebas"]);
+        },
           error => {
-            this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
           });
 
-      }else{
+    } else {
 
-        this.prueba.prueId = idPrueba;
+      this.prueba.prueId = idPrueba;
 
-        this.subscription = this.pruebaService.modificarPrueba(this.prueba)
-          .subscribe((prueba: Prueba) => {
-            this.snackBar.open('Se ha modificado correctamente la prueba ' + prueba.prueId, 'x', {verticalPosition: 'top', duration: 10000});
-            this.router.navigate(["/gestionPruebas"]);
-          },
+      this.subscription = this.pruebaService.modificarPrueba(this.prueba)
+        .subscribe((prueba: Prueba) => {
+          this.snackBar.open('Se ha modificado correctamente la prueba ' + prueba.prueId, 'x', { verticalPosition: 'top', duration: 10000 });
+          this.router.navigate(["/gestionPruebas"]);
+        },
           error => {
-            this.snackBar.open(error.error, 'x', {verticalPosition: 'top', duration: 10000});
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
           });
 
-      }
     }
+  }
 
 }

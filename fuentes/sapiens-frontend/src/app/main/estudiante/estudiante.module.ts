@@ -1,3 +1,4 @@
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTabsModule } from '@angular/material';
@@ -55,6 +56,8 @@ import { ResumenPruebaComponent } from './mis-pruebas/resumen-prueba/resumen-pru
     MatSliderModule,
     FooterModule,
     MatTabsModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
 
     FuseSharedModule,
     FuseWidgetModule,

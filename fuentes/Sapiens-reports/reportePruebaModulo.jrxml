@@ -2,30 +2,34 @@
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensLocal"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
 	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT w.*, SUM(porcModu) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) porcGene
 FROM (
-	SELECT modu_id, modulo, numeroPreguntas, SUM(totalCorrecto) / SUM(totalPregunta) porcModu, 
-		SUM(CASE WHEN complejidad = 1 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp1,
-		SUM(CASE WHEN complejidad = 2 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp2,
-		SUM(CASE WHEN complejidad = 3 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp3,
-		SUM(CASE WHEN complejidad = 4 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp4
+	SELECT z.modu_id, z.modulo, SUM(numeroPreguntas) numeroPreguntas, SUM(porcModu)/COUNT(1) porcModu, SUM(comp1) comp1, SUM(comp2) comp2, SUM(comp3) comp3, SUM(comp4) comp4
 	FROM (
-		SELECT modu.modu_id, preg.complejidad, modu.nombre modulo, COUNT(dpru.dpru_id) numeroPreguntas, 
-			SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END) totalPregunta, 
-			SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END * CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) totalCorrecto
-		FROM prueba_usuario prus 
-		INNER JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
-		INNER JOIN pregunta preg ON preg.preg_id = dpru.preg_id
-		INNER JOIN modulo modu ON modu.modu_id = preg.modu_id
-		LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
-		WHERE prus.prue_id = 16
-			AND prus.espr_id = 4
-		GROUP BY modu.modu_id, preg.complejidad
-	) q
-	GROUP BY modu_id, modulo, numeroPreguntas
+		SELECT modu_id, modulo, numeroPreguntas, SUM(totalCorrecto) / SUM(totalPregunta) porcModu, 
+			SUM(CASE WHEN complejidad = 1 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp1,
+			SUM(CASE WHEN complejidad = 2 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp2,
+			SUM(CASE WHEN complejidad = 3 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp3,
+			SUM(CASE WHEN complejidad = 4 THEN totalCorrecto / totalPregunta ELSE 0 END)/count(1) comp4
+		FROM (
+			SELECT modu.modu_id, preg.complejidad, modu.nombre modulo, COUNT(dpru.dpru_id) numeroPreguntas, 
+				SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END) totalPregunta, 
+				SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END * CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) totalCorrecto
+			FROM prueba_usuario prus 
+			INNER JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
+			INNER JOIN pregunta preg ON preg.preg_id = dpru.preg_id
+			INNER JOIN modulo modu ON modu.modu_id = preg.modu_id
+			LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
+			WHERE prus.prue_id = $P{P_PRUE_ID}
+				AND prus.espr_id = 4
+			GROUP BY modu.modu_id, preg.complejidad
+		) q
+		GROUP BY modu_id, modulo, numeroPreguntas
+	) z
+	GROUP BY modu_id, modulo
 ) w]]>
 	</queryString>
 	<field name="modu_id" class="java.lang.Integer">
