@@ -63,7 +63,7 @@
 		respuestas_pregunta.correcta respuesta_que_era
 from 	usuario usua
 inner	join programa prog on prog.prog_id = usua.prog_id 
-inner 	join facultad facu on facu.facu_id = prog.prog_id 
+inner 	join facultad facu on facu.facu_id = prog.facu_id 
 inner 	join prueba_usuario prus on prus.usua_id = usua.usua_id 
 inner	join estado_prueba espr on espr.espr_id = prus.espr_id 
 inner 	join prueba prue on prue.prue_id = prus.prue_id 
