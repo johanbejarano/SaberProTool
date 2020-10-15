@@ -50,7 +50,7 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/auth/login']);
         return false;
       }
-      if (usuario.tiusId_TipoUsuario !== global.TIPOS_USUARIO.DIRECTOR) {
+      if (usuario.tiusId_TipoUsuario !== global.TIPOS_USUARIO.DIRECTOR && usuario.tiusId_TipoUsuario !== global.TIPOS_USUARIO.ADMINISTRADOR) {
         this.router.navigate(['/init']);
         return false;
       }

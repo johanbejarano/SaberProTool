@@ -122,3 +122,46 @@ export const navigationEstudiante: FuseNavigation[] = [
         url: '/init/cambiarClave',
     }
 ];
+
+export const navigationAdministrador: FuseNavigation[] = [
+    {
+        id: 'navigationAdministrador',
+        title: '',
+        translate: '',
+        type: 'group',
+        children: [
+            {
+                id: 'gestionUsuarios',
+                title: 'gestionUsuarios',
+                translate: 'NAV.DIRECTOR.USUARIOS',
+                type: 'item',
+                icon: 'people',
+                url: '/gestionUsuarios',
+            },
+            {
+                id: 'gestionModulos',
+                title: 'gestionModulos',
+                translate: 'NAV.DIRECTOR.MODULOS',
+                type: 'item',
+                icon: 'library_books',
+                url: '/gestionModulos',
+            },
+            {
+                id: 'descargarInformes',
+                title: 'descargarInformes',
+                translate: 'NAV.DIRECTOR.INFORMES',
+                type: 'item',
+                icon: 'picture_as_pdf',
+                url: '/reportes',
+            },
+        ]
+    },
+    {
+        id: 'cambiarClave',
+        title: 'CambiarClave',
+        translate: 'NAV.CAMBIAR_CLAVE',
+        type: 'item',
+        icon: 'person',
+        url: '/init/cambiarClave',
+    },
+];

@@ -5,21 +5,28 @@
                 <div class="h3">{{nombre}}</div>
             </div>
             <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-                <form [formGroup]="form" fxFlex="100">
-                    <mat-form-field appearance="outline" fxFlex="33" class="px-8">
+                <form [formGroup]="form" fxFlex="100" fxLayout="row wrap">
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 1 || tipo == 2">
+                        <mat-label>Facultad</mat-label>
+                        <input matInput formControlName="facultad" readonly="true" (click)="abrirDialogo('facultad')">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 1 || tipo == 2">
+                        <mat-label>Progama</mat-label>
+                        <input matInput formControlName="programa" readonly="true" (click)="abrirDialogo('programa')">
+                    </mat-form-field>
+                    <div fxFlex="33" *ngIf="tipo == 1 || tipo == 2"></div>
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 1 || tipo == 2 || tipo == 6">
                         <mat-label>Usuario</mat-label>
                         <input matInput formControlName="nombreUsuario" readonly="true"
                             (click)="abrirDialogo('usuario')">
                     </mat-form-field>
                     <mat-form-field appearance="outline" fxFlex="33" class="px-8">
                         <mat-label>Prueba</mat-label>
-                        <input matInput formControlName="nombrePrueba" readonly="true"
-                            (click)="abrirDialogo('prueba')">
+                        <input matInput formControlName="nombrePrueba" readonly="true" (click)="abrirDialogo('prueba')">
                     </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex="33" class="px-8">
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 1 || tipo == 2">
                         <mat-label>Modulo</mat-label>
-                        <input matInput formControlName="nombreModulo" readonly="true"
-                            (click)="abrirDialogo('modulo')">
+                        <input matInput formControlName="nombreModulo" readonly="true" (click)="abrirDialogo('modulo')">
                     </mat-form-field>
                 </form>
 

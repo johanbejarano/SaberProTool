@@ -16,6 +16,9 @@ public class GlobalProperties {
 	
 	@NotEmpty
 	private String URL_RECUPERAR_CONTRASENA;
+	
+	@NotEmpty
+	private String URL_SISTEMA;
 
 	public String getSUBREPORT_DIR() {
 		return SUBREPORT_DIR;
@@ -31,6 +34,14 @@ public class GlobalProperties {
 
 	public void setURL_RECUPERAR_CONTRASENA(String uRL_RECUPERAR_CONTRASENA) {
 		URL_RECUPERAR_CONTRASENA = uRL_RECUPERAR_CONTRASENA;
+	}
+
+	public String getURL_SISTEMA() {
+		return URL_SISTEMA;
+	}
+
+	public void setURL_SISTEMA(String uRL_SISTEMA) {
+		URL_SISTEMA = uRL_SISTEMA;
 	}
 	
 }

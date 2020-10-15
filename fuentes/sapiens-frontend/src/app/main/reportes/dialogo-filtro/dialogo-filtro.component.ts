@@ -2,8 +2,11 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MatPaginator, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 import { Modulo } from 'app/domain/modulo';
+import { Programa } from 'app/domain/programa';
 import { Prueba } from 'app/domain/prueba';
+import { FacultadService } from 'app/services/facultad.service';
 import { ModuloService } from 'app/services/modulo.service';
+import { ProgramaService } from 'app/services/programa.service';
 import { PruebaService } from 'app/services/prueba.service';
 import { UsuarioService } from 'app/services/usuario.service';
 import { global } from 'app/utils/global';
@@ -36,7 +39,9 @@ export class DialogoFiltroComponent implements OnInit {
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private pruebaService: PruebaService,
-    private moduloService: ModuloService
+    private moduloService: ModuloService,
+    private programaService: ProgramaService,
+    private facultadService: FacultadService
   ) {
     this.tipo = data;
   }
@@ -55,6 +60,10 @@ export class DialogoFiltroComponent implements OnInit {
       this.displayedColumns = ['pruebaId', 'pruebaPropietario', 'pruebaFecha'];
     } else if (this.tipo == 'modulo') {
       this.displayedColumns = ['moduloNombre'];
+    } else if (this.tipo == 'programa') {
+      this.displayedColumns = ['programa'];
+    } else if (this.tipo == 'facultad') {
+      this.displayedColumns = ['facultad'];
     }
     this.getData();
   }
@@ -66,6 +75,10 @@ export class DialogoFiltroComponent implements OnInit {
       this.getPruebas();
     } else if (this.tipo == 'modulo') {
       this.getModulos();
+    } else if (this.tipo == 'programa') {
+      this.getProgramas();
+    } else if (this.tipo == 'facultad') {
+      this.getFacultades();
     }
   }
 
@@ -75,6 +88,7 @@ export class DialogoFiltroComponent implements OnInit {
       let data = page.content;
       this.total = page.totalElements;
       this.datasource = new MatTableDataSource(data);
+      this.datasource.paginator = this.paginator;
     });
   }
 
@@ -83,6 +97,7 @@ export class DialogoFiltroComponent implements OnInit {
       this.data = pruebas;
       this.total = pruebas.length;
       this.datasource = new MatTableDataSource(this.data);
+      this.datasource.paginator = this.paginator;
     });
   }
 
@@ -90,6 +105,24 @@ export class DialogoFiltroComponent implements OnInit {
     this.moduloService.find().subscribe((modulos: Modulo[]) => {
       this.data = modulos;
       this.total = modulos.length;
+      this.datasource = new MatTableDataSource(this.data);
+      this.datasource.paginator = this.paginator;
+    });
+  }
+
+  getProgramas() {
+    this.programaService.getAll().subscribe((programas: Programa[]) => {
+      this.data = programas;
+      this.total = programas.length;
+      this.datasource = new MatTableDataSource(this.data);
+      this.datasource.paginator = this.paginator;
+    });
+  }
+
+  getFacultades() {
+    this.facultadService.getAll().subscribe((facultades: any[]) => {
+      this.data = facultades;
+      this.total = facultades.length;
       this.datasource = new MatTableDataSource(this.data);
       this.datasource.paginator = this.paginator;
     });
@@ -110,6 +143,16 @@ export class DialogoFiltroComponent implements OnInit {
     } else if (this.tipo == 'modulo') {
       result = {
         id: item.moduId,
+        nombre: item.nombre
+      }
+    } else if (this.tipo == 'programa') {
+      result = {
+        id: item.progId,
+        nombre: item.nombre
+      }
+    } else if (this.tipo == 'facultad') {
+      result = {
+        id: item.facuId,
         nombre: item.nombre
       }
     }

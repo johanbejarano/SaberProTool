@@ -23,7 +23,7 @@ public class ReporteRestController {
     private ReporteService reporteService;
     
     @PostMapping(value = "/reportePruebaEstudiante")
-    public ResponseEntity<?> consultarReporteResultados(@RequestBody ReporteDTO reporteDTO) {
+    public ResponseEntity<?> reportePruebaEstudiante(@RequestBody ReporteDTO reporteDTO) {
         try {
             String reporte = reporteService.reportePruebaEstudiante(reporteDTO.getPrueId(), reporteDTO.getUsuaId());
 
@@ -37,5 +37,52 @@ public class ReporteRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @PostMapping(value = "/reportePruebaModulo")
+    public ResponseEntity<?> reportePruebaModulo(@RequestBody ReporteDTO reporteDTO) {
+        try {
+            String reporte = reporteService.reportePruebaModulo(reporteDTO.getPrueId());
 
+            ReporteDTO respuesta = new ReporteDTO();
+            respuesta.setPdf(reporte);
+
+            return ResponseEntity.ok().body(respuesta);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @PostMapping(value = "/reportePruebaPrograma")
+    public ResponseEntity<?> reportePruebaPrograma(@RequestBody ReporteDTO reporteDTO) {
+        try {
+            String reporte = reporteService.reportePruebaPrograma(reporteDTO.getPrueId());
+
+            ReporteDTO respuesta = new ReporteDTO();
+            respuesta.setPdf(reporte);
+
+            return ResponseEntity.ok().body(respuesta);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @PostMapping(value = "/reportePruebaDetalleEstudiante")
+    public ResponseEntity<?> reportePruebaDetalleEstudiante(@RequestBody ReporteDTO reporteDTO) {
+        try {
+            String reporte = reporteService.reportePruebaDetalleEstudiante(reporteDTO.getPrueId());
+
+            ReporteDTO respuesta = new ReporteDTO();
+            respuesta.setPdf(reporte);
+
+            return ResponseEntity.ok().body(respuesta);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

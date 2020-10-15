@@ -53,6 +53,7 @@ logging.level.org.springframework=INFO
 
 SUBREPORT_DIR=/home/master/sapiens/backend/reports
 URL_RECUPERAR_CONTRASENA=http://sabertool.usbcali.edu.co:9090/api/usuario/recuperarClave/
+URL_SISTEMA=http://sabertool.usbcali.edu.co:8080
 
 spring.mail.host=owa.usbcali.edu.co
 spring.mail.port=25

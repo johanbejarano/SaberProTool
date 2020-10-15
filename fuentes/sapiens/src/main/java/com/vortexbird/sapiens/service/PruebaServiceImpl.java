@@ -93,12 +93,15 @@ public class PruebaServiceImpl implements PruebaService {
 
 	@Autowired
 	private DetallePruebaUsuarioService detallePruebaUsuarioService;
-	
+
 	@Autowired
 	private GlobalProperties globalProperties;
-	
+
 	@Autowired
-    protected DataSource dataSource;
+	protected DataSource dataSource;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public void validate(Prueba prueba) throws Exception {
@@ -438,6 +441,8 @@ public class PruebaServiceImpl implements PruebaService {
 			}
 
 			// Se guarda la población
+			List<String> correos = new ArrayList<String>();
+
 			for (Integer usuaId : pruebaDTO.getIdUsuarios()) {
 
 				// Se consulta el usuario
@@ -448,6 +453,12 @@ public class PruebaServiceImpl implements PruebaService {
 				if (!usuario.get().getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
 					throw new Exception("El usuario no se encuentra activo. Código: " + usuario.get().getCodigo() + " "
 							+ usuario.get().getApellido() + ", " + usuario.get().getNombre());
+				}
+
+				if (usuario.get().getCorreo() != null && !usuario.get().getCorreo().trim().isEmpty()) {
+					if (!correos.contains(usuario.get().getCorreo().trim())) {
+						correos.add(usuario.get().getCorreo().trim());
+					}
 				}
 
 				// Se consulta el estado de prueba "iniciada"
@@ -471,6 +482,9 @@ public class PruebaServiceImpl implements PruebaService {
 				pruebaUsuarioService.save(pruebaUsuario);
 
 			}
+
+			emailService.sendPruebaCreada(correos, prueba.getPrueId(), prueba.getFechaInicial(),
+					prueba.getFechaFinal());
 
 			pruebaDTO.setPrueId(prueba.getPrueId());
 
@@ -701,28 +715,28 @@ public class PruebaServiceImpl implements PruebaService {
 			throw e;
 		}
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public String consultarReporteResultados(Integer facuId, Integer progId, Integer usuaId, Integer tiusId, Integer prueId,
-			Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId) throws Exception {
-		
-		
+	public String consultarReporteResultados(Integer facuId, Integer progId, Integer usuaId, Integer tiusId,
+			Integer prueId, Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId)
+			throws Exception {
+
 		InputStream inputStream = null;
 		ByteArrayOutputStream bos = null;
 		Connection connection = null;
-		
+
 		try {
-			
-			//Debe venir por lo menos 1 parametro
-			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null && 
-					pregId == null && respId == null && respOk == null && moduId == null) {
+
+			// Debe venir por lo menos 1 parametro
+			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null
+					&& pregId == null && respId == null && respOk == null && moduId == null) {
 				throw new Exception("Debe ingresar por lo menos un parámetro para generar el reporte de resultados");
 			}
-			
+
 			// SE CONSULTA LA RUTA BASE DE REPORTES
 			String rutaBaseReportes = globalProperties.getSUBREPORT_DIR();
-			
+
 			// Se valida si la ruta existe
 			File fRutaBaseReportes = new File(rutaBaseReportes);
 			if (!fRutaBaseReportes.exists() || !fRutaBaseReportes.isDirectory() || !fRutaBaseReportes.canRead()) {
@@ -738,10 +752,10 @@ public class PruebaServiceImpl implements PruebaService {
 						"No existe la ruta del reporte, no es un archivo o no se tiene acceso de lectura al mismo: "
 								+ fReporte.getPath());
 			}
-			
+
 			// Crea la conexión a la base de datos
 			connection = dataSource.getConnection();
-			
+
 			// Se abre el reporte
 			inputStream = new FileInputStream(fReporte);
 
@@ -751,7 +765,7 @@ public class PruebaServiceImpl implements PruebaService {
 			// Asigna los parametros enviados
 			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
 					: (fRutaBaseReportes.getPath() + "/")));
-			
+
 			params.put("pFacuId", facuId);
 			params.put("pProgId", progId);
 			params.put("pUsuaId", usuaId);
@@ -762,11 +776,11 @@ public class PruebaServiceImpl implements PruebaService {
 			params.put("pRespId", respId);
 			params.put("pRespOk", respOk);
 			params.put("pModuId", moduId);
-			
+
 			bos = new ByteArrayOutputStream();
 			// Se rellena el reporte
 			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
-			
+
 			// Se exporta el reporte a pdf
 			JRPdfExporter jrPdfExporter = new JRPdfExporter();
 
@@ -781,11 +795,11 @@ public class PruebaServiceImpl implements PruebaService {
 
 			String base64 = DatatypeConverter.printBase64Binary(bytes);
 			return base64;
-			
+
 		} catch (Exception e) {
 			log.error("Error consultando el reporte de resultados", e);
 			throw e;
-		}finally {
+		} finally {
 			if (inputStream != null)
 				inputStream.close();
 			if (bos != null)
@@ -795,28 +809,29 @@ public class PruebaServiceImpl implements PruebaService {
 			}
 		}
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public String consultarReporteResumenEstudiantes(Integer facuId, Integer progId, Integer usuaId, Integer tiusId, Integer prueId,
-			Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId) throws Exception {
-		
-		
+	public String consultarReporteResumenEstudiantes(Integer facuId, Integer progId, Integer usuaId, Integer tiusId,
+			Integer prueId, Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId)
+			throws Exception {
+
 		InputStream inputStream = null;
 		ByteArrayOutputStream bos = null;
 		Connection connection = null;
-		
+
 		try {
-			
-			//Debe venir por lo menos 1 parametro
-			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null && 
-					pregId == null && respId == null && respOk == null && moduId == null) {
-				throw new Exception("Debe ingresar por lo menos un parámetro para generar el reporte de resumen de estudiantes");
+
+			// Debe venir por lo menos 1 parametro
+			if (facuId == null && progId == null && usuaId == null && tiusId == null && prueId == null && esprId == null
+					&& pregId == null && respId == null && respOk == null && moduId == null) {
+				throw new Exception(
+						"Debe ingresar por lo menos un parámetro para generar el reporte de resumen de estudiantes");
 			}
-			
+
 			// SE CONSULTA LA RUTA BASE DE REPORTES
 			String rutaBaseReportes = globalProperties.getSUBREPORT_DIR();
-			
+
 			// Se valida si la ruta existe
 			File fRutaBaseReportes = new File(rutaBaseReportes);
 			if (!fRutaBaseReportes.exists() || !fRutaBaseReportes.isDirectory() || !fRutaBaseReportes.canRead()) {
@@ -832,10 +847,10 @@ public class PruebaServiceImpl implements PruebaService {
 						"No existe la ruta del reporte, no es un archivo o no se tiene acceso de lectura al mismo: "
 								+ fReporte.getPath());
 			}
-			
+
 			// Crea la conexión a la base de datos
 			connection = dataSource.getConnection();
-			
+
 			// Se abre el reporte
 			inputStream = new FileInputStream(fReporte);
 
@@ -845,7 +860,7 @@ public class PruebaServiceImpl implements PruebaService {
 			// Asigna los parametros enviados
 			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
 					: (fRutaBaseReportes.getPath() + "/")));
-			
+
 			params.put("pFacuId", facuId);
 			params.put("pProgId", progId);
 			params.put("pUsuaId", usuaId);
@@ -856,11 +871,11 @@ public class PruebaServiceImpl implements PruebaService {
 			params.put("pRespId", respId);
 			params.put("pRespOk", respOk);
 			params.put("pModuId", moduId);
-			
+
 			bos = new ByteArrayOutputStream();
 			// Se rellena el reporte
 			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
-			
+
 			// Se exporta el reporte a pdf
 			JRPdfExporter jrPdfExporter = new JRPdfExporter();
 
@@ -875,11 +890,11 @@ public class PruebaServiceImpl implements PruebaService {
 
 			String base64 = DatatypeConverter.printBase64Binary(bytes);
 			return base64;
-			
+
 		} catch (Exception e) {
 			log.error("Error consultando el reporte de resultados", e);
 			throw e;
-		}finally {
+		} finally {
 			if (inputStream != null)
 				inputStream.close();
 			if (bos != null)

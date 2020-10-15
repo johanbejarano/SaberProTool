@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
 	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
+	<parameter name="pSubreportDir" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT programa, modulo, totalCorrecto / totalPregunta porcModu, SUM(totalCorrecto / totalPregunta) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) porcProg
 FROM (
@@ -51,7 +52,7 @@ ORDER BY programa, modulo]]>
 			</line>
 			<image>
 				<reportElement x="0" y="0" width="229" height="40" uuid="03291107-114b-40f1-b20f-fb598d23dc8b"/>
-				<imageExpression><![CDATA["sapiens_large.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{pSubreportDir}+"sapiens_large.png"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>

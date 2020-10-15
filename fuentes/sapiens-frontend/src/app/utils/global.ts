@@ -21,5 +21,6 @@ export const global = {
         PROFESOR: 1,
         DIRECTOR: 2,
         ESTUDIANTE: 3,
+        ADMINISTRADOR: 4,
     }
 }

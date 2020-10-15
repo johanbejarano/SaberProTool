@@ -9,7 +9,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { FuseNavigation } from '@fuse/types';
 import { TranslateService } from '@ngx-translate/core';
 import { locale as espanol } from 'app/navigation/i18n/es';
-import { navigation, navigationDirector, navigationEstudiante, navigationProfesor } from 'app/navigation/navigation';
+import { navigation, navigationAdministrador, navigationDirector, navigationEstudiante, navigationProfesor } from 'app/navigation/navigation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Usuario } from './domain/usuario';
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this._fuseNavigationService.register('profesor', navigationProfesor);
         this._fuseNavigationService.register('director', navigationDirector);
         this._fuseNavigationService.register('estudiante', navigationEstudiante);
+        this._fuseNavigationService.register('administrador', navigationAdministrador);
 
         // Set the main navigation as our current navigation
         this._fuseNavigationService.setCurrentNavigation('main');
@@ -162,12 +163,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
         const usuario: Usuario = this.usuarioService.getUsuario();
         if (usuario) {
-            if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
+            if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ESTUDIANTE) {
+                this._fuseNavigationService.setCurrentNavigation('estudiante');
+            } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
                 this._fuseNavigationService.setCurrentNavigation('profesor');
             } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.DIRECTOR) {
                 this._fuseNavigationService.setCurrentNavigation('director');
-            } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ESTUDIANTE) {
-                this._fuseNavigationService.setCurrentNavigation('estudiante');
+            } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ADMINISTRADOR) {
+                this._fuseNavigationService.setCurrentNavigation('administrador');
             } else {
                 this._fuseNavigationService.setCurrentNavigation('main');
             }

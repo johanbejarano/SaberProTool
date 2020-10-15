@@ -60,7 +60,7 @@
                         <mat-header-cell *matHeaderCellDef fxFlex="20">Tipo de usuario</mat-header-cell>
                         <mat-cell *matCellDef="let usuario" fxFlex="20">
                             <p class="text-truncate font-weight-600">
-                                {{usuario.tiusId_TipoUsuario == 1 ? 'Profesor' : usuario.tiusId_TipoUsuario == 2 ? 'Director' : usuario.tiusId_TipoUsuario == 3 ? 'Estudiante' : ''}}
+                                {{usuario.tiusId_TipoUsuario == 1 ? 'Profesor' : usuario.tiusId_TipoUsuario == 2 ? 'Director' : usuario.tiusId_TipoUsuario == 3 ? 'Estudiante' : usuario.tiusId_TipoUsuario == 4 ? 'Administrador' : ''}}
                             </p>
                         </mat-cell>
                     </ng-container>

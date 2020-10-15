@@ -81,15 +81,18 @@ export class LoginComponent implements OnInit {
             parametro.password = this.loginForm.controls.password.value;
 
             this.subscription = this.usuarioService.login(parametro).subscribe((usuario: Usuario) => {
-                if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
+                if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ESTUDIANTE) {
+                    this.router.navigate(['/estudiante']);
+                    this._fuseNavigationService.setCurrentNavigation('estudiante');
+                } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.PROFESOR) {
                     this.router.navigate(['/gestionPreguntas']);
                     this._fuseNavigationService.setCurrentNavigation('profesor');
                 } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.DIRECTOR) {
                     this.router.navigate(['/director']);
                     this._fuseNavigationService.setCurrentNavigation('director');
-                } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ESTUDIANTE) {
-                    this.router.navigate(['/estudiante']);
-                    this._fuseNavigationService.setCurrentNavigation('estudiante');
+                } else if (usuario.tiusId_TipoUsuario == global.TIPOS_USUARIO.ADMINISTRADOR) {
+                    this.router.navigate(['/director']);
+                    this._fuseNavigationService.setCurrentNavigation('administrador');
                 } else {
                     this.router.navigate(['/init']);
                     this._fuseNavigationService.setCurrentNavigation('main');

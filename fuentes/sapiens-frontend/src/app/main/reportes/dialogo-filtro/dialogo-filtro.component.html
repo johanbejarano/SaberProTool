@@ -70,6 +70,24 @@
             </ng-container>
             <!-- Modulo -->
 
+            <!-- Programa -->
+            <ng-container matColumnDef="programa">
+                <mat-header-cell *matHeaderCellDef fxFlex="100">Programa</mat-header-cell>
+                <mat-cell *matCellDef="let programa" fxFlex="100">
+                    <p class="text-truncate font-weight-600">{{programa.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- Programa -->
+
+            <!-- Programa -->
+            <ng-container matColumnDef="facultad">
+                <mat-header-cell *matHeaderCellDef fxFlex="100">Facultad</mat-header-cell>
+                <mat-cell *matCellDef="let facultad" fxFlex="100">
+                    <p class="text-truncate font-weight-600">{{facultad.nombre}}</p>
+                </mat-cell>
+            </ng-container>
+            <!-- Programa -->
+
             <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
             <mat-row *matRowDef="let item; columns: displayedColumns;" (click)="seleccionar(item)">
             </mat-row>

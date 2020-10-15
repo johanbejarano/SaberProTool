@@ -43,7 +43,7 @@ public class ReporteServiceImpl implements ReporteService {
 
 	@Override
 	public String reportePruebaEstudiante(Integer prueId, Integer estuId) throws Exception {
-		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+		String rutaReporte = "/reportePruebaEstudiante.jasper";
 		// Crea la variable de parametros
 		Map<String, Object> params = new HashMap<String, Object>();
 
@@ -58,8 +58,8 @@ public class ReporteServiceImpl implements ReporteService {
 	}
 
 	@Override
-	public String reportePruebaModulo(Long prueId) throws Exception {
-		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+	public String reportePruebaModulo(Integer prueId) throws Exception {
+		String rutaReporte = "/reportePruebaModulo.jasper";
 		// Crea la variable de parametros
 		Map<String, Object> params = new HashMap<String, Object>();
 
@@ -73,8 +73,8 @@ public class ReporteServiceImpl implements ReporteService {
 	}
 
 	@Override
-	public String reportePruebaPrograma(Long prueId) throws Exception {
-		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+	public String reportePruebaPrograma(Integer prueId) throws Exception {
+		String rutaReporte = "/reportePruebaPrograma.jasper";
 		// Crea la variable de parametros
 		Map<String, Object> params = new HashMap<String, Object>();
 
@@ -88,8 +88,8 @@ public class ReporteServiceImpl implements ReporteService {
 	}
 
 	@Override
-	public String reportePruebaDetalleEstudiante(Long prueId) throws Exception {
-		String rutaReporte = "/ReportePruebaEstudiante.jasper";
+	public String reportePruebaDetalleEstudiante(Integer prueId) throws Exception {
+		String rutaReporte = "/reportePruebaDetalleEstudiante.jasper";
 		// Crea la variable de parametros
 		Map<String, Object> params = new HashMap<String, Object>();
 
