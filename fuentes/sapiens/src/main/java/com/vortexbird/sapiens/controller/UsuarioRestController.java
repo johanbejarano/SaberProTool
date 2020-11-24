@@ -216,4 +216,17 @@ public class UsuarioRestController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	@PostMapping(value = "/recrearClaves")
+	public ResponseEntity<?> recrearClaves(@RequestBody CargueMasivoDTO request) {
+		try {
+			usuarioService.recrearClaves(request.getUsuarioCreador());
+			
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }

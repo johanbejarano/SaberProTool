@@ -454,4 +454,32 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw e;
 		}
 	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void recrearClaves(Long usuarioCreador) throws Exception {
+		try {
+			List<Usuario> usuarios = findAll();
+			
+			for (Usuario usuario : usuarios) {
+				try {
+					final String claveNueva = PasswordGenerator.getPassword(6);
+					Optional<String> claveMd5 = PasswordGenerator.hashPassword(claveNueva);
+					usuario.setPassword(claveMd5.get());
+					usuario.setToken(null);
+
+					usuario.setUsuModificador(usuarioCreador);
+					usuario.setFechaModificacion(new Date());
+					save(usuario);
+
+					emailService.sendCrearUsuario(usuario.getCorreo(), usuario.getCodigo(), claveNueva);
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				}
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
 }
