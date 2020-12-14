@@ -1,76 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sapiens"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
 	<parameter name="pSubreportDir" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT codigo, identificacion, nombre, apellido, programa, modulo, totalPregunta, totalCorrecto, totalPregunta - totalCorrecto totalIncorrecto, totalCorrecto / totalPregunta porcUsua,
-SUM(totalCorrecto / totalPregunta) OVER(PARTITION BY q.prog_id)/COUNT(1) OVER(PARTITION BY 1) porcProg,
-SUM(totalCorrecto / totalPregunta) OVER(PARTITION BY q.facu_id)/COUNT(1) OVER(PARTITION BY 1) porcFacu,
-SUM(totalCorrecto / totalPregunta) OVER(PARTITION BY 1)/COUNT(1) OVER(PARTITION BY 1) porcGene
-FROM (
+		<![CDATA[WITH resultado AS (
 	SELECT prog.facu_id, prog.prog_id, usua.usua_id, modu.modu_id, usua.codigo, usua.identificacion, usua.nombre, usua.apellido, prog.descripcion programa, modu.nombre modulo, COUNT(dpru.dpru_id) totalPreguntas, SUM(CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) correctas, COUNT(dpru.dpru_id) - SUM(CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) incorrectas, 
 		SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END) totalPregunta, 
 		SUM(CASE WHEN preg.valor_pregunta IS NULL THEN 10 ELSE preg.valor_pregunta END * CASE WHEN resp.correcta IS NULL THEN 0 ELSE resp.correcta END) totalCorrecto
 	FROM prueba_usuario prus 
 	INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
 	INNER JOIN programa prog ON prog.prog_id = usua.prog_id
-	INNER JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
-	INNER JOIN pregunta preg ON preg.preg_id = dpru.preg_id
-	INNER JOIN modulo modu ON modu.modu_id = preg.modu_id
+	LEFT JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
+	LEFT JOIN pregunta preg ON preg.preg_id = dpru.preg_id
+	LEFT JOIN modulo modu ON modu.modu_id = preg.modu_id
 	LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
 	WHERE prus.prue_id = $P{P_PRUE_ID}
-		AND prus.espr_id = 4
 	GROUP BY prog.facu_id, prog.prog_id, usua.usua_id, modu.modu_id
+)
+SELECT codigo, identificacion, nombre, apellido, programa, modulo, totalPreguntas, correctas, incorrectas, porcUsua, porcProg, porcFacu, porcUniv
+FROM (
+	SELECT usua.usua_id, usua.codigo, usua.identificacion, usua.nombre, usua.apellido, usua.programa, 
+		usua.modulo, usua.totalpreguntas, usua.correctas, usua.incorrectas, 
+		(usua.totalCorrecto) / usua.totalPregunta porcUsua,
+		SUM((prog.totalCorrecto) / prog.totalPregunta)/COUNT(1) porcProg,
+		SUM((facu.totalCorrecto) / facu.totalPregunta)/COUNT(1) porcFacu,
+		SUM((univ.totalCorrecto) / univ.totalPregunta)/COUNT(1) porcUniv
+	FROM resultado univ
+	LEFT JOIN resultado facu ON facu.facu_id = univ.facu_id AND facu.modu_id = univ.modu_id
+	LEFT JOIN resultado prog ON prog.prog_id = univ.prog_id AND prog.modu_id = univ.modu_id
+	INNER JOIN resultado usua ON usua.usua_id = univ.usua_id AND (usua.modu_id = univ.modu_id OR usua.modu_id IS NULL)
+	GROUP BY usua.usua_id, usua.codigo, usua.identificacion, usua.nombre, usua.apellido, usua.programa, 
+		usua.modulo, usua.totalpreguntas, usua.correctas, usua.incorrectas, usua.totalCorrecto, usua.totalPregunta
 ) q
-ORDER BY codigo]]>
+ORDER BY codigo, modulo]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
 		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
 	</field>
 	<field name="identificacion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="identificacion"/>
 		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
 	</field>
 	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
 		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
 	</field>
 	<field name="apellido" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellido"/>
 		<property name="com.jaspersoft.studio.field.label" value="apellido"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
 	</field>
 	<field name="programa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="programa"/>
 		<property name="com.jaspersoft.studio.field.label" value="programa"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="programa"/>
 	</field>
 	<field name="modulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="modulo"/>
 		<property name="com.jaspersoft.studio.field.label" value="modulo"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="modulo"/>
 	</field>
-	<field name="totalpregunta" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="totalpregunta"/>
+	<field name="totalpreguntas" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="totalpreguntas"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalpreguntas"/>
 	</field>
-	<field name="totalcorrecto" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="totalcorrecto"/>
+	<field name="correctas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="correctas"/>
+		<property name="com.jaspersoft.studio.field.label" value="correctas"/>
 	</field>
-	<field name="totalincorrecto" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="totalincorrecto"/>
+	<field name="incorrectas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="incorrectas"/>
+		<property name="com.jaspersoft.studio.field.label" value="incorrectas"/>
 	</field>
 	<field name="porcusua" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="porcusua"/>
 		<property name="com.jaspersoft.studio.field.label" value="porcusua"/>
 	</field>
 	<field name="porcprog" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="porcprog"/>
 		<property name="com.jaspersoft.studio.field.label" value="porcprog"/>
 	</field>
 	<field name="porcfacu" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="porcfacu"/>
 		<property name="com.jaspersoft.studio.field.label" value="porcfacu"/>
 	</field>
-	<field name="porcgene" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="porcgene"/>
+	<field name="porcuniv" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="porcuniv"/>
+		<property name="com.jaspersoft.studio.field.label" value="porcuniv"/>
 	</field>
 	<variable name="porcprog1" class="java.math.BigDecimal" resetType="Page" calculation="Average">
 		<variableExpression><![CDATA[$F{porcprog}]]></variableExpression>
@@ -81,18 +113,18 @@ ORDER BY codigo]]>
 	<pageHeader>
 		<band height="60" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="752" height="40" uuid="ed0cdefb-9cab-4626-b963-87c9c73ba72d"/>
+				<reportElement x="0" y="0" width="968" height="40" uuid="ed0cdefb-9cab-4626-b963-87c9c73ba72d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="25" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reporte estudiante]]></text>
+				<text><![CDATA[Reporte resultado prueba]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="229" height="40" uuid="794dd56d-8417-440e-bb34-e44b91fde830"/>
 				<imageExpression><![CDATA[$P{pSubreportDir}+"sapiens_large.png"]]></imageExpression>
 			</image>
 			<line>
-				<reportElement x="-20" y="40" width="792" height="1" uuid="4fdcbded-d2c6-4fec-bc5c-203423a6b9f5"/>
+				<reportElement x="-20" y="40" width="1008" height="1" uuid="4fdcbded-d2c6-4fec-bc5c-203423a6b9f5"/>
 			</line>
 		</band>
 	</pageHeader>
@@ -135,7 +167,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[Apellidos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="0" width="70" height="30" uuid="20b148c2-59ec-4652-ac1f-2283d11c1d31">
+				<reportElement x="270" y="0" width="108" height="30" uuid="20b148c2-59ec-4652-ac1f-2283d11c1d31">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -147,7 +179,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[Programa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="402" y="0" width="50" height="30" uuid="9d7b1ba7-b817-4a2a-a3ee-fdf6ae119142">
+				<reportElement x="518" y="0" width="70" height="30" uuid="9d7b1ba7-b817-4a2a-a3ee-fdf6ae119142">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -159,7 +191,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[Total de preguntas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="452" y="0" width="60" height="30" uuid="213da759-a282-4101-8dd2-5490bc9f7591">
+				<reportElement x="588" y="0" width="70" height="30" uuid="213da759-a282-4101-8dd2-5490bc9f7591">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -171,7 +203,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[Respuestas correctas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="572" y="0" width="60" height="30" uuid="7d07525a-eb85-4bf2-9bac-5b06b2c8ab97">
+				<reportElement x="728" y="0" width="80" height="30" uuid="7d07525a-eb85-4bf2-9bac-5b06b2c8ab97">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -183,7 +215,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[% Calificación]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="632" y="0" width="60" height="30" uuid="89112ffe-51fc-45e8-aebd-5e772c57ebc6">
+				<reportElement x="808" y="0" width="80" height="30" uuid="89112ffe-51fc-45e8-aebd-5e772c57ebc6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -195,7 +227,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[% Promedio facultad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="692" y="0" width="60" height="30" uuid="1ea59652-f544-4e81-a390-0f7344a6818f">
+				<reportElement x="888" y="0" width="80" height="30" uuid="1ea59652-f544-4e81-a390-0f7344a6818f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -207,7 +239,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[% Promedio universidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="512" y="0" width="60" height="30" uuid="24ea3c27-a203-4ae1-9e29-1c3f8e74dfa7">
+				<reportElement x="658" y="0" width="70" height="30" uuid="24ea3c27-a203-4ae1-9e29-1c3f8e74dfa7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -231,7 +263,7 @@ ORDER BY codigo]]>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="0" width="62" height="30" uuid="dcc73b7e-90b3-493c-bc63-57858b9a16aa">
+				<reportElement x="378" y="0" width="140" height="30" uuid="dcc73b7e-90b3-493c-bc63-57858b9a16aa">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -247,7 +279,7 @@ ORDER BY codigo]]>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="692" y="0" width="60" height="20" uuid="af4792ba-322d-48cc-bbe8-9bedd5b533be">
+				<reportElement stretchType="RelativeToTallestObject" x="888" y="0" width="80" height="20" uuid="af4792ba-322d-48cc-bbe8-9bedd5b533be">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -256,10 +288,10 @@ ORDER BY codigo]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{porcgene}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{porcuniv}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="632" y="0" width="60" height="20" uuid="8ed1dd5e-a122-4852-b32b-631d81da98e1">
+				<reportElement stretchType="RelativeToTallestObject" x="808" y="0" width="80" height="20" uuid="8ed1dd5e-a122-4852-b32b-631d81da98e1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -272,7 +304,7 @@ ORDER BY codigo]]>
 				<textFieldExpression><![CDATA[$F{porcfacu}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="572" y="0" width="60" height="20" uuid="65f1f20e-836c-4665-8a99-6fb74fc7a1fb">
+				<reportElement stretchType="RelativeToTallestObject" x="728" y="0" width="80" height="20" uuid="65f1f20e-836c-4665-8a99-6fb74fc7a1fb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -324,7 +356,7 @@ ORDER BY codigo]]>
 				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="70" height="20" uuid="ef12e02a-a4f8-480f-8d7e-1cc3dd4c8cf8">
+				<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="108" height="20" uuid="ef12e02a-a4f8-480f-8d7e-1cc3dd4c8cf8">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -337,7 +369,7 @@ ORDER BY codigo]]>
 				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="340" y="0" width="62" height="20" uuid="c80dddd6-3909-4526-b5f1-823dafe09ca3">
+				<reportElement stretchType="RelativeToTallestObject" x="378" y="0" width="140" height="20" uuid="c80dddd6-3909-4526-b5f1-823dafe09ca3">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -350,7 +382,7 @@ ORDER BY codigo]]>
 				<textFieldExpression><![CDATA[$F{modulo}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="402" y="0" width="50" height="20" uuid="57720c2d-ca5f-46e6-9c40-c16458bac579">
+				<reportElement stretchType="RelativeToTallestObject" x="518" y="0" width="70" height="20" uuid="57720c2d-ca5f-46e6-9c40-c16458bac579">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -360,10 +392,10 @@ ORDER BY codigo]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalpregunta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalpreguntas}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="452" y="0" width="60" height="20" uuid="be2014ca-50a5-4c86-b171-0defbf8c9dde">
+				<reportElement stretchType="RelativeToTallestObject" x="588" y="0" width="70" height="20" uuid="be2014ca-50a5-4c86-b171-0defbf8c9dde">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -373,10 +405,10 @@ ORDER BY codigo]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalcorrecto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{correctas}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="512" y="0" width="60" height="20" uuid="f41fde9a-2cd4-4436-a15e-e7600d1da0b2">
+				<reportElement stretchType="RelativeToTallestObject" x="658" y="0" width="70" height="20" uuid="f41fde9a-2cd4-4436-a15e-e7600d1da0b2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -386,7 +418,7 @@ ORDER BY codigo]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalincorrecto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{incorrectas}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="60" height="20" uuid="bea70e9a-1864-4aec-9ed1-f2f7bf5491de">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
@@ -111,7 +111,7 @@ FROM (
 	</variable>
 	<pageHeader>
 		<band height="160" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="100" y="50" width="172" height="20" uuid="68243443-a326-4bba-baa2-5a10f607223e"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="1.0"/>
@@ -174,7 +174,7 @@ FROM (
 				</textElement>
 				<text><![CDATA[Programa]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="100" y="70" width="172" height="20" uuid="49414b9b-dc75-4ac0-b7e7-b0ee06775512"/>
 				<box leftPadding="2" rightPadding="2">
 					<rightPen lineWidth="1.0"/>
@@ -184,7 +184,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{identificacion}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="100" y="90" width="172" height="20" uuid="08512024-e653-4e41-84b8-782c1590eaa9"/>
 				<box leftPadding="2" rightPadding="2">
 					<rightPen lineWidth="1.0"/>
@@ -194,7 +194,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="100" y="110" width="172" height="20" uuid="3ef915a8-ae69-47c1-a3df-9f1a457c0280"/>
 				<box leftPadding="2" rightPadding="2">
 					<rightPen lineWidth="1.0"/>
@@ -204,7 +204,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="100" y="130" width="172" height="20" uuid="6f68e289-ff5d-4cc9-9d42-f86cfcd82cd5"/>
 				<box leftPadding="2" rightPadding="2">
 					<bottomPen lineWidth="1.0"/>
@@ -381,7 +381,7 @@ FROM (
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="102" y="0" width="50" height="20" uuid="08855ad4-d4b0-4a08-80db-5e9696f893b3">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="61e3b617-a6c2-41d2-a00c-f71fc288ef6a"/>
 				</reportElement>
@@ -393,7 +393,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalpreguntas}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="152" y="0" width="60" height="20" uuid="b6842c4f-009e-4d26-bf2e-9e4a43c7d589">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37bbbf13-f9ff-4dc6-a39e-27f947a5e444"/>
 				</reportElement>
@@ -405,7 +405,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{correctas}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="272" y="0" width="60" height="20" uuid="cdc0f3bc-b6f9-4561-8047-9d4740db2fcb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b027f8ce-fe63-46d6-b917-16137ac27bbb"/>
 				</reportElement>
@@ -417,7 +417,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcusua}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="332" y="0" width="60" height="20" uuid="6a1f4c92-55fc-4631-a01a-83af10f8e9e7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b148c3c6-8e1d-4fd5-bc63-fbc762b93539"/>
 				</reportElement>
@@ -429,7 +429,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcprog}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="392" y="0" width="60" height="20" uuid="cf7f8177-e3e9-4fed-ae86-c911e25b4c67">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
@@ -441,7 +441,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcfacu}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="212" y="0" width="60" height="20" uuid="13d02823-058a-41de-ad8a-153c7588c242">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="660f9cd8-5bcb-42c7-ad6c-f6e2e620692e"/>
 				</reportElement>
@@ -453,7 +453,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{incorrectas}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="102" height="20" uuid="5fd45205-6270-4852-9d43-54fa40d55ca4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b4afc53-21e2-41a6-bbbc-473154950d14"/>
 				</reportElement>
@@ -465,7 +465,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{modulo}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="452" y="0" width="60" height="20" uuid="c55aa75a-7d38-486e-9722-8f9306d87364">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
@@ -477,7 +477,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcuniv}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="512" y="0" width="60" height="20" uuid="852dca94-2731-4e39-bc51-7605a8afcdce">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
@@ -489,7 +489,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promusua}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="572" y="0" width="60" height="20" uuid="e4202712-53bb-40bb-bffa-1a5f5ffd3234">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
@@ -501,7 +501,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promprog}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="632" y="0" width="60" height="20" uuid="c8b9a413-73bc-439b-8674-b2c1d2ec2246">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
@@ -513,7 +513,7 @@ FROM (
 				</textElement>
 				<textFieldExpression><![CDATA[$F{promfacu}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="692" y="0" width="60" height="20" uuid="af4792ba-322d-48cc-bbe8-9bedd5b533be">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 				</reportElement>
@@ -588,6 +588,7 @@ FROM (
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
+					<dataset resetType="Report"/>
 					<categorySeries>
 						<seriesExpression><![CDATA["Estudiante"]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{modulo}]]></categoryExpression>

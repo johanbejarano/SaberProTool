@@ -25,9 +25,13 @@ import com.vortexbird.sapiens.utility.GlobalProperties;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 
 @Scope("singleton")
 @Service
@@ -101,6 +105,21 @@ public class ReporteServiceImpl implements ReporteService {
 		return reporte;
 
 	}
+	
+	@Override
+	public String reportePruebaResultado(Integer prueId) throws Exception {
+		String rutaReporte = "/reportePruebaResultado.jasper";
+		// Crea la variable de parametros
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		// Asigna los parametros enviados
+		params.put("P_PRUE_ID", new Long(prueId));
+
+		String reporte = generarReporteXlsx(rutaReporte, params);
+
+		return reporte;
+
+	}
 
 	private String generarReporte(String rutaReporte, Map<String, Object> params) throws Exception {
 		ByteArrayInputStream informe = null;
@@ -148,6 +167,72 @@ public class ReporteServiceImpl implements ReporteService {
 			jrPdfExporter.setConfiguration(configuration);
 
 			jrPdfExporter.exportReport();
+
+			byte[] bytes = bos.toByteArray();
+
+			String base64 = DatatypeConverter.printBase64Binary(bytes);
+			return base64;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		} finally {
+			if (informe != null) {
+				informe.close();
+			}
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
+	}
+	
+	private String generarReporteXlsx(String rutaReporte, Map<String, Object> params) throws Exception {
+		ByteArrayInputStream informe = null;
+		InputStream inputStream = null;
+		ByteArrayOutputStream bos = null;
+		Connection connection = null;
+		try {
+			// Se valida si la ruta existe
+			File fRutaBaseReportes = new File(globalProperties.getSUBREPORT_DIR());
+
+			if (!fRutaBaseReportes.exists() || !fRutaBaseReportes.isDirectory() || !fRutaBaseReportes.canRead()) {
+				throw new Exception(
+						"No existe la ruta base de reportes, no es un directorio o no se tiene acceso de lectura al directorio: "
+								+ fRutaBaseReportes.getPath());
+			}
+
+			// Se valida la ruta del reporte
+			File fReporte = new File(fRutaBaseReportes, rutaReporte);
+			if (!fReporte.exists() || !fReporte.isFile() || !fReporte.canRead()) {
+				throw new Exception(
+						"No existe la ruta del reporte, no es un archivo o no se tiene acceso de lectura al mismo: "
+								+ fReporte.getPath());
+			}
+
+			// Se abre el reporte
+			inputStream = new FileInputStream(fReporte);
+
+			// Se envía la ruta de parámetos siempre
+			params.put("pSubreportDir", (fRutaBaseReportes.getPath().endsWith("/") ? fRutaBaseReportes.getPath()
+					: (fRutaBaseReportes.getPath() + "/")));
+
+			// Crea la conexión a la base de datos
+			connection = dataSource.getConnection();
+
+			bos = new ByteArrayOutputStream();
+			// Se rellena el reporte
+			JasperPrint print = JasperFillManager.fillReport(inputStream, params, connection);
+
+			// Se exporta el reporte a xlsx
+			JRXlsxExporter exporter = new JRXlsxExporter();
+			exporter.setExporterInput(new SimpleExporterInput(print));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(bos));
+			exporter.exportReport();
 
 			byte[] bytes = bos.toByteArray();
 

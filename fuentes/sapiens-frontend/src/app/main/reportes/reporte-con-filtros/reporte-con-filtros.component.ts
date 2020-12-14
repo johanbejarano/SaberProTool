@@ -46,6 +46,8 @@ export class ReporteConFiltrosComponent implements OnInit {
       this.nombre = 'Consultar reporte prueba por programa';
     } else if (this.tipo == 6) {
       this.nombre = 'Consultar reporte prueba de estudiante';
+    } else if (this.tipo == 7) {
+      this.nombre = 'Consultar reporte participantes';
     }
 
     this.form = this.formBuilder.group({
@@ -121,13 +123,22 @@ export class ReporteConFiltrosComponent implements OnInit {
       if (!request.prueId) {
         this.snackBar.open('Se debe seleccionar la prueba', 'x', { verticalPosition: 'top', duration: 10000 });
         return;
-      }if (!request.usuaId) {
+      } if (!request.usuaId) {
         this.snackBar.open('Se debe seleccionar el estudiante', 'x', { verticalPosition: 'top', duration: 10000 });
         return;
       }
       this.reporteService.reportePruebaEstudiante(request).subscribe((result) => {
         const arrayBuffer = result.pdf;
         createAndDownloadBlobFile(arrayBuffer, 'reportePruebaEstudiante', 'pdf');
+      });
+    } else if (this.tipo == 7) {
+      if (!request.prueId) {
+        this.snackBar.open('Se debe seleccionar la prueba', 'x', { verticalPosition: 'top', duration: 10000 });
+        return;
+      }
+      this.reporteService.reportePruebaResultado(request).subscribe((result) => {
+        const arrayBuffer = result.pdf;
+        createAndDownloadBlobFile(arrayBuffer, 'reportePruebaResultado', 'xlsx');
       });
     }
   }
