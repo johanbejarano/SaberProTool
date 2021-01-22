@@ -4,5 +4,5 @@ import { Usuario } from './usuario';
 export class CargueMasivo {
     usuarios: Usuario[];
     preguntas: Pregunta[];
-    usuarioCreador: string;
+    usuarioCreador: number;
 }   

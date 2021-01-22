@@ -114,7 +114,7 @@ export class CargarArchivoComponent implements OnInit {
       let request: CargueMasivo = new CargueMasivo();
 
       request.preguntas = this.preguntas;
-      request.usuarioCreador = this.usuario.codigo;
+      request.usuarioCreador = this.usuario.usuaId;
       this.preguntaService.cargar(request).subscribe(() => {
         this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
       }, error => {

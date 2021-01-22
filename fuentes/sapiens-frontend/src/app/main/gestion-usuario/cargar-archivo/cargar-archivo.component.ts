@@ -69,6 +69,8 @@ export class CargarArchivoComponent implements OnInit {
           if (!usuarioArray || usuarioArray.length == 0) {
             continue;
           }
+          console.log(usuarioArray);
+          
 
           let usuario: Usuario = new Usuario();
 
@@ -78,11 +80,11 @@ export class CargarArchivoComponent implements OnInit {
           usuario.identificacion = usuarioArray[3];
           usuario.correo = usuarioArray[4];
           usuario.celular = usuarioArray[5];
-          if (usuarioArray[6].toLowerCase() == 'masculino' || usuarioArray[6].toLowerCase() == 'M') {
+          if (usuarioArray[6].toLowerCase() == 'masculino' || usuarioArray[6].toLowerCase() == 'm') {
             usuario.genero = 'M';
-          } else if (usuarioArray[6].toLowerCase() == 'femenino' || usuarioArray[6].toLowerCase() == 'F') {
+          } else if (usuarioArray[6].toLowerCase() == 'femenino' || usuarioArray[6].toLowerCase() == 'f') {
             usuario.genero = 'F';
-          } else if (usuarioArray[6].toLowerCase() == 'otro' || usuarioArray[6].toLowerCase() == 'O') {
+          } else if (usuarioArray[6].toLowerCase() == 'otro' || usuarioArray[6].toLowerCase() == 'o') {
             usuario.genero = 'O';
           }else{
             this.usuarios = [];
@@ -115,7 +117,7 @@ export class CargarArchivoComponent implements OnInit {
       let request: CargueMasivo = new CargueMasivo();
 
       request.usuarios = this.usuarios;
-      request.usuarioCreador = this.usuario.codigo;
+      request.usuarioCreador = this.usuario.usuaId;
       this.usuarioService.cargar(request).subscribe(() => {
         this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
       }, error => {
