@@ -95,6 +95,7 @@ public class MailSenderUtility {
 //			mimeMessage.setContent(body, "text/html; charset=utf-8");
 			
 			mimeMessage.setContent(multipart);
+			mimeMessage.setFrom("sabertool@usbcali.edu.co");
 
 			// Send message
 			javaMailSender.send(mimeMessage);
