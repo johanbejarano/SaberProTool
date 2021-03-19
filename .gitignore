@@ -10,3 +10,4 @@ org.eclipse.core.resources.prefs
 -/fuentes/ROOT/WebContent/WEB-INF/*
 /fuentes/sapiens/sapiens.log*
 /fuentes/ROOT/WebContent/index.html
+fuentes/.sonarlint/
