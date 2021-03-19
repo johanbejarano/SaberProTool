@@ -93,10 +93,10 @@ export class CargarArchivoComponent implements OnInit {
           pregunta.orden = preguntaArray[6];
 
           let respuestas: Respuesta[] = [];
-          for (let i = 6; i < preguntaArray.length; i++) {
+          for (let i = 7; i < preguntaArray.length; i++) {
             const respuesta: Respuesta = new Respuesta();
             respuesta.descripcion = preguntaArray[i];
-            respuesta.correcta = i == 6 ? 1 : 0;
+            respuesta.correcta = i == 7 ? 1 : 0;
             respuestas.push(respuesta);
           }
           pregunta.respuestasDTO = respuestas;

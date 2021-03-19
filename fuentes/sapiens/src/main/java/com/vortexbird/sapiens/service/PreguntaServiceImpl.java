@@ -582,6 +582,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 				preguntaGuardar.setDescripcion(pregunta.getDescripcion());
 				preguntaGuardar.setRetroalimentacion(pregunta.getRetroalimentacion());
 				preguntaGuardar.setComplejidad(pregunta.getComplejidad());
+				preguntaGuardar.setOrden(pregunta.getOrden());
 				preguntaGuardar.setValorPregunta(pregunta.getValorPregunta());
 
 				preguntaGuardar.setRespuestasDTO(pregunta.getRespuestasDTO());
