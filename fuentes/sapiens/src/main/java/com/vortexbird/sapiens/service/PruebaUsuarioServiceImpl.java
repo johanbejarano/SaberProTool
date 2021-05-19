@@ -415,7 +415,20 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			if (pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_TERMINADA)) {
 				throw new Exception("La prueba ya ha sido finalizada");
 			}
-
+			
+			Date fecha = new Date();
+			Long tiempoDisponible = pruebaUsuario.getTiempoDisponible();
+			Long milliseconds = fecha.getTime() - pruebaUsuario.getFechaInicio().getTime();
+			int minutes = (int) ((milliseconds / (1000 * 60)) % 60) + 1;
+			tiempoDisponible -= minutes;
+			if (tiempoDisponible > 0L && !pruebaUsuario.getPrueba().getFechaFinal().before(fecha)) {
+				List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getPreguntasByPruebaUsuario(prusId);
+				boolean preguntasSinRespuesta = detallesPruebaUsuario.stream().anyMatch(detallePrueba -> detallePrueba.getRespuesta() == null);
+				if(preguntasSinRespuesta) {
+					throw new Exception("Se deben responder todas las preguntas antes de finalizar la prueba");
+				}
+			}
+				
 			//Calculos las respuestas correctas obtenidas
 			List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getRespuestasCorrectas(prusId);
 			Long puntaje = 0L;
@@ -426,7 +439,6 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			}
 
 			Optional<EstadoPrueba> estadoPrueba = estadoPruebaService.findById(Constantes.ESTADO_PRUEBA_TERMINADA);
-			pruebaUsuario.setFechaInicio(null);
 			pruebaUsuario.setEstadoPrueba(estadoPrueba.get());
 			pruebaUsuario.setFechaModificacion(new Date());
 			pruebaUsuario.setUsuModificador(usuario);

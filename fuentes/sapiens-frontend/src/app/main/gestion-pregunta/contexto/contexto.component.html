@@ -9,7 +9,8 @@
         <div fxFlex="100" fxLayout="row wrap">
             <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100" *ngFor="let contexto of contextos"
                 (click)="seleccionar(contexto)">
-                <div class="fuse-widget-front {{contexto.contId == contextoSelected.contId ? 'seleccionado' : ''}}" fxFlex="100">
+                <div class="fuse-widget-front {{contexto.contId == contextoSelected.contId ? 'seleccionado' : ''}}"
+                    fxFlex="100">
                     <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="h3">{{contexto.nombre}}</div>
                         <button (click)="editar(contexto)" mat-icon-button class="btnSecundario">
@@ -17,7 +18,11 @@
                         </button>
                     </div>
                     <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-                        <div [innerHTML]="contexto.descripcion" fxFlex="100"></div>
+                        <div fxFlex="100">
+                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                [(data)]="contexto.descripcion" (ready)="setReadOnly($event)">
+                            </ckeditor>
+                        </div>
                     </div>
                 </div>
             </fuse-widget>

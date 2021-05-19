@@ -42,10 +42,14 @@ export class PruebaComponent implements OnInit {
     simpleUpload: {
       uploadUrl: environment.URL_CKEDITOR_UPLOAD,
     },
+    toolbar: []
   };
 
+  public setReadOnly(editor) {
+    editor.isReadOnly = true;
+  }
+
   public Editor = ClassicEditor;
-  public EditorReadOnly = ClassicEditor;
 
   constructor(private detallePruebaUsuarioService: DetallePruebaUsuarioService,
     private pruebaUsuarioService: PruebaUsuarioService,

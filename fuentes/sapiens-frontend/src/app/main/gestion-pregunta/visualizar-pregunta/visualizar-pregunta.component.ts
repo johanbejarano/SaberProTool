@@ -17,6 +17,7 @@ export class VisualizarPreguntaComponent implements OnInit {
     simpleUpload: {
       uploadUrl: environment.URL_CKEDITOR_UPLOAD,
     },
+    toolbar: []
   };
 
   public Editor = ClassicEditor;
@@ -29,13 +30,17 @@ export class VisualizarPreguntaComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
+  public setReadOnly(editor) {
+    editor.isReadOnly = true;
+  }
+
 }
 
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
-    constructor(private sanitizer: DomSanitizer) {}
-    transform(url) {
-        return this.sanitizer.bypassSecurityTrustHtml(url);
-    }
+  constructor(private sanitizer: DomSanitizer) { }
+  transform(url) {
+    return this.sanitizer.bypassSecurityTrustHtml(url);
+  }
 }

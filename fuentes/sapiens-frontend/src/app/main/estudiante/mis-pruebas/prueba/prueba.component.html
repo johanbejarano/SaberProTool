@@ -22,7 +22,8 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="preguntas && preguntas.length > 0 && preguntas[selected.value]" class="tituloPrincipal" fxFlex="100">
+                            <div *ngIf="preguntas && preguntas.length > 0 && preguntas[selected.value]"
+                                class="tituloPrincipal" fxFlex="100">
                                 Módulo: {{preguntas[selected.value].nombreModulo}}
                             </div>
 
@@ -38,11 +39,17 @@
                                             </div>
                                         </ng-template>
 
-                                        <div *ngIf="pregunta.descripcionContexto" class="px-4" fxFlex="100"
-                                            [innerHTML]="pregunta.descripcionContexto"></div>
+                                        <div *ngIf="pregunta.descripcionContexto" class="px-4" fxFlex="100">
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                [(data)]="pregunta.descripcionContexto" (ready)="setReadOnly($event)">
+                                            </ckeditor>
+                                        </div>
                                         <mat-divider *ngIf="pregunta.descripcionContexto"></mat-divider>
-                                        <div *ngIf="pregunta.descripcionPregunta" class="px-4" fxFlex="100"
-                                            [innerHTML]="pregunta.descripcionPregunta"></div>
+                                        <div *ngIf="pregunta.descripcionPregunta" class="px-4" fxFlex="100">
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                [(data)]="pregunta.descripcionPregunta" (ready)="setReadOnly($event)">
+                                            </ckeditor>
+                                        </div>
                                         <mat-divider></mat-divider>
                                         <div *ngFor="let respuesta of pregunta.respuestas">
                                             <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
@@ -50,7 +57,11 @@
                                                 respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
                                                 [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
                                                 [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
-                                                <div [innerHTML]="respuesta.descripcion" fxFlex="100"></div>
+                                                <div fxFlex="100">
+                                                    <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                        [(data)]="respuesta.descripcion" (ready)="setReadOnly($event)">
+                                                    </ckeditor>
+                                                </div>
                                             </mat-checkbox>
                                         </div>
                                         <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
@@ -65,8 +76,11 @@
                                             fxFlex="100">
                                             Retroalimentación
                                         </div>
-                                        <div *ngIf="pregunta.retroalimentacionPregunta" class="px-4 pb-4"
-                                            [innerHTML]="pregunta.retroalimentacionPregunta" fxFlex="100"></div>
+                                        <div *ngIf="pregunta.retroalimentacionPregunta" class="px-4 pb-4" fxFlex="100">
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                [(data)]="respuesta.retroalimentacionPregunta" (ready)="setReadOnly($event)">
+                                            </ckeditor>
+                                        </div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
 
                                             <button fxFlex="33" mat-stroked-button type="button" *ngIf="i != 0"
