@@ -12,3 +12,4 @@ org.eclipse.core.resources.prefs
 /fuentes/ROOT/WebContent/index.html
 fuentes/.sonarlint/
 *.class
+fuentes/sapiens-frontend/package-lock.json
