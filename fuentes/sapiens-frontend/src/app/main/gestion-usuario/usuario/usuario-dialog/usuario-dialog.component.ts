@@ -114,4 +114,17 @@ export class UsuarioDialogComponent implements OnInit {
     });
   }
 
+  reenviarClave(codigo){
+    if (codigo != null) {
+
+      this.usuarioService.solicitarClave(codigo).subscribe((usuario: Usuario) => {
+        if (usuario.correo) {
+          this.snackBar.open('Se ha enviado un email de confirmación al correo electrónico ' + usuario.correo, 'x', { verticalPosition: 'top', duration: 10000 });
+        }
+      }, error => {
+        this.snackBar.open(error, 'x', { verticalPosition: 'top', duration: 10000 });
+      });
+    }
+  }
+
 }

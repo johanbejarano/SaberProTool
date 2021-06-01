@@ -13,6 +13,7 @@ export const locale = {
             'filtrar': 'Filtrar',
             'crear': 'Crear',
             'modificar': 'Modificar',
+            'reenvioClave':'Enviar clave',
         },
         'msg': {
             'opcionRequerida': 'Se debe seleccionar por lo menos una opción',

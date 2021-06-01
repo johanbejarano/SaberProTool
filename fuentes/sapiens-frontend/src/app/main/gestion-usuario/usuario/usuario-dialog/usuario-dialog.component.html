@@ -116,10 +116,19 @@
 
         </div>
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="end center">
-            <div fxFlex="50" fxFlex.xs="0"></div>
-            <button fxFlex="50" fxFlex.xs="100" mat-stroked-button type="submit" class="btnPrimario">
-                {{(this.usuarioDialog.usuaId ? 'lbl.modificar' : 'lbl.crear') | translate}}
-            </button>
+            
+            <div fxFlex="50" fxFlex.xs="0" fxLayoutAlign="left center">
+                <button fxFlex="25" fxFlex.xs="100" mat-stroked-button class="btnPrimario" type="button" *ngIf="this.usuarioDialog.usuaId" (click)="reenviarClave(form.controls.codigo.value)">
+                    {{'lbl.reenvioClave' | translate}}
+                </button>
+            </div>
+            
+            <div fxFlex="50" fxFlex.xs="0" fxLayoutAlign="end center">
+                <button fxFlex="50" fxFlex.xs="100" mat-stroked-button type="submit" class="btnPrimario">
+                    {{(this.usuarioDialog.usuaId ? 'lbl.modificar' : 'lbl.crear') | translate}}
+                </button>
+            </div>
         </div>
+        
     </form>
 </div>
