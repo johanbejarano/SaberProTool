@@ -12,6 +12,9 @@ import { UsuarioService } from 'app/services/usuario.service';
 import { global } from 'app/utils/global';
 import { Page } from 'app/utils/pagination/page';
 import { Subscription } from 'rxjs';
+import { FacultadService } from '../../../../services/facultad.service';
+import { Facultad } from '../../../../domain/facultad';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lista-estudiantes',
@@ -34,10 +37,13 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
 
   data: Usuario[] = [];
 
-  @Input() usuariosSeleccionados;
+  @Input() usuariosSeleccionados: number[]=[];
+  usuarios:number[]=[];
   checkboxes: {};
 
   checkedAll: boolean;
+
+  listFacultad: Facultad[];
 
   datasource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
   public displayedColumns = ['checkbox', 'codigo', 'identificacion', 'nombre', 'email'];
@@ -46,6 +52,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
+    private facultadService: FacultadService,
     private localStorage: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -60,12 +67,15 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     this.actualizarFomulario();
 
     this.getData();
+    this.getFacultad();
+    this.selectAllData();
   }
 
   actualizarFomulario() {
     // Reactive Form
     this.formListaEstudiantes = this._formBuilder.group({
       busqueda: [this.strBusqueda],
+      'facultad': '',
     });
   }
 
@@ -74,10 +84,34 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
   }
 
+  getFacultad(){
+    this.facultadService.getAll().subscribe(d=>{
+      if (d) {        
+        this.listFacultad = d.slice();
+      }
+
+    });
+  }
+
+  selectAllData(){
+    this.subscription = this.usuarioService.getAllUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE,
+      this.formListaEstudiantes.controls.facultad.value,
+      this.formListaEstudiantes.controls.busqueda.value).subscribe(d=>{
+        if (d) {
+          this.usuarios = d;
+          // d.filter(data=>this.usuarios.push(data));
+          // console.log(this.usuarios);
+        }
+      });
+    this.checkedAll=false;
+  }
+
   getData() {
+    console.log(this.formListaEstudiantes);
 
     this.subscription = this.usuarioService.getUsuariosPorTipo(
       global.TIPOS_USUARIO.ESTUDIANTE,
+      this.formListaEstudiantes.controls.facultad.value,
       this.formListaEstudiantes.controls.busqueda.value,
       this.pageNumber,
       this.pageSize)
@@ -89,7 +123,6 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
         this.datasource = new MatTableDataSource<Usuario>(this.data);
 
         this.checkboxes = {};
-
         this.data.map(usuario => {
 
           //Se valida si el usuario ya estaba seleccionado previamente
@@ -138,25 +171,28 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     this.pageSize = 10;
 
     this.getData();
+    this.selectAllData();
   }
 
   selectAll() {
-
     let checked = !this.checkedAll;
-
-    this.data.map(usuario => {
-
-      this.checkboxes[usuario.usuaId] = checked;
+    this.usuarios.filter( d => this.usuariosSeleccionados.push(d) );
+    this.usuarios.map(usuario => {
+      
+      this.checkboxes[usuario] = checked;
 
       //Si el usuario ya estaba seleccionado
       if (this.usuariosSeleccionados.length > 0) {
-        const idx = this.usuariosSeleccionados.indexOf(usuario.usuaId);
-
+        const idx = this.usuariosSeleccionados.indexOf(usuario);
+        // console.log(this.usuariosSeleccionados);
+        // console.log(usuario);
+        // console.log(idx);
+        
         if (idx !== -1) {
 
           if (!checked) {
-            this.usuariosSeleccionados.splice(idx, 1);
-          } else {
+            this.usuariosSeleccionados.splice(idx, 1);   
+          }else {
             //this.usuariosSeleccionados.push(usuario.usuaId);
           }
           //this.localStorage.putInLocal('x', this.usuariosSeleccionados);
@@ -164,11 +200,10 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.usuariosSeleccionados.push(usuario.usuaId);
+      // this.usuariosSeleccionados.push(usuario.usuaId);
       // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
     });
-
-
+    console.log(this.usuariosSeleccionados);
   }
 
 }

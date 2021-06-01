@@ -73,6 +73,11 @@ public class UsuarioDTO implements Serializable {
 		this.progId = progId;
 		this.nombrePrograma = nombrePrograma;
 	}
+	
+	public UsuarioDTO(Integer usuaId) {
+		super();
+		this.usuaId = usuaId;
+	}
 
 	
 	public UsuarioDTO(Integer usuaId, String codigo, Long identificacion, String nombre, String apellido, String correo, Integer tiusId_TipoUsuario) {

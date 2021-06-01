@@ -144,6 +144,11 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
   }
 
   guardarPrueba() {
+    let listaUsuaids = this.usuariosSeleccionados.filter( (d,index) =>{
+      return this.usuariosSeleccionados.indexOf(d) == index
+    });
+    console.log(listaUsuaids);
+    
     if (!this.form.valid) {
       this.snackBar.open('Faltan datos por diligenciar', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
@@ -158,7 +163,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.prueba.fechaInicial = new Date(this.form.controls.fechaInicial.value);
     this.prueba.fechaFinal = new Date(this.form.controls.fechaFinal.value);
     this.prueba.idModulos = this.form.controls.modulos.value;
-    this.prueba.idUsuarios = this.usuariosSeleccionados;
+    this.prueba.idUsuarios = listaUsuaids;
     this.prueba.tiprId_TipoPrueba = 2;
     this.prueba.tiempo = this.form.controls.duracion.value;
     this.prueba.usuCreador = this.usuario.usuaId;
