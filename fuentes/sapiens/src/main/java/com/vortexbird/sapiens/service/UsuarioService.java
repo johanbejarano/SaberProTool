@@ -1,10 +1,14 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 
-import org.springframework.data.domain.Page;
+
 
 
 /**
@@ -16,7 +20,9 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 
 	UsuarioDTO login(String codigo, String password) throws Exception;
 
-	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize) throws Exception;
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro, int pageNumber, int pageSize) throws Exception;
+	
+	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro) throws Exception;
 
 	String getNombreUsuario(Integer usuaId) throws Exception;
 

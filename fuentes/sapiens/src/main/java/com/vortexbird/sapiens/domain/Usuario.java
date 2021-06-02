@@ -34,6 +34,7 @@ import com.vortexbird.sapiens.dto.UsuarioDTO;
 */
 
 @NamedNativeQueries({
+	@NamedNativeQuery(name = "Usuario.getAllUsuariosPorTipo", query = "", resultSetMapping = "listaUsuaId"),
 	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo", query = "", resultSetMapping = "UsuarioDTO"),
 	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo.count", query = "", resultSetMapping = "UsuarioDTOCount") })
 @SqlResultSetMappings({
@@ -46,6 +47,10 @@ import com.vortexbird.sapiens.dto.UsuarioDTO;
 					@ColumnResult(name = "apellido", type = String.class),
                     @ColumnResult(name = "correo", type = String.class),
                     @ColumnResult(name = "tiusId_TipoUsuario", type = Integer.class)}) }),
+	
+	@SqlResultSetMapping(name = "listaUsuaId", columns = {
+			@ColumnResult(name = "usuaId", type = Integer.class) }),
+	
 	@SqlResultSetMapping(name = "UsuarioDTOCount", columns = {
 			@ColumnResult(name = "total", type = Integer.class) }), })
 @Entity

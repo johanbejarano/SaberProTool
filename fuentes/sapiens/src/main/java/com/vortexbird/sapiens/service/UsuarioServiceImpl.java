@@ -232,7 +232,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, String filtro, int pageNumber, int pageSize)
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro, int pageNumber, int pageSize)
 			throws Exception {
 		try {
 
@@ -241,8 +241,32 @@ public class UsuarioServiceImpl implements UsuarioService {
 				filtro = "";
 			}
 			filtro = "%" + filtro + "%";
+			
+			facuId = facuId == null || facuId.toString().equals("") ? -1 : facuId;
 
-			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, filtro, pageable);
+			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, facuId,filtro, pageable);
+
+			return usuarios;
+
+		} catch (Exception e) {
+			log.error("Error en getUsuariosPorTipo", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro) throws Exception {
+		try {
+
+			if (filtro != null && filtro.equals("*")) {
+				filtro = "";
+			}
+			filtro = "%" + filtro + "%";
+			
+			facuId = facuId == null || facuId.toString().equals("") ? -1 : facuId;
+
+			List<Integer> usuarios = usuarioRepository.getAllUsuariosPorTipo(tiusId, facuId,filtro);
 
 			return usuarios;
 

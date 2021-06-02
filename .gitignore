@@ -13,3 +13,4 @@ org.eclipse.core.resources.prefs
 fuentes/.sonarlint/
 *.class
 .metadata/
+fuentes/sapiens-frontend/package-lock.json

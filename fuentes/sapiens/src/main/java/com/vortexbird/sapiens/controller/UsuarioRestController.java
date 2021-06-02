@@ -7,6 +7,8 @@ import com.vortexbird.sapiens.mapper.UsuarioMapper;
 import com.vortexbird.sapiens.service.UsuarioService;
 import com.vortexbird.sapiens.utility.PasswordGenerator;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,8 +143,9 @@ public class UsuarioRestController {
 		return ResponseEntity.ok().body(PasswordGenerator.hashPassword(string));
 	}
 
-	@GetMapping(value = "/getUsuariosPorTipo/{tiusId}/{filtro}/{pageNumber}/{pageSize}")
+	@GetMapping(value = "/getUsuariosPorTipo/{tiusId}/{facuId}/{filtro}/{pageNumber}/{pageSize}")
 	public ResponseEntity<?> getUsuariosPorTipo(@PathVariable("tiusId") Integer tiusId,
+			@PathVariable("facuId") Integer facuId,
 			@PathVariable("filtro") String filtro, @PathVariable("pageNumber") int pageNumber,
 			@PathVariable("pageSize") int pageSize) {
 
@@ -150,7 +153,26 @@ public class UsuarioRestController {
 
 		try {
 
-			Page<UsuarioDTO> usuarios = usuarioService.getUsuariosPorTipo(tiusId, filtro, pageNumber, pageSize);
+			Page<UsuarioDTO> usuarios = usuarioService.getUsuariosPorTipo(tiusId, facuId, filtro, pageNumber, pageSize);
+
+			return ResponseEntity.ok().body(usuarios);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/getAllUsuariosPorTipo/{tiusId}/{facuId}/{filtro}")
+	public ResponseEntity<?> getAllUsuariosPorTipo(@PathVariable("tiusId") Integer tiusId,
+			@PathVariable("facuId") Integer facuId,
+			@PathVariable("filtro") String filtro) {
+
+		log.debug("Request to getAllUsuariosPorTipo()");
+
+		try {
+
+			List<Integer> usuarios = usuarioService.getAllUsuariosPorTipo(tiusId, facuId, filtro);
 
 			return ResponseEntity.ok().body(usuarios);
 		} catch (Exception e) {

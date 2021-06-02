@@ -5,7 +5,19 @@
                 <div class="h3">Población objetivo de la prueba</div>
             </div>
             <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
-                <form [formGroup]="formListaEstudiantes" fxFlex="100" (ngSubmit)="cambioFiltro()">
+                <form [formGroup]="formListaEstudiantes" fxFlex="100" (ngSubmit)="cambioFiltro()" fxLayout="row wrap">
+
+                    <mat-form-field class="px-16" fxFlex="100" appearance="outline">
+                        <mat-label>Facultad</mat-label>
+                        <mat-select formControlName="facultad">
+                            <mat-option [value]="">
+                            </mat-option>
+                            <mat-option *ngFor="let item of listFacultad" [value]="item.facuId">
+                                {{item.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
                     <mat-form-field class="px-16" fxFlex="100" appearance="outline">
                         <mat-label>Busqueda</mat-label>
                         <input matInput fxFlex="90" formControlName="busqueda">

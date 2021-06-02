@@ -13,16 +13,48 @@
 			result-set-mapping="UsuarioDTO">
 			<query>
 	        <![CDATA[
-	        	SELECT usua_id usuaId, nombre nombre, apellido apellido, genero genero, codigo codigo, 
-	        	identificacion identificacion, celular celular, correo correo, "password" "password", 
-	        	fecha_creacion fechaCreacion, fecha_modificacion fechaModificacion, 
-	        	usu_creador usuCreador, usu_modificador usuModificador, estado_registro estadoRegistro, 
-	        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
-				FROM usuario
+	        	SELECT 		usu.usua_id usuaId, 
+				usu.nombre nombre, 
+				usu.apellido apellido, 
+				usu.genero genero, 
+				usu.codigo codigo, 
+		        usu.identificacion identificacion, 
+		        usu.celular celular, 
+		        usu.correo correo, 
+		        usu."password" "password", 
+		        usu.fecha_creacion fechaCreacion, 
+		        usu.fecha_modificacion fechaModificacion, 
+		        usu.usu_creador usuCreador, 
+		        usu.usu_modificador usuModificador, 
+		        usu.estado_registro estadoRegistro, 
+		        usu.prog_id progId_Programa, 
+		        usu.tius_id tiusId_TipoUsuario
+				FROM usuario usu
+				inner join programa prog on prog.prog_id = usu.prog_id 
+				inner join facultad facu on facu.facu_id = prog.facu_id
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
-					  AND (UPPER(codigo) LIKE UPPER(:pFiltro) OR identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(nombre) LIKE UPPER(:pFiltro) 
-					  OR UPPER(apellido) LIKE UPPER(:pFiltro) OR UPPER(correo) LIKE UPPER(:pFiltro))
-				ORDER BY codigo
+				and ((:pFacuId <> -1 and facu.facu_id = :pFacuId) or (:pFacuId = -1))
+			  AND (UPPER(usu.codigo) LIKE UPPER(:pFiltro) OR usu.identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(usu.nombre) LIKE UPPER(:pFiltro) 
+			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))
+				ORDER BY usu.codigo
+	        ]]>
+	        </query>
+		</named-native-query>
+		
+		<named-native-query
+			name="Usuario.getAllUsuariosPorTipo"
+			result-set-mapping="listaUsuaId">
+			<query>
+	        <![CDATA[
+	        	SELECT 		usu.usua_id usuaId
+				FROM usuario usu
+				inner join programa prog on prog.prog_id = usu.prog_id 
+				inner join facultad facu on facu.facu_id = prog.facu_id
+				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
+				and ((:pFacuId <> -1 and facu.facu_id = :pFacuId) or (:pFacuId = -1))
+			  AND (UPPER(usu.codigo) LIKE UPPER(:pFiltro) OR usu.identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(usu.nombre) LIKE UPPER(:pFiltro) 
+			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))
+				ORDER BY usu.codigo
 	        ]]>
 	        </query>
 		</named-native-query>
@@ -32,18 +64,14 @@
 			result-set-mapping="UsuarioDTOCount">
 			<query>
 	        <![CDATA[
-	        	SELECT COUNT(*) total FROM 
-	        	(
-		        	SELECT usua_id usuaId, nombre nombre, apellido apellido, genero genero, codigo codigo, 
-		        	identificacion identificacion, celular celular, correo correo, "password" "password", 
-		        	fecha_creacion fechaCreacion, fecha_modificacion fechaModificacion, 
-		        	usu_creador usuCreador, usu_modificador usuModificador, estado_registro estadoRegistro, 
-		        	prog_id progId_Programa, tius_id tiusId_TipoUsuario
-					FROM usuario
-					WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
-						AND (UPPER(codigo) LIKE UPPER(:pFiltro) OR identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(nombre) LIKE UPPER(:pFiltro) 
-					  	OR UPPER(apellido) LIKE UPPER(:pFiltro) OR UPPER(correo) LIKE UPPER(:pFiltro))			
-				) Q		
+	        	SELECT 		count(*) as total 
+				FROM usuario usu
+				inner join programa prog on prog.prog_id = usu.prog_id 
+				inner join facultad facu on facu.facu_id = prog.facu_id
+				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
+				and ((:pFacuId <> -1 and facu.facu_id = :pFacuId) or (:pFacuId = -1))
+			  AND (UPPER(usu.codigo) LIKE UPPER(:pFiltro) OR usu.identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(usu.nombre) LIKE UPPER(:pFiltro) 
+			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))	
 	        ]]>
 	        </query>
 		</named-native-query>
