@@ -6,8 +6,8 @@ export const environment = {
     production: false,
     hmr: false,
 
-    //URL: 'http://sabertool.usbcali.edu.co:9090/api/',
-    //URL_CKEDITOR_UPLOAD: 'http://sabertool.usbcali.edu.co:9090/api/public/upload'
+    // URL: 'http://sabertool.usbcali.edu.co:9090/api/',
+    // URL_CKEDITOR_UPLOAD: 'http://sabertool.usbcali.edu.co:9090/api/public/upload'
     URL: 'http://127.0.0.1:9090/api/',
     URL_CKEDITOR_UPLOAD: 'http://127.0.0.1:9090/api/public/upload'
 

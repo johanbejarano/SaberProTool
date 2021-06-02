@@ -255,7 +255,7 @@
                                     </mat-step>
                                     <!--Paso 2. Respuestas -->
 
-                                    <!--Paso 6. Retroalimentación-->
+                                    <!--Paso 3. Retroalimentación-->
                                     <mat-step [stepControl]="horizontalStepperStep6">
 
                                         <form fxLayout="column" [formGroup]="horizontalStepperStep6">
@@ -267,13 +267,13 @@
                                                 <mat-form-field appearance="outline" fxFlex="100" appearance="outline"
                                                     *ngIf="form.controls.tipoPregunta.value == 1">
                                                     <mat-label>Respuesta correcta</mat-label>
-                                                    <mat-select formControlName="respuestaCorrecta" required>
+                                                    <mat-select formControlName="respuestaCorrecta" required multiple>
                                                         <mat-option
                                                             *ngFor="let stepControl of stepsRespuestasList; index as i"
-                                                            value="{{i}}">Respuesta # {{(i+1)}}</mat-option>
+                                                            [value]="i">Respuesta # {{(i+1)}}</mat-option>
                                                     </mat-select>
                                                     <mat-icon matSuffix class="secondary-text">group_work</mat-icon>
-                                                    <mat-error>Respuecta correcta es requerida!</mat-error>
+                                                    <mat-error>Respuesta correcta es requerida!</mat-error>
                                                 </mat-form-field>
 
                                                 <ckeditor id="retroalimentacion" [editor]="Editor"
@@ -300,9 +300,9 @@
                                         </form>
 
                                     </mat-step>
-                                    <!--Paso 6. Retroalimentación-->
+                                    <!--Paso 3. Retroalimentación-->
 
-                                    <!--Paso 5. Respuesta 4-->
+                                    <!--Paso 4. Finalizar -->
                                     <mat-step>
 
                                         <ng-template matStepLabel>Finalizar</ng-template>
@@ -326,7 +326,7 @@
                                         </div>
 
                                     </mat-step>
-                                    <!--Paso 5. Respuesta 4-->
+                                    <!--Paso 4. Finalizar-->
 
                                 </mat-horizontal-stepper>
                                 <!-- PASOS PARA LA CREACION DE LA PREGUNTA -->

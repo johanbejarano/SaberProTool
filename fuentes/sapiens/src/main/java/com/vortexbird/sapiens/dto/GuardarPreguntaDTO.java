@@ -36,6 +36,7 @@ public class GuardarPreguntaDTO implements Serializable {
     private Long orden;
     private Integer contId;
     private boolean tienePruebas;
+    private boolean seleccionMultiple;
     
     private List<RespuestaDTO> respuestasDTO;
 
@@ -180,5 +181,15 @@ public class GuardarPreguntaDTO implements Serializable {
 	public void setOrden(Long orden) {
 		this.orden = orden;
 	}
+
+	public boolean isSeleccionMultiple() {
+		return seleccionMultiple;
+	}
+
+	public void setSeleccionMultiple(boolean seleccionMultiple) {
+		this.seleccionMultiple = seleccionMultiple;
+	}
+	
+	
 
 }

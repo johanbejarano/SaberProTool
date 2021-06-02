@@ -11,3 +11,5 @@ org.eclipse.core.resources.prefs
 /fuentes/sapiens/sapiens.log*
 /fuentes/ROOT/WebContent/index.html
 fuentes/.sonarlint/
+*.class
+.metadata/

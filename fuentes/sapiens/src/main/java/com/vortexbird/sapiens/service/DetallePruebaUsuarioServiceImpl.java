@@ -326,6 +326,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 						.setPrioridadModulo(detallePruebaUsuario.getPregunta().getModulo().getPrioridad());
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
 				detallePruebaUsuarioDTO.setOrdenPregunta(detallePruebaUsuario.getPregunta().getOrden());
+				detallePruebaUsuarioDTO.setSeleccionMultiple(detallePruebaUsuario.getPregunta().getSeleccionMultiple());
 
 				if (detallePruebaUsuario.getPregunta().getContexto() != null) {
 					detallePruebaUsuarioDTO

@@ -29,6 +29,7 @@ public class PreguntaDTO implements Serializable {
 	private Integer moduId_Modulo;
 	private Integer tprgId_TipoPregunta;
 	private Integer timoId;
+	private Boolean seleccionMultiple;
 
 	private String nombreModulo;
 
@@ -226,4 +227,14 @@ public class PreguntaDTO implements Serializable {
 	public void setOrden(Long orden) {
 		this.orden = orden;
 	}
+
+	public Boolean getSeleccionMultiple() {
+		return seleccionMultiple;
+	}
+
+	public void setSeleccionMultiple(Boolean seleccionMultiple) {
+		this.seleccionMultiple = seleccionMultiple;
+	}
+	
+	
 }

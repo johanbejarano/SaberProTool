@@ -117,10 +117,17 @@ export class PruebaComponent implements OnInit {
   }
 
   seleccionarRespuesta(pregunta: DetallePruebaUsuario, respuesta: Respuesta) {
+    console.log("Hola");
+    // console.log(pregunta);
+    console.log(respuesta);
+    
+    // console.log(respuesta.respId);
+    // console.log(this.preguntas);
+    
     if (respuesta) {
       if (pregunta.respId !== respuesta.respId) {
         pregunta.respId = respuesta.respId;
-        this.guardarRespuesta(pregunta);
+        // this.guardarRespuesta(pregunta);
       }
     }
   }
@@ -135,8 +142,8 @@ export class PruebaComponent implements OnInit {
       request.usuCreador = this.usuario.usuaId;
       console.log(request);
 
-      this.detallePruebaUsuarioService.responder(request).subscribe(() => {
-      });
+      // this.detallePruebaUsuarioService.responder(request).subscribe(() => {
+      // });
     }
   }
 

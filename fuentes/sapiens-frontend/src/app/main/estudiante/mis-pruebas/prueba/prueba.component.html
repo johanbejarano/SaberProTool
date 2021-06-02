@@ -51,19 +51,43 @@
                                             </ckeditor>
                                         </div>
                                         <mat-divider></mat-divider>
-                                        <div *ngFor="let respuesta of pregunta.respuestas">
-                                            <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
-                                                class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
-                                                respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
-                                                [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
-                                                [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
-                                                <div fxFlex="100">
-                                                    <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
-                                                        [(data)]="respuesta.descripcion" (ready)="setReadOnly($event)">
-                                                    </ckeditor>
-                                                </div>
-                                            </mat-checkbox>
+
+                                        <div *ngIf="!pregunta.seleccionMultiple">
+                                            <div>Unica respuesta</div>
+                                            <div *ngFor="let respuesta of pregunta.respuestas">
+                                                <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
+                                                    class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
+                                                    respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
+                                                    [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
+                                                    [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId">
+                                                    <div fxFlex="100">
+                                                        <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                            [(data)]="respuesta.descripcion" (ready)="setReadOnly($event)">
+                                                        </ckeditor>
+                                                    </div>
+                                                </mat-checkbox>
+                                            </div>
                                         </div>
+
+                                        <div *ngIf="pregunta.seleccionMultiple">
+                                            <div>Seleccion Multiple</div>
+                                            <div *ngFor="let respuesta of pregunta.respuestas">
+                                                <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
+                                                    class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
+                                                    respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
+                                                    [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
+                                                    >
+                                                    <!-- [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId" -->
+
+                                                    <div fxFlex="100">
+                                                        <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                            [(data)]="respuesta.descripcion" (ready)="setReadOnly($event)">
+                                                        </ckeditor>
+                                                    </div>
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+
                                         <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
                                             <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                 [(data)]="pregunta.respuestaAbierta"

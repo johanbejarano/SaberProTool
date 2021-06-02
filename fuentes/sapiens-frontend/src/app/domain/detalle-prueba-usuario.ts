@@ -6,6 +6,7 @@ export class DetallePruebaUsuario {
     respId: number;
     usuCreador: number;
     respuestaAbierta: string;
+    seleccionMultiple: boolean;
 
     nombreModulo: string;
     descripcionPregunta: string;

@@ -101,6 +101,8 @@ export class ResumenPruebaComponent implements OnInit {
     request.prusId = this.pruebaUsuario.prusId;
     request.usuCreador = this.usuarioService.getUsuario().usuaId;
     this.subscription = this.pruebaUsuarioService.iniciarPrueba(request).subscribe(() => {
+      console.log("inicia prueba");
+      
       this.pruebaUsuario.fechaInicio = new Date();
       this.pruebaUsuario.nombreEstadoPrueba = 'INICIADA';
       this.localStorage.putInLocal('pruebaUsuario', this.pruebaUsuario);

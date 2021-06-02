@@ -296,6 +296,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 			pregunta.setValorPregunta(guardarPreguntaDTO.getValorPregunta());
 			pregunta.setOrden(guardarPreguntaDTO.getOrden());
 			pregunta.setContexto(contexto);
+			pregunta.setSeleccionMultiple(guardarPreguntaDTO.isSeleccionMultiple());
 
 			save(pregunta);
 

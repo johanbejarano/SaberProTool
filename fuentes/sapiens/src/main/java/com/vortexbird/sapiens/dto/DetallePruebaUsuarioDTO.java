@@ -37,6 +37,7 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private List<RespuestaDTO> respuestas;
     private String respuestaAbierta;
     private Long ordenPregunta;
+    private boolean seleccionMultiple;
 
     public Integer getDpruId() {
         return dpruId;
@@ -187,4 +188,14 @@ public class DetallePruebaUsuarioDTO implements Serializable {
 	public void setOrdenPregunta(Long ordenPregunta) {
 		this.ordenPregunta = ordenPregunta;
 	}
+
+	public boolean isSeleccionMultiple() {
+		return seleccionMultiple;
+	}
+
+	public void setSeleccionMultiple(boolean seleccionMultiple) {
+		this.seleccionMultiple = seleccionMultiple;
+	}
+	
+	
 }

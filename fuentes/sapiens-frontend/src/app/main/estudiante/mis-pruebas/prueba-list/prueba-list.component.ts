@@ -59,6 +59,8 @@ export class PruebaListComponent implements OnInit {
 
   getData() {
     this.subscription = this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, -1).subscribe((pruebas: Prueba[]) => {
+      console.log(pruebas);
+      
       this.data = pruebas;
       this.datasource = new MatTableDataSource<Prueba>(this.data);
       this.datasource.paginator = this.paginator;

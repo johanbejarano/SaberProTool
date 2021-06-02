@@ -58,6 +58,10 @@ public class Pregunta implements java.io.Serializable {
     private Long usuModificador;
     private List<DetallePruebaUsuario> detallePruebaUsuarios = new ArrayList<DetallePruebaUsuario>(0);
     private List<Respuesta> respuestas = new ArrayList<Respuesta>(0);
+    
+    @Column(name = "seleccion_multiple", nullable = false)
+    private Boolean seleccionMultiple;
+    
 
     public Pregunta() {
     }
@@ -153,6 +157,7 @@ public class Pregunta implements java.io.Serializable {
     public Date getFechaModificacion() {
         return this.fechaModificacion;
     }
+    
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
@@ -230,4 +235,14 @@ public class Pregunta implements java.io.Serializable {
 	public void setOrden(Long orden) {
 		this.orden = orden;
 	}
+
+	public Boolean getSeleccionMultiple() {
+		return seleccionMultiple;
+	}
+
+	public void setSeleccionMultiple(Boolean seleccionMultiple) {
+		this.seleccionMultiple = seleccionMultiple;
+	}
+	
+	
 }

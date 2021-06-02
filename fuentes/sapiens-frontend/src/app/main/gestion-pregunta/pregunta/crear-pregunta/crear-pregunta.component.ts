@@ -44,7 +44,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   modulo: Modulo = new Modulo();
 
   pregunta: Pregunta;
-  idxRespuestaCorrecta: number;
+  idxRespuestaCorrecta: number[];
 
   tiposPregunta = [{ key: 1, label: 'Cerrada' }, { key: 2, label: 'Abierta' }];
   complejidades = [1, 2, 3, 4];
@@ -83,16 +83,23 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       this.preguntaService.getPregunta(idPregunta)
         .subscribe((pregunta: Pregunta) => {
           this.pregunta = pregunta;
+          this.idxRespuestaCorrecta = [];
+          console.log(this.pregunta);
+          console.log(this.pregunta.respuestasDTO);
+          console.log(this.pregunta.respuestasDTO.length);
 
           //Se calcula el idx de la respuesta correcta
           for (let i = 0; i < this.pregunta.respuestasDTO.length; i++) {
 
+            console.log(this.pregunta.respuestasDTO[i].correcta);
             if (this.pregunta.respuestasDTO[i].correcta == 1) {
 
-              this.idxRespuestaCorrecta = i;
-              break;
+              this.idxRespuestaCorrecta.push(i) ;
+              // break;
             }
           }
+          console.log(this.idxRespuestaCorrecta);
+          
 
           this.localStorage.putInLocal('pregunta', this.pregunta);
 
@@ -155,7 +162,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     }
 
     this.horizontalStepperStep6 = this._formBuilder.group({
-      respuestaCorrecta: [this.idxRespuestaCorrecta !== null ? "" + this.idxRespuestaCorrecta : null],
+      respuestaCorrecta: [this.idxRespuestaCorrecta !== undefined ? this.idxRespuestaCorrecta : []],
       editorRetroalimentacion: [this.pregunta.retroalimentacion, Validators.required]
     });
 
@@ -260,8 +267,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
   guardar(omitePruebas: boolean) {
     this.pregunta.respuestasDTO = Array<Respuesta>();
-
-    let respuestaCorrecta = (+this.horizontalStepperStep6.controls.respuestaCorrecta.value);
+    let respuestaCorrecta = this.horizontalStepperStep6.controls.respuestaCorrecta.value;
 
     //Se guarda la pregunta
     this.pregunta.moduId_Modulo = this.form.controls.modulo.value;
@@ -275,11 +281,30 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     this.pregunta.usuModificador = this.usuario.usuaId;
     this.pregunta.estadoRegistro = this.form.controls.estado.value;
     this.pregunta.tienePruebas = omitePruebas;
+    
+    console.log(this.stepsRespuestasList);
+    console.log(respuestaCorrecta);
 
+    if(respuestaCorrecta.length > 1){
+      this.pregunta.seleccionMultiple = true;
+    }else{
+      this.pregunta.seleccionMultiple = false;
+    }
+    
     for (let i = 0; i < this.stepsRespuestasList.length; i++) {
       const respuestaForm = this.stepsRespuestasList[i];
       let respuesta = new Respuesta();
-      respuesta.correcta = respuestaCorrecta == i ? 1 : 0;
+
+      for (let index = 0; index < respuestaCorrecta.length; index++) {
+
+        if(i == respuestaCorrecta[index]){
+          respuesta.correcta = 1;
+          break;
+        }else{
+          respuesta.correcta = 0;
+        }
+      }
+      // respuesta.correcta = respuestaCorrecta == i ? 1 : 0;
       respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
       this.pregunta.respuestasDTO.push(respuesta);
     }
@@ -294,9 +319,13 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
     let idPregunta = this.localStorage.getFromLocal('idPregunta');
 
+    console.log(this.pregunta);
+    
     if (!idPregunta) {
       this.subscription = this.preguntaService.guardarPregunta(this.pregunta)
         .subscribe((pregunta: Pregunta) => {
+          console.log(pregunta);
+          
           this.snackBar.open('Se ha almacenado correctamente la pregunta ' + pregunta.pregId, 'x', { verticalPosition: 'top', duration: 10000 });
           this.router.navigate(["/gestionPreguntas"]);
         },
@@ -307,6 +336,8 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
       this.subscription = this.preguntaService.actualizarPregunta(this.pregunta)
         .subscribe((pregunta: Pregunta) => {
+          console.log(pregunta);
+          
           this.snackBar.open('Se ha actualizado correctamente la pregunta ' + pregunta.pregId, 'x', { verticalPosition: 'top', duration: 10000 });
           this.router.navigate(["/gestionPreguntas"]);
         },
