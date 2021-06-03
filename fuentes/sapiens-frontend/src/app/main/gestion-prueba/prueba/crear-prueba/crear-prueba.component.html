@@ -72,7 +72,7 @@
 
                                     <mat-form-field fxFlex="100" class="px-8" appearance="outline">
                                         <mat-label>Módulos</mat-label>
-                                        <mat-select formControlName="modulos" multiple>
+                                        <mat-select formControlName="modulos" multiple (selectionChange)="getModulosSeleccionados()">
                                             <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.moduId">
                                                 {{modulo.nombre}}</mat-option>
                                         </mat-select>
@@ -80,6 +80,8 @@
                                     </mat-form-field>
                                 </form>
                             </div>
+
+                            <app-lista-preguntas [listaModulos]="modulosSelect" [listaPreguntas]="listaPreguntas"></app-lista-preguntas>
 
                             <app-lista-estudiantes [usuariosSeleccionados]="usuariosSeleccionados">
                             </app-lista-estudiantes>

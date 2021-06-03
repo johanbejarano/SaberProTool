@@ -36,6 +36,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -604,6 +607,67 @@ public class PreguntaServiceImpl implements PreguntaService {
 			return preguntaRepository.findByModulo_moduIdAndAndComplejidadAndEstadoRegistro(moduId, complejidad, Constantes.ESTADO_ACTIVO);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<PreguntaDTO> getPreguntasPorModulos(List<Integer> moduIds, String filtro, int pageNumber, int pageSize)
+			throws Exception {
+		try {
+
+			Pageable pageable = PageRequest.of(pageNumber, pageSize);
+			if (filtro != null && filtro.equals("*")) {
+				filtro = "";
+			}
+			filtro = "%" + filtro + "%";
+			
+			List<Integer> moduIdsCon = new ArrayList<>();
+			
+			if (moduIds != null && !moduIds.isEmpty()) {
+				
+				moduIds.forEach(data ->
+					moduIdsCon.add(data)
+				); 
+			}
+			
+			Page<PreguntaDTO> preguntas = preguntaRepository.getPreguntasPorModulos(moduIdsCon, filtro, Constantes.ESTADO_ACTIVO ,pageable);
+			
+			return preguntas;
+				
+		} catch (Exception e) {
+			log.error("Error en getUsuariosPorTipo", e);
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Integer> getAllPreguntasPorModulos(List<Integer> moduIds, String filtro)
+			throws Exception {
+		try {
+
+			if (filtro != null && filtro.equals("*")) {
+				filtro = "";
+			}
+			filtro = "%" + filtro + "%";
+			
+			List<Integer> moduIdsCon = new ArrayList<>();
+			
+			if (moduIds != null && !moduIds.isEmpty()) {
+				
+				moduIds.forEach(data -> 
+					moduIdsCon.add(data)
+				); 
+			}
+			
+			List<Integer> preguntas = preguntaRepository.getAllPreguntasPorModulos(moduIdsCon, filtro, Constantes.ESTADO_ACTIVO);
+			
+			return preguntas;				
+			
+		} catch (Exception e) {
+			log.error("Error en getUsuariosPorTipo", e);
 			throw e;
 		}
 	}

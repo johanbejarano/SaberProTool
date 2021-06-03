@@ -32,4 +32,6 @@ export class Pregunta {
     nombreContexto: string;
     contexto: string;
     tienePruebas: boolean;
+
+    nombreTipoPregunta: string;
 }

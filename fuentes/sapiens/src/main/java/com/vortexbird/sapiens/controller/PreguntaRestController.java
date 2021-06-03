@@ -8,6 +8,7 @@ import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.GuardarPreguntaDTO;
 import com.vortexbird.sapiens.dto.PreguntaDTO;
 import com.vortexbird.sapiens.dto.RespuestaDTO;
+import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.mapper.PreguntaMapper;
 import com.vortexbird.sapiens.mapper.RespuestaMapper;
 import com.vortexbird.sapiens.service.PreguntaService;
@@ -16,6 +17,7 @@ import com.vortexbird.sapiens.service.RespuestaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -228,6 +230,43 @@ public class PreguntaRestController {
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/getPreguntasPorModulos/{moduIds}/{filtro}/{pageNumber}/{pageSize}")
+	public ResponseEntity<?> getUsuariosPorTipo(@PathVariable("moduIds") List<Integer> moduIds,
+			@PathVariable("filtro") String filtro, @PathVariable("pageNumber") int pageNumber,
+			@PathVariable("pageSize") int pageSize) {
+
+		log.debug("Request to getPreguntasPorModulos()");
+
+		try {
+
+			Page<PreguntaDTO> preguntas = preguntaService.getPreguntasPorModulos(moduIds, filtro, pageNumber, pageSize);
+
+			return ResponseEntity.ok().body(preguntas);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/getAllPreguntasPorModulos/{moduIds}/{filtro}")
+	public ResponseEntity<?> getAllUsuariosPorTipo(@PathVariable("moduIds") List<Integer> moduIds,
+			@PathVariable("filtro") String filtro) {
+
+		log.debug("Request to getAllPreguntasPorModulos()");
+
+		try {
+
+			List<Integer> preguntas = preguntaService.getAllPreguntasPorModulos(moduIds, filtro);
+
+			return ResponseEntity.ok().body(preguntas);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
