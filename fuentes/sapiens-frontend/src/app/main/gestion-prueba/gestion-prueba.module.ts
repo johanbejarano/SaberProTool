@@ -26,13 +26,14 @@ import { CrearPruebaComponent } from './prueba/crear-prueba/crear-prueba.compone
 import { ListaEstudiantesComponent } from './prueba/lista-estudiantes/lista-estudiantes.component';
 import { PruebaListComponent } from './prueba/prueba-list/prueba-list.component';
 import { PruebaComponent } from './prueba/prueba.component';
+import { ListaPreguntasComponent } from './prueba/lista-preguntas/lista-preguntas.component';
 
 
 
 
 
 @NgModule({
-  declarations: [PruebaComponent, PruebaListComponent, CrearPruebaComponent, ListaEstudiantesComponent],
+  declarations: [PruebaComponent, PruebaListComponent, CrearPruebaComponent, ListaEstudiantesComponent, ListaPreguntasComponent],
   imports: [
     CommonModule,
     GestionPruebaRoutingModule,

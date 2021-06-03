@@ -37,9 +37,11 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   strBusqueda: string;
 
+  listaPreguntas: number[]=[];
   usuariosSeleccionados: number[] = [];
   modulosSeleccionados: number[] = [];
   listaModulos: Modulo[];
+  modulosSelect:number[]=[];
 
   usuario: Usuario;
 
@@ -143,7 +145,12 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   }
 
-  guardarPrueba() {
+  guardarPrueba() {      
+    let listaPregIds = this.listaPreguntas.filter( (d,index) =>{
+      return this.listaPreguntas.indexOf(d) == index
+    });
+    console.log(listaPregIds);
+    
     let listaUsuaids = this.usuariosSeleccionados.filter( (d,index) =>{
       return this.usuariosSeleccionados.indexOf(d) == index
     });
@@ -197,6 +204,14 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
           });
 
     }
+  }
+
+  getModulosSeleccionados(){
+    if (this.form.controls.modulos.value != null) {
+      this.modulosSelect =this.form.controls.modulos.value;   
+    }else{
+      this.modulosSelect = null;
+    }    
   }
 
 }
