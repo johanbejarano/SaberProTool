@@ -36,6 +36,7 @@ public class PruebaDTO implements Serializable {
     
     private List<Integer> idModulos;
     private List<Integer> idUsuarios;
+    private List<Integer> idPreguntas;
 
     public String getEstadoRegistro() {
         return estadoRegistro;
@@ -131,6 +132,14 @@ public class PruebaDTO implements Serializable {
 
 	public void setIdUsuarios(List<Integer> idUsuarios) {
 		this.idUsuarios = idUsuarios;
+	}
+	
+	public List<Integer> getIdPreguntas() {
+		return idPreguntas;
+	}
+
+	public void setIdPreguntas(List<Integer> idPreguntas) {
+		this.idPreguntas = idPreguntas;
 	}
 
     @Override

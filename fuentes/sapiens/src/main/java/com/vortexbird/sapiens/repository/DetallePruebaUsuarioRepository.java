@@ -25,6 +25,10 @@ public interface DetallePruebaUsuarioRepository extends JpaRepository<DetallePru
 	@Query(nativeQuery = true)
 	public Integer cantidadEjecucionesPorUsuario(
 			@Param("pUsuaId") Integer moduId);
+	
+	@Query(nativeQuery = true)
+	public Integer cantidadEjecucionesPorPregunta(
+			@Param("pPregId") Integer pregId);
 
 	public List<DetallePruebaUsuario> findByPruebaUsuario_prusIdAndEstadoRegistro(Integer prusId, String estado);
 }

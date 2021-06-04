@@ -196,6 +196,19 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			throw e;
 		}
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Integer getCantidadDeEjecucionesPorPregunta(Integer pregId) throws Exception {
+		try {
+
+			return detallePruebaUsuarioRepository.cantidadEjecucionesPorPregunta(pregId);
+
+		} catch (Exception e) {
+			log.error("Error en getCantidadDeEjecucionesPorUsuario", e);
+			throw e;
+		}
+	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

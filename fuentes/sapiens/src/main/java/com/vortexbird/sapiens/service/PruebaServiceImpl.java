@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,10 +23,12 @@ import javax.xml.bind.DatatypeConverter;
 
 import com.vortexbird.sapiens.domain.EstadoPrueba;
 import com.vortexbird.sapiens.domain.Modulo;
+import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.Programa;
 import com.vortexbird.sapiens.domain.ProgramaModulo;
 import com.vortexbird.sapiens.domain.Prueba;
 import com.vortexbird.sapiens.domain.PruebaModulo;
+import com.vortexbird.sapiens.domain.PruebaPregunta;
 import com.vortexbird.sapiens.domain.PruebaUsuario;
 import com.vortexbird.sapiens.domain.TipoPrueba;
 import com.vortexbird.sapiens.domain.TipoUsuario;
@@ -102,6 +105,12 @@ public class PruebaServiceImpl implements PruebaService {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private PreguntaService preguntaService;
+	
+	@Autowired
+	private PruebaPreguntaService pruebaPreguntaService;
 
 	@Override
 	public void validate(Prueba prueba) throws Exception {
@@ -344,6 +353,16 @@ public class PruebaServiceImpl implements PruebaService {
 
 				pruebaDTO.getIdModulos().add(modulo.getModuId());
 			}
+			
+			// Se consultan los módulos de la prueba
+			pruebaDTO.setIdPreguntas(new ArrayList<Integer>());
+
+			List<PruebaPregunta> pruebaPreguntas = prueba.get().getPruebaPreguntas();
+			for (PruebaPregunta pruebaPregunta : pruebaPreguntas) {
+				Pregunta pregunta = pruebaPregunta.getPregunta();
+
+				pruebaDTO.getIdPreguntas().add(pregunta.getPregId());
+			}
 
 			// Se consultan los usuarios de la prueba
 			pruebaDTO.setIdUsuarios(new ArrayList<Integer>());
@@ -354,7 +373,7 @@ public class PruebaServiceImpl implements PruebaService {
 
 				pruebaDTO.getIdUsuarios().add(usuario.getUsuaId());
 			}
-
+			
 			pruebaDTO.setNombrePropietario(usuarioService.getNombreUsuario(pruebaDTO.getUsuCreador().intValue()));
 
 			return pruebaDTO;
@@ -404,6 +423,9 @@ public class PruebaServiceImpl implements PruebaService {
 			if (!tipoPrueba.isPresent()) {
 				throw new Exception("No existe el tipo de prueba: " + pruebaDTO.getTiprId_TipoPrueba());
 			}
+			
+			///////
+			TipoPrueba tipoPruebaAux = tipoPrueba.get();
 
 			// Se guarda la prueba
 			Prueba prueba = new Prueba();
@@ -438,6 +460,29 @@ public class PruebaServiceImpl implements PruebaService {
 
 				pruebaModuloService.save(pruebaModulo);
 
+			}
+			
+			//se guardan las preguntas de la prueba si el tipo de prueba es prueba simulacro seleccionable
+			if (tipoPruebaAux.getTiprId() == Constantes.TIPO_PRUEBA_SIMULACRO_SELECCIONABLE) {
+				for (Integer pregunta : pruebaDTO.getIdPreguntas()) {
+					
+					//ser consulta la pregunta
+					Optional<Pregunta> preguntaOpt = preguntaService.findById(pregunta);
+					if (!preguntaOpt.isPresent()) {
+						throw new Exception("No existe la pregunta: " + pregunta);
+					}
+					
+					//Se crea la pregunta a la prueba
+					PruebaPregunta pruebaPregunta = new PruebaPregunta();
+					pruebaPregunta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					pruebaPregunta.setFechaCreacion(new Date());
+					pruebaPregunta.setPregunta(preguntaOpt.get());
+					pruebaPregunta.setPrueba(prueba);
+					pruebaPregunta.setUsuCreador(pruebaDTO.getUsuCreador());
+					
+					pruebaPreguntaService.save(pruebaPregunta);
+					
+				}
 			}
 
 			// Se guarda la población
@@ -562,12 +607,15 @@ public class PruebaServiceImpl implements PruebaService {
 			// Se consultan los módulos que actualmente tiene la prueba
 			List<PruebaModulo> pruebasModulo = prueba.getPruebaModulos();
 			List<PruebaUsuario> pruebasUsuario = prueba.getPruebaUsuarios();
+			List<PruebaPregunta> pruebasPregunta = prueba.getPruebaPreguntas();
 
 			List<Modulo> modulosActuales = new ArrayList<Modulo>();
 			List<Usuario> usuariosActuales = new ArrayList<Usuario>();
+			List<Pregunta> preguntasActuales = new ArrayList<Pregunta>();
 
 			Map<Integer, PruebaModulo> pruebasModuloMapa = new HashMap<Integer, PruebaModulo>();
 			Map<Integer, PruebaUsuario> pruebasUsuarioMapa = new HashMap<Integer, PruebaUsuario>();
+			Map<Integer, PruebaPregunta> pruebasPreguntaMapa = new HashMap<Integer, PruebaPregunta>();
 
 			pruebasModulo.forEach(pruebaModulo -> {
 				modulosActuales.add(pruebaModulo.getModulo());
@@ -577,6 +625,11 @@ public class PruebaServiceImpl implements PruebaService {
 			pruebasUsuario.forEach(pruebaUsuaurio -> {
 				usuariosActuales.add(pruebaUsuaurio.getUsuario());
 				pruebasUsuarioMapa.put(pruebaUsuaurio.getUsuario().getUsuaId(), pruebaUsuaurio);
+			});
+			
+			pruebasPregunta.forEach(pruebaPregunta -> {
+				preguntasActuales.add(pruebaPregunta.getPregunta());
+				pruebasPreguntaMapa.put(pruebaPregunta.getPregunta().getPregId(), pruebaPregunta);
 			});
 
 			// Módulos
@@ -634,6 +687,66 @@ public class PruebaServiceImpl implements PruebaService {
 					}
 
 					pruebaModuloService.delete(pruebaModulo);
+				}
+			}
+			
+			// Preguntas
+			if (pruebaDTO.getTiprId_TipoPrueba() == Constantes.TIPO_PRUEBA_SIMULACRO_SELECCIONABLE) {
+				
+				// Se calculan las preguntas a asignar
+				for (Integer pregId : pruebaDTO.getIdPreguntas()) {
+					boolean encontrado = false;
+					for (Pregunta preguntaActual : preguntasActuales) {
+						if (preguntaActual.getPregId().equals(pregId)) {
+							encontrado = true;
+							break;
+						}
+					}
+					
+					if (!encontrado) {
+						// Se asigna la pregunta
+						Optional<Pregunta> pregunta = preguntaService.findById(pregId);
+						if (!pregunta.isPresent()) {
+							throw new Exception("No existe la pregunta: " + pregId);
+						}
+						
+						// Se crea el pregunta prueba
+						PruebaPregunta pruebaPregunta = new PruebaPregunta();
+						
+						pruebaPregunta.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+						pruebaPregunta.setFechaCreacion(new Date());
+						pruebaPregunta.setPregunta(pregunta.get());
+						pruebaPregunta.setPrueba(prueba);
+						pruebaPregunta.setUsuCreador(pruebaDTO.getUsuCreador());
+						
+						pruebaPreguntaService.save(pruebaPregunta);
+					}
+				}
+				
+				// Se calculan las preguntas a desasignar
+				for (Pregunta preguntaActual : preguntasActuales) {
+					boolean encontrado = false;
+					for (Integer pregId : pruebaDTO.getIdPreguntas()) {
+						if (preguntaActual.getPregId().equals(pregId)) {
+							encontrado = true;
+							break;
+						}
+					}
+					
+					// Si no encontró la pregunta en la nueva asignación, se valida que no tenga
+					// ejecución de pruebas
+					if (!encontrado) {
+						PruebaPregunta pruebaPregunta = pruebasPreguntaMapa.get(preguntaActual.getPregId());
+						
+						Integer cantidadEjecuciones = detallePruebaUsuarioService
+								.getCantidadDeEjecucionesPorPregunta(preguntaActual.getPregId());
+						if (cantidadEjecuciones > 0) {
+							throw new Exception("No se puede desasignar la pregunta (" + preguntaActual.getPregId() + ") \""
+									+ preguntaActual.getPregId() + "\". Tiene pruebas en ejecución");
+						}
+						
+						pruebaPreguntaService.delete(pruebaPregunta);
+					}
 				}
 			}
 

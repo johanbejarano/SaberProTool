@@ -16,6 +16,7 @@ import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.Prueba;
 import com.vortexbird.sapiens.domain.PruebaModulo;
+import com.vortexbird.sapiens.domain.PruebaPregunta;
 import com.vortexbird.sapiens.domain.PruebaUsuario;
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
@@ -249,9 +250,40 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			if (prueba.getFechaFinal() != null && prueba.getFechaFinal().before(fecha)){
 				throw new Exception("Se terminó el tiempo de la prueba");
 			}
+			
+			// Si la prueba apenas se va a iniciar, se construye el cuestionario
+			if (pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_SIN_INICIAR) && prueba.getTipoPrueba().getTiprId() == Constantes.TIPO_PRUEBA_SIMULACRO_SELECCIONABLE) {
+				List<PruebaPregunta> pruebasPregunta = prueba.getPruebaPreguntas();
+				List<Pregunta> preguntas = new ArrayList<Pregunta>();				
+				
+				for (PruebaPregunta pruebaPregunta : pruebasPregunta) {
+					
+					Pregunta pregunta = pruebaPregunta.getPregunta();
+					
+					if (pregunta.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+						continue;
+					}
+					
+					preguntas.add(pregunta);
+				}
+				
+				Long puntaje = 0L;
+				
+				for (Pregunta pregunta : preguntas) {
+					DetallePruebaUsuario detallePruebaUsuario = new DetallePruebaUsuario();
+					detallePruebaUsuario.setPruebaUsuario(pruebaUsuario);
+					detallePruebaUsuario.setPregunta(pregunta);
+					detallePruebaUsuario.setUsuCreador(usuario);
+					detallePruebaUsuario.setFechaCreacion(fecha);
+					detallePruebaUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					detallePruebaUsuarioService.save(detallePruebaUsuario);
+					puntaje += pregunta.getValorPregunta() == null ? 50L : pregunta.getValorPregunta();
+				}
+				pruebaUsuario.setTotalPreguntas(puntaje);
+			}
 
 			// Si la prueba apenas se va a iniciar, se construye el cuestionario
-			if (pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_SIN_INICIAR)) {
+			if (pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_SIN_INICIAR) && prueba.getTipoPrueba().getTiprId() != Constantes.TIPO_PRUEBA_SIMULACRO_SELECCIONABLE) {
 				List<PruebaModulo> pruebasModulo = prueba.getPruebaModulos();
 				List<Pregunta> preguntas = new ArrayList<Pregunta>();
 				for (PruebaModulo pruebaModulo : pruebasModulo) {

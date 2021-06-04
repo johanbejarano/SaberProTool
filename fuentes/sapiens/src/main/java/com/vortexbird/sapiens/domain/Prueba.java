@@ -46,14 +46,16 @@ public class Prueba implements java.io.Serializable {
     private Long usuModificador;
     private List<PruebaModulo> pruebaModulos = new ArrayList<PruebaModulo>(0);
     private List<PruebaUsuario> pruebaUsuarios = new ArrayList<PruebaUsuario>(0);
-
+    private List<PruebaPregunta> pruebaPreguntas = new ArrayList<PruebaPregunta>(0);
+    
     public Prueba() {
     }
 
     public Prueba(Integer prueId, String estadoRegistro, Date fechaCreacion,
         Date fechaFinal, Date fechaInicial, Date fechaModificacion,
-        List<PruebaModulo> pruebaModulos, List<PruebaUsuario> pruebaUsuarios,
-        Long tiempo, TipoPrueba tipoPrueba, Long usuCreador, Long usuModificador) {
+        List<PruebaModulo> pruebaModulos, List<PruebaUsuario> pruebaUsuarios, 
+        List<PruebaPregunta> pruebaPreguntas, Long tiempo, TipoPrueba tipoPrueba, 
+        Long usuCreador, Long usuModificador) {
         this.prueId = prueId;
         this.tipoPrueba = tipoPrueba;
         this.estadoRegistro = estadoRegistro;
@@ -66,6 +68,7 @@ public class Prueba implements java.io.Serializable {
         this.usuModificador = usuModificador;
         this.pruebaModulos = pruebaModulos;
         this.pruebaUsuarios = pruebaUsuarios;
+        this.pruebaPreguntas = pruebaPreguntas;
     }
 
     @Id
@@ -177,5 +180,14 @@ public class Prueba implements java.io.Serializable {
 
     public void setPruebaUsuarios(List<PruebaUsuario> pruebaUsuarios) {
         this.pruebaUsuarios = pruebaUsuarios;
+    }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "prueba")
+    public List<PruebaPregunta> getPruebaPreguntas() {
+        return this.pruebaPreguntas;
+    }
+
+    public void setPruebaPreguntas(List<PruebaPregunta> pruebaPreguntas) {
+        this.pruebaPreguntas = pruebaPreguntas;
     }
 }

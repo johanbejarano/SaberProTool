@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -22,7 +22,7 @@ import { map, filter } from 'rxjs/operators';
   styleUrls: ['./lista-estudiantes.component.scss'],
   animations: fuseAnimations
 })
-export class ListaEstudiantesComponent implements OnInit, OnDestroy {
+export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
 
   formListaEstudiantes: FormGroup;
   subscription: Subscription;
@@ -71,6 +71,17 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
     this.selectAllData();
   }
 
+  ngOnChanges(){
+    this.pageNumber = 0;
+    this.pageSize = 10;
+    let idPrueba = this.localStorage.getFromLocal('idPrueba');
+    this.actualizarFomulario();
+    if (idPrueba) {
+      this.getData();
+      this.selectAllData();
+    }
+  }
+
   actualizarFomulario() {
     // Reactive Form
     this.formListaEstudiantes = this._formBuilder.group({
@@ -107,8 +118,6 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    console.log(this.formListaEstudiantes);
-
     this.subscription = this.usuarioService.getUsuariosPorTipo(
       global.TIPOS_USUARIO.ESTUDIANTE,
       this.formListaEstudiantes.controls.facultad.value,
@@ -203,7 +212,6 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy {
       // this.usuariosSeleccionados.push(usuario.usuaId);
       // this.localStorage.putInLocal('x', this.usuariosSeleccionados);
     });
-    console.log(this.usuariosSeleccionados);
   }
 
 }

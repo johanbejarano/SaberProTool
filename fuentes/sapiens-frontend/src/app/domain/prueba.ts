@@ -16,5 +16,6 @@ export class Prueba {
 
     idModulos: number[];
     idUsuarios: number[];
+    idPreguntas: number[];
 
 }
