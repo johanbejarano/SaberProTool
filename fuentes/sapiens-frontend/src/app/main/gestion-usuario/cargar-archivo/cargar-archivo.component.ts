@@ -1,3 +1,4 @@
+import { ExcelService } from './../../../services/excel.service';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -19,13 +20,18 @@ export class CargarArchivoComponent implements OnInit {
   @Output() actualizar = new EventEmitter();
 
   private usuarios: Usuario[];
+  imprimeExcelErrores: boolean = false;
+  errores: any[] = [];
 
   public selectedFiles: File;
   private usuario: Usuario;
 
-  constructor(private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+  constructor(
+    private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     private snackBar: MatSnackBar,
-    private usuarioService: UsuarioService) {
+    private usuarioService: UsuarioService,
+    private excelService: ExcelService
+    ) {
     this._fuseTranslationLoaderService.loadTranslations(espanol);
     this.usuario = this.usuarioService.getUsuario();
   }
@@ -41,6 +47,7 @@ export class CargarArchivoComponent implements OnInit {
   }
 
   selectFile(event) {
+    this.imprimeExcelErrores = false;
     this.selectedFiles = event.target.files[0];
     const filesize: number = ((event.target.files[0].size / 1024) / 1024);
     const ext: string = event.target.files[0].name.split('.').pop();
@@ -80,6 +87,8 @@ export class CargarArchivoComponent implements OnInit {
           usuario.identificacion = usuarioArray[3];
           usuario.correo = usuarioArray[4];
           usuario.celular = usuarioArray[5];
+          console.log(usuarioArray[6]);
+          
           if (usuarioArray[6].toLowerCase() == 'masculino' || usuarioArray[6].toLowerCase() == 'm') {
             usuario.genero = 'M';
           } else if (usuarioArray[6].toLowerCase() == 'femenino' || usuarioArray[6].toLowerCase() == 'f') {
@@ -118,14 +127,37 @@ export class CargarArchivoComponent implements OnInit {
 
       request.usuarios = this.usuarios;
       request.usuarioCreador = this.usuario.usuaId;
-      this.usuarioService.cargar(request).subscribe(() => {
-        this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+      this.usuarioService.cargar(request).subscribe(d => {
+        this.errores = d;
+        if(d[0]){
+          console.log("tiene errores");
+          this.imprimeExcelErrores = true;
+          this.snackBar.open(espanol.data.msg.guardadoExitosoErrores, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+          
+        }else{
+          console.log("no tiene errores");
+          this.imprimeExcelErrores = false;
+          this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+        }
+
       }, error => {
         if(error.error){
           this.snackBar.open(error.error, '×', { panelClass: 'error', verticalPosition: 'top', duration: 8000 });
         }
       });
     }
+  }
+
+  imprimirErrores(){
+    console.log("imprimir errores");
+    let reporte = [];
+    for (const iterator of this.errores) {
+      let itemReporte = {
+        error: iterator,
+      }
+      reporte.push(itemReporte);
+    }
+    this.excelService.exportAsExcelFile(reporte, 'Reporte_errores_carga_masiva');
   }
 
 }

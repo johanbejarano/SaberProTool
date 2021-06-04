@@ -16,9 +16,15 @@
                 <div *ngIf="selectedFiles" fxFlex="30">
                     <span class="text">{{selectedFiles.name}}</span>
                 </div>
-                <div *ngIf="selectedFiles" fxFlex="30" class="px-8">
+                <div *ngIf="selectedFiles" fxFlex="15" class="px-8">
                     <button fxFlex="100" mat-stroked-button (click)="guardar()" class="btnPrimario">
                         Guardar
+                    </button>
+                </div>
+                <div *ngIf="imprimeExcelErrores" fxFlex="15" class="px-8">
+                    <!--  -->
+                    <button fxFlex="100" mat-stroked-button (click)="imprimirErrores()" class="btnPrimario">
+                        Descargar errores
                     </button>
                 </div>
             </div>

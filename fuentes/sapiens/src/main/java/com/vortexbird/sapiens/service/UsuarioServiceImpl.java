@@ -1,5 +1,6 @@
 package com.vortexbird.sapiens.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -325,13 +326,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 			List<Usuario> usuarioTmp = usuarioRepository.findByCodigo(usuarioDTO.getCodigo());
 			if (!usuarioTmp.isEmpty()) {
 				if (usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())) {
-					throw new Exception("Ya se encuentra un usuario con el código ingresado");
+					throw new Exception("Ya se encuentra un usuario con el código: " + usuarioDTO.getCodigo());
 				}
 			}
 			usuarioTmp = usuarioRepository.findByIdentificacion(usuarioDTO.getIdentificacion());
 			if (!usuarioTmp.isEmpty()) {
 				if (usuarioDTO.getUsuaId() == null || !usuarioTmp.get(0).getUsuaId().equals(usuarioDTO.getUsuaId())) {
-					throw new Exception("Ya se encuentra un usuario con la identificacion ingresado");
+					throw new Exception("Ya se encuentra un usuario con la identificacion: "+ usuarioDTO.getIdentificacion());
 				}
 			}
 			
@@ -512,8 +513,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void cargar(CargueMasivoDTO request) throws Exception {
+	public List<String> cargar(CargueMasivoDTO request) throws Exception {
 		try {
+			
+			List<String> erroresList = new ArrayList<>();
+			
 			// Se valida el request
 			if (request == null) {
 				throw new Exception("El request se encuentra vacío");
@@ -532,7 +536,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				try {
 					if (!programasMap.containsKey(usuario.getNombrePrograma().trim().toUpperCase())) {
 						throw new Exception(
-								"El programa " + usuario.getNombrePrograma().trim() + " no existe en el sistema");
+								"El programa " + usuario.getNombrePrograma().trim() +" que le pertenece al usuario "+usuario.getCodigo()+ " no existe en el sistema");
 					}
 					usuario.setProgId_Programa(
 							programasMap.get(usuario.getNombrePrograma().trim().toUpperCase()).getProgId());
@@ -540,10 +544,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 					usuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
 					guardar(usuario);
 				} catch (Exception e) {
+					
+					erroresList.add(e.getMessage());
 					log.error("Error al crear usuario masivo:" + e.getMessage(), e);
 				}
 			}
-
+			
+			return erroresList;
+		
 		} catch (Exception e) {
 			throw e;
 		}
