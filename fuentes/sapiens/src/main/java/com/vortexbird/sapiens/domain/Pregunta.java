@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,11 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.vortexbird.sapiens.dto.PreguntaDTO;
 
 
 /**
@@ -24,6 +32,25 @@ import javax.validation.constraints.Size;
 * www.zathuracode.org
 *
 */
+
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "Pregunta.getAllPreguntasPorModulos", query = "", resultSetMapping = "listaPreguntas"),
+	@NamedNativeQuery(name = "Pregunta.getPreguntasPorModulos", query = "", resultSetMapping = "getPreguntasPorModulos"),
+	@NamedNativeQuery(name = "Pregunta.getPreguntasPorModulos.count", query = "", resultSetMapping = "countGetPreguntasPorModulos") })
+@SqlResultSetMappings({
+	@SqlResultSetMapping(name = "getPreguntasPorModulos", classes = {
+			@ConstructorResult(targetClass = PreguntaDTO.class, columns = {
+					@ColumnResult(name = "pregId", type = Integer.class),
+					@ColumnResult(name = "nombreModulo", type = String.class),
+					@ColumnResult(name = "descripcion", type = String.class),
+					@ColumnResult(name = "nombreTipoPregunta", type = String.class),
+					@ColumnResult(name = "complejidad", type = Long.class)}) }),
+	
+	@SqlResultSetMapping(name = "listaPreguntas", columns = {
+			@ColumnResult(name = "pregId", type = Integer.class) }),
+	
+	@SqlResultSetMapping(name = "countGetPreguntasPorModulos", columns = {
+			@ColumnResult(name = "total", type = Integer.class) }), })
 @Entity
 @Table(name = "pregunta", schema = "public")
 public class Pregunta implements java.io.Serializable {

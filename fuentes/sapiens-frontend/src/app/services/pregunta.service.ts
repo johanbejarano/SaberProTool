@@ -47,4 +47,18 @@ export class PreguntaService {
   public cargar(request: CargueMasivo): Observable<any> {
     return this.httpClient.post(this.url + 'cargar/', request);
   }
+
+  public getAllPreguntasPorModulos(moduIds: number[], filtro: string): Observable<any> {
+    if (!filtro || filtro.length == 0 || filtro === '%') {
+      filtro = "*";
+    }
+    return this.httpClient.get(this.url + 'getAllPreguntasPorModulos/' + moduIds + "/" + filtro);
+  }
+
+  public getPreguntasPorModulos(moduIds: number[], filtro: string, pageNumber: number, pageSize: number): Observable<any> {
+    if (!filtro || filtro.length == 0 || filtro === '%') {
+      filtro = "*";
+    }
+    return this.httpClient.get(this.url + 'getPreguntasPorModulos/' + moduIds +  "/" + filtro + "/" + pageNumber + "/" + pageSize);
+  }
 }

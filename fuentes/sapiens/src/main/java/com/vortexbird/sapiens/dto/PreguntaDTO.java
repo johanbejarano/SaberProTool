@@ -45,6 +45,26 @@ public class PreguntaDTO implements Serializable {
 	
 	private String codigoUsuario;
 	private boolean tienePruebas;
+	
+	private String nombreTipoPregunta;
+	
+	public PreguntaDTO() {
+		super();
+	}
+
+	public PreguntaDTO(Integer pregId, String nombreModulo, String descripcion, String nombreTipoPregunta, Long complejidad) {
+		super();
+		this.pregId = pregId;
+		this.nombreModulo = nombreModulo;
+		this.descripcion = descripcion;
+		this.nombreTipoPregunta = nombreTipoPregunta;
+		this.complejidad = complejidad;
+	}
+	
+	public PreguntaDTO(Integer pregId) {
+		super();
+		this.pregId = pregId;
+	}
 
 	public String getDescripcion() {
 		return descripcion;
@@ -236,5 +256,12 @@ public class PreguntaDTO implements Serializable {
 		this.seleccionMultiple = seleccionMultiple;
 	}
 	
+	public String getNombreTipoPregunta() {
+		return nombreTipoPregunta;
+	}
+
+	public void setNombreTipoPregunta(String nombreTipoPregunta) {
+		this.nombreTipoPregunta = nombreTipoPregunta;
+	}
 	
 }

@@ -2,6 +2,8 @@ package com.vortexbird.sapiens.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.GuardarPreguntaDTO;
@@ -28,4 +30,9 @@ public interface PreguntaService extends GenericService<Pregunta, Integer> {
 	List<Pregunta> getPreguntasPorModuloPorComplejidad(Integer moduId, Long complejidad) throws Exception;
 
 	void cargar(CargueMasivoDTO request) throws Exception;
+	
+	Page<PreguntaDTO> getPreguntasPorModulos(List<Integer> ModiIds, String filtro, int pageNumber, int pageSize)
+			throws Exception;
+
+	List<Integer> getAllPreguntasPorModulos(List<Integer> moduIds, String filtro) throws Exception;
 }

@@ -76,6 +76,69 @@
 	        </query>
 		</named-native-query>
 	</entity>
+	
+	<entity
+		class="com.vortexbird.sapiens.domain.Pregunta">
+		<named-native-query
+			name="Pregunta.getPreguntasPorModulos"
+			result-set-mapping="getPreguntasPorModulos">
+			<query>
+	        <![CDATA[
+	        	SELECT 		preg.preg_id pregId,
+					modu.nombre nombreModulo,
+					preg.descripcion descripcion,
+					tipr.nombre nombreTipoPregunta,
+					preg.complejidad complejidad
+				FROM pregunta preg
+				inner join modulo modu on modu.modu_id = preg.modu_id 
+				inner join tipo_pregunta tipr on tipr.tprg_id = preg.tprg_id 
+				where preg.estado_registro = :pEstado
+				and modu.estado_registro = :pEstado
+				and (((-1) not in :pModiId AND modu.modu_id in :pModiId) OR ((-1) in :pModiId ))
+			  AND (preg.preg_id ||'' LIKE UPPER(:pFiltro) OR modu.nombre ||'' LIKE UPPER(:pFiltro) OR UPPER(preg.descripcion) LIKE UPPER(:pFiltro) 
+			  OR preg.complejidad ||'' LIKE UPPER(:pFiltro) OR UPPER(tipr.nombre) LIKE UPPER(:pFiltro))
+				ORDER BY preg.preg_id
+	        ]]>
+	        </query>
+		</named-native-query>
+		
+		<named-native-query
+			name="Pregunta.getAllPreguntasPorModulos"
+			result-set-mapping="listaPreguntas">
+			<query>
+	        <![CDATA[
+	        	SELECT 		preg.preg_id pregId
+				FROM pregunta preg
+				inner join modulo modu on modu.modu_id = preg.modu_id 
+				inner join tipo_pregunta tipr on tipr.tprg_id = preg.tprg_id 
+				where preg.estado_registro = :pEstado
+				and modu.estado_registro = :pEstado
+				and (((-1) not in :pModiId AND modu.modu_id in :pModiId) OR ((-1) in :pModiId ))
+			  AND (preg.preg_id ||'' LIKE UPPER(:pFiltro) OR modu.nombre ||'' LIKE UPPER(:pFiltro) OR UPPER(preg.descripcion) LIKE UPPER(:pFiltro) 
+			  OR preg.complejidad ||'' LIKE UPPER(:pFiltro) OR UPPER(tipr.nombre) LIKE UPPER(:pFiltro))
+				ORDER BY preg.preg_id
+	        ]]>
+	        </query>
+		</named-native-query>
+
+		<named-native-query
+			name="Pregunta.getPreguntasPorModulos.count"
+			result-set-mapping="countGetPreguntasPorModulos">
+			<query>
+	        <![CDATA[
+	        	SELECT 		count(*) as total
+					FROM pregunta preg
+					inner join modulo modu on modu.modu_id = preg.modu_id 
+					inner join tipo_pregunta tipr on tipr.tprg_id = preg.tprg_id 
+					where preg.estado_registro = :pEstado
+					and modu.estado_registro = :pEstado
+					and (((-1) not in :pModiId AND modu.modu_id in :pModiId) OR ((-1) in :pModiId ))
+				  AND (preg.preg_id ||'' LIKE UPPER(:pFiltro) OR modu.nombre ||'' LIKE UPPER(:pFiltro) OR UPPER(preg.descripcion) LIKE UPPER(:pFiltro) 
+				  OR preg.complejidad ||'' LIKE UPPER(:pFiltro) OR UPPER(tipr.nombre) LIKE UPPER(:pFiltro))	
+	        ]]>
+	        </query>
+		</named-native-query>
+	</entity>
 
 	<entity class="com.vortexbird.sapiens.domain.DetallePruebaUsuario">
 		<named-native-query
