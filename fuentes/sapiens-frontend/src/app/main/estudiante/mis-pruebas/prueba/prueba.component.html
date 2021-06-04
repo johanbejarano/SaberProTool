@@ -102,7 +102,7 @@
                                         </div>
                                         <div *ngIf="pregunta.retroalimentacionPregunta" class="px-4 pb-4" fxFlex="100">
                                             <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
-                                                [(data)]="respuesta.retroalimentacionPregunta" (ready)="setReadOnly($event)">
+                                                [(data)]="pregunta.retroalimentacionPregunta" (ready)="setReadOnly($event)">
                                             </ckeditor>
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
