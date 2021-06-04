@@ -85,6 +85,7 @@ public class Pregunta implements java.io.Serializable {
     private Long usuModificador;
     private List<DetallePruebaUsuario> detallePruebaUsuarios = new ArrayList<DetallePruebaUsuario>(0);
     private List<Respuesta> respuestas = new ArrayList<Respuesta>(0);
+    private List<PruebaPregunta> pruebaPreguntas = new ArrayList<PruebaPregunta>(0);
     
     @Column(name = "seleccion_multiple", nullable = false)
     private Boolean seleccionMultiple;
@@ -96,7 +97,8 @@ public class Pregunta implements java.io.Serializable {
     public Pregunta(Integer pregId, String descripcion,
         List<DetallePruebaUsuario> detallePruebaUsuarios,
         String estadoRegistro, Date fechaCreacion, Date fechaModificacion,
-        Modulo modulo, List<Respuesta> respuestas, String retroalimentacion,
+        Modulo modulo, List<Respuesta> respuestas, List<PruebaPregunta> pruebaPreguntas, 
+        String retroalimentacion,
         TipoPregunta tipoPregunta, Usuario usuario, Long usuModificador) {
         this.pregId = pregId;
         this.modulo = modulo;
@@ -110,6 +112,7 @@ public class Pregunta implements java.io.Serializable {
         this.usuModificador = usuModificador;
         this.detallePruebaUsuarios = detallePruebaUsuarios;
         this.respuestas = respuestas;
+        this.pruebaPreguntas = pruebaPreguntas;
     }
 
     @Id
@@ -244,6 +247,15 @@ public class Pregunta implements java.io.Serializable {
 
     public void setRespuestas(List<Respuesta> respuestas) {
         this.respuestas = respuestas;
+    }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pregunta")
+    public List<PruebaPregunta> getPruebaPreguntas() {
+        return this.pruebaPreguntas;
+    }
+
+    public void setPruebaPreguntas(List<PruebaPregunta> pruebaPreguntas) {
+        this.pruebaPreguntas = pruebaPreguntas;
     }
 
 	public Long getValorPregunta() {

@@ -46,6 +46,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
   usuario: Usuario;
 
   hoy = new Date();
+  prueId:number;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -65,15 +66,16 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
     this.prueba = new Prueba();
     let idPrueba = this.localStorage.getFromLocal('idPrueba');
-
+    this.prueId = idPrueba;
     if (idPrueba) {
 
       //Se consulta la prueba
       this.pruebaService.getPrueba(idPrueba)
-        .subscribe((prueba: Prueba) => {
+        .subscribe((prueba: Prueba) => {          
           this.prueba = prueba;
           this.modulosSeleccionados = prueba.idModulos;
           this.usuariosSeleccionados = prueba.idUsuarios;
+          this.listaPreguntas = prueba.idPreguntas;
 
           this.actualizarFomulario();
 
@@ -107,13 +109,13 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.hoy.setSeconds(0);
     this.form = this._formBuilder.group({
 
-      tipoPrueba: [2, Validators.required],
+      tipoPrueba: [this.prueba.tiprId_TipoPrueba, Validators.required],
       fechaInicial: [this.prueba.fechaInicial ? new Date(this.prueba.fechaInicial) : this.hoy, Validators.required],
       fechaFinal: [this.prueba.fechaFinal ? new Date(this.prueba.fechaFinal) : null, Validators.required],
       duracion: [this.prueba.tiempo, Validators.required],
       modulos: [this.modulosSeleccionados, Validators.required],
     });
-
+    
     this.form.controls.fechaInicial.valueChanges.subscribe((event: Date) => {
       let fecha: Date = event;
       fecha.setSeconds(0);
@@ -125,7 +127,8 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
       fecha.setSeconds(0);
       this.form.controls.fechaFinal.setValue(fecha, { emitEvent: false });
     });
-
+    
+    this.getModulosSeleccionados();
   }
 
   getSliderTickInterval(): number | 'auto' {
@@ -155,8 +158,15 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
       return this.usuariosSeleccionados.indexOf(d) == index
     });
     console.log(listaUsuaids);
+
+    console.log(this.form);
+    if (this.form.controls.tipoPrueba.value == 1) {
+      this.snackBar.open('No es permitido el tipo de prueba entrenamiento', 'x', { verticalPosition: 'top', duration: 10000 });
+      return;
+    }
     
     if (!this.form.valid) {
+      this.markFormGroupTouched(this.form);
       this.snackBar.open('Faltan datos por diligenciar', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
@@ -171,7 +181,8 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     this.prueba.fechaFinal = new Date(this.form.controls.fechaFinal.value);
     this.prueba.idModulos = this.form.controls.modulos.value;
     this.prueba.idUsuarios = listaUsuaids;
-    this.prueba.tiprId_TipoPrueba = 2;
+    this.prueba.idPreguntas = listaPregIds;
+    this.prueba.tiprId_TipoPrueba = this.form.controls.tipoPrueba.value;
     this.prueba.tiempo = this.form.controls.duracion.value;
     this.prueba.usuCreador = this.usuario.usuaId;
 
@@ -212,6 +223,12 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
     }else{
       this.modulosSelect = null;
     }    
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+    });
   }
 
 }

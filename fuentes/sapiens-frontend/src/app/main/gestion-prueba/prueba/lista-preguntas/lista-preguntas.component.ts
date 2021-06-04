@@ -10,6 +10,7 @@ import { Usuario } from '../../../../domain/usuario';
 import { global } from 'app/utils/global';
 import { PreguntaService } from '../../../../services/pregunta.service';
 import { Page } from '../../../../utils/pagination/page';
+import { LocalStorageService } from '../../../../services/local-storage.service';
 
 @Component({
   selector: 'app-lista-preguntas',
@@ -28,7 +29,7 @@ export class ListaPreguntasComponent implements OnInit, OnDestroy, OnChanges {
   pageNumber: number;
   pageSize: number;
   total: Number;
-  strBusqueda: string;
+  strBusqueda: string='';
 
   @Input() listaModulos:number[];
   @Input() listaPreguntas: number[]=[];
@@ -45,6 +46,7 @@ export class ListaPreguntasComponent implements OnInit, OnDestroy, OnChanges {
     private _formBuilder: FormBuilder,
     private preguntaService: PreguntaService,
     private usuarioService: UsuarioService,
+    private localStorage: LocalStorageService,
     private snackBar: MatSnackBar,
   ) { 
     this.usuario = usuarioService.getUsuario();
@@ -54,21 +56,28 @@ export class ListaPreguntasComponent implements OnInit, OnDestroy, OnChanges {
     this.pageNumber = 0;
     this.pageSize = 10;
 
-    this.actualizarFomulario();
-    // this.getData();
-    // this.selectAllData();
+    this.actualizarFomulario();    
   }
 
   ngOnChanges(){
-    this.getData();
+    this.pageNumber = 0;
+    this.pageSize = 10;
+    this.actualizarFomulario();
     this.selectAllData();
   }
 
   actualizarFomulario() {
-    // Reactive Form
+    // Reactive Form    
     this.formListaPreguntas = this._formBuilder.group({
       busqueda: [this.strBusqueda],
     });
+    
+    // let idPrueba = this.localStorage.getFromLocal('idPrueba');
+
+    // if (idPrueba) { 
+      this.getData();
+      this.selectAllData();
+    // }
   }
 
   ngOnDestroy(): void {
@@ -77,11 +86,10 @@ export class ListaPreguntasComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   selectAllData(){
-    if (this.listaModulos.length > 0) {
-      
+    if (this.listaModulos.length > 0) {      
       this.subscription = this.preguntaService.getAllPreguntasPorModulos(this.listaModulos,
         this.formListaPreguntas.controls.busqueda.value).subscribe(d=>{
-          if (d) {
+          if (d) {  
             this.preguntas = d;          
           }
         });
@@ -96,13 +104,9 @@ export class ListaPreguntasComponent implements OnInit, OnDestroy, OnChanges {
         this.pageNumber,
         this.pageSize)
         .subscribe((page: Page) => {
-  
           this.data = page.content;
           this.total = page.totalElements;
-  
-          console.log(this.data);
-          
-  
+
           this.datasource = new MatTableDataSource<Pregunta>(this.data);
   
           this.checkboxes = {};
@@ -181,7 +185,6 @@ export class ListaPreguntasComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     });
-    console.log(this.listaPreguntas);
   }
 
   

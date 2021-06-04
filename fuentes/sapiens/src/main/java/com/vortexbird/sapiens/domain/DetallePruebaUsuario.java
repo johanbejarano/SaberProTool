@@ -29,6 +29,7 @@ import javax.validation.constraints.Size;
 @NamedNativeQueries({
 	@NamedNativeQuery(name = "DetallePruebaUsuario.cantidadEjecucionesPorModulo", query = "", resultSetMapping = "DetallePruebaUsuarioCount"),
 	@NamedNativeQuery(name = "DetallePruebaUsuario.cantidadEjecucionesPorUsuario", query = "", resultSetMapping = "DetallePruebaUsuarioCount"),
+	@NamedNativeQuery(name = "DetallePruebaUsuario.cantidadEjecucionesPorPregunta", query = "", resultSetMapping = "DetallePruebaUsuarioCount"),
 })
 @SqlResultSetMappings({
 	@SqlResultSetMapping(name = "DetallePruebaUsuarioCount", columns = {

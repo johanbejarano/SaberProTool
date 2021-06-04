@@ -19,6 +19,7 @@ public class Constantes {
 	public static final Integer ESTADO_PRUEBA_TERMINADA = 4;
 	
 	public static final Integer TIPO_PRUEBA_ENTRENAMIENTO = 1;
+	public static final Integer TIPO_PRUEBA_SIMULACRO_SELECCIONABLE = 3;
 
 	public static final Long RESPUESTA_CORRECTA = 1L;
 	

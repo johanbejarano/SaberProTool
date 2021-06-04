@@ -19,12 +19,15 @@
                                 <form [formGroup]="form" fxLayout="row wrap" fxFlex="100">
                                     <mat-form-field appearance="outline" fxFlex="50" class="px-8">
                                         <mat-label>Tipo de prueba</mat-label>
-                                        <mat-select formControlName="tipoPrueba" required disabled>
+                                        <mat-select formControlName="tipoPrueba" required [disabled]="prueId">
                                             <mat-option [value]="1">
                                                 Entrenamiento
                                             </mat-option>
                                             <mat-option [value]="2">
                                                 Simulacro
+                                            </mat-option>
+                                            <mat-option [value]="3">
+                                                Simulacro elección de preguntas
                                             </mat-option>
                                         </mat-select>
                                         <mat-icon matSuffix class="secondary-text">bookmarks</mat-icon>
@@ -55,7 +58,8 @@
                                         <ngx-mat-datetime-picker #picker1 [showSpinners]="true" [showSeconds]="false"
                                             [stepHour]="1" [stepMinute]="1" [touchUi]="false" [stepSecond]="0">
                                         </ngx-mat-datetime-picker>
-                                        <mat-error>La fecha inicial es obligatoria!</mat-error>
+                                        <mat-error *ngIf="form.controls.fechaInicial.errors?.required">La fecha inicial es obligatoria!</mat-error>
+                                        <mat-error *ngIf="form.controls.fechaInicial.errors && !form.controls.fechaInicial.errors?.required">Debe ser la fecha actual</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="50" class="px-8">
@@ -81,7 +85,7 @@
                                 </form>
                             </div>
 
-                            <app-lista-preguntas [listaModulos]="modulosSelect" [listaPreguntas]="listaPreguntas"></app-lista-preguntas>
+                            <app-lista-preguntas *ngIf="form.controls.tipoPrueba.value == 3" [listaModulos]="modulosSelect" [listaPreguntas]="listaPreguntas"></app-lista-preguntas>
 
                             <app-lista-estudiantes [usuariosSeleccionados]="usuariosSeleccionados">
                             </app-lista-estudiantes>

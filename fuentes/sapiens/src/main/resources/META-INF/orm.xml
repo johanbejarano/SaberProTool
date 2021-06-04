@@ -172,6 +172,23 @@
 	        ]]>
 	        </query>
 		</named-native-query>
+		
+		<named-native-query
+			name="DetallePruebaUsuario.cantidadEjecucionesPorPregunta"
+			result-set-mapping="DetallePruebaUsuarioCount">
+			<query>
+	        <![CDATA[
+	        	select 	count(dpru.*) total
+				from 	prueba_pregunta prpr
+				inner	join pregunta preg on preg.preg_id = prpr.preg_id 
+				inner   join respuesta resp on resp.preg_id = preg.preg_id 
+				inner   join detalle_prueba_usuario dpru on dpru.resp_id = resp.resp_id 
+				inner   join prueba_usuario prus on prus.prus_id  = dpru .prus_id
+				where   prpr.preg_id = :pPregId
+				      	
+	        ]]>
+	        </query>
+		</named-native-query>
 	</entity>
 
 	<entity class="com.vortexbird.sapiens.domain.PruebaUsuario">
