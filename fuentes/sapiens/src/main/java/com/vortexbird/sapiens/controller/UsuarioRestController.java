@@ -231,8 +231,9 @@ public class UsuarioRestController {
 	@PostMapping(value = "/cargar")
 	public ResponseEntity<?> cargar(@RequestBody CargueMasivoDTO request) {
 		try {
-			usuarioService.cargar(request);
-			return ResponseEntity.ok().build();
+			
+			return ResponseEntity.ok().body(
+					usuarioService.cargar(request));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return ResponseEntity.badRequest().body(e.getMessage());

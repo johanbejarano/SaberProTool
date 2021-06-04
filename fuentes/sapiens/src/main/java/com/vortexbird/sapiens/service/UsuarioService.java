@@ -34,7 +34,7 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 	
 	void cambiarClave(UsuarioDTO usuarioDTO) throws Exception;
 
-	void cargar(CargueMasivoDTO request) throws Exception;
+	List<String> cargar(CargueMasivoDTO request) throws Exception;
 
 	void recrearClaves(Long usuarioCreador) throws Exception;
 }
