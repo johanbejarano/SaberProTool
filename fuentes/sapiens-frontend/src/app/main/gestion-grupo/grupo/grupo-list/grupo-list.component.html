@@ -1,0 +1,59 @@
+<div fxLayout="row wrap" fxFlex="100">
+    <fuse-widget class="widget" fxLayout="row wrap" fxFlex="100">
+        <div class="fuse-widget-front" fxFlex="100">
+            <div class="px-16 py-12 titlecard" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3">Pruebas</div>
+            </div>
+            <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
+                <mat-table #table [dataSource]="datasource" fxFlex="100">
+
+                    <!--COLUMNA ID-->
+                    <ng-container matColumnDef="grupId">
+                        <mat-header-cell *matHeaderCellDef fxFlex="10">
+                            <div class="px-4 h3">#</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="10" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">{{item.grupId}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!--COLUMNA ID-->
+
+                    <!--COLUMNA NOMBRE PRUEBA-->
+                    <ng-container matColumnDef="nombreGrupo">
+                        <mat-header-cell *matHeaderCellDef fxFlex="40">
+                            <div class="px-4 h3">Nombre grupo</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="40" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">{{item.nombre}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!--COLUMNA NOMBRE PRUEBA-->
+
+                    <!--COLUMNA DESCRIPCION-->
+                    <ng-container matColumnDef="descripcion">
+                        <mat-header-cell *matHeaderCellDef fxFlex="40">
+                            <div class="px-4 h3">Descripción</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let item" fxFlex="40" (click)="seleccionar(item)">
+                            <div class="px-4" fxFlex="100">
+                                <span class="referencia">{{item.descripcion}}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!--COLUMNA DESCRIPCION-->
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                    <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+        </div>
+    </fuse-widget>
+</div>
+        

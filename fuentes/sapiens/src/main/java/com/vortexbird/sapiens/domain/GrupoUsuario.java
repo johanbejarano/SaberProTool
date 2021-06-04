@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "grupo_usuario", schema = "public")
 public class GrupoUsuario implements java.io.Serializable {
-    @NotNull
+//    @NotNull
     private Long grusId;
     @NotNull
     private Grupo grupo;
@@ -50,6 +50,7 @@ public class GrupoUsuario implements java.io.Serializable {
 
     @Id
     @Column(name = "grus_id", unique = true, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long getGrusId() {
         return this.grusId;
     }

@@ -17,10 +17,14 @@ export class PruebaService {
   }
 
   public getPruebasDeUsuarioCreador(usuCreador: number): Observable<any> {
+    console.log(this.url + 'getPruebasDeUsuarioCreador/');
+    
     return this.httpClient.get(this.url + 'getPruebasDeUsuarioCreador/' + usuCreador);
   }
 
   public find(filtro: string): Observable<any> {
+    console.log(this.url + 'find/');
+    
     return this.httpClient.get(this.url + 'find/' + filtro);
   }
 

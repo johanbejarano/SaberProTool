@@ -23,7 +23,7 @@ import { getSpanishPaginatorIntl } from './utils/spanish-paginator-intl';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         BrowserModule,

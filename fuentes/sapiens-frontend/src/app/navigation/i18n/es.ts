@@ -5,6 +5,7 @@ export const locale = {
             'PROFESOR': {
                 'PREGUNTAS': 'Preguntas',
                 'SIMULACION': 'Pruebas',
+                'GRUPOS':'Grupos'
             },
             'ESTUDIANTE': {
                 'MISPRUEBAS': 'Mis pruebas',

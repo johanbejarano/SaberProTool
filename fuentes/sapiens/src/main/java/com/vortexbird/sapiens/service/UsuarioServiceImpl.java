@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.vortexbird.sapiens.domain.Grupo;
+import com.vortexbird.sapiens.domain.GrupoUsuario;
 import com.vortexbird.sapiens.domain.Programa;
 import com.vortexbird.sapiens.domain.PruebaUsuario;
 import com.vortexbird.sapiens.domain.TipoUsuario;
@@ -19,6 +21,7 @@ import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.mapper.UsuarioMapper;
+import com.vortexbird.sapiens.repository.GrupoRepository;
 import com.vortexbird.sapiens.repository.UsuarioRepository;
 import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.PasswordGenerator;
@@ -57,6 +60,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private TipoUsuarioService tipoUsuarioService;
+	
+	@Autowired
+	private GrupoUsuarioService grupoUsuarioService;
+	
+	@Autowired
+	private GrupoService grupoService;
+	
+	@Autowired
+	private GrupoRepository grupoRepository;
 
 	@Autowired
 	private ProgramaService programaService;
@@ -349,7 +361,65 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 				usuario.setUsuCreador(usuarioDTO.getUsuCreador());
 				usuario.setFechaCreacion(new Date());
-				save(usuario);
+				Usuario usuarioResult =  save(usuario);
+				
+				// Cuando se crea un nuevo usuario revisa a que anho lectivo pertenece
+				Date fecha = new Date();
+				String alec = "";
+				
+				if(fecha.getMonth() >= 6) {
+					Integer anho = 1900 + fecha.getYear();
+					alec= "ALEC-"+anho+"-2";
+				}else {
+					
+					Integer anho = 1900 + fecha.getYear();
+					alec= "ALEC-"+anho+"-1";
+
+				}
+						
+				//se verifica que el anho lectivo exista
+				List<Grupo> grupoList =grupoRepository.findByNombre(alec);
+				
+				if(grupoList == null || grupoList.size() == 0 || grupoList.isEmpty()){
+					
+					//si el anho lectivo no exite creo uno nuevo con el nombre del anho actual y el periodo al que pertenece
+					Grupo grupo = new Grupo();
+					grupo.setNombre(alec);
+					grupo.setDescripcion("Año lectivo "+alec);
+					grupo.setUsuCreador(usuarioDTO.getUsuCreador());
+					grupo.setFechaCreacion(new Date());
+					grupo.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					
+					Grupo grupoResult = grupoService.save(grupo);
+					
+					//asigno el usuario al nuevo grupo
+					GrupoUsuario grupoUsuario= new GrupoUsuario();
+					grupoUsuario.setUsuario(usuarioResult);
+					grupoUsuario.setGrupo(grupoResult);
+					grupoUsuario.setFechaCreacion(new Date());
+					grupoUsuario.setUsuCreador(usuarioDTO.getUsuCreador());
+					grupoUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					
+					grupoUsuarioService.save(grupoUsuario);
+					
+					
+					
+				}else {
+					
+					// si existe asigno el usuario a ese mismo grupo
+					Grupo grupo = grupoList.get(0);
+					
+					GrupoUsuario grupoUsuario = new GrupoUsuario();
+					
+					grupoUsuario.setUsuario(usuarioResult);
+					grupoUsuario.setGrupo(grupo);
+					grupoUsuario.setUsuCreador(usuarioDTO.getUsuCreador());
+					grupoUsuario.setFechaCreacion(new Date());
+					grupoUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					
+					grupoUsuarioService.save(grupoUsuario);
+				}
+
 
 				emailService.sendCrearUsuario(usuario.getCorreo(), usuario.getCodigo(), claveNueva);
 			} else {

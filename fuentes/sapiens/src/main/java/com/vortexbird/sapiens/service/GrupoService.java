@@ -13,4 +13,6 @@ import java.util.*;
 *
 */
 public interface GrupoService extends GenericService<Grupo, Long> {
+
+	List<Grupo> consultarGrupos();
 }

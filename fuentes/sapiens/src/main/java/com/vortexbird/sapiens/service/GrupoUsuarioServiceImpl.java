@@ -86,12 +86,6 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService {
                 throw new ZMessManager().new NullEntityExcepcion("GrupoUsuario");
             }
 
-            validate(entity);
-
-            if (grupoUsuarioRepository.findById(entity.getGrusId()).isPresent()) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
             return grupoUsuarioRepository.save(entity);
         } catch (Exception e) {
             log.error("save GrupoUsuario failed", e);

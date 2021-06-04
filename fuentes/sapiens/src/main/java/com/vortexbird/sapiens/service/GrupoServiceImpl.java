@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.vortexbird.sapiens.exception.*;
 import com.vortexbird.sapiens.repository.*;
+import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.Utilities;
 
 import com.vortexbird.sapiens.domain.*;
@@ -80,13 +81,7 @@ public class GrupoServiceImpl implements GrupoService{
 	    
 	    if(entity==null){
 			throw new ZMessManager().new NullEntityExcepcion("Grupo");
-		}
-		
-		validate(entity);	
-	
-		if(grupoRepository.findById(entity.getGrupId()).isPresent()){
-           throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-        }    
+		} 
 	
 	    return grupoRepository.save(entity);
 	    
@@ -170,5 +165,12 @@ public class GrupoServiceImpl implements GrupoService{
             	log.debug("getting Grupo instance");
             	return grupoRepository.findById(grupId);
             }
+			
+			@Override
+			@Transactional(readOnly=true)
+			public List<Grupo> consultarGrupos(){
+				log.debug("finding all Grupo instances");
+		       	return grupoRepository.findByEstadoRegistro(Constantes.ESTADO_ACTIVO);
+		    }
 			
 }

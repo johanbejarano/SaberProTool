@@ -24,6 +24,14 @@ export const navigationProfesor: FuseNavigation[] = [
                 type: 'item',
                 icon: 'assignment',
                 url: '/gestionPruebas',
+            },
+            {
+                id: 'mnuGrupos',
+                title: 'grupos',
+                translate: 'NAV.PROFESOR.GRUPOS',
+                type: 'item',
+                icon: 'assignment',
+                url: '/gestionGrupos',
             }
         ]
     },

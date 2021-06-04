@@ -5,6 +5,7 @@ import com.vortexbird.sapiens.domain.Grupo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -12,4 +13,6 @@ import java.math.BigDecimal;
 *
 */
 public interface GrupoRepository extends JpaRepository<Grupo, Long> {
+	List<Grupo> findByNombre(String nombre);
+	List<Grupo> findByEstadoRegistro(String estadoRegistro);
 }
