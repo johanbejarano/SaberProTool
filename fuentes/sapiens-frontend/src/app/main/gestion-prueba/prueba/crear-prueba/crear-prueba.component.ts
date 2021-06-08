@@ -164,6 +164,11 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
       this.snackBar.open('No es permitido el tipo de prueba entrenamiento', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
+
+    if (this.form.controls.tipoPrueba.value == 3 && listaPregIds.length == 0) {
+      this.snackBar.open('Debe seleccionar las preguntas de la prueba', 'x', { verticalPosition: 'top', duration: 10000 });
+      return;
+    }
     
     if (!this.form.valid) {
       this.markFormGroupTouched(this.form);
@@ -222,7 +227,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
       this.modulosSelect =this.form.controls.modulos.value;   
     }else{
       this.modulosSelect = null;
-    }    
+    }
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {
