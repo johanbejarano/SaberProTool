@@ -117,34 +117,49 @@ export class PruebaComponent implements OnInit {
   }
 
   seleccionarRespuesta(pregunta: DetallePruebaUsuario, respuesta: Respuesta) {
-    console.log("Hola");
-    // console.log(pregunta);
+    // console.log("Hola");
+    console.log(pregunta);
     console.log(respuesta);
     
     // console.log(respuesta.respId);
     // console.log(this.preguntas);
     
     if (respuesta) {
+      
       if (pregunta.respId !== respuesta.respId) {
         pregunta.respId = respuesta.respId;
-        // this.guardarRespuesta(pregunta);
+        this.guardarRespuesta(pregunta);
       }
     }
   }
 
   guardarRespuesta(pregunta: DetallePruebaUsuario) {
 
-    if (pregunta.respId || pregunta.respuestaAbierta) {
+    if(!pregunta.seleccionMultiple){
+      if (pregunta.respId || pregunta.respuestaAbierta) {
+        let request: DetallePruebaUsuario = new DetallePruebaUsuario();
+        request.dpruId = pregunta.dpruId;
+        request.respId = pregunta.respId;
+        request.respuestaAbierta = pregunta.respuestaAbierta;
+        request.usuCreador = this.usuario.usuaId;
+        console.log(request);
+  
+        this.detallePruebaUsuarioService.responder(request).subscribe(() => {
+        });
+      }
+    }else{
       let request: DetallePruebaUsuario = new DetallePruebaUsuario();
-      request.dpruId = pregunta.dpruId;
-      request.respId = pregunta.respId;
-      request.respuestaAbierta = pregunta.respuestaAbierta;
-      request.usuCreador = this.usuario.usuaId;
-      console.log(request);
-
-      // this.detallePruebaUsuarioService.responder(request).subscribe(() => {
-      // });
+        // request.dpruId = pregunta.dpruId;
+        request.respId = pregunta.respId;
+        // request.respuestaAbierta = pregunta.respuestaAbierta;
+        request.usuCreador = this.usuario.usuaId;
+        console.log(request);
+  
+        this.detallePruebaUsuarioService.responder(request).subscribe(() => {
+        });
     }
+
+
   }
 
   finalizarPrueba() {

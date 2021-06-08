@@ -196,7 +196,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			throw e;
 		}
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Integer getCantidadDeEjecucionesPorPregunta(Integer pregId) throws Exception {
@@ -317,7 +317,6 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					|| pruebaUsuario.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
 				throw new Exception("No se encontró la prueba");
 			}
-
 			boolean mostrarCorrecto = false;
 			boolean mostrarRetroalimentacion = false;
 			// Valido si la prueba ya finalizó para mostrar las respuestas
@@ -350,13 +349,18 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 							.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
 				}
 				detallePruebaUsuarioDTO.setRespuestaAbierta(detallePruebaUsuario.getRespuestaAbierta());
+
+//				----------------------------------------------
+
 				detallePruebaUsuarioDTO.setRespId(
 						detallePruebaUsuario.getRespuesta() != null ? detallePruebaUsuario.getRespuesta().getRespId()
 								: null);
 				List<RespuestaDTO> respuestas = getRespuestas(detallePruebaUsuario, mostrarCorrecto,
 						mostrarRetroalimentacion);
-
 				detallePruebaUsuarioDTO.setRespuestas(respuestas);
+
+//				----------------------------------------------	
+
 				preguntasDTO.add(detallePruebaUsuarioDTO);
 			}
 
@@ -386,9 +390,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 					Long orden1 = p1.getOrdenPregunta() == null ? 999L : p1.getOrdenPregunta();
 					Long orden2 = p2.getOrdenPregunta() == null ? 999L : p2.getOrdenPregunta();
-					
-					int orden = orden1.compareTo(orden2); 
-					
+
+					int orden = orden1.compareTo(orden2);
+
 					if (orden != 0) {
 						return orden;
 					}

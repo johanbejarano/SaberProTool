@@ -52,7 +52,7 @@
                                         </div>
                                         <mat-divider></mat-divider>
 
-                                        <!-- <div *ngIf="!pregunta.seleccionMultiple"> -->
+                                        <div *ngIf="!pregunta.seleccionMultiple">
                                             <div>Unica respuesta</div>
                                             <div *ngFor="let respuesta of pregunta.respuestas">
                                                 <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
@@ -67,9 +67,9 @@
                                                     </div>
                                                 </mat-checkbox>
                                             </div>
-                                        <!-- </div> -->
+                                        </div>
 
-                                        <!-- <div *ngIf="pregunta.seleccionMultiple">
+                                        <div *ngIf="pregunta.seleccionMultiple">
                                             <div>Seleccion Multiple</div>
                                             <div *ngFor="let respuesta of pregunta.respuestas">
                                                 <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
@@ -77,7 +77,7 @@
                                                     respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
                                                     [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
                                                     >
-                                                    [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId"
+                                                    <!-- [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId" -->
 
                                                     <div fxFlex="100">
                                                         <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
@@ -86,7 +86,7 @@
                                                     </div>
                                                 </mat-checkbox>
                                             </div>
-                                        </div> -->
+                                        </div>
 
                                         <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
                                             <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
@@ -102,7 +102,7 @@
                                         </div>
                                         <div *ngIf="pregunta.retroalimentacionPregunta" class="px-4 pb-4" fxFlex="100">
                                             <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
-                                                [(data)]="respuesta.retroalimentacionPregunta" (ready)="setReadOnly($event)">
+                                                [(data)]="pregunta.retroalimentacionPregunta" (ready)="setReadOnly($event)">
                                             </ckeditor>
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="center center">
