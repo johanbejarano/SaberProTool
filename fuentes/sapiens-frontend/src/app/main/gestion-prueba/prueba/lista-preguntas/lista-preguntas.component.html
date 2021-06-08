@@ -38,8 +38,10 @@
 
                     <!-- ID PREGUNTA -->
                     <ng-container matColumnDef="pregId">
-                        <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">#</mat-header-cell>
-                        <mat-cell *matCellDef="let pregunta" fxFlex="15" fxFlex.xs="15">
+                        <mat-header-cell *matHeaderCellDef fxFlex="5" fxFlex.xs="5">
+                            <div class="px-4 h3">#</div>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let pregunta" fxFlex="5" fxFlex.xs="5">
                             <p class="text-truncate font-weight-600">{{pregunta.pregId}}</p>
                         </mat-cell>
                     </ng-container>
@@ -47,9 +49,9 @@
 
                     <!-- MODULO -->
                     <ng-container matColumnDef="nombreModulo">
-                        <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">Modulo
+                        <mat-header-cell *matHeaderCellDef fxFlex="10" fxFlex.xs="10">Modulo
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let pregunta" fxFlex="15" fxFlex.xs="15">
+                        <mat-cell *matCellDef="let pregunta" fxFlex="10" fxFlex.xs="10">
                             <p class="text-truncate font-weight-600">{{pregunta.nombreModulo}}</p>
                         </mat-cell>
                     </ng-container>
@@ -57,9 +59,9 @@
 
                     <!-- DESCRIPCION -->
                     <ng-container matColumnDef="descripcion">
-                        <mat-header-cell *matHeaderCellDef fxFlex="25" fxFlex.xs="25">Descripción</mat-header-cell>
-                        <mat-cell *matCellDef="let pregunta" fxFlex="25" fxFlex.xs="25">
-                            <p class="text-truncate font-weight-600">{{pregunta.descripcion}}</p>
+                        <mat-header-cell *matHeaderCellDef fxFlex="60" fxFlex.xs="60">Descripción</mat-header-cell>
+                        <mat-cell *matCellDef="let pregunta" fxFlex="60" fxFlex.xs="60">
+                            <p class="text-truncate font-weight-600">{{pregunta.descripcion.length>200?((pregunta.descripcion | slice:0:200)+"..."):pregunta.descripcion}}'</p>
                         </mat-cell>
                     </ng-container>
                     <!-- DESCRIPCION -->
@@ -76,9 +78,9 @@
 
                     <!-- COMPLEJIDAD -->
                     <ng-container matColumnDef="complejidad">
-                        <mat-header-cell *matHeaderCellDef fxFlex="15" fxFlex.xs="15">Complejidad
+                        <mat-header-cell *matHeaderCellDef fxFlex="10" fxFlex.xs="10">Complejidad
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let pregunta" fxFlex="15" fxFlex.xs="15">
+                        <mat-cell *matCellDef="let pregunta" fxFlex="10" fxFlex.xs="10">
                             <p class="text-truncate font-weight-600">{{pregunta.complejidad}}</p>
                         </mat-cell>
                     </ng-container>

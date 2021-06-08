@@ -12,4 +12,6 @@ export class PruebaUsuario {
     nombreEstadoPrueba: string;
     totalRespuestasCorrectas: number;
 
+    totalPreguntas:number;
+
 }
