@@ -36,6 +36,7 @@ export class PruebaComponent implements OnInit {
   usuario: Usuario;
 
   selected = new FormControl(0);
+  contadorCualitativo:number=0;
 
   //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
   public editorConfig = {
@@ -76,8 +77,12 @@ export class PruebaComponent implements OnInit {
     this.detallePruebaUsuarioService.getPreguntasByPruebaUsuario(this.pruebaUsuario.prusId).subscribe((preguntas: DetallePruebaUsuario[]) => {
       this.preguntas = preguntas;
       console.log(preguntas);
-
-    })
+      for (let index = 0; index < this.preguntas.length; index++) {
+        if (this.preguntas[index].nombreModulo == 'CUESTIONARIO CUALITATIVO') {
+          this.contadorCualitativo = this.contadorCualitativo+1;
+        }
+      }
+    });
   }
 
   actualizarTiempo() {

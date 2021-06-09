@@ -23,4 +23,7 @@ public class Constantes {
 
 	public static final Long RESPUESTA_CORRECTA = 1L;
 	
+	public static final Integer TIPO_MODULO_CUALITATIVO = 3;
+	public static final String CUESTIONARIO_CUALITATIVO = "CUESTIONARIO CUALITATIVO";
+	
 }

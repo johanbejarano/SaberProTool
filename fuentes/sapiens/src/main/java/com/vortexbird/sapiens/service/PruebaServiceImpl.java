@@ -426,6 +426,22 @@ public class PruebaServiceImpl implements PruebaService {
 			
 			///////
 			TipoPrueba tipoPruebaAux = tipoPrueba.get();
+			
+			// se valida que no solo se envie el modulo de cuestionario cualitativo
+			if (pruebaDTO.getIdModulos().size() <= 1) {
+				for (Integer moduId : pruebaDTO.getIdModulos()) {
+					Optional<Modulo> moduloOpt = moduloService.findById(moduId);
+					if (!moduloOpt.isPresent()) {
+						throw new Exception("No existe el módulo: " + moduId);
+					}
+					
+					Modulo modulo = moduloOpt.get();
+					
+					if (modulo.getNombre().equals(Constantes.CUESTIONARIO_CUALITATIVO)) {
+						throw new Exception("Debe seleccionar otro modulo");
+					}
+				}
+			}
 
 			// Se guarda la prueba
 			Prueba prueba = new Prueba();

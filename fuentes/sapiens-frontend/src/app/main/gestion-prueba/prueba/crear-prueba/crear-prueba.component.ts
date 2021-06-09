@@ -148,7 +148,7 @@ export class CrearPruebaComponent implements OnInit, OnDestroy {
 
   }
 
-  guardarPrueba() {      
+  guardarPrueba() {
     let listaPregIds = this.listaPreguntas.filter( (d,index) =>{
       return this.listaPreguntas.indexOf(d) == index
     });

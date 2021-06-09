@@ -272,7 +272,7 @@ public class PreguntaServiceImpl implements PreguntaService {
 			// Se consulta el usuario
 			Optional<Usuario> usuario = usuarioService.findById(guardarPreguntaDTO.getUsuCreador());
 			if (!tipoPregunta.isPresent()) {
-				throw new Exception("No existe el tipo pregunta " + guardarPreguntaDTO.getTprgId_TipoPregunta());
+				throw new Exception("No existe el usuario " + guardarPreguntaDTO.getUsuCreador());
 			}
 
 			// Se consulta el contexto si tiene
@@ -283,6 +283,10 @@ public class PreguntaServiceImpl implements PreguntaService {
 					throw new Exception("No existe el contexto " + guardarPreguntaDTO.getContId());
 				}
 				contexto = contextoOpt.get();
+			}
+			
+			if (usuario.get().getTipoUsuario().getTiusId() != Constantes.TIPO_USUARIO_DIRECTOR && modulo.get().getTipoModulo().getTimoId() == Constantes.TIPO_MODULO_CUALITATIVO) {
+				throw new Exception("No se le es permitido crear preguntas con el tipo de modulo cualitativo");
 			}
 
 			// Se crea la pregunta
