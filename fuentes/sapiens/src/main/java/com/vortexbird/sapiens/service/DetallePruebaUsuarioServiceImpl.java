@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
+import com.vortexbird.sapiens.domain.DetallePruebaUsuarioRespuesta;
 import com.vortexbird.sapiens.domain.Pregunta;
 import com.vortexbird.sapiens.domain.PruebaUsuario;
 import com.vortexbird.sapiens.domain.Respuesta;
@@ -19,6 +20,7 @@ import com.vortexbird.sapiens.dto.DetallePruebaUsuarioDTO;
 import com.vortexbird.sapiens.dto.RespuestaDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRepository;
+import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRespuestaRepository;
 import com.vortexbird.sapiens.utility.Constantes;
 
 import org.slf4j.Logger;
@@ -45,6 +47,11 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	private RespuestaService respuestaService;
 	@Autowired
 	private PruebaUsuarioService pruebaUsuarioService;
+	@Autowired
+	private DetallePruebaUsuarioRespuestaService detallePruebaUsuarioRespuestaService;
+	@Autowired
+	private DetallePruebaUsuarioRespuestaRepository detallePruebaUsuarioRespuestaRepository;
+	
 
 	@Override
 	public void validate(DetallePruebaUsuario detallePruebaUsuario) throws Exception {
@@ -212,7 +219,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void responder(Integer dpruId, Integer respId, String respuestaAbierta, Long usuario) throws Exception {
+	public void responder(Integer dpruId, Integer respId, String respuestaAbierta, Long usuario, Boolean seleccionMultiple) throws Exception {
 		try {
 			// Valido que lleguen los datos
 			if (dpruId == null) {
@@ -233,43 +240,103 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 			DetallePruebaUsuario detallePruebaUsuario = detallePruebaUsuarioOpt.get();
 
-			if (respId != null) {
-				Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
-				if (!respuestaOpt.isPresent()
-						|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
-					throw new Exception("No se encontró la respuesta o no se encuentra activa");
+			if(seleccionMultiple) {
+				
+				////////////////////////// cuando es seleccion multiple guarda en la tabla detalle prueba usuario respuesta
+				System.out.println("seleccion multiple");
+				Respuesta respuesta = null;
+				
+				if (respId != null) {
+					Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
+					if (!respuestaOpt.isPresent()
+							|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+						throw new Exception("No se encontró la respuesta o no se encuentra activa");
+					}
+					respuesta = respuestaOpt.get();
+					// Valido que la respuesta sea de la pregunta dada
+					if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
+						throw new Exception("La respuesta no es de la pregunta dada");
+					}
+				} else {
+					detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
 				}
-				Respuesta respuesta = respuestaOpt.get();
-				// Valido que la respuesta sea de la pregunta dada
-				if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
-					throw new Exception("La respuesta no es de la pregunta dada");
+				
+				List<DetallePruebaUsuarioRespuesta> listDpur = detallePruebaUsuarioRespuestaRepository.findByDetallePruebaUsuarioAndRespuesta(detallePruebaUsuario, respuesta);
+				
+				if(listDpur == null || listDpur.isEmpty() || listDpur.size() == 0) {
+					
+					// declaro las variables necesarias
+					DetallePruebaUsuarioRespuesta dpur = new DetallePruebaUsuarioRespuesta();
+					dpur.setDetallePruebaUsuario(detallePruebaUsuario);
+					dpur.setRespuesta(respuesta);
+					
+					dpur.setFechaCreacion(new Date());
+					dpur.setUsuCreador(usuario);
+					dpur.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+					
+					detallePruebaUsuarioRespuestaService.save(dpur);
+					
+					
+				}else {
+					if(listDpur.get(0).getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
+						
+						//Coloca el registro inactivo
+						DetallePruebaUsuarioRespuesta dpur = listDpur.get(0);
+						dpur.setEstadoRegistro(Constantes.ESTADO_INACTIVO);
+						
+						detallePruebaUsuarioRespuestaService.update(dpur);
+						
+					}else {
+						
+						//Coloca el registro activo
+						DetallePruebaUsuarioRespuesta dpur = listDpur.get(0);
+						dpur.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
+						
+						detallePruebaUsuarioRespuestaService.update(dpur);
+					}
 				}
-				detallePruebaUsuario.setRespuesta(respuesta);
-			} else {
-				detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
-			}
+				
+			}else {
+				
+				System.out.println("Unica respuesta");
+				if (respId != null) {
+					Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
+					if (!respuestaOpt.isPresent()
+							|| respuestaOpt.get().getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)) {
+						throw new Exception("No se encontró la respuesta o no se encuentra activa");
+					}
+					Respuesta respuesta = respuestaOpt.get();
+					// Valido que la respuesta sea de la pregunta dada
+					if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
+						throw new Exception("La respuesta no es de la pregunta dada");
+					}
+					detallePruebaUsuario.setRespuesta(respuesta);
+				} else {
+					detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
+				}
 
-			PruebaUsuario pruebaUsuario = detallePruebaUsuario.getPruebaUsuario();
-			if (pruebaUsuario.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)
-					|| !pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_INICIADA)) {
-				throw new Exception("La prueba no existe o no ha sido iniciada");
-			}
+				PruebaUsuario pruebaUsuario = detallePruebaUsuario.getPruebaUsuario();
+				if (pruebaUsuario.getEstadoRegistro().equals(Constantes.ESTADO_INACTIVO)
+						|| !pruebaUsuario.getEstadoPrueba().getEsprId().equals(Constantes.ESTADO_PRUEBA_INICIADA)) {
+					throw new Exception("La prueba no existe o no ha sido iniciada");
+				}
 
-			Date fecha = new Date();
-			Long tiempoDisponible = pruebaUsuario.getTiempoDisponible();
-			Long milliseconds = fecha.getTime() - pruebaUsuario.getFechaInicio().getTime();
-			int minutes = (int) ((milliseconds / (1000 * 60)) % 60) + 1;
-			tiempoDisponible -= minutes;
-			if (tiempoDisponible < 0L) {
-				throw new Exception("Se terminó el tiempo de la prueba");
-			}
-			if (pruebaUsuario.getPrueba().getFechaFinal().before(fecha)) {
-				throw new Exception("Se terminó el tiempo de la prueba");
-			}
+				Date fecha = new Date();
+				Long tiempoDisponible = pruebaUsuario.getTiempoDisponible();
+				Long milliseconds = fecha.getTime() - pruebaUsuario.getFechaInicio().getTime();
+				int minutes = (int) ((milliseconds / (1000 * 60)) % 60) + 1;
+				tiempoDisponible -= minutes;
+				if (tiempoDisponible < 0L) {
+					throw new Exception("Se terminó el tiempo de la prueba");
+				}
+				if (pruebaUsuario.getPrueba().getFechaFinal().before(fecha)) {
+					throw new Exception("Se terminó el tiempo de la prueba");
+				}
 
-			detallePruebaUsuario.setFechaModificacion(fecha);
-			detallePruebaUsuario.setUsuModificador(usuario);
-			update(detallePruebaUsuario);
+				detallePruebaUsuario.setFechaModificacion(fecha);
+				detallePruebaUsuario.setUsuModificador(usuario);
+				update(detallePruebaUsuario);
+			}
 
 		} catch (Exception e) {
 			log.error("Error en responder", e);

@@ -11,6 +11,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.vortexbird.sapiens.domain.DetallePruebaUsuario;
+import com.vortexbird.sapiens.domain.DetallePruebaUsuarioRespuesta;
 import com.vortexbird.sapiens.domain.EstadoPrueba;
 import com.vortexbird.sapiens.domain.Modulo;
 import com.vortexbird.sapiens.domain.Pregunta;
@@ -21,6 +22,7 @@ import com.vortexbird.sapiens.domain.PruebaUsuario;
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
+import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRespuestaRepository;
 import com.vortexbird.sapiens.repository.PruebaUsuarioRepository;
 import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.Utilities;
@@ -61,6 +63,13 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private DetallePruebaUsuarioRespuestaService detallePruebaUsuarioRespuestaService;
+	
+	@Autowired
+	private DetallePruebaUsuarioRespuestaRepository detallePruebaUsuarioRespuestaRepository;
+	
 
 	@Override
 	public void validate(PruebaUsuario pruebaUsuario) throws Exception {
@@ -455,14 +464,29 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 				int minutes = (int) ((milliseconds / (1000 * 60)) % 60) + 1;
 				tiempoDisponible -= minutes;
 				if (tiempoDisponible > 0L && !pruebaUsuario.getPrueba().getFechaFinal().before(fecha)) {
+					
+					
+//					List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getPreguntasByPruebaUsuario(prusId);
+//					boolean preguntasSinRespuesta = detallesPruebaUsuario.stream().anyMatch(detallePrueba -> detallePrueba.getRespuesta() == null);
+//					if(preguntasSinRespuesta) {
+//						throw new Exception("Se deben responder todas las preguntas antes de finalizar la prueba");
+//					}
+					
+
+					
 					List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getPreguntasByPruebaUsuario(prusId);
-					boolean preguntasSinRespuesta = detallesPruebaUsuario.stream().anyMatch(detallePrueba -> detallePrueba.getRespuesta() == null);
-					if(preguntasSinRespuesta) {
-						throw new Exception("Se deben responder todas las preguntas antes de finalizar la prueba");
+					for (DetallePruebaUsuario detallePruebaUsuario : detallesPruebaUsuario) {
+						if(detallePruebaUsuario.getRespuesta() == null && detallePruebaUsuario.getRespuestaAbierta() == null) {
+							List<DetallePruebaUsuarioRespuesta> listDpur = detallePruebaUsuarioRespuestaRepository.findByDetallePruebaUsuarioAndEstadoRegistro(detallePruebaUsuario, Constantes.ESTADO_ACTIVO);
+							if(listDpur == null || listDpur.size() == 0 || listDpur.isEmpty()) {
+								throw new Exception("Se deben responder todas las preguntas antes de finalizar la prueba");
+							}
+						}
 					}
+					
 				}
 			}
-				
+			// Revisar el calculo del resultado para que tenga en cuenta la nueva tabla de respuesta de seleccion multiple
 			//Calculos las respuestas correctas obtenidas
 			List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getRespuestasCorrectas(prusId);
 			Long puntaje = 0L;

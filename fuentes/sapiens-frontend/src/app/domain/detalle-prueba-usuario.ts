@@ -11,6 +11,6 @@ export class DetallePruebaUsuario {
     nombreModulo: string;
     descripcionPregunta: string;
     descripcionContexto: string;
-    retroalimentacionPregunta: Date;
+    retroalimentacionPregunta: string;
     respuestas: Respuesta[];
 }

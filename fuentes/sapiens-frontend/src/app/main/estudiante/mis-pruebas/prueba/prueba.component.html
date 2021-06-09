@@ -92,7 +92,7 @@
                                             <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                 [(data)]="pregunta.respuestaAbierta"
                                                 (blur)="actualizar(pregunta, $event)"
-                                                [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'">
+                                                [disabled]="pregunta.retroalimentacionPregunta ? true : false">
                                             </ckeditor>
                                         </div>
 
