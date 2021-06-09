@@ -31,11 +31,13 @@
                                 <mat-tab-group mat-align-tabs="center" mat-stretch-tabs fxFlex="100"
                                     [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                                     <mat-tab *ngFor="let pregunta of preguntas;  let i = index">
+                                        
                                         <ng-template mat-tab-label>
                                             <div class="board-list-item color1" fxLayout="column"
                                                 fxLayoutAlign="center center">
                                                 <mat-icon class="s-40">edit</mat-icon>
-                                                <h3 class="m-0">Pregunta #{{i+1}}</h3>
+                                                <h3 class="m-0" *ngIf="pregunta.nombreModulo == 'CUESTIONARIO CUALITATIVO'">Pregunta cualitativa #{{i+1}}</h3>
+                                                <h3 class="m-0" *ngIf="pregunta.nombreModulo != 'CUESTIONARIO CUALITATIVO'">Pregunta #{{(i+1)-contadorCualitativo}}</h3>
                                             </div>
                                         </ng-template>
 
@@ -66,6 +68,12 @@
                                                         </ckeditor>
                                                     </div>
                                                 </mat-checkbox>
+                                                <div fxFlex="100" *ngIf="respuesta.descripcion == '<p>Otro</p>'">
+                                                    <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                        [(data)]="pregunta.respuestaAbierta"
+                                                        (blur)="actualizar(pregunta, $event)">
+                                                    </ckeditor>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -85,6 +93,12 @@
                                                         </ckeditor>
                                                     </div>
                                                 </mat-checkbox>
+                                                <div fxFlex="100" *ngIf="respuesta.descripcion == '<p>Otro</p>'">
+                                                    <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                        [(data)]="pregunta.respuestaAbierta"
+                                                        (blur)="actualizar(pregunta, $event)">
+                                                    </ckeditor>
+                                                </div>
                                             </div>
                                         </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -48,6 +48,9 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
   tiposPregunta = [{ key: 1, label: 'Cerrada' }, { key: 2, label: 'Abierta' }];
   complejidades = [1, 2, 3, 4];
+  
+  disabled:boolean;
+  respuestaMultiple: string;
 
   //tomado de https://stackoverflow.com/questions/46765197/how-to-enable-image-upload-support-in-ckeditor-5
   public editorConfig = {
@@ -115,7 +118,8 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     }
 
     this.actualizarFormulario();
-
+    console.log(this.form);
+    
   }
 
   actualizarFormulario() {
@@ -216,12 +220,15 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
           this.changeModulo();
         });
 
+      if (this.form.controls.tipoModulo.value == 3) {
+        this.form.controls.complejidad.setValue(1);
+        this.disabled=true;
+      }
 
     }
   }
 
   guardarPregunta(): void {
-
     if (!this.form.valid) {
       this.snackBar.open('Faltan datos asociados a la clasificación de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
@@ -229,6 +236,11 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
     if (!this.horizontalStepperStep1.valid) {
       this.snackBar.open('Faltan datos asociados al encabezado de la pregunta', 'x', { verticalPosition: 'top', duration: 10000 });
+      return;
+    }
+
+    if (this.usuario.tiusId_TipoUsuario != 2 && this.form.controls.tipoModulo.value == 3) {
+      this.snackBar.open('No se le es permitido crear preguntas con el tipo de modulo cualitativo', 'x', { verticalPosition: 'top', duration: 10000 });
       return;
     }
 
@@ -243,9 +255,11 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (!this.horizontalStepperStep6.valid) {
-      this.snackBar.open('Faltan datos asociados a la retroalimentación', 'x', { verticalPosition: 'top', duration: 10000 });
-      return;
+    if (this.form.controls.tipoModulo.value != 3) {
+      if (!this.horizontalStepperStep6.valid) {
+        this.snackBar.open('Faltan datos asociados a la retroalimentación', 'x', { verticalPosition: 'top', duration: 10000 });
+        return;
+      }
     }
 
     if (this.pregunta.tienePruebas) {
@@ -285,29 +299,56 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     console.log(this.stepsRespuestasList);
     console.log(respuestaCorrecta);
 
-    if(respuestaCorrecta.length > 1){
-      this.pregunta.seleccionMultiple = true;
-    }else{
-      this.pregunta.seleccionMultiple = false;
-    }
-    
-    for (let i = 0; i < this.stepsRespuestasList.length; i++) {
-      const respuestaForm = this.stepsRespuestasList[i];
-      let respuesta = new Respuesta();
+    if (!respuestaCorrecta || respuestaCorrecta.length == 0) {
+      // console.log('respuestas');
+      for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+        // console.log('for');
+        const respuestaForm = this.stepsRespuestasList[i];
+        let respuesta = new Respuesta();
 
-      for (let index = 0; index < respuestaCorrecta.length; index++) {
-
-        if(i == respuestaCorrecta[index]){
+        if(this.stepsRespuestasList[i]){
           respuesta.correcta = 1;
-          break;
-        }else{
-          respuesta.correcta = 0;
         }
+        // console.log(respuesta);
+        
+        respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
+        // console.log(respuesta);
+        this.pregunta.respuestasDTO.push(respuesta);
+        this.pregunta.retroalimentacion = 'Todas las respuestas son correctas';
       }
-      // respuesta.correcta = respuestaCorrecta == i ? 1 : 0;
-      respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
-      this.pregunta.respuestasDTO.push(respuesta);
+      if (this.respuestaMultiple == 'S') {
+        this.pregunta.seleccionMultiple = true;
+      }else{
+        this.pregunta.seleccionMultiple = false;
+      }
+
+    }else{
+
+      if(respuestaCorrecta.length > 1){
+        this.pregunta.seleccionMultiple = true;
+      }else{
+        this.pregunta.seleccionMultiple = false;
+      }
+      
+      for (let i = 0; i < this.stepsRespuestasList.length; i++) {
+        const respuestaForm = this.stepsRespuestasList[i];
+        let respuesta = new Respuesta();
+  
+        for (let index = 0; index < respuestaCorrecta.length; index++) {
+  
+          if(i == respuestaCorrecta[index]){
+            respuesta.correcta = 1;
+            break;
+          }else{
+            respuesta.correcta = 0;
+          }
+        }
+        // respuesta.correcta = respuestaCorrecta == i ? 1 : 0;
+        respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
+        this.pregunta.respuestasDTO.push(respuesta);
+      }
     }
+
 
     if (this.modulo.igualValor == 'N') {
       this.pregunta.valorPregunta = this.form.controls.valorPregunta.value;
