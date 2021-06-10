@@ -310,6 +310,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					if (!respuesta.getPregunta().getPregId().equals(detallePruebaUsuario.getPregunta().getPregId())) {
 						throw new Exception("La respuesta no es de la pregunta dada");
 					}
+					if (respuestaAbierta != null && !respuestaAbierta.isBlank()) {
+						detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
+					}
 					detallePruebaUsuario.setRespuesta(respuesta);
 				} else {
 					detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);

@@ -129,7 +129,7 @@ export class PruebaComponent implements OnInit {
     // console.log(respuesta.respId);
     // console.log(this.preguntas);
     
-
+    pregunta.respuestaAbierta = "";
     // if (respuesta) {
       
       // if (pregunta.respId !== respuesta.respId) {
@@ -139,7 +139,6 @@ export class PruebaComponent implements OnInit {
     // }
     
     // this.guardarRespuesta(pregunta);
-
   }
 
   guardarRespuesta(pregunta: DetallePruebaUsuario) {

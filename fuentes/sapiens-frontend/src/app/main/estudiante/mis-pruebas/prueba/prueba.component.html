@@ -68,7 +68,7 @@
                                                         </ckeditor>
                                                     </div>
                                                 </mat-checkbox>
-                                                <div fxFlex="100" *ngIf="respuesta.descripcion == '<p>Otro</p>'">
+                                                <div fxFlex="100" *ngIf="(respuesta.descripcion == '<p>Otro</p>' && pregunta.nombreModulo == 'CUESTIONARIO CUALITATIVO' && pregunta.respId == respuesta.respId)">
                                                     <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                         [(data)]="pregunta.respuestaAbierta"
                                                         (blur)="actualizar(pregunta, $event)">
@@ -93,12 +93,12 @@
                                                         </ckeditor>
                                                     </div>
                                                 </mat-checkbox>
-                                                <div fxFlex="100" *ngIf="respuesta.descripcion == '<p>Otro</p>'">
+                                                <!-- <div fxFlex="100" *ngIf="(respuesta.descripcion == '<p>Otro</p>' && pregunta.nombreModulo == 'CUESTIONARIO CUALITATIVO' && pregunta.respId == respuesta.respId)">
                                                     <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                         [(data)]="pregunta.respuestaAbierta"
                                                         (blur)="actualizar(pregunta, $event)">
                                                     </ckeditor>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
