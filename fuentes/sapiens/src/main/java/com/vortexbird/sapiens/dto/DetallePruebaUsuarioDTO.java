@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -38,6 +40,10 @@ public class DetallePruebaUsuarioDTO implements Serializable {
     private String respuestaAbierta;
     private Long ordenPregunta;
     private boolean seleccionMultiple;
+    private String ceIdeaCentral;
+    private String ceLluviaIdeas;
+    private String ceDesarrolloPrueba;
+    private Integer idTipoPregunta;
 
     public Integer getDpruId() {
         return dpruId;
@@ -196,6 +202,38 @@ public class DetallePruebaUsuarioDTO implements Serializable {
 	public void setSeleccionMultiple(boolean seleccionMultiple) {
 		this.seleccionMultiple = seleccionMultiple;
 	}
-	
+
+	public String getCeIdeaCentral() {
+		return ceIdeaCentral;
+	}
+
+	public void setCeIdeaCentral(String ceIdeaCentral) {
+		this.ceIdeaCentral = ceIdeaCentral;
+	}
+
+	public String getCeLluviaIdeas() {
+		return ceLluviaIdeas;
+	}
+
+	public void setCeLluviaIdeas(String ceLluviaIdeas) {
+		this.ceLluviaIdeas = ceLluviaIdeas;
+	}
+
+	public String getCeDesarrolloPrueba() {
+		return ceDesarrolloPrueba;
+	}
+
+	public void setCeDesarrolloPrueba(String ceDesarrolloPrueba) {
+		this.ceDesarrolloPrueba = ceDesarrolloPrueba;
+	}
+
+	public Integer getIdTipoPregunta() {
+		return idTipoPregunta;
+	}
+
+	public void setIdTipoPregunta(Integer idTipoPregunta) {
+		this.idTipoPregunta = idTipoPregunta;
+	}
+
 	
 }

@@ -13,4 +13,10 @@ export class DetallePruebaUsuario {
     descripcionContexto: string;
     retroalimentacionPregunta: string;
     respuestas: Respuesta[];
+
+    ceIdeaCentral: string;
+    ceLluviaIdeas: string;
+    ceDesarrolloPrueba: string;
+
+    idTipoPregunta: number;
 }

@@ -70,6 +70,7 @@ export class PruebaListComponent implements OnInit {
   }
 
   seleccionar(item: PruebaUsuario) {
+    console.log(item);
     this.localStorage.putInLocal('pruebaUsuario', item);
     this.router.navigate(["/estudiante/resumenPrueba"]);
   }

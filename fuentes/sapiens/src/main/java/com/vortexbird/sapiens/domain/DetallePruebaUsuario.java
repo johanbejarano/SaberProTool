@@ -57,6 +57,12 @@ public class DetallePruebaUsuario implements java.io.Serializable {
     @NotNull
     private Long usuCreador;
     private Long usuModificador;
+    @Size(max = 25500)
+    private String ceIdeaCentral;
+    @Size(max = 25500)
+    private String ceLluviaIdeas;
+    @Size(max = 25500)
+    private String ceDesarrolloPrueba;
 
     public DetallePruebaUsuario() {
     }
@@ -170,4 +176,33 @@ public class DetallePruebaUsuario implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+    
+    @Column(name = "ce_idea_central")
+	public String getCeIdeaCentral() {
+		return ceIdeaCentral;
+	}
+
+	public void setCeIdeaCentral(String ceIdeaCentral) {
+		this.ceIdeaCentral = ceIdeaCentral;
+	}
+
+	@Column(name = "ce_lluvia_ideas")
+	public String getCeLluviaIdeas() {
+		return ceLluviaIdeas;
+	}
+
+	public void setCeLluviaIdeas(String ceLluviaIdeas) {
+		this.ceLluviaIdeas = ceLluviaIdeas;
+	}
+
+	@Column(name = "ce_Desarrollo_prueba")
+	public String getCeDesarrolloPrueba() {
+		return ceDesarrolloPrueba;
+	}
+
+	public void setCeDesarrolloPrueba(String ceDesarrolloPrueba) {
+		this.ceDesarrolloPrueba = ceDesarrolloPrueba;
+	}
+    
+    
 }

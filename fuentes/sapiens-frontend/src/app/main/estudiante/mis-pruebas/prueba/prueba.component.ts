@@ -106,6 +106,7 @@ export class PruebaComponent implements OnInit {
             let prueba = pruebas[0];
             this.selected.setValue(0);
             this.pruebaUsuario = prueba;
+            console.log(prueba);
             this.localStorage.putInLocal('pruebaUsuario', prueba);
             this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 });
             this.getPreguntas();
@@ -143,12 +144,16 @@ export class PruebaComponent implements OnInit {
 
   guardarRespuesta(pregunta: DetallePruebaUsuario) {
 
-
+    console.log(pregunta);
+    
       if (pregunta.respId || pregunta.respuestaAbierta) {
         let request: DetallePruebaUsuario = new DetallePruebaUsuario();
         request.dpruId = pregunta.dpruId;
         request.respId = pregunta.respId;
         request.respuestaAbierta = pregunta.respuestaAbierta;
+        request.ceIdeaCentral = pregunta.ceIdeaCentral;
+        request.ceLluviaIdeas = pregunta.ceLluviaIdeas;
+        request.ceDesarrolloPrueba = pregunta.ceDesarrolloPrueba;
         request.seleccionMultiple = pregunta.seleccionMultiple;
         request.usuCreador = this.usuario.usuaId;
         console.log(request);
@@ -185,6 +190,7 @@ export class PruebaComponent implements OnInit {
               let prueba = pruebas[0];
               this.selected.setValue(0);
               this.pruebaUsuario = prueba;
+              console.log(prueba);
               this.localStorage.putInLocal('pruebaUsuario', prueba);
               this.snackBar.open('La prueba ha finalizado', 'x', { verticalPosition: 'top', duration: 100000 });
               this.getPreguntas();
@@ -243,9 +249,24 @@ export class PruebaComponent implements OnInit {
     });
   }
 
-  actualizar(pregunta: DetallePruebaUsuario, event) {
-    pregunta.respuestaAbierta = event.editor.getData();
-    this.guardarRespuesta(pregunta);
+  actualizar(pregunta: DetallePruebaUsuario, event, parte: string) {
+    if(parte == 'PA'){
+      pregunta.respuestaAbierta = event.editor.getData();
+      this.guardarRespuesta(pregunta);
+    }
+    if(parte == 'IC'){
+      pregunta.ceIdeaCentral = event.editor.getData();
+      this.guardarRespuesta(pregunta);
+    }
+    if(parte == 'LI'){
+      pregunta.ceLluviaIdeas = event.editor.getData();
+      this.guardarRespuesta(pregunta);
+    }
+    if(parte == 'DP'){
+      pregunta.ceDesarrolloPrueba = event.editor.getData();
+      this.guardarRespuesta(pregunta);
+    }
+    
   }
 
   nextTab() {

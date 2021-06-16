@@ -30,6 +30,7 @@ public class RespuestaDTO implements Serializable {
     private Long usuModificador;
     private Integer pregId_Pregunta;
     private Boolean esCorrecta;
+    private Long dpurId;
 
     public Long getCorrecta() {
         return correcta;
@@ -119,7 +120,15 @@ public class RespuestaDTO implements Serializable {
         this.esCorrecta = esCorrecta;
     }
 
-    @Override
+    public Long getDpurId() {
+		return dpurId;
+	}
+
+	public void setDpurId(Long dpurId) {
+		this.dpurId = dpurId;
+	}
+
+	@Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

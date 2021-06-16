@@ -46,7 +46,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   pregunta: Pregunta;
   idxRespuestaCorrecta: number[];
 
-  tiposPregunta = [{ key: 1, label: 'Cerrada' }, { key: 2, label: 'Abierta' }];
+  tiposPregunta = [{ key: 1, label: 'Cerrada' }, { key: 2, label: 'Abierta' }, { key: 3, label: 'Comunicación escrita' }];
   complejidades = [1, 2, 3, 4];
   
   disabled:boolean;
@@ -415,16 +415,32 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
   }
 
   changeTipoPregunta() {
-    if (this.form.controls.tipoPregunta.value !== 1) {
-      this.form.controls.cantidadRespuestas.clearValidators();
-      this.form.controls.cantidadRespuestas.setValue(0);
-    } else {
-      this.form.controls.cantidadRespuestas.setValidators([Validators.required, Validators.min(2), Validators.max(10)]);
+    console.log(this.form.controls.tipoPregunta.value);
 
-      if (this.form.controls.cantidadRespuestas.value === 0) {
-        this.form.controls.cantidadRespuestas.setValue(4);
-      }
+    if(this.form.controls.tipoPregunta.value == 1){
+      console.log("1");
+      this.form.controls.cantidadRespuestas.setValidators([Validators.required, Validators.min(2), Validators.max(10)]);
     }
+    
+    if (this.form.controls.tipoPregunta.value == 2) {
+      console.log("2");
+      this.form.controls.cantidadRespuestas.clearValidators();
+      
+    }
+    if (this.form.controls.cantidadRespuestas.value === 0) {
+      console.log("canti preg 0 set a 4");
+      this.form.controls.cantidadRespuestas.setValue(4);
+    }
+    if(this.form.controls.tipoPregunta.value == 3){
+      // this.form.controls.cantidadRespuestas.setValue(3);
+      // console.log(this.form.controls.cantidadRespuestas.value);
+      this.form.controls.cantidadRespuestas.setValue(0);
+      console.log("Comunicacion escrita");
+      
+    }
+
+
+
     this.changeRespuestas();
   }
 
