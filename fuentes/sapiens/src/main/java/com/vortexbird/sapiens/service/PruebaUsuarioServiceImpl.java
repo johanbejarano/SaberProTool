@@ -512,7 +512,7 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			pruebaUsuario.setEstadoPrueba(estadoPrueba.get());
 			pruebaUsuario.setFechaModificacion(new Date());
 			pruebaUsuario.setUsuModificador(usuario);
-			pruebaUsuario.setTotalRespuestasCorrectas(puntaje);
+			pruebaUsuario.setTotalRespuestasCorrectas(puntaje); 
 
 			update(pruebaUsuario);
 		} catch (Exception e) {
