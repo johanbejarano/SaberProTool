@@ -219,7 +219,8 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void responder(Integer dpruId, Integer respId, String respuestaAbierta, Long usuario, Boolean seleccionMultiple) throws Exception {
+	public void responder(Integer dpruId, Integer respId, String respuestaAbierta, Long usuario, Boolean seleccionMultiple
+			,String ceDesarrolloPrueba, String ceLluviaIdeas,String ceIdeaCentral) throws Exception {
 		try {
 			// Valido que lleguen los datos
 			if (dpruId == null) {
@@ -243,7 +244,6 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			if(seleccionMultiple) {
 				
 				////////////////////////// cuando es seleccion multiple guarda en la tabla detalle prueba usuario respuesta
-				System.out.println("seleccion multiple");
 				Respuesta respuesta = null;
 				
 				if (respId != null) {
@@ -298,7 +298,6 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				
 			}else {
 				
-				System.out.println("Unica respuesta");
 				if (respId != null) {
 					Optional<Respuesta> respuestaOpt = respuestaService.findById(respId);
 					if (!respuestaOpt.isPresent()
@@ -316,6 +315,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					detallePruebaUsuario.setRespuesta(respuesta);
 				} else {
 					detallePruebaUsuario.setRespuestaAbierta(respuestaAbierta);
+					detallePruebaUsuario.setCeDesarrolloPrueba(ceDesarrolloPrueba);
+					detallePruebaUsuario.setCeIdeaCentral(ceIdeaCentral);
+					detallePruebaUsuario.setCeLluviaIdeas(ceLluviaIdeas);
 				}
 
 				PruebaUsuario pruebaUsuario = detallePruebaUsuario.getPruebaUsuario();
@@ -365,7 +367,18 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 		try {
 			List<DetallePruebaUsuario> respuestasCorrectas = new ArrayList<DetallePruebaUsuario>();
 			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
+			List<DetallePruebaUsuarioRespuesta> listDPUR = new ArrayList<>();
+			
 			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
+				if(detallePruebaUsuario.getRespuesta() == null) {
+					listDPUR = detallePruebaUsuarioRespuestaRepository.findByDetallePruebaUsuarioAndEstadoRegistro(detallePruebaUsuario, Constantes.ESTADO_ACTIVO);
+					for (DetallePruebaUsuarioRespuesta detallePruebaUsuarioRespuesta : listDPUR) {
+						if(detallePruebaUsuarioRespuesta.getRespuesta() != null
+								&& detallePruebaUsuarioRespuesta.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
+							respuestasCorrectas.add(detallePruebaUsuario);
+						}
+					}
+				}
 				if (detallePruebaUsuario.getRespuesta() != null
 						&& detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
 					respuestasCorrectas.add(detallePruebaUsuario);
@@ -409,6 +422,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				detallePruebaUsuarioDTO.setDescripcionPregunta(detallePruebaUsuario.getPregunta().getDescripcion());
 				detallePruebaUsuarioDTO.setOrdenPregunta(detallePruebaUsuario.getPregunta().getOrden());
 				detallePruebaUsuarioDTO.setSeleccionMultiple(detallePruebaUsuario.getPregunta().getSeleccionMultiple());
+				detallePruebaUsuarioDTO.setIdTipoPregunta(detallePruebaUsuario.getPregunta().getTipoPregunta().getTprgId());
 
 				if (detallePruebaUsuario.getPregunta().getContexto() != null) {
 					detallePruebaUsuarioDTO
@@ -419,6 +433,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 							.setRetroalimentacionPregunta(detallePruebaUsuario.getPregunta().getRetroalimentacion());
 				}
 				detallePruebaUsuarioDTO.setRespuestaAbierta(detallePruebaUsuario.getRespuestaAbierta());
+				detallePruebaUsuarioDTO.setCeDesarrolloPrueba(detallePruebaUsuario.getCeDesarrolloPrueba());
+				detallePruebaUsuarioDTO.setCeIdeaCentral(detallePruebaUsuario.getCeIdeaCentral());
+				detallePruebaUsuarioDTO.setCeLluviaIdeas(detallePruebaUsuario.getCeLluviaIdeas());
 
 //				----------------------------------------------
 
@@ -498,6 +515,17 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 					respuestaDTO.setEsCorrecta(respuesta.getCorrecta().equals(Constantes.RESPUESTA_CORRECTA));
 				}
 			}
+
+			if(detallePruebaUsuario.getRespuesta() == null) {
+				List<DetallePruebaUsuarioRespuesta> detallePruebaUsuarioRespuestaList = 
+						detallePruebaUsuarioRespuestaRepository.findByDetallePruebaUsuarioAndRespuestaAndEstadoRegistro(detallePruebaUsuario, respuesta, Constantes.ESTADO_ACTIVO);
+			
+				if(detallePruebaUsuarioRespuestaList != null && !detallePruebaUsuarioRespuestaList.isEmpty()) {
+					respuestaDTO.setDpurId(detallePruebaUsuarioRespuestaList.get(0).getDpurId());
+				}
+				
+			}
+			
 			if (mostrarRetroalimentacion) {
 				respuestaDTO.setCorrecta(respuesta.getCorrecta());
 			}

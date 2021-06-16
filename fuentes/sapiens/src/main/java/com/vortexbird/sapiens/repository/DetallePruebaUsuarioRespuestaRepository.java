@@ -17,5 +17,7 @@ import java.util.List;
 public interface DetallePruebaUsuarioRespuestaRepository extends JpaRepository<DetallePruebaUsuarioRespuesta, Long> {
 
 	List<DetallePruebaUsuarioRespuesta> findByDetallePruebaUsuarioAndRespuesta(DetallePruebaUsuario detallePruebaUsuario, Respuesta respuesta);
+	List<DetallePruebaUsuarioRespuesta> findByDetallePruebaUsuarioAndRespuestaAndEstadoRegistro(DetallePruebaUsuario detallePruebaUsuario, Respuesta respuesta, String estado);
+	
 	List<DetallePruebaUsuarioRespuesta> findByDetallePruebaUsuarioAndEstadoRegistro(DetallePruebaUsuario detallePruebaUsuario, String estado);
 }

@@ -24,8 +24,11 @@ import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRespuestaRepository;
 import com.vortexbird.sapiens.repository.PruebaUsuarioRepository;
+import com.vortexbird.sapiens.repository.RespuestaRepository;
 import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.Utilities;
+
+import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy.Definition.Undefined;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +51,9 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 
 	@Autowired
 	private PruebaUsuarioRepository pruebaUsuarioRepository;
+	
+	@Autowired
+	private RespuestaRepository respuestaRepository;
 
 	@Autowired
 	private Validator validator;
@@ -486,14 +492,20 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 					
 				}
 			}
-			// Revisar el calculo del resultado para que tenga en cuenta la nueva tabla de respuesta de seleccion multiple
+			
 			//Calculos las respuestas correctas obtenidas
 			List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getRespuestasCorrectas(prusId);
 			Long puntaje = 0L;
 			//Sumo el puntaje por pregunta
 			for (int i = 0; i < detallesPruebaUsuario.size(); i++) {
 				DetallePruebaUsuario detalle = detallesPruebaUsuario.get(i);
-				puntaje += detalle.getPregunta().getValorPregunta() == null ? 50L : detalle.getPregunta().getValorPregunta();
+				
+				if(!detalle.getPregunta().getSeleccionMultiple()) {
+					puntaje += detalle.getPregunta().getValorPregunta() == null ? 50L : detalle.getPregunta().getValorPregunta();
+				}else {
+					long respuestasPorPregunta = respuestaRepository.countByPregunta_pregIdAndEstadoRegistro(detalle.getPregunta().getPregId(), Constantes.ESTADO_ACTIVO);
+					puntaje += detalle.getPregunta().getValorPregunta() == null ? (50L/respuestasPorPregunta) : detalle.getPregunta().getValorPregunta();
+				}
 			}
 
 			Optional<EstadoPrueba> estadoPrueba = estadoPruebaService.findById(Constantes.ESTADO_PRUEBA_TERMINADA);

@@ -20,7 +20,8 @@ public interface DetallePruebaUsuarioService extends GenericService<DetallePrueb
 
 	Integer getCantidadDeEjecucionesPorUsuario(Integer usuaId) throws Exception;
 
-	void responder(Integer prusId, Integer respId, String respuestaAbierta, Long usuaId, Boolean seleccionMultiple) throws Exception;
+	void responder(Integer prusId, Integer respId, String respuestaAbierta, Long usuaId, Boolean seleccionMultiple,
+			String ceDesarrolloPrueba, String ceLluviaIdeas,String ceIdeaCentral) throws Exception;
 
 	List<DetallePruebaUsuario> getPreguntasByPruebaUsuario(Integer prusId) throws Exception;
 

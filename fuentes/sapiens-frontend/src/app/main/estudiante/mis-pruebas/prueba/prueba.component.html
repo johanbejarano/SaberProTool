@@ -55,7 +55,6 @@
                                         <mat-divider></mat-divider>
 
                                         <div *ngIf="!pregunta.seleccionMultiple">
-                                            <div>Unica respuesta</div>
                                             <div *ngFor="let respuesta of pregunta.respuestas">
                                                 <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
                                                     class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
@@ -78,14 +77,14 @@
                                         </div>
 
                                         <div *ngIf="pregunta.seleccionMultiple">
-                                            <div>Seleccion Multiple</div>
                                             <div *ngFor="let respuesta of pregunta.respuestas">
                                                 <mat-checkbox matInput (change)="seleccionarRespuesta(pregunta, respuesta)"
                                                     class="{{pregunta.respId == respuesta.respId && respuesta.esCorrecta === true ? 'respuestaCorrecta' : pregunta.respId == respuesta.respId && respuesta.esCorrecta === false ? 'respuestaIncorrecta': 
                                                     respuesta.correcta === 1 ? 'respuestaEquivocada' : ''}}"
                                                     [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
+                                                    [checked]="respuesta.dpurId ? true : false"
                                                     >
-                                                    <!-- [checked]="pregunta.respId !== null && pregunta.respId == respuesta.respId" -->
+                                                    
 
                                                     <div fxFlex="100">
                                                         <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
@@ -93,22 +92,45 @@
                                                         </ckeditor>
                                                     </div>
                                                 </mat-checkbox>
-                                                <!-- <div fxFlex="100" *ngIf="(respuesta.descripcion == '<p>Otro</p>' && pregunta.nombreModulo == 'CUESTIONARIO CUALITATIVO' && pregunta.respId == respuesta.respId)">
-                                                    <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
-                                                        [(data)]="pregunta.respuestaAbierta"
-                                                        (blur)="actualizar(pregunta, $event)">
-                                                    </ckeditor>
-                                                </div> -->
                                             </div>
                                         </div>
 
-                                        <div *ngIf="!pregunta.respuestas || pregunta.respuestas.length == 0">
+                                        <div *ngIf="(!pregunta.respuestas || pregunta.respuestas.length == 0) && pregunta.idTipoPregunta != 3">
                                             <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                 [(data)]="pregunta.respuestaAbierta"
-                                                (blur)="actualizar(pregunta, $event)"
+                                                (blur)="actualizar(pregunta, $event, 'PA')"
                                                 [disabled]="pregunta.retroalimentacionPregunta ? true : false">
                                             </ckeditor>
                                         </div>
+
+                                        <!-- comunicacion escrita -->
+                                        <div *ngIf="(!pregunta.respuestas || pregunta.respuestas.length == 0) && pregunta.idTipoPregunta == 3" fxFlex = "100" fxLayout="row wrap">
+                                            <div fxFlex = "100">
+                                                Idea central
+                                            </div>
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                [(data)]="pregunta.ceIdeaCentral"
+                                                (blur)="actualizar(pregunta, $event, 'IC')"
+                                                [disabled]="pregunta.retroalimentacionPregunta ? true : false">
+                                            </ckeditor>
+                                            <div fxFlex = "100">
+                                                Lluvia de ideas
+                                            </div>
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                [(data)]="pregunta.ceLluviaIdeas"
+                                                (blur)="actualizar(pregunta, $event, 'LI')"
+                                                [disabled]="pregunta.retroalimentacionPregunta ? true : false">
+                                            </ckeditor>
+                                            <div fxFlex = "100">
+                                                Desarrollo de la prueba
+                                            </div>
+                                            <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
+                                                [(data)]="pregunta.ceDesarrolloPrueba"
+                                                (blur)="actualizar(pregunta, $event, 'DP')"
+                                                [disabled]="pregunta.retroalimentacionPregunta ? true : false">
+                                            </ckeditor>
+                                        </div>
+                                        <!-- comunicacion escrita -->
 
                                         <div *ngIf="pregunta.retroalimentacionPregunta" class="tituloPrincipal mt-4"
                                             fxFlex="100">

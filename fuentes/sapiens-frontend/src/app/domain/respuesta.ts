@@ -10,4 +10,5 @@ export class Respuesta {
     usuModificador: number;
     pregId_Pregunta: number;
     esCorrecta: boolean;
+    dpurId: number;
 }

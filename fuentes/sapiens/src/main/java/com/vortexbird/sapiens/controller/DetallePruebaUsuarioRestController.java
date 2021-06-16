@@ -32,7 +32,8 @@ public class DetallePruebaUsuarioRestController {
     public ResponseEntity<?> responder(@RequestBody DetallePruebaUsuarioDTO detallePruebaUsuarioDTO) {
         try {
             detallePruebaUsuarioService.responder(detallePruebaUsuarioDTO.getDpruId(),
-                    detallePruebaUsuarioDTO.getRespId(), detallePruebaUsuarioDTO.getRespuestaAbierta(), detallePruebaUsuarioDTO.getUsuCreador(), detallePruebaUsuarioDTO.isSeleccionMultiple());
+                    detallePruebaUsuarioDTO.getRespId(), detallePruebaUsuarioDTO.getRespuestaAbierta(), detallePruebaUsuarioDTO.getUsuCreador(), detallePruebaUsuarioDTO.isSeleccionMultiple(),
+                    detallePruebaUsuarioDTO.getCeDesarrolloPrueba(), detallePruebaUsuarioDTO.getCeLluviaIdeas(),detallePruebaUsuarioDTO.getCeIdeaCentral());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             if (e.getMessage().equals("Se terminó el tiempo de la prueba")) {
