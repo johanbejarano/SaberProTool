@@ -57,20 +57,23 @@
 		modu.modu_id,
 		dpru.preg_id, 
 		preg.descripcion desPreg,
-		string_agg('' || dpru.resp_id, ', ') respId, 
-		string_agg(resp.descripcion, ', ')  desRes
+		string_agg('' || dpru.resp_id, ', ') respId,
+		string_agg(CASE WHEN preg.tprg_id = 1 and dpru.resp_id is not null and dpru.respuesta_abierta is null THEN resp.descripcion
+			 WHEN preg.tprg_id = 1 and dpru.resp_id is not null and dpru.respuesta_abierta is not null THEN dpru.respuesta_abierta
+			 WHEN preg.tprg_id = 2 and dpru.resp_id is null and dpru.respuesta_abierta is not null THEN dpru.respuesta_abierta
+			 end, ', ') desRes
 FROM prueba_usuario prus 
 INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
 INNER JOIN programa prog ON prog.prog_id = usua.prog_id
 LEFT JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
 LEFT JOIN pregunta preg ON preg.preg_id = dpru.preg_id
 LEFT JOIN modulo modu ON modu.modu_id = preg.modu_id
-LEFT JOIN tipo_modulo timo ON timo.timo_id = modu.timo_id 
+LEFT JOIN tipo_modulo timo ON timo.timo_id = modu.timo_id
 LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
 WHERE prus.prue_id = $P{P_PRUE_ID}
 and usua.usua_id = $P{P_USUA_ID}
 and timo.timo_id in (3)
-GROUP BY dpru.preg_id, preg.descripcion, usua.usua_id, timo.timo_id, modu.modu_id
+GROUP BY dpru.preg_id, preg.descripcion, usua.usua_id, timo.timo_id, modu.modu_id, preg.tprg_id, dpru.respuesta_abierta
 order by dpru.preg_id asc]]>
 	</queryString>
 	<field name="usua_id" class="java.lang.Integer">
