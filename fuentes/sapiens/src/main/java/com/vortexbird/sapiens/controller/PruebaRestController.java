@@ -129,6 +129,22 @@ public class PruebaRestController {
         }
 
     }
+    
+    @GetMapping(value = "/getPruebasDeUsuarioCreadorCualitativo/{usuCreador}")
+    public ResponseEntity<?> getPruebasDeUsuarioCreadorCualitativo(@PathVariable("usuCreador") Long usuCreador) {
+
+        try {
+
+            List<PruebaDTO> pruebas = pruebaService.getPruebasDeUsuarioCreadorCualitativo(usuCreador);
+            return ResponseEntity.ok().body(pruebas);
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
 
     @PostMapping(value = "/guardarPrueba")
     public ResponseEntity<?> guardarPrueba(@RequestBody PruebaDTO pruebaDTO) {

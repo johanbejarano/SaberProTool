@@ -27,4 +27,6 @@ public interface PruebaService extends GenericService<Prueba, Integer> {
 	String consultarReporteResumenEstudiantes(Integer facuId, Integer progId, Integer usuaId, Integer tiusId,
 			Integer prueId, Integer esprId, Integer pregId, Integer respId, Integer respOk, Integer moduId)
 			throws Exception;
+
+	List<PruebaDTO> getPruebasDeUsuarioCreadorCualitativo(Long usuCreador) throws Exception;
 }

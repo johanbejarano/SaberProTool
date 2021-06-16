@@ -101,4 +101,20 @@ public class ReporteRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @PostMapping(value = "/reportePruebaResultadoCualitativo")
+    public ResponseEntity<?> reportePruebaResultadoCualitativo(@RequestBody ReporteDTO reporteDTO) {
+        try {
+            String reporte = reporteService.reportePruebaResultadoCualitativo(reporteDTO.getPrueId());
+
+            ReporteDTO respuesta = new ReporteDTO();
+            respuesta.setPdf(reporte);
+
+            return ResponseEntity.ok().body(respuesta);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

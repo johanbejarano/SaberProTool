@@ -36,6 +36,7 @@ import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.PruebaDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.mapper.PruebaMapper;
+import com.vortexbird.sapiens.repository.PruebaModuloRepository;
 import com.vortexbird.sapiens.repository.PruebaRepository;
 import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.GlobalProperties;
@@ -69,6 +70,9 @@ public class PruebaServiceImpl implements PruebaService {
 
 	@Autowired
 	private PruebaRepository pruebaRepository;
+	
+	@Autowired
+	private PruebaModuloRepository pruebaModuloRepository;
 
 	@Autowired
 	private Validator validator;
@@ -305,6 +309,72 @@ public class PruebaServiceImpl implements PruebaService {
 				for (Prueba prueba : lasPruebas) {
 					pruebas.add(pruebaMapper.pruebaToPruebaDTO(prueba));
 				}
+			}
+
+			// Se calculan los nombres de los usuarios creadores de cada prueba
+			for (PruebaDTO pruebaDTO : pruebas) {
+				pruebaDTO.setNombrePropietario(usuarioService.getNombreUsuario(pruebaDTO.getUsuCreador().intValue()));
+			}
+
+			// Se ordenan las pruebas por fecha de inicio
+			pruebas.sort(new Comparator<PruebaDTO>() {
+				@Override
+				public int compare(PruebaDTO prueba1, PruebaDTO prueba2) {
+					if (prueba1 == null || prueba2 == null) {
+						return 0;
+					}
+					return prueba1.getFechaInicial().compareTo(prueba2.getFechaInicial());
+				}
+			});
+
+			return pruebas;
+
+		} catch (Exception e) {
+			log.error("Error en getPruebasDeUsuarioCreador", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<PruebaDTO> getPruebasDeUsuarioCreadorCualitativo(Long usuCreador) throws Exception {
+		try {
+
+			List<PruebaDTO> pruebas = new ArrayList<PruebaDTO>(); 
+
+			// Se consulta el usuario
+			Optional<Usuario> usuario = usuarioService.findById(usuCreador.intValue());
+			if (!usuario.isPresent() || !usuario.get().getEstadoRegistro().equals(Constantes.ESTADO_ACTIVO)) {
+				throw new Exception("No se encontró el usuario o no se encuentra activo");
+			}
+
+			// Se obtiene el tipo de usuario
+			TipoUsuario tipoUsuario = usuario.get().getTipoUsuario();
+
+			// Si es un profesor, solo se consultan las pruebas creadas por el
+			if (tipoUsuario.getTiusId().equals(Constantes.TIPO_USUARIO_PROFESOR)) {
+
+				List<Prueba> pruebasDeUsuarioCreador = pruebaModuloRepository.findByUsuCreadorAndModulo_TipoModulo_timoId(usuCreador, Constantes.TIPO_MODULO_CUALITATIVO);
+				if (pruebasDeUsuarioCreador != null && !pruebasDeUsuarioCreador.isEmpty()) {
+					pruebas.addAll(pruebaMapper.listPruebaToListPruebaDTO(pruebasDeUsuarioCreador));
+				}
+
+			} else if (tipoUsuario.getTiusId().equals(Constantes.TIPO_USUARIO_DIRECTOR)) {
+				// Si es un director, se consultan las pruebas creadas por todos los usuarios
+				// del programa que dirige
+				List<PruebaModulo> pruebaModulosList = pruebaModuloRepository.findByModulo_TipoModulo_timoId(Constantes.TIPO_MODULO_CUALITATIVO);
+				
+				if (pruebaModulosList.isEmpty()) {
+					throw new Exception("No se encontraron pruebas con el modulo " + Constantes.CUESTIONARIO_CUALITATIVO);
+				}
+				
+				List<Prueba> pruebaList = new ArrayList<Prueba>();
+				
+				for (PruebaModulo pruebaModulo : pruebaModulosList) {
+					pruebaList.add(pruebaModulo.getPrueba());
+				}
+				
+				pruebas.addAll(pruebaMapper.listPruebaToListPruebaDTO(pruebaList));
 			}
 
 			// Se calculan los nombres de los usuarios creadores de cada prueba

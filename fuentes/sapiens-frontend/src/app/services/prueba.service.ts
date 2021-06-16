@@ -22,6 +22,12 @@ export class PruebaService {
     return this.httpClient.get(this.url + 'getPruebasDeUsuarioCreador/' + usuCreador);
   }
 
+  public getPruebasDeUsuarioCreadorCualitativo(usuCreador: number): Observable<any> {
+    console.log(this.url + 'getPruebasDeUsuarioCreadorCualitativo/');
+    
+    return this.httpClient.get(this.url + 'getPruebasDeUsuarioCreadorCualitativo/' + usuCreador);
+  }
+
   public find(filtro: string): Observable<any> {
     console.log(this.url + 'find/');
     

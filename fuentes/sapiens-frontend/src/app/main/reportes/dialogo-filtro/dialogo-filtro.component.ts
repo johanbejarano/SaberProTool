@@ -58,6 +58,8 @@ export class DialogoFiltroComponent implements OnInit {
       this.displayedColumns = ['usuarioCodigo', 'usuarioIdentificacion', 'usuarioNombre'];
     } else if (this.tipo == 'prueba') {
       this.displayedColumns = ['pruebaId', 'pruebaPropietario', 'pruebaFecha'];
+    } else if (this.tipo == 'pruebaCuali') {
+      this.displayedColumns = ['pruebaId', 'pruebaPropietario', 'pruebaFecha'];
     } else if (this.tipo == 'modulo') {
       this.displayedColumns = ['moduloNombre'];
     } else if (this.tipo == 'programa') {
@@ -73,6 +75,8 @@ export class DialogoFiltroComponent implements OnInit {
       this.getUsuarios();
     } else if (this.tipo == 'prueba') {
       this.getPruebas();
+    } else if (this.tipo == 'pruebaCuali') {
+      this.getPruebasConCuestionarioCualitativo();
     } else if (this.tipo == 'modulo') {
       this.getModulos();
     } else if (this.tipo == 'programa') {
@@ -94,6 +98,15 @@ export class DialogoFiltroComponent implements OnInit {
 
   getPruebas() {
     this.pruebaService.getPruebasDeUsuarioCreador(this.usuarioService.getUsuario().usuaId).subscribe((pruebas: Prueba[]) => {
+      this.data = pruebas;
+      this.total = pruebas.length;
+      this.datasource = new MatTableDataSource(this.data);
+      this.datasource.paginator = this.paginator;
+    });
+  }
+
+  getPruebasConCuestionarioCualitativo() {
+    this.pruebaService.getPruebasDeUsuarioCreadorCualitativo(this.usuarioService.getUsuario().usuaId).subscribe((pruebas: Prueba[]) => {
       this.data = pruebas;
       this.total = pruebas.length;
       this.datasource = new MatTableDataSource(this.data);
@@ -128,7 +141,7 @@ export class DialogoFiltroComponent implements OnInit {
     });
   }
 
-  seleccionar(item) {
+  seleccionar(item) {    
     let result;
     if (this.tipo == 'usuario') {
       result = {
@@ -136,6 +149,11 @@ export class DialogoFiltroComponent implements OnInit {
         nombre: item.nombre + ' ' + item.apellido
       }
     } else if (this.tipo == 'prueba') {
+      result = {
+        id: item.prueId,
+        nombre: '' + item.prueId
+      }
+    }else if (this.tipo == 'pruebaCuali') {
       result = {
         id: item.prueId,
         nombre: '' + item.prueId
@@ -175,7 +193,7 @@ export class DialogoFiltroComponent implements OnInit {
     const filtro = this.form.controls.filtro.value ? this.form.controls.filtro.value.trim().toLowerCase() : '';
     if (this.tipo == 'usuario') {
       this.getUsuarios();
-    } else if (this.tipo == 'prueba') {
+    } else if (this.tipo == 'prueba' || this.tipo == 'pruebaCuali') {
       
       let dataTmp = this.data;
       dataTmp = dataTmp.filter(prueba => {

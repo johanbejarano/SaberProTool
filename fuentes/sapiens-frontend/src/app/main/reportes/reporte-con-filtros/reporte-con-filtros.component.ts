@@ -48,6 +48,8 @@ export class ReporteConFiltrosComponent implements OnInit {
       this.nombre = 'Consultar reporte prueba de estudiante';
     } else if (this.tipo == 7) {
       this.nombre = 'Consultar reporte participantes';
+    } else if (this.tipo == 8) {
+      this.nombre = 'Consultar reporte cuestionario cualitativo';
     }
 
     this.form = this.formBuilder.group({
@@ -140,6 +142,17 @@ export class ReporteConFiltrosComponent implements OnInit {
         const arrayBuffer = result.pdf;
         createAndDownloadBlobFile(arrayBuffer, 'reportePruebaResultado', 'xlsx');
       });
+    } else if (this.tipo == 8) {
+      if (!request.prueId) {
+        this.snackBar.open('Se debe seleccionar la prueba', 'x', { verticalPosition: 'top', duration: 10000 });
+        return;
+      }
+      console.log("consultado");
+      
+      this.reporteService.reportePruebaResultadoCualitativo(request).subscribe((result) => {
+        const arrayBuffer = result.pdf;
+        createAndDownloadBlobFile(arrayBuffer, 'reportePruebaResultadoCualitativo', 'xlsx');
+      });
     }
   }
 
@@ -166,6 +179,10 @@ export class ReporteConFiltrosComponent implements OnInit {
       inputNombre = this.form.controls.nombreUsuario;
     }
     if (tipo == 'prueba') {
+      inputId = this.form.controls.prueId;
+      inputNombre = this.form.controls.nombrePrueba;
+    }
+    if (tipo == 'pruebaCuali') {
       inputId = this.form.controls.prueId;
       inputNombre = this.form.controls.nombrePrueba;
     }

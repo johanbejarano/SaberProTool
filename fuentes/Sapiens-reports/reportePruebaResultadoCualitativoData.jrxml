@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaResultadoCualitativoHeaders" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1550dae6-6a22-4904-96a1-35f1e1db51a2">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#005FB3">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="P_PRUE_ID" class="java.lang.Long"/>
+	<parameter name="P_USUA_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select 	
+		usua.usua_id,
+		timo.timo_id,
+		modu.modu_id,
+		dpru.preg_id, 
+		preg.descripcion desPreg,
+		string_agg('' || dpru.resp_id, ', ') respId, 
+		string_agg(resp.descripcion, ', ')  desRes
+FROM prueba_usuario prus 
+INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
+INNER JOIN programa prog ON prog.prog_id = usua.prog_id
+LEFT JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
+LEFT JOIN pregunta preg ON preg.preg_id = dpru.preg_id
+LEFT JOIN modulo modu ON modu.modu_id = preg.modu_id
+LEFT JOIN tipo_modulo timo ON timo.timo_id = modu.timo_id 
+LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
+WHERE prus.prue_id = $P{P_PRUE_ID}
+and usua.usua_id = $P{P_USUA_ID}
+and timo.timo_id in (3)
+GROUP BY dpru.preg_id, preg.descripcion, usua.usua_id, timo.timo_id, modu.modu_id
+order by dpru.preg_id asc]]>
+	</queryString>
+	<field name="usua_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="usua_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="usua_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="timo_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="timo_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="timo_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_modulo"/>
+	</field>
+	<field name="modu_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="modu_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="modu_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="modulo"/>
+	</field>
+	<field name="preg_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="preg_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="preg_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_prueba_usuario"/>
+	</field>
+	<field name="despreg" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="despreg"/>
+		<property name="com.jaspersoft.studio.field.label" value="despreg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pregunta"/>
+	</field>
+	<field name="respid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="respid"/>
+		<property name="com.jaspersoft.studio.field.label" value="respid"/>
+	</field>
+	<field name="desres" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="desres"/>
+		<property name="com.jaspersoft.studio.field.label" value="desres"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<crosstab ignoreWidth="true">
+				<reportElement x="0" y="0" width="120" height="20" uuid="ec87290f-ee61-4812-a408-d873e3b1650d">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report"/>
+				</crosstabDataset>
+				<rowGroup name="usua_id" width="0">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{usua_id}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField>
+								<reportElement x="0" y="0" width="0" height="20" uuid="f27e5af7-edfc-48f8-a583-bf9521373a22"/>
+								<textFieldExpression><![CDATA[$V{usua_id}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="b0492630-b170-4ebc-9b3c-62acc2eb31c0"/>
+								<text><![CDATA[Total usua_id]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="despreg" height="0">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{despreg}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement x="0" y="0" width="90" height="0" uuid="c7154f93-7058-4ad8-bcb6-fd8606343dda"/>
+								<textFieldExpression><![CDATA[$V{despreg}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="9c0eeedf-4b5b-46dd-8548-609514001de6"/>
+								<text><![CDATA[Total despreg]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="desres_MEASURE" class="java.lang.String">
+					<measureExpression><![CDATA[$F{desres}]]></measureExpression>
+				</measure>
+				<crosstabCell width="90" height="20">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="90" height="20" uuid="4bcf5e91-d744-4e89-8d5e-b2426d8257ba"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textFieldExpression><![CDATA[$V{desres_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

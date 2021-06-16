@@ -35,4 +35,8 @@ export class ReporteService {
     return this.httpClient.post(this.url + 'reportePruebaResultado/', reporte);
   }
 
+  public reportePruebaResultadoCualitativo(reporte: Reporte): Observable<any> {
+    return this.httpClient.post(this.url + 'reportePruebaResultadoCualitativo/', reporte);
+  }
+
 }

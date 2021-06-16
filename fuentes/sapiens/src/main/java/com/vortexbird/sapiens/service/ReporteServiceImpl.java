@@ -120,6 +120,21 @@ public class ReporteServiceImpl implements ReporteService {
 		return reporte;
 
 	}
+	
+	@Override
+	public String reportePruebaResultadoCualitativo(Integer prueId) throws Exception {
+		String rutaReporte = "/reportePruebaResultadoCualitativo.jasper";
+		// Crea la variable de parametros
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		// Asigna los parametros enviados
+		params.put("P_PRUE_ID", new Long(prueId));
+
+		String reporte = generarReporteXlsx(rutaReporte, params);
+
+		return reporte;
+
+	}
 
 	private String generarReporte(String rutaReporte, Map<String, Object> params) throws Exception {
 		ByteArrayInputStream informe = null;

@@ -17,12 +17,15 @@
                     <div fxFlex="33" *ngIf="tipo == 1 || tipo == 2"></div>
                     <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 1 || tipo == 2 || tipo == 6">
                         <mat-label>Usuario</mat-label>
-                        <input matInput formControlName="nombreUsuario" readonly="true"
-                            (click)="abrirDialogo('usuario')">
+                        <input matInput formControlName="nombreUsuario" readonly="true" (click)="abrirDialogo('usuario')">
                     </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex="33" class="px-8">
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo != 8">
                         <mat-label>Prueba</mat-label>
                         <input matInput formControlName="nombrePrueba" readonly="true" (click)="abrirDialogo('prueba')">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 8">
+                        <mat-label>Prueba Cualitativa</mat-label>
+                        <input matInput formControlName="nombrePrueba" readonly="true" (click)="abrirDialogo('pruebaCuali')">
                     </mat-form-field>
                     <mat-form-field appearance="outline" fxFlex="33" class="px-8" *ngIf="tipo == 1 || tipo == 2">
                         <mat-label>Modulo</mat-label>

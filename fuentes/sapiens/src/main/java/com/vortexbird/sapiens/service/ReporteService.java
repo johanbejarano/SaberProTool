@@ -11,5 +11,7 @@ public interface ReporteService {
 	public String reportePruebaDetalleEstudiante(Integer prueId) throws Exception;
 	
 	public String reportePruebaResultado(Integer prueId) throws Exception;
+
+	String reportePruebaResultadoCualitativo(Integer prueId) throws Exception;
 	
 }
