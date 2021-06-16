@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePruebaEstudiante" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e2baa907-9496-485c-abbe-a04ad84ce1fa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SapiensProd"/>
@@ -16,10 +16,12 @@ FROM (
 	INNER JOIN detalle_prueba_usuario dpru ON dpru.prus_id = prus.prus_id
 	INNER JOIN pregunta preg ON preg.preg_id = dpru.preg_id
 	INNER JOIN modulo modu ON modu.modu_id = preg.modu_id
+	INNER 	JOIN tipo_modulo timo ON timo.timo_id = modu.timo_id
 	INNER JOIN programa prog ON prog.prog_id = usua.prog_id
 	LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
 	WHERE prus.prue_id = $P{P_PRUE_ID}
 		AND prus.espr_id = 4
+		AND 	timo.timo_id NOT IN (3)
 	GROUP BY modu.modu_id, prog.descripcion
 ) q
 ORDER BY programa, modulo]]>
@@ -111,7 +113,7 @@ ORDER BY programa, modulo]]>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="110" y="0" width="160" height="20" uuid="08855ad4-d4b0-4a08-80db-5e9696f893b3">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="61e3b617-a6c2-41d2-a00c-f71fc288ef6a"/>
 				</reportElement>
@@ -123,7 +125,7 @@ ORDER BY programa, modulo]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="430" y="0" width="100" height="20" uuid="cdc0f3bc-b6f9-4561-8047-9d4740db2fcb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b027f8ce-fe63-46d6-b917-16137ac27bbb"/>
 				</reportElement>
@@ -135,7 +137,7 @@ ORDER BY programa, modulo]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{porcmodu}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="160" height="20" uuid="5fd45205-6270-4852-9d43-54fa40d55ca4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b4afc53-21e2-41a6-bbbc-473154950d14"/>
 				</reportElement>
@@ -147,7 +149,7 @@ ORDER BY programa, modulo]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{modulo}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00%;(#,##0.00" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="530" y="0" width="100" height="20" uuid="c8b9a413-73bc-439b-8674-b2c1d2ec2246">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="635e2293-67f3-407c-8947-992cfd290e03"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenEstudiantes" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="839477af-3770-4b10-abd5-c8b28e85698f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SaberTool Produccion"/>
@@ -93,7 +93,8 @@ inner 	join prueba prue on prue.prue_id = prus.prue_id
 inner 	join tipo_prueba tipr on tipr.tipr_id  = prue.tipr_id 
 inner	join prueba_modulo prmo on prmo.prue_id = prue.prue_id 
 inner	join modulo modu on modu.modu_id = prmo.modu_id 
-inner	join pregunta preg on preg.modu_id = modu.modu_id 
+inner	join pregunta preg on preg.modu_id = modu.modu_id
+inner 	join tipo_modulo timo on timo.timo_id = modu.timo_id
 left 	outer join detalle_prueba_usuario dpru on dpru.prus_id  = prus.prus_id and dpru.preg_id = preg.preg_id 
 left	outer join respuesta respuesta_seleccionada on respuesta_seleccionada.resp_id = dpru.resp_id 
 where	1=1
@@ -112,6 +113,7 @@ and		prue.estado_registro = 'A'
 and		modu.estado_registro = 'A'
 and		respuesta_seleccionada.estado_registro = 'A'
 and		preg.estado_registro  = 'A'
+and	 	timo.timo_id not in (3)
 group	by facu.facu_id, prog.prog_id, usua.usua_id , tipr.tipr_id, prue.prue_id , modu.modu_id
 order	by facu.facu_id, prog.prog_id, usua.codigo, prue.prue_id , modu.modu_id]]>
 	</queryString>
