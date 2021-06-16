@@ -53,7 +53,7 @@
 		<![CDATA[select 	
         1 fila,
 		dpru.preg_id, 
-		preg.descripcion desPreg
+		translate (preg.descripcion, '<p>,</p>','') desPreg
 FROM prueba_usuario prus 
 INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
 INNER JOIN programa prog ON prog.prog_id = usua.prog_id
