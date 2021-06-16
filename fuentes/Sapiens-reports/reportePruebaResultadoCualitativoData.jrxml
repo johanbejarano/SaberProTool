@@ -61,7 +61,7 @@
 		translate(string_agg(CASE WHEN preg.tprg_id = 1 and dpru.resp_id is not null and dpru.respuesta_abierta is null THEN resp.descripcion
 			 WHEN preg.tprg_id = 1 and dpru.resp_id is not null and dpru.respuesta_abierta is not null THEN dpru.respuesta_abierta
 			 WHEN preg.tprg_id = 2 and dpru.resp_id is null and dpru.respuesta_abierta is not null THEN dpru.respuesta_abierta
-			 end, ', '), '<p>,</p>','') desRes
+			 end, ', '), '<p></p>','') desRes
 FROM prueba_usuario prus 
 INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
 INNER JOIN programa prog ON prog.prog_id = usua.prog_id
