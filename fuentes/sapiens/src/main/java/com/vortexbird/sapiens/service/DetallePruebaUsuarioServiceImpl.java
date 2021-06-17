@@ -451,42 +451,63 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 				preguntasDTO.add(detallePruebaUsuarioDTO);
 			}
 
-			preguntasDTO.sort(new Comparator<DetallePruebaUsuarioDTO>() {
-				@Override
-				public int compare(DetallePruebaUsuarioDTO p1, DetallePruebaUsuarioDTO p2) {
-					int prioridadModulo = p1.getPrioridadModulo().compareTo(p2.getPrioridadModulo());
+			if(pruebaUsuario.get().getPrueba().getTipoPrueba().getTiprId() != Constantes.TIPO_PRUEBA_SIMULACRO_SELECCIONABLE) {
+				preguntasDTO.sort(new Comparator<DetallePruebaUsuarioDTO>() {
+					@Override
+					public int compare(DetallePruebaUsuarioDTO p1, DetallePruebaUsuarioDTO p2) {
+						int prioridadModulo = p1.getPrioridadModulo().compareTo(p2.getPrioridadModulo());
 
-					if (prioridadModulo != 0) {
-						return prioridadModulo;
+						if (prioridadModulo != 0) {
+							return prioridadModulo;
+						}
+
+						int nombreModulo = p2.getNombreModulo().compareTo(p1.getNombreModulo());
+
+						if (nombreModulo != 0) {
+							return nombreModulo;
+						}
+
+						String contexto1 = p1.getDescripcionContexto() == null ? "" : p1.getDescripcionContexto();
+						String contexto2 = p2.getDescripcionContexto() == null ? "" : p2.getDescripcionContexto();
+
+						int contexto = contexto1.compareTo(contexto2);
+
+						if (contexto != 0) {
+							return contexto;
+						}
+
+						Long orden1 = p1.getOrdenPregunta() == null ? 999L : p1.getOrdenPregunta();
+						Long orden2 = p2.getOrdenPregunta() == null ? 999L : p2.getOrdenPregunta();
+
+						int orden = orden1.compareTo(orden2);
+
+						if (orden != 0) {
+							return orden;
+						}
+
+						return p1.getDpruId().compareTo(p2.getDpruId());
 					}
+				});
+			}else {
+				preguntasDTO.sort(new Comparator<DetallePruebaUsuarioDTO>() {
+					@Override
+					public int compare(DetallePruebaUsuarioDTO p1, DetallePruebaUsuarioDTO p2) {
+						int prioridadModulo = p1.getPrioridadModulo().compareTo(p2.getPrioridadModulo());
 
-					int nombreModulo = p2.getNombreModulo().compareTo(p1.getNombreModulo());
+						if (prioridadModulo != 0) {
+							return prioridadModulo;
+						}
 
-					if (nombreModulo != 0) {
-						return nombreModulo;
+						int nombreModulo = p2.getNombreModulo().compareTo(p1.getNombreModulo());
+
+						if (nombreModulo != 0) {
+							return nombreModulo;
+						}
+
+						return p1.getDpruId().compareTo(p2.getDpruId());
 					}
-
-					String contexto1 = p1.getDescripcionContexto() == null ? "" : p1.getDescripcionContexto();
-					String contexto2 = p2.getDescripcionContexto() == null ? "" : p2.getDescripcionContexto();
-
-					int contexto = contexto1.compareTo(contexto2);
-
-					if (contexto != 0) {
-						return contexto;
-					}
-
-					Long orden1 = p1.getOrdenPregunta() == null ? 999L : p1.getOrdenPregunta();
-					Long orden2 = p2.getOrdenPregunta() == null ? 999L : p2.getOrdenPregunta();
-
-					int orden = orden1.compareTo(orden2);
-
-					if (orden != 0) {
-						return orden;
-					}
-
-					return p1.getDpruId().compareTo(p2.getDpruId());
-				}
-			});
+				});
+			}
 
 			return preguntasDTO;
 		} catch (Exception e) {
