@@ -61,6 +61,7 @@
 		translate(string_agg(CASE WHEN preg.tprg_id = 1 and dpru.resp_id is not null and dpru.respuesta_abierta is null THEN resp.descripcion
 			 WHEN preg.tprg_id = 1 and dpru.resp_id is not null and dpru.respuesta_abierta is not null THEN dpru.respuesta_abierta
 			 WHEN preg.tprg_id = 2 and dpru.resp_id is null and dpru.respuesta_abierta is not null THEN dpru.respuesta_abierta
+			 when preg.tprg_id = 1 and dpru.resp_id is null and dpur.resp_id is not null then redr.descripcion
 			 end, ', '), '<p></p>','') desRes
 FROM prueba_usuario prus 
 INNER JOIN usuario usua ON usua.usua_id = prus.usua_id
@@ -70,6 +71,8 @@ LEFT JOIN pregunta preg ON preg.preg_id = dpru.preg_id
 LEFT JOIN modulo modu ON modu.modu_id = preg.modu_id
 LEFT JOIN tipo_modulo timo ON timo.timo_id = modu.timo_id
 LEFT JOIN respuesta resp ON resp.resp_id = dpru.resp_id
+left join detalle_prueba_usuario_respuesta dpur on dpur.dpru_id = dpru.dpru_id and dpur.estado_registro = 'A'
+left join respuesta redr on redr.resp_id = dpur.resp_id
 WHERE prus.prue_id = $P{P_PRUE_ID}
 and usua.usua_id = $P{P_USUA_ID}
 and timo.timo_id in (3)
