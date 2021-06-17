@@ -292,7 +292,9 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 					detallePruebaUsuario.setFechaCreacion(fecha);
 					detallePruebaUsuario.setEstadoRegistro(Constantes.ESTADO_ACTIVO);
 					detallePruebaUsuarioService.save(detallePruebaUsuario);
-					puntaje += pregunta.getValorPregunta() == null ? 50L : pregunta.getValorPregunta();
+					if (pregunta.getModulo().getTipoModulo().getTimoId() != Constantes.TIPO_MODULO_CUALITATIVO) {
+						puntaje += pregunta.getValorPregunta() == null ? 50L : pregunta.getValorPregunta();				
+					}
 				}
 				pruebaUsuario.setTotalPreguntas(puntaje);
 			}
