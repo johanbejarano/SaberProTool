@@ -253,40 +253,6 @@
                                         </form>
 
                                     </mat-step>
-                                    <!--Paso 2. Respuestas -->
-
-                                    <!--Paso 2.1 Comunicacion escrita-->
-                                    <!-- <mat-step *ngFor="let stepControl of stepsRespuestasList; index as i"
-                                        [stepControl]="stepControl">
-                                        <form fxLayout="column" [formGroup]="stepControl">
-                                            <ng-template matStepLabel>R #{{i + 1}}</ng-template>
-
-                                            <div fxFlex="1 0 auto" fxLayout="column">
-                                                <ckeditor [editor]="Editor" [config]="editorConfig"
-                                                    formControlName="editorRespuesta">
-                                                </ckeditor>
-                                                <mat-error
-                                                    *ngIf="stepControl.controls.editorRespuesta.errors?.required">
-                                                    La respuesta es obligatoria</mat-error>
-                                            </div>
-
-                                            <br />
-
-                                            <div fxLayout="row" fxLayoutAlign="center center">
-                                                <button fxFlex="33" mat-stroked-button type="button"
-                                                    class="btnSecundario mx-8" matStepperPrevious>
-                                                    {{i == 0 ? 'Anterior (Encabezado de la pregunta)' : 'Anterior (Respuesta # ' + i + ')'}}
-                                                </button>
-                                                <button fxFlex="33" mat-stroked-button type="button"
-                                                    class="btnPrimario mx-8" matStepperNext>
-                                                    {{i == stepsRespuestasList.length - 1 ? 'Siguiente (Retroalimentación)' : 'Siguiente (Respuesta # ' + (i + 2) + ')'}}
-                                                </button>
-                                            </div>
-                                        </form>
-
-                                    </mat-step> -->
-                                    
-                                    <!--Paso 2.1 Comunicacion escrita -->
 
                                     <!--Paso 3. Retroalimentación-->
                                     <mat-step [stepControl]="horizontalStepperStep6" *ngIf="!(form.controls.tipoModulo.value == 3 && form.controls.tipoPregunta.value == 1)">
