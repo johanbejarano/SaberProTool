@@ -118,7 +118,6 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     }
 
     this.actualizarFormulario();
-    console.log(this.form);
     
   }
 
@@ -295,24 +294,20 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     this.pregunta.usuModificador = this.usuario.usuaId;
     this.pregunta.estadoRegistro = this.form.controls.estado.value;
     this.pregunta.tienePruebas = omitePruebas;
-    
-    console.log(this.stepsRespuestasList);
-    console.log(respuestaCorrecta);
 
     if (!respuestaCorrecta || respuestaCorrecta.length == 0) {
-      // console.log('respuestas');
+
       for (let i = 0; i < this.stepsRespuestasList.length; i++) {
-        // console.log('for');
+
         const respuestaForm = this.stepsRespuestasList[i];
         let respuesta = new Respuesta();
 
         if(this.stepsRespuestasList[i]){
           respuesta.correcta = 1;
         }
-        // console.log(respuesta);
         
         respuesta.descripcion = respuestaForm.controls.editorRespuesta.value;
-        // console.log(respuesta);
+
         this.pregunta.respuestasDTO.push(respuesta);
         this.pregunta.retroalimentacion = 'Todas las respuestas son correctas';
       }
@@ -392,6 +387,7 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
     if (this.form.controls.cantidadRespuestas.valid) {
 
       const cantidadRespuestas = this.form.controls.cantidadRespuestas.value;
+      
       if (cantidadRespuestas) {
         let respuestasForm: FormGroup[] = [];
         for (let i = 0; i < cantidadRespuestas; i++) {
@@ -416,30 +412,24 @@ export class CrearPreguntaComponent implements OnInit, OnDestroy {
 
   changeTipoPregunta() {
     console.log(this.form.controls.tipoPregunta.value);
-    
-    
 
     if(this.form.controls.tipoPregunta.value == 1){
-      console.log("1");
       this.form.controls.cantidadRespuestas.setValidators([Validators.required, Validators.min(2), Validators.max(10)]);
       if (this.form.controls.cantidadRespuestas.value === 0) {
-        console.log("canti preg 0 set a 4");
         this.form.controls.cantidadRespuestas.setValue(4);
       }
     }
     
     if (this.form.controls.tipoPregunta.value == 2) {
-      console.log("2");
-      this.form.controls.cantidadRespuestas.setValue(0);
       this.form.controls.cantidadRespuestas.clearValidators();
+      this.form.controls.cantidadRespuestas.setValue(0);
     }
 
     if(this.form.controls.tipoPregunta.value == 3){
+      this.form.controls.cantidadRespuestas.clearValidators();
       this.form.controls.cantidadRespuestas.setValue(0);
-      console.log("Comunicacion escrita");
+      
     }
-
-
 
     this.changeRespuestas();
   }
