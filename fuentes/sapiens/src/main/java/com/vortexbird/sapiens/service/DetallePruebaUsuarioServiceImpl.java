@@ -19,6 +19,7 @@ import com.vortexbird.sapiens.domain.Respuesta;
 import com.vortexbird.sapiens.dto.DetallePruebaUsuarioDTO;
 import com.vortexbird.sapiens.dto.RespuestaDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
+import com.vortexbird.sapiens.mapper.DetallePruebaUsuarioMapper;
 import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRepository;
 import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRespuestaRepository;
 import com.vortexbird.sapiens.repository.RespuestaRepository;
@@ -54,7 +55,8 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	private DetallePruebaUsuarioRespuestaRepository detallePruebaUsuarioRespuestaRepository;
 	@Autowired
 	private RespuestaRepository respuestaRepository;
-	
+	@Autowired
+	private DetallePruebaUsuarioMapper detallePruebaUsuarioMapper;
 	
 
 	@Override
@@ -367,9 +369,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<DetallePruebaUsuario> getRespuestasCorrectas(Integer prusId) throws Exception {
+	public List<DetallePruebaUsuarioDTO> getRespuestasCorrectas(Integer prusId) throws Exception {
 		try {
-			List<DetallePruebaUsuario> respuestasCorrectas = new ArrayList<DetallePruebaUsuario>();
+			List<DetallePruebaUsuarioDTO> respuestasCorrectasDTO = new ArrayList<DetallePruebaUsuarioDTO>();
 			List<DetallePruebaUsuario> preguntas = getPreguntasByPruebaUsuario(prusId);
 			List<DetallePruebaUsuarioRespuesta> listDPUR = new ArrayList<>();
 			
@@ -382,18 +384,25 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 						for (DetallePruebaUsuarioRespuesta detallePruebaUsuarioRespuesta : listDPUR) {
 							if(detallePruebaUsuarioRespuesta.getRespuesta() != null
 									&& detallePruebaUsuarioRespuesta.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
-								detallePruebaUsuario.setRespuesta(detallePruebaUsuarioRespuesta.getRespuesta());
-								respuestasCorrectas.add(detallePruebaUsuario);
+								DetallePruebaUsuarioDTO detallePruebaUsuarioDTO = new DetallePruebaUsuarioDTO();
+								detallePruebaUsuarioDTO = detallePruebaUsuarioMapper.detallePruebaUsuarioToDetallePruebaUsuarioDTO(detallePruebaUsuario);
+								detallePruebaUsuarioDTO.setRespId(detallePruebaUsuarioRespuesta.getRespuesta().getRespId());
+								
+//								detallePruebaUsuario.setRespuesta(detallePruebaUsuarioRespuesta.getRespuesta());
+								
+								respuestasCorrectasDTO.add(detallePruebaUsuarioDTO);
 							}
 						}
 					}
 				}else {
 				if (detallePruebaUsuario.getRespuesta() != null
 						&& detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
-					respuestasCorrectas.add(detallePruebaUsuario);
+					DetallePruebaUsuarioDTO detallePruebaUsuarioDTO = new DetallePruebaUsuarioDTO();
+					detallePruebaUsuarioDTO = detallePruebaUsuarioMapper.detallePruebaUsuarioToDetallePruebaUsuarioDTO(detallePruebaUsuario);
+					respuestasCorrectasDTO.add(detallePruebaUsuarioDTO);
 				}}
 			}
-			return respuestasCorrectas;
+			return respuestasCorrectasDTO;
 		} catch (Exception e) {
 			log.error("Error en getRespuestasCorrectas", e);
 			throw e;

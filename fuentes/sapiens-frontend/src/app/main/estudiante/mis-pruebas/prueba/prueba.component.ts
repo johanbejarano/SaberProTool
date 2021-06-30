@@ -123,28 +123,14 @@ export class PruebaComponent implements OnInit {
   }
 
   seleccionarRespuesta(pregunta: DetallePruebaUsuario, respuesta: Respuesta) {
-    // console.log("Hola");
-    console.log(pregunta);
-    console.log(respuesta);
-    
-    // console.log(respuesta.respId);
-    // console.log(this.preguntas);
-    
     pregunta.respuestaAbierta = "";
-    // if (respuesta) {
-      
-      // if (pregunta.respId !== respuesta.respId) {
-        pregunta.respId = respuesta.respId;
-        this.guardarRespuesta(pregunta);
-      // }
-    // }
-    
-    // this.guardarRespuesta(pregunta);
+    pregunta.respId = respuesta.respId;
+    this.guardarRespuesta(pregunta);
   }
 
   guardarRespuesta(pregunta: DetallePruebaUsuario) {
 
-    console.log(pregunta);
+    // console.log(pregunta);
     
       if (pregunta.respId || pregunta.respuestaAbierta) {
         let request: DetallePruebaUsuario = new DetallePruebaUsuario();
@@ -187,6 +173,7 @@ export class PruebaComponent implements OnInit {
           request.usuCreador = this.usuario.usuaId;
           this.pruebaUsuarioService.finalizarPrueba(request).subscribe(() => {
             this.pruebaUsuarioService.getPruebas(this.usuario.usuaId, this.pruebaUsuario.prusId).subscribe((pruebas: PruebaUsuario[]) => {
+              console.log(pruebas);
               let prueba = pruebas[0];
               this.selected.setValue(0);
               this.pruebaUsuario = prueba;

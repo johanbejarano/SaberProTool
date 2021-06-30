@@ -25,7 +25,7 @@ public interface DetallePruebaUsuarioService extends GenericService<DetallePrueb
 
 	List<DetallePruebaUsuario> getPreguntasByPruebaUsuario(Integer prusId) throws Exception;
 
-	List<DetallePruebaUsuario> getRespuestasCorrectas(Integer prusId) throws Exception;
+	List<DetallePruebaUsuarioDTO> getRespuestasCorrectas(Integer prusId) throws Exception;
 
 	List<DetallePruebaUsuarioDTO> getPreguntasByPruebaUsuarioDTO(Integer prusId) throws Exception;
 
