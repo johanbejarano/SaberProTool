@@ -15,5 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RespuestaRepository extends JpaRepository<Respuesta, Integer> {
 	
 	List<Respuesta> findByPregunta_pregIdAndEstadoRegistro(Integer pregId, String estado);
+	List<Respuesta> findByPregunta_pregIdAndEstadoRegistroAndCorrecta(Integer pregId, String estado, Long correcta);
 	long countByPregunta_pregIdAndEstadoRegistro(Integer pregId, String estado);
 }

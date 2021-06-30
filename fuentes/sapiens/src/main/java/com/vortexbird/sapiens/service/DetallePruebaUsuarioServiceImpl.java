@@ -21,6 +21,7 @@ import com.vortexbird.sapiens.dto.RespuestaDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
 import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRepository;
 import com.vortexbird.sapiens.repository.DetallePruebaUsuarioRespuestaRepository;
+import com.vortexbird.sapiens.repository.RespuestaRepository;
 import com.vortexbird.sapiens.utility.Constantes;
 
 import org.slf4j.Logger;
@@ -51,6 +52,9 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 	private DetallePruebaUsuarioRespuestaService detallePruebaUsuarioRespuestaService;
 	@Autowired
 	private DetallePruebaUsuarioRespuestaRepository detallePruebaUsuarioRespuestaRepository;
+	@Autowired
+	private RespuestaRepository respuestaRepository;
+	
 	
 
 	@Override
@@ -372,17 +376,22 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			for (DetallePruebaUsuario detallePruebaUsuario : preguntas) {
 				if(detallePruebaUsuario.getRespuesta() == null) {
 					listDPUR = detallePruebaUsuarioRespuestaRepository.findByDetallePruebaUsuarioAndEstadoRegistro(detallePruebaUsuario, Constantes.ESTADO_ACTIVO);
-					for (DetallePruebaUsuarioRespuesta detallePruebaUsuarioRespuesta : listDPUR) {
-						if(detallePruebaUsuarioRespuesta.getRespuesta() != null
-								&& detallePruebaUsuarioRespuesta.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
-							respuestasCorrectas.add(detallePruebaUsuario);
+					List<Respuesta> listaRespuestasSistemaCorrectas = respuestaRepository.findByPregunta_pregIdAndEstadoRegistroAndCorrecta(detallePruebaUsuario.getPregunta().getPregId(), Constantes.ESTADO_ACTIVO,Constantes.RESPUESTA_CORRECTA);
+	
+					if(listaRespuestasSistemaCorrectas.size() == listDPUR.size()) {
+						for (DetallePruebaUsuarioRespuesta detallePruebaUsuarioRespuesta : listDPUR) {
+							if(detallePruebaUsuarioRespuesta.getRespuesta() != null
+									&& detallePruebaUsuarioRespuesta.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
+								detallePruebaUsuario.setRespuesta(detallePruebaUsuarioRespuesta.getRespuesta());
+								respuestasCorrectas.add(detallePruebaUsuario);
+							}
 						}
 					}
-				}
+				}else {
 				if (detallePruebaUsuario.getRespuesta() != null
 						&& detallePruebaUsuario.getRespuesta().getCorrecta().equals(Constantes.RESPUESTA_CORRECTA)) {
 					respuestasCorrectas.add(detallePruebaUsuario);
-				}
+				}}
 			}
 			return respuestasCorrectas;
 		} catch (Exception e) {

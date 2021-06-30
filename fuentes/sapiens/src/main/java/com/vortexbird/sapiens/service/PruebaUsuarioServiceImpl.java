@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -19,6 +20,7 @@ import com.vortexbird.sapiens.domain.Prueba;
 import com.vortexbird.sapiens.domain.PruebaModulo;
 import com.vortexbird.sapiens.domain.PruebaPregunta;
 import com.vortexbird.sapiens.domain.PruebaUsuario;
+import com.vortexbird.sapiens.domain.Respuesta;
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.PruebaUsuarioDTO;
 import com.vortexbird.sapiens.exception.ZMessManager;
@@ -500,15 +502,54 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 			//Calculos las respuestas correctas obtenidas
 			List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getRespuestasCorrectas(prusId);
 			Long puntaje = 0L;
+			Integer idPregunta = 0;
+			
+			
 			//Sumo el puntaje por pregunta
 			for (int i = 0; i < detallesPruebaUsuario.size(); i++) {
-				DetallePruebaUsuario detalle = detallesPruebaUsuario.get(i);
-				
-				if(!detalle.getPregunta().getSeleccionMultiple()) {
-					puntaje += detalle.getPregunta().getValorPregunta() == null ? 50L : detalle.getPregunta().getValorPregunta();
-				}else {
-					long respuestasPorPregunta = respuestaRepository.countByPregunta_pregIdAndEstadoRegistro(detalle.getPregunta().getPregId(), Constantes.ESTADO_ACTIVO);
-					puntaje += detalle.getPregunta().getValorPregunta() == null ? (50L/respuestasPorPregunta) : detalle.getPregunta().getValorPregunta();
+				List<DetallePruebaUsuario> detallePruebaUsuarioFiltro = new ArrayList<>();
+				if(detallesPruebaUsuario.get(i).getPregunta().getPregId() != idPregunta) {
+					
+					DetallePruebaUsuario detalle = detallesPruebaUsuario.get(i);
+					idPregunta = detalle.getPregunta().getPregId();
+					
+					
+					
+					if(!detalle.getPregunta().getSeleccionMultiple()) {
+						System.out.println("Unica respuesta");
+						puntaje += detalle.getPregunta().getValorPregunta() == null ? 50L : detalle.getPregunta().getValorPregunta();
+					}else {
+						System.out.println("Seleccion multiple");
+						for (DetallePruebaUsuario detallePruebaUsuario : detallesPruebaUsuario) {
+							if(detallePruebaUsuario.getPregunta().getPregId() == idPregunta) {
+								detallePruebaUsuarioFiltro.add(detallePruebaUsuario);
+							}
+						}
+//						Lista que guarda todas las respuestas de seleccion multiple del usuario
+//						detallePruebaUsuarioFiltro;
+						
+						List<Respuesta> listaRespuestasSistemaCorrectas = respuestaRepository.findByPregunta_pregIdAndEstadoRegistroAndCorrecta(idPregunta, Constantes.ESTADO_ACTIVO,Constantes.RESPUESTA_CORRECTA);
+						
+						if(listaRespuestasSistemaCorrectas.size() == detallePruebaUsuarioFiltro.size()) {
+//							for (DetallePruebaUsuario dpu : detallePruebaUsuarioFiltro) { 
+////								System.out.println(dpu.getRespuesta());
+////								System.out.println(listaRespuestasSistemaCorrectas.get(0));
+//								
+//								Boolean bool = listaRespuestasSistemaCorrectas.stream().anyMatch(x -> x.getRespId().equals(dpu.getRespuesta().getRespId()));
+//								System.out.println(bool);
+////								if(!bool) {
+////									break;
+////								}
+//							}
+							
+							puntaje += 50L;
+						}
+						
+
+//						
+//						long respuestasPorPregunta = respuestaRepository.countByPregunta_pregIdAndEstadoRegistro(detalle.getPregunta().getPregId(), Constantes.ESTADO_ACTIVO);
+//						puntaje += detalle.getPregunta().getValorPregunta() == null ? (50L/respuestasPorPregunta) : detalle.getPregunta().getValorPregunta();
+					}
 				}
 			}
 
