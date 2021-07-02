@@ -106,6 +106,8 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
 
   selectAllData(){
     this.subscription = this.usuarioService.getAllUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE,
+      -1,//semestre
+      -1,//programa
       this.formListaEstudiantes.controls.facultad.value,
       this.formListaEstudiantes.controls.busqueda.value).subscribe(d=>{
         if (d) {
@@ -120,6 +122,8 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
   getData() {
     this.subscription = this.usuarioService.getUsuariosPorTipo(
       global.TIPOS_USUARIO.ESTUDIANTE,
+      -1,//semestre
+      -1,//programa
       this.formListaEstudiantes.controls.facultad.value,
       this.formListaEstudiantes.controls.busqueda.value,
       this.pageNumber,

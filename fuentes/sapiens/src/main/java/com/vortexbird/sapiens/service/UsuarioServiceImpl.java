@@ -245,7 +245,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro, int pageNumber, int pageSize)
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId, String filtro, int pageNumber, int pageSize)
 			throws Exception {
 		try {
 
@@ -256,8 +256,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 			filtro = "%" + filtro + "%";
 			
 			facuId = facuId == null || facuId.toString().equals("") ? -1 : facuId;
+			
+			semestre = semestre == null || semestre.toString().equals("") ? -1 : semestre;
 
-			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, facuId,filtro, pageable);
+			progId = progId == null || progId.toString().equals("") ? -1 : progId;
+			
+			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, semestre, progId, facuId, filtro, pageable);
 
 			return usuarios;
 
@@ -269,7 +273,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro) throws Exception {
+	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId, String filtro) throws Exception {
 		try {
 
 			if (filtro != null && filtro.equals("*")) {
@@ -279,7 +283,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 			
 			facuId = facuId == null || facuId.toString().equals("") ? -1 : facuId;
 
-			List<Integer> usuarios = usuarioRepository.getAllUsuariosPorTipo(tiusId, facuId,filtro);
+			semestre = semestre == null || semestre.toString().equals("") ? -1 : semestre;
+
+			progId = progId == null || progId.toString().equals("") ? -1 : progId;
+
+			List<Integer> usuarios = usuarioRepository.getAllUsuariosPorTipo(tiusId, semestre, progId, facuId, filtro);
 
 			return usuarios;
 

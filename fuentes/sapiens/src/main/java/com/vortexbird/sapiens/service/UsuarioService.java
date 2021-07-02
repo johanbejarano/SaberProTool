@@ -20,9 +20,9 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 
 	UsuarioDTO login(String codigo, String password) throws Exception;
 
-	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro, int pageNumber, int pageSize) throws Exception;
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId,String filtro, int pageNumber, int pageSize) throws Exception;
 	
-	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer facuId,String filtro) throws Exception;
+	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId,String filtro) throws Exception;
 
 	String getNombreUsuario(Integer usuaId) throws Exception;
 

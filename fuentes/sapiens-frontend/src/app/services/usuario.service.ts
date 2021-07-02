@@ -36,24 +36,36 @@ export class UsuarioService {
     return this.httpClient.post(this.url + 'guardar/', usuario);
   }
 
-  public getUsuariosPorTipo(tiusId: number, facuId:number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
+  public getUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
     if (!filtro || filtro.length == 0 || filtro === '%') {
       filtro = "*";
     }
     if (!facuId || facuId <=0 || facuId.toString() == "") {
       facuId = -1;
     }
-    return this.httpClient.get(this.url + 'getUsuariosPorTipo/' + tiusId + "/" + facuId + "/" + filtro + "/" + pageNumber + "/" + pageSize);
+    if (!semestre || semestre <=0 || semestre.toString() == "") {
+      semestre = -1;
+    }
+    if (!progId || progId <=0 || progId.toString() == "") {
+      progId = -1;
+    }
+    return this.httpClient.get(this.url + 'getUsuariosPorTipo/' + tiusId + "/" + semestre + "/" + progId + "/" + facuId + "/" + filtro + "/" + pageNumber + "/" + pageSize);
   }
 
-  public getAllUsuariosPorTipo(tiusId: number, facuId:number, filtro: string): Observable<any> {
+  public getAllUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, filtro: string): Observable<any> {
     if (!filtro || filtro.length == 0 || filtro === '%') {
       filtro = "*";
     }
     if (!facuId || facuId <=0 || facuId.toString() == "") {
       facuId = -1;
     }
-    return this.httpClient.get(this.url + 'getAllUsuariosPorTipo/' + tiusId + "/" + facuId + "/" + filtro);
+    if (!semestre || semestre <=0 || semestre.toString() == "") {
+      semestre = -1;
+    }
+    if (!progId || progId <=0 || progId.toString() == "") {
+      progId = -1;
+    }
+    return this.httpClient.get(this.url + 'getAllUsuariosPorTipo/' + tiusId + "/" + semestre + "/" + progId + "/" + facuId + "/" + filtro);
   }
 
   public solicitarClave(codigo: string): Observable<any> {
