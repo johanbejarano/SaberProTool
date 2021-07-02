@@ -44,6 +44,7 @@ public class Programa implements java.io.Serializable {
     @NotNull
     private Long usuCreador;
     private Long usuModificador;
+    private Long creditos;
     private List<ProgramaModulo> programaModulos = new ArrayList<ProgramaModulo>(0);
     private List<Usuario> usuarios = new ArrayList<Usuario>(0);
 
@@ -149,8 +150,17 @@ public class Programa implements java.io.Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+    
+    @Column(name = "creditos")
+    public Long getCreditos() {
+		return creditos;
+	}
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "programa")
+	public void setCreditos(Long creditos) {
+		this.creditos = creditos;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "programa")
     public List<ProgramaModulo> getProgramaModulos() {
         return this.programaModulos;
     }

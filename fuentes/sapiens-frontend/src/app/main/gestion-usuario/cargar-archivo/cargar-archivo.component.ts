@@ -70,6 +70,8 @@ export class CargarArchivoComponent implements OnInit {
 
         const archivoToJson: any[] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
+        console.log(archivoToJson);
+        
         for (let i = 1; i < archivoToJson.length; i++) {
           const usuarioArray: any[] = archivoToJson[i];
 
@@ -115,10 +117,11 @@ export class CargarArchivoComponent implements OnInit {
           usuario.perfil = usuarioArray[8];
           this.usuarios.push(usuario);
         }
+        console.log(this.usuarios);
       }
     };
-
     reader.readAsBinaryString(this.selectedFiles);
+    
   }
 
   guardar() {
@@ -127,24 +130,26 @@ export class CargarArchivoComponent implements OnInit {
 
       request.usuarios = this.usuarios;
       request.usuarioCreador = this.usuario.usuaId;
-      this.usuarioService.cargar(request).subscribe(d => {
-        this.errores = d;
-        if(d[0]){
-          console.log("tiene errores");
-          this.imprimeExcelErrores = true;
-          this.snackBar.open(espanol.data.msg.guardadoExitosoErrores, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+      console.log(request);
+      
+      // this.usuarioService.cargar(request).subscribe(d => {
+      //   this.errores = d;
+      //   if(d[0]){
+      //     // console.log("tiene errores");
+      //     this.imprimeExcelErrores = true;
+      //     this.snackBar.open(espanol.data.msg.guardadoExitosoErrores, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
           
-        }else{
-          console.log("no tiene errores");
-          this.imprimeExcelErrores = false;
-          this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
-        }
+      //   }else{
+      //     // console.log("no tiene errores");
+      //     this.imprimeExcelErrores = false;
+      //     this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+      //   }
 
-      }, error => {
-        if(error.error){
-          this.snackBar.open(error.error, '×', { panelClass: 'error', verticalPosition: 'top', duration: 8000 });
-        }
-      });
+      // }, error => {
+      //   if(error.error){
+      //     this.snackBar.open(error.error, '×', { panelClass: 'error', verticalPosition: 'top', duration: 8000 });
+      //   }
+      // });
     }
   }
 

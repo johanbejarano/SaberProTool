@@ -35,6 +35,8 @@ public class UsuarioDTO implements Serializable {
     private Integer usuaId;
     private Integer progId_Programa;
     private Integer tiusId_TipoUsuario;
+    private Long creditosAprobados;
+    private Long semestre;
     
     private Integer facuId;
     private String nombreFacultad;
@@ -272,5 +274,21 @@ public class UsuarioDTO implements Serializable {
 
 	public void setPasswordNueva(String passwordNueva) {
 		this.passwordNueva = passwordNueva;
+	}
+
+	public Long getCreditosAprobados() {
+		return creditosAprobados;
+	}
+
+	public void setCreditosAprobados(Long creditosAprobados) {
+		this.creditosAprobados = creditosAprobados;
+	}
+
+	public Long getSemestre() {
+		return semestre;
+	}
+
+	public void setSemestre(Long semestre) {
+		this.semestre = semestre;
 	}
 }

@@ -28,6 +28,7 @@ public class ProgramaDTO implements Serializable {
     private Long usuCreador;
     private Long usuModificador;
     private Integer facuId_Facultad;
+    private Long creditos;
 
     public String getDescripcion() {
         return descripcion;
@@ -101,7 +102,15 @@ public class ProgramaDTO implements Serializable {
         this.facuId_Facultad = facuId_Facultad;
     }
 
-    @Override
+    public Long getCreditos() {
+		return creditos;
+	}
+
+	public void setCreditos(Long creditos) {
+		this.creditos = creditos;
+	}
+
+	@Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
