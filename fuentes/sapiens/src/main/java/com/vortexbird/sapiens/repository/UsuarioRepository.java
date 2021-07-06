@@ -23,11 +23,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	
 	@Query(nativeQuery = true)
 	public Page<UsuarioDTO> getUsuariosPorTipo(
-			@Param("pTiusId") Integer tiusId, @Param("pSemestre") Integer semestre, @Param("pProgId") Integer progId, @Param("pFacuId") Integer facuId ,@Param("pFiltro") String filterBy, Pageable pageable);
+			@Param("pTiusId") Integer tiusId, @Param("pSemestre") Integer semestre, @Param("pProgId") Integer progId, @Param("pFacuId") Integer facuId, @Param("pGrupId") Integer grupId, @Param("pFiltro") String filterBy, Pageable pageable);
 	
 	@Query(nativeQuery = true)
 	public List<Integer> getAllUsuariosPorTipo(
-			@Param("pTiusId") Integer tiusId, @Param("pSemestre") Integer semestre, @Param("pProgId") Integer progId, @Param("pFacuId") Integer facuId ,@Param("pFiltro") String filterBy);
+			@Param("pTiusId") Integer tiusId, @Param("pSemestre") Integer semestre, @Param("pProgId") Integer progId, @Param("pFacuId") Integer facuId, @Param("pGrupId") Integer grupId, @Param("pFiltro") String filterBy);
 	
 	@Query(nativeQuery = true)
 	public List<UsuarioDTO> getUsuariosPorGrupo(

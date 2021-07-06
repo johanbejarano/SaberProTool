@@ -55,7 +55,7 @@ export class UsuarioListComponent implements OnInit {
 
   getData() {
     if (this.form && this.form.valid) {
-      this.subscription = this.usuarioService.getUsuariosPorTipo(-1, -1, -1, -1, this.form.controls.filtro.value, this.pageNumber, this.pageSize)
+      this.subscription = this.usuarioService.getUsuariosPorTipo(-1, -1, -1, -1, -1, this.form.controls.filtro.value, this.pageNumber, this.pageSize)
         .subscribe((page: Page) => {
           let data = page.content;
           this.total = page.totalElements;

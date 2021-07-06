@@ -88,7 +88,7 @@ export class DialogoFiltroComponent implements OnInit {
 
   getUsuarios() {
     const filtro = this.form.controls.filtro.value ? this.form.controls.filtro.value.trim() : '';
-    this.usuarioService.getUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE, -1, -1, -1,filtro, this.pageNumber, this.pageSize).subscribe((page: Page) => {
+    this.usuarioService.getUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE, -1, -1, -1, -1,filtro, this.pageNumber, this.pageSize).subscribe((page: Page) => {
       let data = page.content;
       this.total = page.totalElements;
       this.datasource = new MatTableDataSource(data);

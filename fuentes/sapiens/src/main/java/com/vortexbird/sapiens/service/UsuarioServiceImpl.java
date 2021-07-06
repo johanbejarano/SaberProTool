@@ -245,7 +245,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId, String filtro, int pageNumber, int pageSize)
+	public Page<UsuarioDTO> getUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId, Integer grupId, String filtro, int pageNumber, int pageSize)
 			throws Exception {
 		try {
 
@@ -261,7 +261,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 			progId = progId == null || progId.toString().equals("") ? -1 : progId;
 			
-			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, semestre, progId, facuId, filtro, pageable);
+			grupId = grupId == null || grupId.toString().equals("") ? -1 : grupId;
+			
+			Page<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorTipo(tiusId, semestre, progId, facuId, grupId, filtro, pageable);
 
 			return usuarios;
 
@@ -273,7 +275,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId, String filtro) throws Exception {
+	public List<Integer> getAllUsuariosPorTipo(Integer tiusId, Integer semestre, Integer progId, Integer facuId, Integer grupId, String filtro) throws Exception {
 		try {
 
 			if (filtro != null && filtro.equals("*")) {
@@ -286,8 +288,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 			semestre = semestre == null || semestre.toString().equals("") ? -1 : semestre;
 
 			progId = progId == null || progId.toString().equals("") ? -1 : progId;
+			
+			grupId = grupId == null || grupId.toString().equals("") ? -1 : grupId;
 
-			List<Integer> usuarios = usuarioRepository.getAllUsuariosPorTipo(tiusId, semestre, progId, facuId, filtro);
+			List<Integer> usuarios = usuarioRepository.getAllUsuariosPorTipo(tiusId, semestre, progId, facuId, grupId, filtro);
 
 			return usuarios;
 

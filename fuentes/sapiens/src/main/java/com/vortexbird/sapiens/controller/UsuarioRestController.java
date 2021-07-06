@@ -143,11 +143,12 @@ public class UsuarioRestController {
 		return ResponseEntity.ok().body(PasswordGenerator.hashPassword(string));
 	}
 
-	@GetMapping(value = "/getUsuariosPorTipo/{tiusId}/{semestre}/{progId}/{facuId}/{filtro}/{pageNumber}/{pageSize}")
+	@GetMapping(value = "/getUsuariosPorTipo/{tiusId}/{semestre}/{progId}/{facuId}/{grupId}/{filtro}/{pageNumber}/{pageSize}")
 	public ResponseEntity<?> getUsuariosPorTipo(@PathVariable("tiusId") Integer tiusId,
 			@PathVariable("semestre") Integer semestre,
 			@PathVariable("progId") Integer progId,
 			@PathVariable("facuId") Integer facuId,
+			@PathVariable("grupId") Integer grupId,
 			@PathVariable("filtro") String filtro, @PathVariable("pageNumber") int pageNumber,
 			@PathVariable("pageSize") int pageSize) {
 
@@ -155,7 +156,7 @@ public class UsuarioRestController {
 
 		try {
 
-			Page<UsuarioDTO> usuarios = usuarioService.getUsuariosPorTipo(tiusId, semestre, progId, facuId, filtro, pageNumber, pageSize);
+			Page<UsuarioDTO> usuarios = usuarioService.getUsuariosPorTipo(tiusId, semestre, progId, facuId, grupId, filtro, pageNumber, pageSize);
 
 			return ResponseEntity.ok().body(usuarios);
 		} catch (Exception e) {
@@ -165,18 +166,19 @@ public class UsuarioRestController {
 		}
 	}
 	
-	@GetMapping(value = "/getAllUsuariosPorTipo/{tiusId}/{semestre}/{progId}/{facuId}/{filtro}")
+	@GetMapping(value = "/getAllUsuariosPorTipo/{tiusId}/{semestre}/{progId}/{facuId}/{grupId}/{filtro}")
 	public ResponseEntity<?> getAllUsuariosPorTipo(@PathVariable("tiusId") Integer tiusId,
 			@PathVariable("semestre") Integer semestre,
 			@PathVariable("progId") Integer progId,
 			@PathVariable("facuId") Integer facuId,
+			@PathVariable("grupId") Integer grupId,
 			@PathVariable("filtro") String filtro) {
 
 		log.debug("Request to getAllUsuariosPorTipo()");
 
 		try {
 
-			List<Integer> usuarios = usuarioService.getAllUsuariosPorTipo(tiusId, semestre, progId, facuId, filtro);
+			List<Integer> usuarios = usuarioService.getAllUsuariosPorTipo(tiusId, semestre, progId, facuId, grupId, filtro);
 
 			return ResponseEntity.ok().body(usuarios);
 		} catch (Exception e) {

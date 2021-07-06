@@ -36,7 +36,7 @@ export class UsuarioService {
     return this.httpClient.post(this.url + 'guardar/', usuario);
   }
 
-  public getUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
+  public getUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, grupId:number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
     if (!filtro || filtro.length == 0 || filtro === '%') {
       filtro = "*";
     }
@@ -49,10 +49,13 @@ export class UsuarioService {
     if (!progId || progId <=0 || progId.toString() == "") {
       progId = -1;
     }
-    return this.httpClient.get(this.url + 'getUsuariosPorTipo/' + tiusId + "/" + semestre + "/" + progId + "/" + facuId + "/" + filtro + "/" + pageNumber + "/" + pageSize);
+    if (!grupId || grupId <=0 || grupId.toString() == "") {
+      grupId = -1;
+    }
+    return this.httpClient.get(this.url + 'getUsuariosPorTipo/' + tiusId + "/" + semestre + "/" + progId + "/" + facuId + "/" + grupId + "/" + filtro + "/" + pageNumber + "/" + pageSize);
   }
 
-  public getAllUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, filtro: string): Observable<any> {
+  public getAllUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, grupId:number, filtro: string): Observable<any> {
     if (!filtro || filtro.length == 0 || filtro === '%') {
       filtro = "*";
     }
@@ -65,7 +68,10 @@ export class UsuarioService {
     if (!progId || progId <=0 || progId.toString() == "") {
       progId = -1;
     }
-    return this.httpClient.get(this.url + 'getAllUsuariosPorTipo/' + tiusId + "/" + semestre + "/" + progId + "/" + facuId + "/" + filtro);
+    if (!grupId || grupId <=0 || grupId.toString() == "") {
+      grupId = -1;
+    }
+    return this.httpClient.get(this.url + 'getAllUsuariosPorTipo/' + tiusId + "/" + semestre + "/" + progId + "/" + facuId + "/" + grupId + "/" + filtro);
   }
 
   public solicitarClave(codigo: string): Observable<any> {

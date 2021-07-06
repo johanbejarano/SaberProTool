@@ -32,10 +32,13 @@
 				FROM usuario usu
 				inner join programa prog on prog.prog_id = usu.prog_id 
 				inner join facultad facu on facu.facu_id = prog.facu_id
+				left join grupo_usuario grus on grus.usua_id = usu.usua_id 
+				left join grupo grup on grus.grup_id =grup.grup_id 
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 				and ((:pSemestre <> -1 and usu.semestre = :pSemestre) or (:pSemestre = -1))
 				and ((:pProgId <> -1 and prog.prog_id = :pProgId) or (:pProgId = -1))
 				and ((:pFacuId <> -1 and facu.facu_id = :pFacuId) or (:pFacuId = -1))
+				and ((:pGrupId <> -1 and grup.grup_id = :pGrupId) or (:pGrupId = -1))
 			  AND (UPPER(usu.codigo) LIKE UPPER(:pFiltro) OR usu.identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(usu.nombre) LIKE UPPER(:pFiltro) 
 			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))
 				ORDER BY usu.codigo
@@ -52,10 +55,13 @@
 				FROM usuario usu
 				inner join programa prog on prog.prog_id = usu.prog_id 
 				inner join facultad facu on facu.facu_id = prog.facu_id
+				left join grupo_usuario grus on grus.usua_id = usu.usua_id 
+				left join grupo grup on grus.grup_id =grup.grup_id 
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 				and ((:pSemestre <> -1 and usu.semestre = :pSemestre) or (:pSemestre = -1))
 				and ((:pProgId <> -1 and prog.prog_id = :pProgId) or (:pProgId = -1))
 				and ((:pFacuId <> -1 and facu.facu_id = :pFacuId) or (:pFacuId = -1))
+				and ((:pGrupId <> -1 and grup.grup_id = :pGrupId) or (:pGrupId = -1))
 			  AND (UPPER(usu.codigo) LIKE UPPER(:pFiltro) OR usu.identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(usu.nombre) LIKE UPPER(:pFiltro) 
 			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))
 				ORDER BY usu.codigo
@@ -72,12 +78,15 @@
 				FROM usuario usu
 				inner join programa prog on prog.prog_id = usu.prog_id 
 				inner join facultad facu on facu.facu_id = prog.facu_id
+				left join grupo_usuario grus on grus.usua_id = usu.usua_id 
+				left join grupo grup on grus.grup_id =grup.grup_id 
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 				and ((:pSemestre <> -1 and usu.semestre = :pSemestre) or (:pSemestre = -1))
 				and ((:pProgId <> -1 and prog.prog_id = :pProgId) or (:pProgId = -1))
 				and ((:pFacuId <> -1 and facu.facu_id = :pFacuId) or (:pFacuId = -1))
+				and ((:pGrupId <> -1 and grup.grup_id = :pGrupId) or (:pGrupId = -1))
 			  AND (UPPER(usu.codigo) LIKE UPPER(:pFiltro) OR usu.identificacion||'' LIKE UPPER(:pFiltro) OR UPPER(usu.nombre) LIKE UPPER(:pFiltro) 
-			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))	
+			  OR UPPER(usu.apellido) LIKE UPPER(:pFiltro) OR UPPER(usu.correo) LIKE UPPER(:pFiltro))
 	        ]]>
 	        </query>
 		</named-native-query>
