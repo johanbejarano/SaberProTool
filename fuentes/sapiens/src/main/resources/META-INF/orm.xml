@@ -81,6 +81,26 @@
 	        ]]>
 	        </query>
 		</named-native-query>
+		
+		<named-native-query
+			name="Usuario.getUsuariosPorGrupo"
+			result-set-mapping="getUsuariosPorGrupo">
+			<query>
+	        <![CDATA[
+	        	select usua.usua_id usuaId, usua.nombre, usua.apellido, usua.codigo,
+				usua.identificacion, usua.correo, usua.tius_id tiusId_TipoUsuario
+				from usuario usua
+				inner join grupo_usuario grus on grus.usua_id = usua.usua_id 
+				inner join grupo grup on grus.grup_id = grup.grup_id
+				where usua.estado_registro = :pEstado
+				and usua.tius_id = 3
+				and grus.estado_registro = :pEstado
+				and grup.estado_registro = :pEstado
+				and grup.grup_id = :pGrupo
+	        ]]>
+	        </query>
+		</named-native-query>
+
 	</entity>
 	
 	<entity

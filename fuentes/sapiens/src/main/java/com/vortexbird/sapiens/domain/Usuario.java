@@ -36,7 +36,8 @@ import com.vortexbird.sapiens.dto.UsuarioDTO;
 @NamedNativeQueries({
 	@NamedNativeQuery(name = "Usuario.getAllUsuariosPorTipo", query = "", resultSetMapping = "listaUsuaId"),
 	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo", query = "", resultSetMapping = "UsuarioDTO"),
-	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo.count", query = "", resultSetMapping = "UsuarioDTOCount") })
+	@NamedNativeQuery(name = "Usuario.getUsuariosPorTipo.count", query = "", resultSetMapping = "UsuarioDTOCount"),
+	@NamedNativeQuery(name = "Usuario.getUsuariosPorGrupo", query = "", resultSetMapping = "getUsuariosPorGrupo"),})
 @SqlResultSetMappings({
 	@SqlResultSetMapping(name = "UsuarioDTO", classes = {
 			@ConstructorResult(targetClass = UsuarioDTO.class, columns = {
@@ -52,7 +53,17 @@ import com.vortexbird.sapiens.dto.UsuarioDTO;
 			@ColumnResult(name = "usuaId", type = Integer.class) }),
 	
 	@SqlResultSetMapping(name = "UsuarioDTOCount", columns = {
-			@ColumnResult(name = "total", type = Integer.class) }), })
+			@ColumnResult(name = "total", type = Integer.class) }), 
+	
+	@SqlResultSetMapping(name = "getUsuariosPorGrupo", classes = {
+			@ConstructorResult(targetClass = UsuarioDTO.class, columns = {
+					@ColumnResult(name = "usuaId", type = Integer.class),
+					@ColumnResult(name = "nombre", type = String.class),
+					@ColumnResult(name = "apellido", type = String.class),
+					@ColumnResult(name = "codigo", type = String.class),
+					@ColumnResult(name = "identificacion", type = Long.class),
+					@ColumnResult(name = "correo", type = String.class),
+                    @ColumnResult(name = "tiusId_TipoUsuario", type = Integer.class)}) })})
 @Entity
 @Table(name = "usuario", schema = "public")
 public class Usuario implements java.io.Serializable {

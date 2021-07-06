@@ -18,8 +18,6 @@ export class GrupoComponent implements OnInit {
   }
 
   crear(){
-    console.log("Hola");
-    this.localStorage.removeFromLocal('idGrupo');
     this.router.navigate(["/gestionGrupos/crearGrupo"]);
   }
 }

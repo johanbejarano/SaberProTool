@@ -3,6 +3,8 @@ package com.vortexbird.sapiens.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.ColumnResult;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -81,7 +83,6 @@ public class UsuarioDTO implements Serializable {
 		this.usuaId = usuaId;
 	}
 
-	
 	public UsuarioDTO(Integer usuaId, String codigo, Long identificacion, String nombre, String apellido, String correo, Integer tiusId_TipoUsuario) {
 		super();
 		
@@ -290,5 +291,17 @@ public class UsuarioDTO implements Serializable {
 
 	public void setSemestre(Long semestre) {
 		this.semestre = semestre;
+	}
+
+	public UsuarioDTO(Integer usuaId, String nombre, String apellido, String codigo, Long identificacion, String correo,
+			Integer tiusId_TipoUsuario) {
+		super();
+		this.usuaId = usuaId;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.codigo = codigo;
+		this.identificacion = identificacion;
+		this.correo = correo;
+		this.tiusId_TipoUsuario = tiusId_TipoUsuario;
 	}
 }

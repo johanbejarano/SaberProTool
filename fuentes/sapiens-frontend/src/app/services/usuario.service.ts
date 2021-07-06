@@ -79,4 +79,8 @@ export class UsuarioService {
   public cargar(request: CargueMasivo): Observable<any> {
     return this.httpClient.post(this.url + 'cargar/', request);
   }
+
+  public getUsuariosPorGrupo(grupId: number): Observable<any> {
+    return this.httpClient.post(this.url + 'getUsuariosPorGrupo/', grupId);
+  }
 }

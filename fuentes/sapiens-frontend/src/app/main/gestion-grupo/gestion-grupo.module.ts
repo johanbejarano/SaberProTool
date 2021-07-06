@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EstudianteRoutingModule } from './../estudiante/estudiante-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ListaEstudiantesComponent } from './grupo/lista-estudiantes/lista-estudiantes.component';
 
 import { GestionGrupoRoutingModule } from './gestion-grupo-routing.module';
 import { GrupoComponent } from './grupo/grupo.component';
@@ -18,7 +19,7 @@ import { GrupoListComponent } from './grupo/grupo-list/grupo-list.component';
 
 
 @NgModule({
-  declarations: [GrupoComponent, CrearGrupoComponent, GrupoListComponent],
+  declarations: [GrupoComponent, CrearGrupoComponent, GrupoListComponent, ListaEstudiantesComponent],
   imports: [
     CommonModule,
     GestionGrupoRoutingModule,

@@ -256,4 +256,21 @@ public class UsuarioRestController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	@PostMapping(value = "/getUsuariosPorGrupo")
+	public ResponseEntity<?> getUsuariosPorGrupo(@RequestBody Integer request) {
+
+		log.debug("Request to getUsuariosPorGrupo()");
+
+		try {
+
+			List<UsuarioDTO> usuarios = usuarioService.getUsuariosPorGrupo(request);
+
+			return ResponseEntity.ok().body(usuarios);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }

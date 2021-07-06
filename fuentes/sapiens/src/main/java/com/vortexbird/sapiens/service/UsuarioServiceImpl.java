@@ -592,4 +592,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw e;
 		}
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<UsuarioDTO> getUsuariosPorGrupo(Integer grupId) throws Exception {
+		try {
+			
+			List<UsuarioDTO> usuarios = usuarioRepository.getUsuariosPorGrupo(Constantes.ESTADO_ACTIVO, grupId);
+
+			return usuarios;
+
+		} catch (Exception e) {
+			log.error("Error en getUsuariosPorTipo", e);
+			throw e;
+		}
+	}
 }

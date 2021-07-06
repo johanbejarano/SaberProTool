@@ -29,4 +29,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	public List<Integer> getAllUsuariosPorTipo(
 			@Param("pTiusId") Integer tiusId, @Param("pSemestre") Integer semestre, @Param("pProgId") Integer progId, @Param("pFacuId") Integer facuId ,@Param("pFiltro") String filterBy);
 	
+	@Query(nativeQuery = true)
+	public List<UsuarioDTO> getUsuariosPorGrupo(
+			@Param("pEstado") String estado, @Param("pGrupo") Integer grupId);
+	
 }
