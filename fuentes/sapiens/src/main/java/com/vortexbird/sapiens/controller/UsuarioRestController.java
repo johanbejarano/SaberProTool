@@ -275,4 +275,18 @@ public class UsuarioRestController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	@PostMapping(value = "/getCorreoUsuarioPorCodigo")
+	public ResponseEntity<?> getCorreoUsuarioPorCodigo(@RequestBody String codigo) {
+		log.debug("Request to getCorreoUsuarioPorCodigo() Usuario");
+		try {
+			String correo = usuarioService.getCorreoUsuarioPorCodigo(codigo);
+
+			return ResponseEntity.ok().body(correo);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }

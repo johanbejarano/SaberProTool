@@ -611,4 +611,29 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw e;
 		}
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public String getCorreoUsuarioPorCodigo(String codigo) throws Exception {
+		try {
+			
+			if (codigo == null || codigo.isBlank()) {
+				throw new Exception("El codigo no puede estar vacío.");
+			}
+			
+			Optional<Usuario> usuarioOpt = usuarioRepository.findByCodigoAndEstadoRegistro(codigo.trim(), Constantes.ESTADO_ACTIVO);
+			
+			if (!usuarioOpt.isPresent()) {
+				throw new Exception("El usuario con el codigo " + codigo + " no fue encontrado.");
+			}
+			
+			Usuario usuario = usuarioOpt.get();
+
+			return usuario.getCorreo();
+
+		} catch (Exception e) {
+			log.error("Error en getCorreoUsuarioPorCodigo", e);
+			throw e;
+		}
+	}
 }

@@ -39,4 +39,6 @@ public interface UsuarioService extends GenericService<Usuario, Integer> {
 	void recrearClaves(Long usuarioCreador) throws Exception;
 
 	List<UsuarioDTO> getUsuariosPorGrupo(Integer grupId) throws Exception;
+	
+	String getCorreoUsuarioPorCodigo(String codigo) throws Exception;
 }

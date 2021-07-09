@@ -1,6 +1,7 @@
 package com.vortexbird.sapiens.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
@@ -32,5 +33,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	@Query(nativeQuery = true)
 	public List<UsuarioDTO> getUsuariosPorGrupo(
 			@Param("pEstado") String estado, @Param("pGrupo") Integer grupId);
+	
+	Optional<Usuario> findByCodigoAndEstadoRegistro(String codigo, String estado);
 	
 }

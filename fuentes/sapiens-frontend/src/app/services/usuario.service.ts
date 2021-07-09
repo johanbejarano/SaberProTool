@@ -89,4 +89,8 @@ export class UsuarioService {
   public getUsuariosPorGrupo(grupId: number): Observable<any> {
     return this.httpClient.post(this.url + 'getUsuariosPorGrupo/', grupId);
   }
+
+  public getCorreoUsuarioPorCodigo(codigo: string): Observable<any> {
+    return this.httpClient.post(this.url + 'getCorreoUsuarioPorCodigo/', codigo);
+  }
 }
