@@ -232,7 +232,7 @@ public class DetallePruebaUsuarioServiceImpl implements DetallePruebaUsuarioServ
 			if (dpruId == null) {
 				throw new Exception("No se ingresó la pregunta");
 			}
-			if (respId == null && (respuestaAbierta == null || respuestaAbierta.trim().isEmpty())) {
+			if (respId == null && (respuestaAbierta == null || respuestaAbierta.trim().isEmpty()) && ceIdeaCentral == null) {
 				throw new Exception("No se ingresó la respuesta");
 			}
 			if (usuario == null) {

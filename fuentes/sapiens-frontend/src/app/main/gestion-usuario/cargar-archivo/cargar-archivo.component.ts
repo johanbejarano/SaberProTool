@@ -70,7 +70,7 @@ export class CargarArchivoComponent implements OnInit {
 
         const archivoToJson: any[] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        console.log(archivoToJson);
+        // console.log(archivoToJson);
         
         for (let i = 1; i < archivoToJson.length; i++) {
           const usuarioArray: any[] = archivoToJson[i];
@@ -78,7 +78,7 @@ export class CargarArchivoComponent implements OnInit {
           if (!usuarioArray || usuarioArray.length == 0) {
             continue;
           }
-          console.log(usuarioArray);
+          // console.log(usuarioArray);
           
 
           let usuario: Usuario = new Usuario();
@@ -89,7 +89,7 @@ export class CargarArchivoComponent implements OnInit {
           usuario.identificacion = usuarioArray[3];
           usuario.correo = usuarioArray[4];
           usuario.celular = usuarioArray[5];
-          console.log(usuarioArray[6]);
+          // console.log(usuarioArray[6]);
           
           if (usuarioArray[6].toLowerCase() == 'masculino' || usuarioArray[6].toLowerCase() == 'm') {
             usuario.genero = 'M';
@@ -115,13 +115,12 @@ export class CargarArchivoComponent implements OnInit {
             return;
           }
           usuario.perfil = usuarioArray[8];
+          usuario.semestre = usuarioArray[9];
           this.usuarios.push(usuario);
         }
-        console.log(this.usuarios);
       }
     };
     reader.readAsBinaryString(this.selectedFiles);
-    
   }
 
   guardar() {
@@ -130,26 +129,26 @@ export class CargarArchivoComponent implements OnInit {
 
       request.usuarios = this.usuarios;
       request.usuarioCreador = this.usuario.usuaId;
-      console.log(request);
+      // console.log(request);
       
-      // this.usuarioService.cargar(request).subscribe(d => {
-      //   this.errores = d;
-      //   if(d[0]){
-      //     // console.log("tiene errores");
-      //     this.imprimeExcelErrores = true;
-      //     this.snackBar.open(espanol.data.msg.guardadoExitosoErrores, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+      this.usuarioService.cargar(request).subscribe(d => {
+        this.errores = d;
+        if(d[0]){
+          // console.log("tiene errores");
+          this.imprimeExcelErrores = true;
+          this.snackBar.open(espanol.data.msg.guardadoExitosoErrores, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
           
-      //   }else{
-      //     // console.log("no tiene errores");
-      //     this.imprimeExcelErrores = false;
-      //     this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
-      //   }
+        }else{
+          // console.log("no tiene errores");
+          this.imprimeExcelErrores = false;
+          this.snackBar.open(espanol.data.msg.guardadoExitoso, '×', { panelClass: 'info', verticalPosition: 'top', duration: 8000 });
+        }
 
-      // }, error => {
-      //   if(error.error){
-      //     this.snackBar.open(error.error, '×', { panelClass: 'error', verticalPosition: 'top', duration: 8000 });
-      //   }
-      // });
+      }, error => {
+        if(error.error){
+          this.snackBar.open(error.error, '×', { panelClass: 'error', verticalPosition: 'top', duration: 8000 });
+        }
+      });
     }
   }
 

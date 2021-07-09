@@ -489,7 +489,7 @@ public class PruebaUsuarioServiceImpl implements PruebaUsuarioService {
 					
 					List<DetallePruebaUsuario> detallesPruebaUsuario = detallePruebaUsuarioService.getPreguntasByPruebaUsuario(prusId);
 					for (DetallePruebaUsuario detallePruebaUsuario : detallesPruebaUsuario) {
-						if(detallePruebaUsuario.getRespuesta() == null && detallePruebaUsuario.getRespuestaAbierta() == null) {
+						if(detallePruebaUsuario.getRespuesta() == null && detallePruebaUsuario.getRespuestaAbierta() == null && detallePruebaUsuario.getCeIdeaCentral() == null) {
 							List<DetallePruebaUsuarioRespuesta> listDpur = detallePruebaUsuarioRespuestaRepository.findByDetallePruebaUsuarioAndEstadoRegistro(detallePruebaUsuario, Constantes.ESTADO_ACTIVO);
 							if(listDpur == null || listDpur.size() == 0 || listDpur.isEmpty()) {
 								throw new Exception("Se deben responder todas las preguntas antes de finalizar la prueba");

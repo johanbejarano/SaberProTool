@@ -15,69 +15,23 @@
                                 <p class="pt-0 pb-16">
                                     Cree un grupo. Incluya uno o varios estudiantes
                                 </p>
-                                <!-- <form [formGroup]="form" fxLayout="row wrap" fxFlex="100"> -->
-                                    <!-- <mat-form-field appearance="outline" fxFlex="50" class="px-8">
-                                        <mat-label>Tipo de prueba</mat-label>
-                                        <mat-select formControlName="tipoPrueba" required disabled>
-                                            <mat-option [value]="1">
-                                                Entrenamiento
-                                            </mat-option>
-                                            <mat-option [value]="2">
-                                                Simulacro
-                                            </mat-option>
-                                        </mat-select>
-                                        <mat-icon matSuffix class="secondary-text">bookmarks</mat-icon>
-                                        <mat-error>El tipo de prueba es obligatorio!</mat-error>
-                                    </mat-form-field> -->
+                                <form [formGroup]="form" fxLayout="row wrap" fxFlex="100">
 
-                                    <!--DURACION DE LA PRUEBA-->
-                                    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
-                                        <div class="h3" fxFlex="100">Duración (En minutos):</div>
-                                        <div fxFlex="100">
-                                            <mat-slider class="example-margin" [invert]="invert" [max]="max" [min]="min"
-                                                [step]="step" [thumbLabel]="thumbLabel"
-                                                [tickInterval]="getSliderTickInterval()" formControlName="duracion"
-                                                [vertical]="vertical">
-                                            </mat-slider>
-                                            {{form.controls.duracion.value / 60 | number}} Horas
-                                        </div>
-                                    </div> -->
-                                    <!--DURACION DE LA PRUEBA-->
-<!-- 
                                     <mat-form-field appearance="outline" fxFlex="50" class="px-8">
-                                        <mat-label>Fecha inicial</mat-label>
-                                        <input matInput formControlName="fechaInicial" [min]="hoy"
-                                            [max]="form.controls.fechaFinal.value ? form.controls.fechaFinal.value : null"
-                                            [ngxMatDatetimePicker]="picker1" readonly="true">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1">
-                                        </mat-datepicker-toggle>
-                                        <ngx-mat-datetime-picker #picker1 [showSpinners]="true" [showSeconds]="false"
-                                            [stepHour]="1" [stepMinute]="1" [touchUi]="false" [stepSecond]="0">
-                                        </ngx-mat-datetime-picker>
-                                        <mat-error>La fecha inicial es obligatoria!</mat-error>
+                                        <mat-label>Nombre</mat-label>
+                                        <input matInput formControlName="nombre">
+                                        <mat-icon matSuffix class="secondary-text">edit</mat-icon>
+                                        <mat-error>Nombre es requerido!</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="50" class="px-8">
-                                        <mat-label>Fecha final</mat-label>
-                                        <input matInput formControlName="fechaFinal"
-                                            [min]="form.controls.fechaInicial.value ? form.controls.fechaInicial.value : hoy"
-                                            [ngxMatDatetimePicker]="picker2" readonly="true">
-                                        <mat-datepicker-toggle matSuffix [for]="picker2">
-                                        </mat-datepicker-toggle>
-                                        <ngx-mat-datetime-picker #picker2 [showSpinners]="true" [showSeconds]="false"
-                                            [stepHour]="1" [stepMinute]="1" [touchUi]="false" [stepSecond]="0">
-                                        </ngx-mat-datetime-picker>
+                                        <mat-label>Descripción</mat-label>
+                                        <input matInput formControlName="descripcion">
+                                        <mat-icon matSuffix class="secondary-text">edit</mat-icon>
+                                        <mat-error>Descripción es requerido!</mat-error>
                                     </mat-form-field>
 
-                                    <mat-form-field fxFlex="100" class="px-8" appearance="outline">
-                                        <mat-label>Módulos</mat-label>
-                                        <mat-select formControlName="modulos" multiple>
-                                            <mat-option *ngFor="let modulo of listaModulos" [value]="modulo.moduId">
-                                                {{modulo.nombre}}</mat-option>
-                                        </mat-select>
-                                        <mat-error>Debe seleccionar por lo menos un módulo!</mat-error>
-                                    </mat-form-field> -->
-                                <!-- </form> -->
+                                </form>
                             </div>
 
                             <app-lista-estudiantes [usuariosSeleccionados]="usuariosSeleccionados">

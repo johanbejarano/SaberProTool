@@ -7,16 +7,28 @@
             <div class="p-16 pb-0 m-0" fusePerfectScrollbar fxLayout="row wrap" fxFlex="100">
                 <form [formGroup]="formListaEstudiantes" fxFlex="100" (ngSubmit)="cambioFiltro()" fxLayout="row wrap">
 
-                    <mat-form-field class="px-16" fxFlex="100" appearance="outline">
-                        <mat-label>Facultad</mat-label>
-                        <mat-select formControlName="facultad">
-                            <mat-option [value]="">
-                            </mat-option>
-                            <mat-option *ngFor="let item of listFacultad" [value]="item.facuId">
-                                {{item.nombre}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div fxFlex='100'>
+                        <mat-form-field class="px-16" fxFlex="50" appearance="outline">
+                            <mat-label>Facultad</mat-label>
+                            <mat-select formControlName="facultad">
+                                <mat-option [value]="">
+                                </mat-option>
+                                <mat-option *ngFor="let item of listFacultad" [value]="item.facuId">
+                                    {{item.nombre}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="px-16" fxFlex="50" appearance="outline">
+                            <mat-label>Grupo</mat-label>
+                            <mat-select formControlName="grupo">
+                                <mat-option [value]="">
+                                </mat-option>
+                                <mat-option *ngFor="let item of listGrupo" [value]="item.grupId">
+                                    {{item.nombre}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
                     <mat-form-field class="px-16" fxFlex="100" appearance="outline">
                         <mat-label>Búsqueda</mat-label>

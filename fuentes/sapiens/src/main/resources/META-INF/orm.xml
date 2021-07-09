@@ -13,7 +13,7 @@
 			result-set-mapping="UsuarioDTO">
 			<query>
 	        <![CDATA[
-	        	SELECT 		usu.usua_id usuaId, 
+	        	SELECT distinct usu.usua_id usuaId, 
 				usu.nombre nombre, 
 				usu.apellido apellido, 
 				usu.genero genero, 
@@ -32,8 +32,8 @@
 				FROM usuario usu
 				inner join programa prog on prog.prog_id = usu.prog_id 
 				inner join facultad facu on facu.facu_id = prog.facu_id
-				left join grupo_usuario grus on grus.usua_id = usu.usua_id 
-				left join grupo grup on grus.grup_id =grup.grup_id 
+				left join grupo_usuario grus on grus.usua_id = usu.usua_id and grus.estado_registro ='A'
+				left join grupo grup on grus.grup_id =grup.grup_id and grup.estado_registro ='A'
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 				and ((:pSemestre <> -1 and usu.semestre = :pSemestre) or (:pSemestre = -1))
 				and ((:pProgId <> -1 and prog.prog_id = :pProgId) or (:pProgId = -1))
@@ -51,12 +51,12 @@
 			result-set-mapping="listaUsuaId">
 			<query>
 	        <![CDATA[
-	        	SELECT 		usu.usua_id usuaId
+	        	SELECT usu.usua_id usuaId
 				FROM usuario usu
 				inner join programa prog on prog.prog_id = usu.prog_id 
 				inner join facultad facu on facu.facu_id = prog.facu_id
-				left join grupo_usuario grus on grus.usua_id = usu.usua_id 
-				left join grupo grup on grus.grup_id =grup.grup_id 
+				left join grupo_usuario grus on grus.usua_id = usu.usua_id and grus.estado_registro ='A'
+				left join grupo grup on grus.grup_id = grup.grup_id and grup.estado_registro ='A'
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 				and ((:pSemestre <> -1 and usu.semestre = :pSemestre) or (:pSemestre = -1))
 				and ((:pProgId <> -1 and prog.prog_id = :pProgId) or (:pProgId = -1))
@@ -74,12 +74,12 @@
 			result-set-mapping="UsuarioDTOCount">
 			<query>
 	        <![CDATA[
-	        	SELECT 		count(*) as total
+	        	SELECT 		count(distinct usu.usua_id) as total
 				FROM usuario usu
 				inner join programa prog on prog.prog_id = usu.prog_id 
 				inner join facultad facu on facu.facu_id = prog.facu_id
-				left join grupo_usuario grus on grus.usua_id = usu.usua_id 
-				left join grupo grup on grus.grup_id =grup.grup_id 
+				left join grupo_usuario grus on grus.usua_id = usu.usua_id and grus.estado_registro ='A'
+				left join grupo grup on grus.grup_id =grup.grup_id and grup.estado_registro ='A'
 				WHERE ((:pTiusId != -1 AND tius_id = :pTiusId) OR :pTiusId = -1)
 				and ((:pSemestre <> -1 and usu.semestre = :pSemestre) or (:pSemestre = -1))
 				and ((:pProgId <> -1 and prog.prog_id = :pProgId) or (:pProgId = -1))

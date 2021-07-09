@@ -37,6 +37,7 @@ export class UsuarioService {
   }
 
   public getUsuariosPorTipo(tiusId: number, semestre: number, progId: number, facuId:number, grupId:number, filtro: string, pageNumber: number, pageSize: number): Observable<any> {
+    
     if (!filtro || filtro.length == 0 || filtro === '%') {
       filtro = "*";
     }

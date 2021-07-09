@@ -135,4 +135,32 @@ public class GrupoRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @PostMapping(value = "/guardarGrupo")
+    public ResponseEntity<?> guardarGrupo(@RequestBody GrupoDTO grupoDTO) {
+        log.debug("Request to save Grupo: {}", grupoDTO);
+
+        try {
+
+            return ResponseEntity.ok().body(grupoService.guardarGrupo(grupoDTO));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @PostMapping(value = "/actualizarGrupo")
+    public ResponseEntity<?> actualizarGrupo(@RequestBody GrupoDTO grupoDTO) {
+        log.debug("Request to update Grupo: {}", grupoDTO);
+
+        try {
+
+            return ResponseEntity.ok().body(grupoService.actualizarGrupo(grupoDTO));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

@@ -18,6 +18,7 @@ export class Usuario {
     usuaId: number;
     progId_Programa: number;
     tiusId_TipoUsuario: number;
+    semestre: number;
 
     facuId: number;
     nombreFacultad: string;

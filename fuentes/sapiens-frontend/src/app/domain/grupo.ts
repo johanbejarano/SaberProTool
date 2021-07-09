@@ -1,3 +1,5 @@
+import { Usuario } from "./usuario";
+
 export class Grupo {
     descripcion: string;
     estadoRegistro: string;
@@ -7,5 +9,7 @@ export class Grupo {
     nombre: string;
     usuCreador: number;
     usuModificador: number;
+
+    listUsuarios: number[];
 
 }

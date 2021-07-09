@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { FacultadService } from '../../../../services/facultad.service';
 import { Facultad } from '../../../../domain/facultad';
 import { map, filter } from 'rxjs/operators';
+import { Grupo } from 'app/domain/grupo';
+import { GrupoService } from 'app/services/grupo.service';
 
 @Component({
   selector: 'app-lista-estudiantes',
@@ -42,8 +44,10 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
   checkboxes: {};
 
   checkedAll: boolean;
+  idGrupo: number;
 
   listFacultad: Facultad[];
+  listGrupo: Grupo[];
 
   datasource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
   public displayedColumns = ['checkbox', 'codigo', 'identificacion', 'nombre', 'email'];
@@ -56,11 +60,14 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
     private localStorage: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
+    private grupoService: GrupoService,
   ) {
     this.usuario = usuarioService.getUsuario();
+    this.idGrupo = this.localStorage.getFromLocal('idGrupo');
   }
 
   ngOnInit(): void {
+    
     this.pageNumber = 0;
     this.pageSize = 10;
 
@@ -68,6 +75,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
 
     this.getData();
     this.getFacultad();
+    this.getGrupo();
     this.selectAllData();
   }
 
@@ -87,6 +95,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
     this.formListaEstudiantes = this._formBuilder.group({
       busqueda: [this.strBusqueda],
       'facultad': '',
+      'grupo':this.idGrupo,
     });
   }
 
@@ -104,56 +113,125 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  getGrupo(){
+    this.grupoService.consultarGrupos().subscribe(d=>{
+      if(d){
+        this.listGrupo = d.slice();
+      }
+    })
+  }
+
   selectAllData(){
-    this.subscription = this.usuarioService.getAllUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE,
-      -1,//semestre
-      -1,//programa
-      -1,//grupo
-      this.formListaEstudiantes.controls.facultad.value,
-      this.formListaEstudiantes.controls.busqueda.value).subscribe(d=>{
-        if (d) {
-          this.usuarios = d;
-          // d.filter(data=>this.usuarios.push(data));
-          // console.log(this.usuarios);
-        }
-      });
+    
+    
+    if(this.idGrupo){
+      this.subscription = this.usuarioService.getAllUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE,
+        -1,//semestre
+        -1,//programa
+        this.formListaEstudiantes.controls.facultad.value,
+        this.formListaEstudiantes.controls.grupo.value,//grupo
+        this.formListaEstudiantes.controls.busqueda.value).subscribe(d=>{
+          if (d) {
+            console.log(d);
+            
+            this.usuarios = d;
+            // d.filter(data=>this.usuarios.push(data));
+            // console.log(this.usuarios);
+          }
+        });
+    }else{
+      this.subscription = this.usuarioService.getAllUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE,
+        -1,//semestre
+        -1,//programa
+        this.formListaEstudiantes.controls.facultad.value,
+        this.formListaEstudiantes.controls.grupo.value,//grupo
+        this.formListaEstudiantes.controls.busqueda.value).subscribe(d=>{
+          if (d) {
+            this.usuarios = d;
+            // d.filter(data=>this.usuarios.push(data));
+            // console.log(this.usuarios);
+          }
+        });
+    }
+    
     this.checkedAll=false;
   }
 
   getData() {
-    this.subscription = this.usuarioService.getUsuariosPorTipo(
-      global.TIPOS_USUARIO.ESTUDIANTE,
-      -1,//semestre
-      -1,//programa
-      -1,//grupo
-      this.formListaEstudiantes.controls.facultad.value,
-      this.formListaEstudiantes.controls.busqueda.value,
-      this.pageNumber,
-      this.pageSize)
-      .subscribe((page: Page) => {
 
-        this.data = page.content;
-        this.total = page.totalElements;
+    if(this.idGrupo){
+      this.subscription = this.usuarioService.getUsuariosPorTipo(
+        global.TIPOS_USUARIO.ESTUDIANTE,
+        -1,//semestre
+        -1,//programa
+        this.formListaEstudiantes.controls.facultad.value,
+        this.formListaEstudiantes.controls.grupo.value,//grupo
+        this.formListaEstudiantes.controls.busqueda.value,
+        this.pageNumber,
+        this.pageSize)
+        .subscribe((page: Page) => {
+          this.data = page.content;
+          console.log(this.data);
+          
+          this.total = page.totalElements;
+  
+          this.datasource = new MatTableDataSource<Usuario>(this.data);
+  
+          this.checkboxes = {};
+          
+          this.data.map(usuario => {
+  
+            //Se valida si el usuario ya estaba seleccionado previamente
+            // console.log(usuario.usuaId);
+            // console.log(this.usuariosSeleccionados);
+            let seleccionado = this.usuariosSeleccionados.indexOf(usuario.usuaId);
+            // console.log(seleccionado >= 0);
+            
+            this.checkboxes[usuario.usuaId] = seleccionado >= 0;
+          });
+  
+        },
+          error => {
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+          });
+    }else{
+      this.subscription = this.usuarioService.getUsuariosPorTipo(
+        global.TIPOS_USUARIO.ESTUDIANTE,
+        -1,//semestre
+        -1,//programa
+        this.formListaEstudiantes.controls.facultad.value,
+        this.formListaEstudiantes.controls.grupo.value,//grupo
+        this.formListaEstudiantes.controls.busqueda.value,
+        this.pageNumber,
+        this.pageSize)
+        .subscribe((page: Page) => {
+  
+          this.data = page.content;
+          this.total = page.totalElements;
+  
+          this.datasource = new MatTableDataSource<Usuario>(this.data);
+  
+          this.usuariosSeleccionados
+          this.checkboxes = {};
+          this.data.map(usuario => {
+  
+            //Se valida si el usuario ya estaba seleccionado previamente
+            let seleccionado = this.usuariosSeleccionados.indexOf(usuario.usuaId);
+  
+            this.checkboxes[usuario.usuaId] = seleccionado >= 0;
+          });
+  
+        },
+          error => {
+            this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
+          });
+    }
 
-        this.datasource = new MatTableDataSource<Usuario>(this.data);
-
-        this.checkboxes = {};
-        this.data.map(usuario => {
-
-          //Se valida si el usuario ya estaba seleccionado previamente
-          let seleccionado = this.usuariosSeleccionados.indexOf(usuario.usuaId);
-
-          this.checkboxes[usuario.usuaId] = seleccionado >= 0;
-        });
-
-      },
-        error => {
-          this.snackBar.open(error.error, 'x', { verticalPosition: 'top', duration: 10000 });
-        });
+    
   }
 
   toogleSelectedUsuario(usuaId: number) {
-
+    
     //Si el usuario ya estaba seleccionado, se saca de la lista
     if (this.usuariosSeleccionados.length > 0) {
       const idx = this.usuariosSeleccionados.indexOf(usuaId);

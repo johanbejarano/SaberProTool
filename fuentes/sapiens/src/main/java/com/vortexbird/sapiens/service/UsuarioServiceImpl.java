@@ -356,6 +356,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuario.setGenero(usuarioDTO.getGenero());
 			usuario.setCelular(usuarioDTO.getCelular());
 			usuario.setPrograma(programaService.findById(usuarioDTO.getProgId_Programa()).get());
+			usuario.setSemestre(usuarioDTO.getSemestre());
 			usuario.setTipoUsuario(tipoUsuarioService.findById(usuarioDTO.getTiusId_TipoUsuario()).get());
 			usuario.setEstadoRegistro(usuarioDTO.getEstadoRegistro());
 

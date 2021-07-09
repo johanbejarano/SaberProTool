@@ -132,7 +132,7 @@ export class PruebaComponent implements OnInit {
 
     // console.log(pregunta);
     
-      if (pregunta.respId || pregunta.respuestaAbierta) {
+      if (pregunta.respId || pregunta.respuestaAbierta || pregunta.ceIdeaCentral) {
         let request: DetallePruebaUsuario = new DetallePruebaUsuario();
         request.dpruId = pregunta.dpruId;
         request.respId = pregunta.respId;
@@ -154,7 +154,7 @@ export class PruebaComponent implements OnInit {
     if (this.preguntas) {
       for (let i = 0; i < this.preguntas.length; i++) {
         const pregunta = this.preguntas[i];
-        if (!pregunta.respId && !pregunta.respuestaAbierta) {
+        if (!pregunta.respId && !pregunta.respuestaAbierta && !pregunta.ceIdeaCentral) {
           this.snackBar.open('Se deben responder todas las preguntas', 'x', { verticalPosition: 'top', duration: 10000 });
           return;
         }
@@ -237,11 +237,15 @@ export class PruebaComponent implements OnInit {
   }
 
   actualizar(pregunta: DetallePruebaUsuario, event, parte: string) {
+    console.log("activa evento");
+    
     if(parte == 'PA'){
       pregunta.respuestaAbierta = event.editor.getData();
       this.guardarRespuesta(pregunta);
     }
     if(parte == 'IC'){
+      console.log("idea central");
+      
       pregunta.ceIdeaCentral = event.editor.getData();
       this.guardarRespuesta(pregunta);
     }

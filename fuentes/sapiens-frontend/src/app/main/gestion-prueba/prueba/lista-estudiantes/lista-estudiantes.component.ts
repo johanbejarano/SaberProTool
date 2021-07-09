@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { FacultadService } from '../../../../services/facultad.service';
 import { Facultad } from '../../../../domain/facultad';
 import { map, filter } from 'rxjs/operators';
+import { Grupo } from 'app/domain/grupo';
+import { GrupoService } from 'app/services/grupo.service';
 
 @Component({
   selector: 'app-lista-estudiantes',
@@ -44,6 +46,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
   checkedAll: boolean;
 
   listFacultad: Facultad[];
+  listGrupo: Grupo[];
 
   datasource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
   public displayedColumns = ['checkbox', 'codigo', 'identificacion', 'nombre', 'email'];
@@ -53,6 +56,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
     private _formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private facultadService: FacultadService,
+    private grupoService: GrupoService,
     private localStorage: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -68,6 +72,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
 
     this.getData();
     this.getFacultad();
+    this.getGrupo();
     this.selectAllData();
   }
 
@@ -87,6 +92,7 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
     this.formListaEstudiantes = this._formBuilder.group({
       busqueda: [this.strBusqueda],
       'facultad': '',
+      'grupo':'',
     });
   }
 
@@ -104,12 +110,20 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  getGrupo(){
+    this.grupoService.consultarGrupos().subscribe(d=>{
+      if(d){
+        this.listGrupo = d.slice();
+      }
+    })
+  }
+
   selectAllData(){
     this.subscription = this.usuarioService.getAllUsuariosPorTipo(global.TIPOS_USUARIO.ESTUDIANTE,
       -1,//semestre
       -1,//programa
-      -1,//grupo
       this.formListaEstudiantes.controls.facultad.value,
+      this.formListaEstudiantes.controls.grupo.value,//grupo
       this.formListaEstudiantes.controls.busqueda.value).subscribe(d=>{
         if (d) {
           this.usuarios = d;
@@ -125,8 +139,8 @@ export class ListaEstudiantesComponent implements OnInit, OnDestroy, OnChanges {
       global.TIPOS_USUARIO.ESTUDIANTE,
       -1,//semestre
       -1,//programa
-      -1,//grupo
       this.formListaEstudiantes.controls.facultad.value,
+      this.formListaEstudiantes.controls.grupo.value,//grupo
       this.formListaEstudiantes.controls.busqueda.value,
       this.pageNumber,
       this.pageSize)

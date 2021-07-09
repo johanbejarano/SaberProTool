@@ -84,8 +84,6 @@
                                                     [disabled]="pregunta.retroalimentacionPregunta ? 'true' : 'false'"
                                                     [checked]="respuesta.dpurId ? true : false"
                                                     >
-                                                    
-
                                                     <div fxFlex="100">
                                                         <ckeditor [editor]="Editor" [config]="editorConfig" fxFlex="100"
                                                             [(data)]="respuesta.descripcion" (ready)="setReadOnly($event)">

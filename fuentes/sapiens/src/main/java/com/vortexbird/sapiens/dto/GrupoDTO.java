@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.sql.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -30,6 +31,8 @@ public class GrupoDTO implements Serializable {
     private String nombre;
     private Long usuCreador;
     private Long usuModificador;
+    
+    private List<Long> listUsuarios;
 
     public String getDescripcion() {
         return descripcion;
@@ -95,7 +98,15 @@ public class GrupoDTO implements Serializable {
         this.usuModificador = usuModificador;
     }
 
-    @Override
+    public List<Long> getListUsuarios() {
+		return listUsuarios;
+	}
+
+	public void setListUsuarios(List<Long> listUsuarios) {
+		this.listUsuarios = listUsuarios;
+	}
+
+	@Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
