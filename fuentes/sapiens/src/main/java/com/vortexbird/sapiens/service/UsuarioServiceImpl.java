@@ -1,5 +1,6 @@
 package com.vortexbird.sapiens.service;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,13 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.google.api.client.json.JsonGenerator;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2IntentMessage;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2IntentMessageText;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2WebhookRequest;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2WebhookResponse;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2beta1WebhookRequest;
 import com.vortexbird.sapiens.domain.Grupo;
 import com.vortexbird.sapiens.domain.GrupoUsuario;
 import com.vortexbird.sapiens.domain.Programa;
@@ -35,9 +43,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.converter.json.GsonFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
@@ -49,6 +59,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioServiceImpl implements UsuarioService {
 
 	private static final Logger log = LoggerFactory.getLogger(UsuarioServiceImpl.class);
+	
+	private static GsonFactory gsonFactory;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -618,6 +630,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public String getCorreoUsuarioPorCodigo(String codigo) throws Exception {
 		try {
 			
+			String respuesta = "";
+			
 			if (codigo == null || codigo.isBlank()) {
 				throw new Exception("El codigo no puede estar vacío.");
 			}
@@ -625,16 +639,56 @@ public class UsuarioServiceImpl implements UsuarioService {
 			Optional<Usuario> usuarioOpt = usuarioRepository.findByCodigoAndEstadoRegistro(codigo.trim(), Constantes.ESTADO_ACTIVO);
 			
 			if (!usuarioOpt.isPresent()) {
-				throw new Exception("El usuario con el codigo " + codigo + " no fue encontrado.");
-			}
+				respuesta = "El usuario con el codigo " + codigo + " no fue encontrado.";
+			}else {				
+				
+				Usuario usuario = usuarioOpt.get();
+				
+				respuesta = usuario.getCorreo();
+			}			
 			
-			Usuario usuario = usuarioOpt.get();
-
-			return usuario.getCorreo();
+			return respuesta;
 
 		} catch (Exception e) {
 			log.error("Error en getCorreoUsuarioPorCodigo", e);
 			throw e;
 		}
 	}
+
+//	@Override
+//	@Transactional(readOnly = true)
+//	public String getCorreoUsuarioPorCodigo(String codigo) throws Exception {
+//		try {
+//			gsonFactory = gsonFactory.getDefaultInstance();
+//			
+//			if (codigo == null || codigo.isBlank()) {
+//				throw new Exception("El codigo no puede estar vacío.");
+//			}
+//			
+//			GoogleCloudDialogflowV2WebhookRequest request = gsonFactory.createJsonParser(codigo).parse(GoogleCloudDialogflowV2WebhookRequest.class);
+//			
+//			Map<String, Object> params = request.getQueryResult().getParameters();
+//			
+//			String CodigoBusqueda = (String) params.get("codigo");
+//			
+//			Optional<Usuario> usuarioOpt = usuarioRepository.findByCodigoAndEstadoRegistro(CodigoBusqueda.trim(), Constantes.ESTADO_ACTIVO);
+//			
+//			if (!usuarioOpt.isPresent()) {
+//				throw new Exception("El usuario con el codigo " + CodigoBusqueda + " no fue encontrado.");
+//			}
+//			
+//			Usuario usuario = usuarioOpt.get();
+//			
+//			GoogleCloudDialogflowV2WebhookResponse response = new GoogleCloudDialogflowV2WebhookResponse();
+//			
+//			response.setFulfillmentText(usuario.getCorreo());
+//			
+//			return response.toString();
+//
+//		} catch (Exception e) {
+//			log.error("Error en getCorreoUsuarioPorCodigo", e);
+//			throw e;
+//		}
+//	}
+	
 }

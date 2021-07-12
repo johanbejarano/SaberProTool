@@ -1,13 +1,19 @@
 package com.vortexbird.sapiens.controller;
 
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2WebhookRequest;
+import com.google.api.services.dialogflow.v2.model.GoogleCloudDialogflowV2WebhookResponse;
 import com.vortexbird.sapiens.domain.Usuario;
 import com.vortexbird.sapiens.dto.CargueMasivoDTO;
 import com.vortexbird.sapiens.dto.UsuarioDTO;
 import com.vortexbird.sapiens.mapper.UsuarioMapper;
 import com.vortexbird.sapiens.service.UsuarioService;
+import com.vortexbird.sapiens.utility.Constantes;
 import com.vortexbird.sapiens.utility.PasswordGenerator;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +35,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class UsuarioRestController {
 	private static final Logger log = LoggerFactory.getLogger(UsuarioRestController.class);
+	
+	private static GsonFactory gsonFactory;
+	
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
@@ -276,17 +285,42 @@ public class UsuarioRestController {
 		}
 	}
 	
+//	@PostMapping(value = "/getCorreoUsuarioPorCodigo")
+//	public ResponseEntity<?> getCorreoUsuarioPorCodigo(@RequestBody String codigo) {
+//		log.debug("Request to getCorreoUsuarioPorCodigo() Usuario");
+//		try {
+//			
+//			return ResponseEntity.ok().body(usuarioService.getCorreoUsuarioPorCodigo(codigo));
+//		} catch (Exception e) {
+//			log.error(e.getMessage(), e);
+//
+//			return ResponseEntity.badRequest().body(e.getMessage());
+//		}
+//	}
+	
 	@PostMapping(value = "/getCorreoUsuarioPorCodigo")
 	public ResponseEntity<?> getCorreoUsuarioPorCodigo(@RequestBody String codigo) {
 		log.debug("Request to getCorreoUsuarioPorCodigo() Usuario");
 		try {
-			String correo = usuarioService.getCorreoUsuarioPorCodigo(codigo);
-
-			return ResponseEntity.ok().body(correo);
+			gsonFactory = gsonFactory.getDefaultInstance();
+			
+			GoogleCloudDialogflowV2WebhookResponse response = new GoogleCloudDialogflowV2WebhookResponse();
+			GoogleCloudDialogflowV2WebhookRequest request = gsonFactory.createJsonParser(codigo).parse(GoogleCloudDialogflowV2WebhookRequest.class);
+			
+			Map<String, Object> params = request.getQueryResult().getParameters();
+			
+			String CodigoBusqueda = (String) params.get("codigo");
+			
+			String correo = usuarioService.getCorreoUsuarioPorCodigo(CodigoBusqueda);
+			
+			response.setFulfillmentText(correo);
+			
+			return ResponseEntity.ok().body(response);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
 }

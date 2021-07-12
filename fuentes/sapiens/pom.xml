@@ -35,9 +35,33 @@
 			<url>https://maven.cksource.com/</url>
 		</repository>
 	</repositories>
+	
+	<dependencyManagement>
+	  <dependencies>
+	    <dependency>
+	      <groupId>com.google.cloud</groupId>
+	      <artifactId>libraries-bom</artifactId>
+	      <version>20.7.0</version>
+	      <type>pom</type>
+	      <scope>import</scope>
+	    </dependency>
+	  </dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
+		<dependency>
+		    <groupId>com.google.apis</groupId>
+		    <artifactId>google-api-services-dialogflow</artifactId>
+		    <version>v2-rev124-1.25.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.google.http-client</groupId>
+		    <artifactId>google-http-client-gson</artifactId>
+		    <version>1.21.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
