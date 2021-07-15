@@ -9,8 +9,9 @@
     <meta charset="utf-8">
     <meta name="description" content="Sabertool">
     <meta name="keywords"
-        content="HTML,CSS,AngularJS,Angular,Angular 2,Angular 4,Angular 5,Angular 6,Angular 7,Material,Material 2">
+        content="Usb, Universidad Sanbuenaventura, Sabertools">
     <meta name="author" content="Vortexbird.com">
+    <meta name="viewport" content="width-device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -228,6 +229,26 @@
     <!-- / FUSE Splash Screen -->
 
     <app></app>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+        intent="WELCOME"
+        chat-title="Asistente virtual SaberTools"
+        agent-id="7e9f409b-8ad5-4a08-8e8e-692e13997658"
+        language-code="es"
+        chat-icon = "https://vortexbird.com/icono-chat.svg"
+    ></df-messenger>
+    <style>
+        df-messenger {
+         --df-messenger-bot-message: #f2f2f2;
+         --df-messenger-button-titlebar-color: #FF6F00;
+         --df-messenger-chat-background-color: white;
+         --df-messenger-font-color: black;
+         --df-messenger-send-icon: #ff6f013b;
+         --df-messenger-user-message: #ff6f013b;
+        }
+    </style>
+
 </body>
 
 

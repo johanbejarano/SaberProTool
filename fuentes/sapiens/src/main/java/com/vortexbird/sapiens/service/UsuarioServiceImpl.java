@@ -644,7 +644,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				
 				Usuario usuario = usuarioOpt.get();
 				
-				respuesta = usuario.getCorreo();
+				respuesta = "El correo registrado es : " + usuario.getCorreo();
 			}			
 			
 			return respuesta;
